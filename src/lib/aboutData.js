@@ -20,11 +20,15 @@ export const principles = [
   { title: "Lorem ipsum dolor", description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget." },
 ];
 
-// tools I use, grouped — tile counts are placeholder, not meaningful yet
+// tools I use, grouped — tile counts are placeholder, not meaningful yet.
+// Corrected 2026-08-20 against the exact Rectangle node coordinates in
+// Figma node 241:462 (Design=5 single row; AI Assistance=9, wraps to a
+// second row at exactly 6 tiles/row given the 330px column width and 6px
+// gap; Currently Exploring=4 single row).
 export const workflowCategories = [
   { label: "Design", tileCount: 5 },
-  { label: "AI Assistance", tileCount: 6 },
-  { label: "Currently Exploring", tileCount: 3 },
+  { label: "AI Assistance", tileCount: 9 },
+  { label: "Currently Exploring", tileCount: 4 },
 ];
 
 // supports both past achievements and "currently working on" — 2 rows x 3 columns
