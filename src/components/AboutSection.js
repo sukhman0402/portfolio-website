@@ -1,10 +1,16 @@
-import { aboutMeColumns, principles, workflowCategories, journeyEntries } from "@/lib/aboutData";
+import {
+  aboutMeColumns,
+  principles,
+  workflowCategories,
+  journeyEntries,
+} from "@/lib/aboutData";
 
 // Landing Page Section 5.0 — About Me / How I Function / My Workflow /
 // Along the Journey (design.md §3, Section 5.0).
 //
 // Full spacing rewrite 2026-08-20 against exact pixel data pulled from
-// Figma node 241:462 (fresh metadata — node IDs regenerate on file edits).
+// Figma node 252:1420 (fresh metadata — node IDs regenerate on file edits;
+// this was 241:462 earlier in the same day before another Figma edit).
 // Every offset below is a literal Figma coordinate, not an approximation:
 //   - Timeline → About Me gap: 249px (this block sits further from the
 //     section above it than every other section transition on the site —
@@ -45,11 +51,11 @@ export default function AboutSection() {
         </div>
 
         {/* How I Function — each card's title→description is a bare 0px
-            gap (leading only); the ~193px block below the description is a
-            real, exact-pixel reserved area in Figma (description bottom to
-            next card's border-line, confirmed via screenshot: genuinely
-            blank, not a missed image node) — rendered as an explicit
-            illustration placeholder so it's obvious to swap for real art. */}
+            gap (leading only); the 191px block below the description is a
+            real, exact-pixel reserved area in Figma — confirmed by explicit
+            placeholder Frame nodes now visible in the file (Frame 23/25/27/
+            24/26/28 under node 252:1420, each 330x191 at exactly this
+            position), not just inferred from blank whitespace. */}
         <div className="grid grid-cols-1 gap-6 pt-16 md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             How I Function
@@ -62,9 +68,9 @@ export default function AboutSection() {
                   {p.description}
                 </p>
                 <div
-                  className="mt-4 h-40 w-full bg-tile md:mt-0 md:h-[193px]"
+                  className="mt-4 h-40 w-full bg-tile md:mt-0 md:h-[191px]"
                   aria-hidden="true"
-                  title="Illustration placeholder — exact reserved space per Figma node 241:462, no image asset in source yet"
+                  title="Illustration placeholder — exact reserved space per Figma node 252:1420, no image asset in source yet"
                 />
               </div>
             ))}
@@ -104,7 +110,12 @@ export default function AboutSection() {
             is 12px, produced by the column wrapper's own gap-[12px] (not
             the entry's own border+pt, which only supplies the 10px after
             the line). No trailing pb here — Footer's own pt provides the
-            gap to the next section. */}
+            gap to the next section.
+            Each column also gets a CLOSING border line after its last entry
+            (Line 22/23/24 in Figma, at x=380/730/1080, y=1401) — previously
+            missing entirely, since only inter-entry borders were rendered.
+            It reuses the same gap-[12px] rhythm as every other tag→divider
+            gap on this site, so no extra spacing value is needed for it. */}
         <div className="grid grid-cols-1 gap-6 pt-16 md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             Along the Journey
@@ -125,6 +136,7 @@ export default function AboutSection() {
                     </p>
                   </div>
                 ))}
+                <div className="border-t border-black" aria-hidden="true" />
               </div>
             ))}
           </div>
