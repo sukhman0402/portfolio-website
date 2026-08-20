@@ -1,3 +1,5 @@
+import { aboutMeColumns, principles, workflowCategories, journeyEntries } from "@/lib/aboutData";
+
 // Landing Page Section 5.0 — About Me / How I Function / My Workflow /
 // Along the Journey (design.md §3, Section 5.0).
 //
