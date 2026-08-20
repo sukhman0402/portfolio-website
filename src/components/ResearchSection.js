@@ -6,13 +6,19 @@ import { research } from "@/lib/data";
 // Same visual row pattern as collapsed Projects rows, but the icon is a
 // direct link (no expand/collapse) and there's no "More Research" link
 // per design.md §1 (no separate Research listing page).
+//
+// Spacing matches ProjectRow.js exactly (both pulled from the same Figma
+// row pattern, corrected 2026-08-20): fixed label column (not "auto" +
+// gap, which is what was closing the "01"-to-title gap), 18px title→
+// description with zero extra margin, 15px description→tag, flat 10px
+// row padding above/below the divider.
 export default function ResearchSection() {
   const featured = research.slice(0, 4);
 
   return (
     <section id="research" className="w-full scroll-mt-24">
       <div className="mx-auto max-w-[1440px] px-5 pt-20 sm:px-[30px] md:pt-28">
-        <h2 className="border-b border-black pb-3 font-bold uppercase tracking-normal">
+        <h2 className="border-b border-black pb-[10px] font-bold uppercase leading-[18px] tracking-normal">
           RESEARCH
         </h2>
 
@@ -21,23 +27,23 @@ export default function ResearchSection() {
             <Link
               key={item.slug}
               href={`/research/${item.slug}`}
-              className="grid w-full grid-cols-[auto_1fr_auto] items-start gap-x-6 border-b border-black py-5 hover:opacity-70 transition-opacity md:py-6"
+              className="grid w-full grid-cols-[56px_1fr_auto] items-start border-b border-black pt-[10px] pb-[10px] hover:opacity-70 transition-opacity md:grid-cols-[350px_1fr_auto]"
             >
-              <span className="font-medium uppercase tracking-normal pt-0.5">
+              <span className="font-medium uppercase leading-[18px] tracking-normal">
                 {item.index}
               </span>
-              <span className="flex flex-col gap-1">
-                <span className="font-semibold tracking-[-0.5px]">
+              <span className="flex flex-col gap-0">
+                <span className="font-semibold leading-[18px] tracking-[-0.5px]">
                   {item.title}
                 </span>
-                <span className="font-normal tracking-[-0.5px] line-clamp-1">
+                <span className="font-normal leading-[18px] tracking-[-0.5px] line-clamp-1">
                   {item.description}
                 </span>
-                <span className="mt-1 font-normal tracking-[-0.5px] text-muted">
+                <span className="mt-[15px] font-normal tracking-[-0.5px] text-muted">
                   {item.tag}
                 </span>
               </span>
-              <Chevron className="mt-1.5 h-3 w-3 shrink-0" />
+              <Chevron className="ml-4 mt-1 h-3 w-3 shrink-0 md:ml-6" />
             </Link>
           ))}
         </div>

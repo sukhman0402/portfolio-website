@@ -10,7 +10,7 @@ export default function ProjectsSection() {
   return (
     <section id="projects" className="w-full scroll-mt-24">
       <div className="mx-auto max-w-[1440px] px-5 pt-20 sm:px-[30px] md:pt-28">
-        <h2 className="border-b border-black pb-3 font-bold uppercase tracking-normal">
+        <h2 className="border-b border-black pb-[10px] font-bold uppercase leading-[18px] tracking-normal">
           Projects
         </h2>
 
@@ -20,9 +20,10 @@ export default function ProjectsSection() {
           ))}
         </div>
 
+        {/* 60px below the last row's divider per Figma (corrected 2026-08-20). */}
         <Link
           href="/projects"
-          className="mt-8 inline-flex items-center gap-1 font-bold uppercase tracking-normal hover:opacity-60 transition-opacity"
+          className="mt-[60px] inline-flex items-center gap-1 font-bold uppercase tracking-normal hover:opacity-60 transition-opacity"
         >
           More Projects
           <Chevron className="h-2.5 w-2.5" />
