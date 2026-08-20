@@ -13,11 +13,14 @@ export default function Header({ base = "/" }) {
   ];
 
   return (
-    <header className="w-full">
+    // sticky + bg-white so the nav stays pinned on scroll (flagged
+    // 2026-08-20 — basic UI practice, not a literal Figma frame detail
+    // since Figma's static frames can't encode scroll behaviour).
+    <header className="sticky top-0 z-40 w-full bg-white">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-5 sm:px-[30px]">
         <Link
           href="/"
-          className="font-bold tracking-[-1.5px]"
+          className="font-bold tracking-normal"
           data-node-id="67:321"
         >
           SUKHMAN.
@@ -31,7 +34,7 @@ export default function Header({ base = "/" }) {
             <Link
               key={item.label}
               href={item.href}
-              className="font-semibold uppercase tracking-[-1px] hover:opacity-60 transition-opacity"
+              className="font-semibold uppercase tracking-normal hover:opacity-60 transition-opacity"
             >
               {item.label}
             </Link>
@@ -42,7 +45,7 @@ export default function Header({ base = "/" }) {
             href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-semibold uppercase tracking-[-1px] hover:opacity-60 transition-opacity"
+            className="font-semibold uppercase tracking-normal hover:opacity-60 transition-opacity"
           >
             RESUME.
           </a>
@@ -57,13 +60,13 @@ export default function Header({ base = "/" }) {
         >
           <Link
             href={`${base}#projects`}
-            className="font-semibold uppercase tracking-[-1px] text-[13px]"
+            className="font-semibold uppercase tracking-normal text-[13px]"
           >
             Work
           </Link>
           <Link
             href={`${base}#contact`}
-            className="font-semibold uppercase tracking-[-1px] text-[13px]"
+            className="font-semibold uppercase tracking-normal text-[13px]"
           >
             Contact
           </Link>

@@ -4,7 +4,10 @@ import { useState } from "react";
 
 // Landing Page Section 4.0 — Timeline (design.md §3, Section 4.0).
 // STATUS: this section is undesigned in Figma — the frame only contains the
-// label "( TIMELINE )". Per your stated intent (2026-08-17): a horizontal
+// label "( TIMELINE )", centered (both axes) in red (#ef0000), no border —
+// unlike every other section header (corrected 2026-08-20; was previously
+// styled like a bordered black section heading, which doesn't match).
+// Per your stated intent (2026-08-17): a horizontal
 // line with circles marking stages, and a single detail panel below that
 // updates on hover — not one panel per stage like the Pinterest reference.
 //
@@ -26,8 +29,8 @@ export default function TimelineSection() {
 
   return (
     <section className="w-full">
-      <div className="mx-auto max-w-[1440px] px-5 pt-20 sm:px-[30px] md:pt-28">
-        <h2 className="border-b border-black pb-3 font-bold uppercase tracking-[-1.5px]">
+      <div className="mx-auto max-w-[1440px] px-5 pt-20 text-center sm:px-[30px] md:pt-28">
+        <h2 className="font-bold uppercase tracking-normal text-accent">
           ( Timeline )
         </h2>
 

@@ -19,14 +19,21 @@ const CONTACT_ROWS = [
 export default function Footer() {
   return (
     <footer id="contact" className="w-full">
-      <div className="mx-auto max-w-[1440px] px-5 pt-24 pb-16 sm:px-[30px] md:pt-32">
-        <p className="max-w-[680px] font-bold uppercase tracking-[-1px] leading-[20px] text-black">
+      {/* pt normalized to match every other section's top gap
+          (corrected 2026-08-20 — was pt-24/32, an outlier next to
+          everything else's pt-20/28, part of the "spacing isn't
+          maintained" report). */}
+      <div className="mx-auto max-w-[1440px] px-5 pt-20 pb-16 sm:px-[30px] md:pt-28">
+        {/* Content column starts at the same 350px offset as every other
+            row on the site (corrected 2026-08-20 — was flush against the
+            page edge instead of aligned with the label/content split). */}
+        <p className="max-w-[680px] text-justify font-bold uppercase leading-[20px] tracking-normal text-black md:ml-[350px]">
           Behind every interaction is a decision, a behaviour and an
           opportunity to create a better experience.
         </p>
 
         <div className="mt-16 md:mt-20">
-          <h2 className="font-bold uppercase tracking-[-1.5px] text-black">
+          <h2 className="font-bold uppercase tracking-normal text-black">
             Contact
           </h2>
 
@@ -55,7 +62,7 @@ export default function Footer() {
 
       <div className="w-full bg-footer-band">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-4 sm:px-[30px]">
-          <span className="font-bold tracking-[-1.5px] text-muted">
+          <span className="font-bold tracking-normal text-muted">
             SUKHMAN.
           </span>
           <span className="text-right text-muted font-normal tracking-[-0.5px]">

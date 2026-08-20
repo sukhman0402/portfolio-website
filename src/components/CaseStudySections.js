@@ -13,7 +13,7 @@ export default function CaseStudySections({ sections }) {
             i !== 0 ? "border-t border-black" : "pt-14 md:pt-20"
           }`}
         >
-          <h2 className="font-bold uppercase tracking-[-1.5px]">
+          <h2 className="font-bold uppercase tracking-normal">
             {section.heading}
           </h2>
           <p className="max-w-[1030px] font-normal tracking-[-0.5px] text-black/80">

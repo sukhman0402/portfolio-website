@@ -22,7 +22,7 @@ export default function ProjectRow({ project, expandable = true }) {
         }`}
         aria-expanded={open}
       >
-        <span className="font-medium uppercase tracking-[-1.5px] pt-0.5">
+        <span className="font-medium uppercase tracking-normal pt-0.5">
           {project.index}
         </span>
 

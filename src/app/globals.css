@@ -6,6 +6,7 @@
   --muted: #bbbbbb;
   --tile: #d9d9d9;
   --footer-band: #f3f3f3;
+  --accent: #ef0000;
 
   /* SF Pro is Apple system-proprietary and can't be licensed for web
      self-hosting. This stack renders as San Francisco on Apple devices
@@ -24,6 +25,7 @@
   --color-muted: var(--muted);
   --color-tile: var(--tile);
   --color-footer-band: var(--footer-band);
+  --color-accent: var(--accent);
   --font-sans: var(--font-system);
 }
 

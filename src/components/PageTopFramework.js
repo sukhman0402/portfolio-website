@@ -17,10 +17,10 @@ export default function PageTopFramework({ title, index, children }) {
       <main className="flex-1">
         <div className="mx-auto max-w-[1440px] px-5 pt-16 sm:px-[30px] md:pt-24">
           <div className="flex items-baseline justify-between border-b border-black pb-3">
-            <h1 className="max-w-[680px] font-bold uppercase tracking-[-1px]">
+            <h1 className="max-w-[680px] font-bold uppercase tracking-normal">
               {title}
             </h1>
-            <span className="font-semibold uppercase tracking-[-1px] text-muted">
+            <span className="font-semibold uppercase tracking-normal text-muted">
               {index}
             </span>
           </div>

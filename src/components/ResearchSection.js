@@ -12,7 +12,7 @@ export default function ResearchSection() {
   return (
     <section id="research" className="w-full scroll-mt-24">
       <div className="mx-auto max-w-[1440px] px-5 pt-20 sm:px-[30px] md:pt-28">
-        <h2 className="border-b border-black pb-3 font-bold uppercase tracking-[-1.5px]">
+        <h2 className="border-b border-black pb-3 font-bold uppercase tracking-normal">
           RESEARCH
         </h2>
 
@@ -23,7 +23,7 @@ export default function ResearchSection() {
               href={`/research/${item.slug}`}
               className="grid w-full grid-cols-[auto_1fr_auto] items-start gap-x-6 border-b border-black py-5 hover:opacity-70 transition-opacity md:py-6"
             >
-              <span className="font-medium uppercase tracking-[-1.5px] pt-0.5">
+              <span className="font-medium uppercase tracking-normal pt-0.5">
                 {item.index}
               </span>
               <span className="flex flex-col gap-1">

@@ -50,7 +50,7 @@ export default function SplashScreen() {
       role="presentation"
       aria-hidden="true"
     >
-      <span className="animate-pulse font-bold tracking-[-1.5px] text-[15px]">
+      <span className="animate-pulse font-bold tracking-normal text-[15px]">
         SUKHMAN.
       </span>
     </div>
