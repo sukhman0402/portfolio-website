@@ -70,10 +70,7 @@ export default function Footer() {
                   {row.label}
                 </dt>
                 <dd className="font-semibold uppercase tracking-[-0.5px] text-right">
-                  
-                    href={row.href}
-                    className="hover:opacity-60 transition-opacity break-all"
-                  >
+                  <a href={row.href} className="hover:opacity-60 transition-opacity break-all">
                     {row.value}
                   </a>
                 </dd>
