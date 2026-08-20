@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Chevron from "./Chevron";
 import { research } from "@/lib/data";
-
+ 
 // Landing Page Section 3.0 — RESEARCH (design.md §3, Section 3.0).
 // Same visual row pattern as collapsed Projects rows, but the icon is a
 // direct link (no expand/collapse) and there's no "More Research" link
@@ -14,14 +14,14 @@ import { research } from "@/lib/data";
 // row padding above/below the divider.
 export default function ResearchSection() {
   const featured = research.slice(0, 4);
-
+ 
   return (
     <section id="research" className="w-full scroll-mt-24">
       <div className="mx-auto max-w-[1440px] px-5 pt-20 sm:px-[30px] md:pt-28">
         <h2 className="border-b border-black pb-[10px] font-bold uppercase leading-[18px] tracking-normal">
           RESEARCH
         </h2>
-
+ 
         <div>
           {featured.map((item) => (
             <Link
@@ -51,3 +51,4 @@ export default function ResearchSection() {
     </section>
   );
 }
+ 
