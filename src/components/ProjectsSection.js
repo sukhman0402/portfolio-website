@@ -20,10 +20,15 @@ export default function ProjectsSection() {
           ))}
         </div>
 
-        {/* 60px below the last row's divider per Figma (corrected 2026-08-20). */}
+        {/* 60px below the last row's divider per Figma (corrected 2026-08-20).
+            Aligned to the content column (x=380 in Figma, same as the row
+            titles above it) via the shared 56px/350px label-column offset —
+            not flush left with the "01"-"04" index column (corrected
+            2026-08-20, per user report: "needs to be in line with the text
+            from the above section"). */}
         <Link
           href="/projects"
-          className="mt-[60px] inline-flex items-center gap-1 font-bold uppercase tracking-normal hover:opacity-60 transition-opacity"
+          className="ml-[56px] mt-[60px] inline-flex items-center gap-1 font-bold uppercase tracking-normal hover:opacity-60 transition-opacity md:ml-[350px]"
         >
           More Projects
           <Chevron className="h-2.5 w-2.5" />
