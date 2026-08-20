@@ -1,9 +1,9 @@
 "use client";
-
+ 
 import { useState } from "react";
 import Link from "next/link";
 import Chevron from "./Chevron";
-
+ 
 // A single Projects row (design.md §3 Section 2.0 + §3a Section 2.1–2.4,
 // and reused always-expanded on /projects per §4).
 //
@@ -19,7 +19,7 @@ import Chevron from "./Chevron";
 // expandable=false -> /projects listing: always renders the expanded card
 export default function ProjectRow({ project, expandable = true }) {
   const [open, setOpen] = useState(!expandable);
-
+ 
   return (
     <div className="border-b border-black pt-[10px] pb-[10px] first:border-t">
       <button
@@ -33,7 +33,7 @@ export default function ProjectRow({ project, expandable = true }) {
         <span className="font-medium uppercase leading-[18px] tracking-normal">
           {project.index}
         </span>
-
+ 
         <span className="flex flex-col gap-0">
           <span className="font-semibold leading-[18px] tracking-[-0.5px]">
             {project.title}
@@ -46,7 +46,7 @@ export default function ProjectRow({ project, expandable = true }) {
             {open ? project.fullDescription : project.description}
           </span>
         </span>
-
+ 
         {expandable && (
           <Chevron
             className={`ml-4 mt-1 h-3 w-3 shrink-0 transition-transform md:ml-6 ${
@@ -55,7 +55,7 @@ export default function ProjectRow({ project, expandable = true }) {
           />
         )}
       </button>
-
+ 
       {/* Tag row + (when open) CTA + caption — mirrors the label column /
           content column split used throughout the Figma layout. Same
           first-column width as the row above (fixed px, not "auto" on an
@@ -82,7 +82,7 @@ export default function ProjectRow({ project, expandable = true }) {
               {project.tag}
             </span>
           )}
-
+ 
           {open && (
             <>
               {/* ⚠️ design.md §3a: Figma reserves an empty ~400px region here,
@@ -102,3 +102,4 @@ export default function ProjectRow({ project, expandable = true }) {
     </div>
   );
 }
+ 
