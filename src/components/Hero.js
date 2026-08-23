@@ -56,16 +56,23 @@ import ScrollIndicator from "./ScrollIndicator";
 //
 // ROUND 4 (2026-08-23) — section spacing re-derived from Figma, replacing
 // the pt-10/md:pt-6 + mt-16 guesses from earlier rounds:
-//   - Header→Hero gap: in 274:145, the Header row sits at y=20 (the same
-//     20px as the real <Header>'s own py-5 top padding — confirms this
-//     frame's y=0 is true page top, not just this section's own origin),
-//     and the first card (statement) starts at y=127.72. The real Header
-//     is a separate, untouched component whose own rendered height
-//     (measured live: 62.5px) doesn't match Figma's flattened single text
-//     line, so the two aren't directly comparable — instead: HeroTopPad =
-//     127.72 (first-card-top from true page origin) − 62.5 (real Header
-//     height) = 65.22px. That replaces both the old pt-10/pt-6 AND the
-//     separate mt-16 before the stage — collapsed into one pt value here.
+//   - Header→Hero gap: first tried computing this as (first-card-top y=
+//     127.72) − (real Header height, 62.5px measured live) = 65.22px —
+//     but that double-counts: 127.72 is the card's position relative to
+//     THIS FRAME's own origin, which is exactly what CARD_POS.statement.
+//     top (11.6109%) already reproduces on its own once the stage renders
+//     — adding 65.22px of section padding on top of that pushed the card
+//     ~188px below the header live, not ~90px. The Header row Figma draws
+//     at y=20 inside this frame is a preview/context overlay (the real
+//     Header is a separate, untouched, already-taller component, not
+//     literally part of this frame's box model) — there's no second,
+//     independent "gap" value to extract from it beyond what the card's
+//     own frame-relative position already encodes. So: no added section
+//     padding on desktop (md:pt-0) — the stage's own built-in whitespace
+//     above the first card (proportional, part of the composition,
+//     unrelated to inter-section rhythm) is the real gap below the
+//     header. Mobile keeps a plain pt-10, since its simplified layout has
+//     no such built-in offset of its own.
 //   - Hero→next-section gap: 274:145 has no sibling "Section 2.0" frame
 //     yet in the D1 family to measure directly. The file does show one
 //     consistent, deliberate rule across every OTHER stacked section pair
@@ -248,7 +255,7 @@ export default function Hero() {
   const frontToBack = [...order].reverse();
  
   return (
-    <section className="relative w-full pb-[100px] pt-[65.22px]">
+    <section className="relative w-full pb-[100px] pt-10 md:pt-0">
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-[30px]">
         {/* Mobile (< md): no overlapping stack — a flat status row of the
             3 (display-only) circles above one card. Since there's no
