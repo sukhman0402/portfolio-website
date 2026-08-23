@@ -9,13 +9,17 @@
   --accent: #ef0000;
 
   /* SF Pro is Apple system-proprietary and can't be licensed for web
-     self-hosting. This stack renders as San Francisco on Apple devices
-     (matching the Figma design intent for most viewers) and degrades to
-     each platform's native system font elsewhere. Weight mapping from the
-     Figma tokens: Bold(700)->700, Semibold(590)->600, Medium(510)->500,
-     Regular(400)->400, Light(274)->300. */
+     self-hosting. -apple-system/BlinkMacSystemFont render as real San
+     Francisco on Mac/iOS (matching the Figma design intent there) and are
+     simply skipped by every other OS's browser, which used to fall through
+     to Segoe UI (Windows) / Roboto (Android) — replaced 2026-08-23 with
+     Manrope (loaded in layout.js via next/font, self-hosted, var(--font-
+     manrope)) as the deliberate non-Apple look instead of each platform's
+     own default. Weight mapping from the Figma tokens: Bold(700)->700,
+     Semibold(590)->600, Medium(510)->500, Regular(400)->400, Light(274)
+     ->300 — Manrope is loaded as a variable font so it covers all of them. */
   --font-system:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    -apple-system, BlinkMacSystemFont, var(--font-manrope), Helvetica, Arial,
     sans-serif;
 }
 
