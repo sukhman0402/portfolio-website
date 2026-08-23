@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+ 
 :root {
   --background: #ffffff;
   --foreground: #000000;
@@ -7,7 +7,7 @@
   --tile: #d9d9d9;
   --footer-band: #f3f3f3;
   --accent: #ef0000;
-
+ 
   /* SF Pro is Apple system-proprietary and can't be licensed for web
      self-hosting. -apple-system/BlinkMacSystemFont render as real San
      Francisco on Mac/iOS (matching the Figma design intent there) and are
@@ -22,7 +22,7 @@
     -apple-system, BlinkMacSystemFont, var(--font-manrope), Helvetica, Arial,
     sans-serif;
 }
-
+ 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -32,10 +32,27 @@
   --color-accent: var(--accent);
   --font-sans: var(--font-system);
 }
-
+ 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-system);
   font-size: 15px;
 }
+ 
+/* Hero.js mobile card-swap crossfade (Section 1.0, 2026-08-23) — referenced
+   via the arbitrary Tailwind class `animate-[heroFadeIn_0.35s_ease-out]` on
+   the single active mobile card; kept here since Tailwind's arbitrary
+   `animate-[...]` value only supplies the `animation` shorthand, not the
+   keyframes themselves. */
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+ 
