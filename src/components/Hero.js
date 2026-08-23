@@ -208,7 +208,13 @@ function MottoBody({ scaled }) {
  
 export default function Hero() {
   // order[0] = back, order[1] = mid, order[2] = front (active) card index.
-  const [order, setOrder] = useState([0, 1, 2]);
+  // Default matches Figma's resting composition exactly: grey/about (card
+  // index 1) in the front slot, black/statement (0) in mid, punch-hole/
+  // motto (2) in back — i.e. order = [back, mid, front] = [2, 0, 1].
+  // (Caught live: [0,1,2] was shipped first and put the motto card, not
+  // the about card, in front by default — a plain off-by-mapping bug, not
+  // a design change; fixed here.)
+  const [order, setOrder] = useState([2, 0, 1]);
  
   function activate(cardIndex) {
     setOrder((prev) => [...prev.filter((i) => i !== cardIndex), cardIndex]);
