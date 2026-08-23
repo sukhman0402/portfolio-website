@@ -54,6 +54,46 @@ import ScrollIndicator from "./ScrollIndicator";
 //   - On HOVER (not click) each card nudges ~0.5cm (≈19px) in its own
 //     fixed direction: about→right, statement→up, motto→left.
 //
+// ROUND 5 (2026-08-23) — fixes against a fresh Figma pull (274:145's
+// standalone circle group, 274:174/175/176, changed since Round 2):
+//   1. "dark grey card is semi transparent" — the resting (not-front) cards
+//      carried a permanent opacity:0.94 as a "crossfade" cue. Because CSS
+//      opacity blends a whole subtree (bg AND every child) against whatever
+//      z-index sits below it, stacking 3 overlapping cards at 0.94 produced
+//      a visible ghosting/bleed-through — confirmed live by bringing motto
+//      to front and screenshotting: the "about" (mid-grey) card's own
+//      labels and background visibly double-exposed against the black
+//      statement card behind it. Fixed by dropping the permanent dimming —
+//      every card is opacity:1 at rest; z-index alone (already the primary
+//      mechanism per the Round 2 spec) carries "which card is in front."
+//   2. Circles "need to align left with Sukhman, and the size/gap/position
+//      changed" — re-pulled metadata for the 3 standalone circles
+//      (274:174/175/176): x=30, y=189/209/229, d=15px (was 25px), so the
+//      real gap is 209-189-15=5px (was 15px). x=30 is the SAME x=30 Figma
+//      uses for the Header's "SUKHMAN." text (274:158) — i.e. the circles
+//      are meant to sit flush with the logo's left edge. Confirmed live
+//      that both the Hero stage and the Header row sit inside identically-
+//      padded containers (mx-auto max-w-[1440px] px-5 sm:px-[30px] on
+//      both), so the stage's own x=0% already lines up with "S" of
+//      SUKHMAN. — the OLD left:"2.0833%" (30/1440, i.e. re-applying the
+//      Figma x=30 offset a second time on top of a container that's
+//      already inset by that padding) double-counted the same 30px this
+//      section's spacing bug did in Round 4, pushing the circles ~29px too
+//      far right. Fixed: left:"0%", diameter 15px, gap 5px. Top (17.1818%,
+//      from y=189/1100) was already correct and is unchanged.
+//   3. "text on light grey card going out of the shape" — investigated
+//      live: with the motto card brought to front (fully unobstructed),
+//      its heading never exceeds its own card box (measured via
+//      getBoundingClientRect against the card vs. the <p>; every side
+//      comes back negative/inside). The visible bleed only happens in the
+//      RESTING composition, where the statement (black) card's left edge
+//      literally sits inside the motto card's own heading-box span — and a
+//      side-by-side pixel check against Figma's own rendered screenshot of
+//      274:145 shows the identical overlap already baked into the source
+//      file (not an artifact of this implementation). Left as-is pending
+//      the user's call on whether to reduce the overlap or keep the
+//      Figma-faithful composition — see chat.
+//
 // ROUND 4 (2026-08-23) — section spacing re-derived from Figma, replacing
 // the pt-10/md:pt-6 + mt-16 guesses from earlier rounds:
 //   - Header→Hero gap: first tried computing this as (first-card-top y=
@@ -297,10 +337,13 @@ export default function Hero() {
             child (see header comment point 1) can never paint outside its
             own card and read as "another card's text." */}
         <div className="relative hidden aspect-[1440/1100] w-full [container-type:size] md:block">
-          {/* Circles — fixed Figma slots, display-only, flat fill, no stroke. */}
-          <div className="pointer-events-none absolute z-50 flex flex-col gap-[15px]" style={{ left: "2.0833%", top: "17.1818%" }}>
+          {/* Circles — fixed Figma slots, display-only, flat fill, no stroke.
+              left:0% is deliberate — see Round 5 comment (header): the
+              stage already sits inside the same 30px-padded container as
+              the Header, so 0% here is already flush with "S" of SUKHMAN. */}
+          <div className="pointer-events-none absolute z-50 flex flex-col gap-[5px]" style={{ left: "0%", top: "17.1818%" }}>
             {frontToBack.map((id) => (
-              <span key={id} className="h-[25px] w-[25px] rounded-full" style={{ backgroundColor: CARD_COLOR[id] }} />
+              <span key={id} className="h-[15px] w-[15px] rounded-full" style={{ backgroundColor: CARD_COLOR[id] }} />
             ))}
           </div>
  
@@ -310,7 +353,7 @@ export default function Hero() {
             onClick={() => bringToFront("statement")}
             aria-label="Bring the statement card to the front"
             className={`absolute overflow-hidden p-0 text-left ${HOVER_TRANSITION} ${HOVER_CLASS.statement}`}
-            style={{ ...CARD_POS.statement, backgroundColor: CARD_COLOR.statement, zIndex: zIndexOf("statement"), opacity: frontId === "statement" ? 1 : 0.94 }}
+            style={{ ...CARD_POS.statement, backgroundColor: CARD_COLOR.statement, zIndex: zIndexOf("statement") }}
           >
             <DarkCardBody heading={STATEMENT_HEADING} headingSizeCqw={2.5} headingWidthCqw={53.9583} headingWeight={400} headingLineHeight={1.111} headingWrap />
           </button>
@@ -321,7 +364,7 @@ export default function Hero() {
             onClick={() => bringToFront("about")}
             aria-label="Bring the about card to the front"
             className={`absolute overflow-hidden p-0 text-left ${HOVER_TRANSITION} ${HOVER_CLASS.about}`}
-            style={{ ...CARD_POS.about, backgroundColor: CARD_COLOR.about, zIndex: zIndexOf("about"), opacity: frontId === "about" ? 1 : 0.94 }}
+            style={{ ...CARD_POS.about, backgroundColor: CARD_COLOR.about, zIndex: zIndexOf("about") }}
           >
             <DarkCardBody heading={ABOUT_HEADING} headingSizeCqw={6.9444} headingWeight={700} headingLineHeight={1} />
           </button>
@@ -332,7 +375,7 @@ export default function Hero() {
             onClick={() => bringToFront("motto")}
             aria-label="Bring the design motto card to the front"
             className={`absolute overflow-hidden border border-black/10 p-0 text-left ${HOVER_TRANSITION} ${HOVER_CLASS.motto}`}
-            style={{ ...CARD_POS.motto, backgroundColor: CARD_COLOR.motto, zIndex: zIndexOf("motto"), opacity: frontId === "motto" ? 1 : 0.94 }}
+            style={{ ...CARD_POS.motto, backgroundColor: CARD_COLOR.motto, zIndex: zIndexOf("motto") }}
           >
             <MottoCardBody />
           </button>
