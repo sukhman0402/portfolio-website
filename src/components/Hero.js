@@ -54,6 +54,28 @@ import ScrollIndicator from "./ScrollIndicator";
 //   - On HOVER (not click) each card nudges ~0.5cm (≈19px) in its own
 //     fixed direction: about→right, statement→up, motto→left.
 //
+// ROUND 4 (2026-08-23) — section spacing re-derived from Figma, replacing
+// the pt-10/md:pt-6 + mt-16 guesses from earlier rounds:
+//   - Header→Hero gap: in 274:145, the Header row sits at y=20 (the same
+//     20px as the real <Header>'s own py-5 top padding — confirms this
+//     frame's y=0 is true page top, not just this section's own origin),
+//     and the first card (statement) starts at y=127.72. The real Header
+//     is a separate, untouched component whose own rendered height
+//     (measured live: 62.5px) doesn't match Figma's flattened single text
+//     line, so the two aren't directly comparable — instead: HeroTopPad =
+//     127.72 (first-card-top from true page origin) − 62.5 (real Header
+//     height) = 65.22px. That replaces both the old pt-10/pt-6 AND the
+//     separate mt-16 before the stage — collapsed into one pt value here.
+//   - Hero→next-section gap: 274:145 has no sibling "Section 2.0" frame
+//     yet in the D1 family to measure directly. The file does show one
+//     consistent, deliberate rule across every OTHER stacked section pair
+//     (both in the older "(D)" Landing Page family and in the Projects
+//     family): each Section 2.0 frame sits exactly 100px below the
+//     previous section's bottom edge, on the canvas. Applied that same
+//     100px as Hero's bottom padding — flagged as inferred from that
+//     file-wide convention, not measured directly off this section, since
+//     no D1 Section 2.0 exists to check it against yet.
+//
 // Header and ScrollIndicator remain untouched, per the original brief.
  
 // Every left/top/width/height below is (figma_px / 1440 or 1100) * 100,
@@ -226,7 +248,7 @@ export default function Hero() {
   const frontToBack = [...order].reverse();
  
   return (
-    <section className="relative w-full pb-16 pt-10 md:pb-24 md:pt-6">
+    <section className="relative w-full pb-[100px] pt-[65.22px]">
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-[30px]">
         {/* Mobile (< md): no overlapping stack — a flat status row of the
             3 (display-only) circles above one card. Since there's no
@@ -267,7 +289,7 @@ export default function Hero() {
             overflow-hidden on every card is a hard clip so an oversized
             child (see header comment point 1) can never paint outside its
             own card and read as "another card's text." */}
-        <div className="relative mt-16 hidden aspect-[1440/1100] w-full [container-type:size] md:block">
+        <div className="relative hidden aspect-[1440/1100] w-full [container-type:size] md:block">
           {/* Circles — fixed Figma slots, display-only, flat fill, no stroke. */}
           <div className="pointer-events-none absolute z-50 flex flex-col gap-[15px]" style={{ left: "2.0833%", top: "17.1818%" }}>
             {frontToBack.map((id) => (
