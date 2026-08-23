@@ -54,6 +54,23 @@ import ScrollIndicator from "./ScrollIndicator";
 //   - On HOVER (not click) each card nudges ~0.5cm (≈19px) in its own
 //     fixed direction: about→right, statement→up, motto→left.
 //
+// ROUND 6 (2026-08-23) — two more live-verified bugs found after Round 5
+// shipped:
+//   1. "circles go on top of the header while scrolling" — the circles
+//      wrap was z-50, higher than the Header's own z-40 (Header.js is
+//      `sticky top-0 z-40`). The circles sit in normal document flow (they
+//      scroll with the page); the Header stays pinned. As the page scrolls
+//      and the Header passes over where the circles currently are, z-50 >
+//      z-40 meant the circles painted ON TOP of the header bar. Fixed:
+//      z-30 — still above the 3 cards (z-index 10-12, so the circles stay
+//      readable against them) but below the header, so the header always
+//      wins once it's scrolled over that position.
+//   2. "punched holes should be white, not black" — MottoCardBody's 23
+//      dots were `bg-black`. The card is a "punch card" motif: the dots
+//      represent literal holes punched through the light-grey card,
+//      showing the white page background behind it — so they should
+//      render white, not black. Fixed: `bg-white`.
+//
 // ROUND 5 (2026-08-23) — fixes against a fresh Figma pull (274:145's
 // standalone circle group, 274:174/175/176, changed since Round 2):
 //   1. "dark grey card is semi transparent" — the resting (not-front) cards
@@ -223,7 +240,7 @@ function MottoCardBody() {
         aria-hidden="true"
       >
         {Array.from({ length: 23 }).map((_, i) => (
-          <span key={i} className="rounded-full bg-black" style={{ width: "1.3889cqw", height: "1.3889cqw" }} />
+          <span key={i} className="rounded-full bg-white" style={{ width: "1.3889cqw", height: "1.3889cqw" }} />
         ))}
       </div>
       <p
@@ -340,8 +357,14 @@ export default function Hero() {
           {/* Circles — fixed Figma slots, display-only, flat fill, no stroke.
               left:0% is deliberate — see Round 5 comment (header): the
               stage already sits inside the same 30px-padded container as
-              the Header, so 0% here is already flush with "S" of SUKHMAN. */}
-          <div className="pointer-events-none absolute z-50 flex flex-col gap-[5px]" style={{ left: "0%", top: "17.1818%" }}>
+              the Header, so 0% here is already flush with "S" of SUKHMAN.
+              z-30 (Round 6): must stay above the 3 cards (z-index 10-12)
+              but BELOW the sticky Header (z-40) — at z-50 the circles rode
+              on top of the header bar itself while scrolling, since the
+              header is sticky (stays put) while the circles are in normal
+              flow (scroll with the page) and briefly occupy the same
+              screen position as the header passes over them. */}
+          <div className="pointer-events-none absolute z-30 flex flex-col gap-[5px]" style={{ left: "0%", top: "17.1818%" }}>
             {frontToBack.map((id) => (
               <span key={id} className="h-[15px] w-[15px] rounded-full" style={{ backgroundColor: CARD_COLOR[id] }} />
             ))}
