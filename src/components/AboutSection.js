@@ -149,7 +149,7 @@ export default function AboutSection() {
                       </p>
                       <p
                         className={`mt-1 font-normal tracking-[-0.5px] text-muted ${
-                          isShortRow2 ? "md:mt-[28px]" : "md:mt-[10px]"
+                          isShortRow2 ? "md:mt-[33px]" : "md:mt-[10px]"
                         }`}
                       >
                         {entry.tag}
