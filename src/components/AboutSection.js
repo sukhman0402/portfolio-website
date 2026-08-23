@@ -115,7 +115,21 @@ export default function AboutSection() {
             (Line 22/23/24 in Figma, at x=380/730/1080, y=1401) — previously
             missing entirely, since only inter-entry borders were rendered.
             It reuses the same gap-[12px] rhythm as every other tag→divider
-            gap on this site, so no extra spacing value is needed for it. */}
+            gap on this site, so no extra spacing value is needed for it.
+
+            Row-2 alignment fix 2026-08-23: in Figma (node 252:1420), points
+            5 & 6 (row 2, columns 2 & 3 — "Lorem ipsum dolor", single-line
+            title, node 252:1481/1483) have their tag pinned to the SAME
+            absolute y as point 4's tag (y=1371 for all three columns,
+            confirmed in the metadata), even though their own title is one
+            line shorter than point 4's two-line title. The closing border
+            line below (also a fixed shared y=1401 across all three columns)
+            then falls into place on its own via this column's existing
+            gap-[12px] rhythm — it only needs the tag above it positioned
+            correctly. So only the tag's own top margin changes: +18px
+            (one title-line's worth) for just these two entries, landing the
+            tag — and with it the line — at the same height as point 4's.
+            Title and detail text are untouched. */}
         <div className="grid grid-cols-1 gap-6 pt-16 md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             Along the Journey
@@ -123,19 +137,26 @@ export default function AboutSection() {
           <div className="grid grid-cols-1 gap-x-10 gap-y-8 md:grid-cols-3 md:gap-x-[20px]">
             {journeyEntries.map((column, colIdx) => (
               <div key={colIdx} className="flex flex-col gap-6 md:gap-[12px]">
-                {column.map((entry, i) => (
-                  <div key={i} className="border-t border-black pt-3 md:pt-[10px]">
-                    <p className="font-semibold tracking-[-0.5px]">
-                      {entry.title}
-                    </p>
-                    <p className="font-normal tracking-[-0.5px]">
-                      {entry.detail}
-                    </p>
-                    <p className="mt-1 font-normal tracking-[-0.5px] text-muted md:mt-[10px]">
-                      {entry.tag}
-                    </p>
-                  </div>
-                ))}
+                {column.map((entry, i) => {
+                  const isShortRow2 = colIdx !== 0 && i === 1;
+                  return (
+                    <div key={i} className="border-t border-black pt-3 md:pt-[10px]">
+                      <p className="font-semibold tracking-[-0.5px]">
+                        {entry.title}
+                      </p>
+                      <p className="font-normal tracking-[-0.5px]">
+                        {entry.detail}
+                      </p>
+                      <p
+                        className={`mt-1 font-normal tracking-[-0.5px] text-muted ${
+                          isShortRow2 ? "md:mt-[28px]" : "md:mt-[10px]"
+                        }`}
+                      >
+                        {entry.tag}
+                      </p>
+                    </div>
+                  );
+                })}
                 <div className="border-t border-black" aria-hidden="true" />
               </div>
             ))}
