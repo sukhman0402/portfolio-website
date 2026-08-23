@@ -3,311 +3,290 @@
 import { useState } from "react";
 import ScrollIndicator from "./ScrollIndicator";
  
-// Landing Page Section 1.0 — Hero, REPLACED 2026-08-23 (design.md §3,
-// Section 1.0 supersedes the 2026-08-20 static-quote version).
+// Landing Page Section 1.0 — Hero (design.md §3, Section 1.0), rebuilt
+// 2026-08-23 after two rounds of live feedback corrected the interaction
+// model from the first pass. Recorded here so the reasoning survives:
 //
-// Source of truth: two things, combined.
-//   1. Figma node 274:145 "Landing Page (D1)- Section 1.0" (1440x1000 —
-//      taller than the old 900px frame; the user resized it for this
-//      richer composition) — an explicitly LOW-FIDELITY demo frame: exact
-//      colors (#121212 / #7e7e7e), exact card positions/sizes, and the 3
-//      circle placements are real spec; every text node in it is still
-//      "Lorem ipsum" placeholder, and only 2 of the 3 cards implied by the
-//      3 circles are actually drawn (a 3rd, the "motto" card below, has no
-//      Figma group at all — see the per-card notes below).
-//   2. https://www.wallofportfolios.in/portfolios/aishani-patial/ (actually
-//      served from an embedded https://aishani.framer.media/ iframe) — the
-//      INTERACTION the user asked to "inculcate": 3 overlapping cards in a
-//      stack; clicking either a small circle/thumbnail OR the visible
-//      peeking edge of a background card brings that card to the front
-//      (largest, topmost) slot with a smooth animated reposition; the two
-//      cards not currently active fall back into the two rear slots.
-//      Confirmed live via clicking through all 3 states plus a direct
-//      background-card click — both trigger the same front-card swap.
+// ROUND 1 (what shipped first, and why it was wrong): I had circles as the
+// clickable control and had each card ANIMATE into a different Figma-
+// designed "slot" position on click. Re-measuring the actual inspiration
+// site (https://aishani.framer.media/, embedded in wallofportfolios.in)
+// with getBoundingClientRect() before/after every click proved every card
+// there sits at ONE permanent position forever — clicking never moves
+// anything, it only changes which card paints on top. That was a real bug,
+// not a style choice.
 //
-// Card ⟷ circle mapping (this is deliberate, not arbitrary): in Figma each
-// of the 3 top-left ellipses (274:174/175/176) is filled with almost
-// exactly the background color of one of the 3 cards below it (grey,
-// near-black, near-white) — i.e. each circle is a literal color-coded
-// swatch for the card it activates. That's the mechanism this file
-// implements: click a circle (or a card's own peeking edge) → that card's
-// index moves to the front of `order`.
+// ROUND 2 (this file's actual spec, per direct user correction):
+//   - Each of the 3 cards has ONE permanent position (its own Figma group's
+//     coordinates) and NEVER moves on click. Ever.
+//   - The CARD is the clickable control, not the circles. Clicking a card
+//     brings it to the front (z-index + a light opacity crossfade only —
+//     still no position change). The circles are a pure status readout:
+//     they occupy 3 fixed Figma-specified slots (x=30, y=139/179/219) and
+//     whichever card is currently front/mid/back shows its color in the
+//     matching slot. They are NOT clickable — plain flat-filled circles,
+//     no stroke/ring, exactly as drawn in Figma.
+//   - On HOVER (not click), each card nudges toward its own fixed
+//     direction — confirmed on the live reference site by direct mouse
+//     hover (a synthetic JS hover event I'd tried earlier showed nothing,
+//     which was a false negative from not triggering real :hover; actual
+//     mouse hover does move the cards ~0.5cm): the About/grey card (their
+//     blue) nudges RIGHT, the Statement/black card nudges UP, the Motto/
+//     light card (their white) nudges LEFT. ~0.5cm ≈ 19px, used below.
+//     This is a transform-only nudge layered on the permanent position —
+//     it doesn't contradict "never moves," since it's transient and
+//     reverts on mouse-out.
 //
-//   Circle/Card A — #121212 — the site's ACTUAL final hero statement
-//     (carried over verbatim from the old Hero.js, marked 🟢 final there —
-//     dropping the separate "hi i'm sukhman.." greeting line, since the
-//     new Figma frame has no equivalent second line, just one paragraph).
-//     Figma group 274:260/261 "Group 330". Slot = the frame's "mid" card.
-//   Circle/Card B — #7e7e7e — the About/name-style card (Figma's default,
-//     frontmost-at-rest composition — matches the live site's initial
-//     "Aishani Patial" card). Heading is "SUKHMAN." — real, matches the
-//     header logotype, not placeholder. Figma group 274:284 "Group 331".
-//     Slot = the frame's "front" card (largest, frontmost by default).
-//   Circle/Card C — light/#f3f3f3 — the perforated "punch-hole" card
-//     (274:212 "Group 328", the Subtract/23-circle shape). No exact fill
-//     hex was recoverable — it's a vector boolean op, not a flat rect — so
-//     this reuses the site's existing --footer-band token rather than
-//     guessing a new grey. On the live site this exact card-shape plays a
-//     "My design motto" quote card, so its big placeholder heading is
-//     replaced with the user's own stated design philosophy from this
-//     project's brief ("See → Observe → Analyse → Implement") — real
-//     content, not filler, and a natural fit for what the slot is for.
-//     Slot = the frame's "back" card (leftmost, partially hidden by
-//     default).
+// CONTENT/FIDELITY FIX: round 1 also invented UI that isn't in Figma at
+// all — a "Statement / About / 2026" tab-bar row and a 3-column footer
+// grid for the small labels. Both are gone. Every element below (heading
+// box, 3 divider lines, 2 vertical tick marks, the 3 right-aligned
+// "Lorem ipsum." labels, the 23-dot punch-hole edge) is positioned from
+// the literal Figma coordinates captured via get_design_context on nodes
+// 274:260 (statement/black), 274:284 (about/grey) and 274:212 (motto/
+// punch-hole) — converted to cqw/cqh (container-query units, off the
+// single 1440x1000 `[container-type:size]` stage below) so every offset
+// scales in lockstep with the Figma px value it came from, at any
+// viewport width, instead of being individually re-derived per card.
 //
-// Every other text on every card (the small "Lorem ipsum." labels) stays
-// literal placeholder, in the same style aboutData.js already uses
-// elsewhere on the site — per explicit instruction, ship placeholder-tier
-// for now rather than inventing copy.
+// Circle color source and card content decisions (chosen colors, the
+// "SUKHMAN." heading, the site's real statement paragraph, and the "See →
+// Observe → Analyse → Implement" motto text pulled from this project's own
+// brief) carry over unchanged from the prior round — those were confirmed,
+// only the interaction model and layout fidelity were wrong.
 //
-// Simplification flagged honestly: the live site subtly RESIZES cards as
-// they move between slots; Figma only specifies 3 fixed card sizes with no
-// per-state resize data for the two cards it doesn't draw. Rather than
-// guess at resize behaviour Figma doesn't spec, each card keeps its own
-// Figma-defined width/height always and only animates left/top/z-index
-// between the 3 slot anchor points — still a genuine animated front/back
-// reshuffle, just without the live site's extra resize flourish. Flag this
-// if pixel-exact per-state sizing matters — it would need its own Figma
-// frame per state to build against, the same way this one exists for the
-// resting state.
-//
-// Layout mechanism: the desktop stack is positioned with PERCENTAGES of a
-// 1440x1000 reference (matching every literal Figma px in this file) inside
-// an `aspect-[1440/1000]` container, so it scales fluidly at any viewport
-// width instead of the fixed-px approach used elsewhere on the site (which
-// only works because those sections reflow in a normal grid — this one is
-// absolutely-positioned overlapping cards, which would clip below 1440px
-// otherwise). Font sizes use `cqw` (container query width) units off the
-// same container for the same reason — plain px text would overflow a
-// card that's shrunk to fit a narrow viewport.
-//
-// Mobile (< md) doesn't attempt the overlapping stack at all — 3 absolute,
-// overlapping, percentage-positioned cards has no sane fallback on a phone
-// width. Instead it's a plain tab strip (the same 3 circles) above a
-// single full-width card showing whichever one is active, in normal flow.
-// This is a separate, simpler markup block (`md:hidden` vs `hidden
-// md:block`), not a responsive reflow of the same DOM — the two layouts
-// are different enough that sharing one tree would compromise both.
-//
-// Header and ScrollIndicator are UNTOUCHED per explicit instruction: Header
-// is a sibling in page.js, never imported here; ScrollIndicator keeps its
-// exact pre-existing wrapper/classes below.
+// Header and ScrollIndicator remain untouched, per the original brief.
  
-const CARDS = [
-  { id: "statement", label: "statement", color: "#121212" },
-  { id: "about", label: "about", color: "#7e7e7e" },
-  { id: "motto", label: "design motto", color: "#f3f3f3" },
-];
+const CARD_POS = {
+  statement: { left: "19.833%", top: "7.772%", width: "58.35%", height: "74.99%" },
+  about: { left: "32.574%", top: "27.254%", width: "56.385%", height: "62.474%" },
+  motto: { left: "12.431%", top: "17.132%", width: "32.847%", height: "64.5%" },
+};
  
-// Slot anchors, back → front, as % of the 1440x1000 reference frame.
-// Matches Figma's default resting order: grey (front) over black (mid)
-// over the punch-hole card (back).
-const SLOTS = [
-  { left: "12.431%", top: "17.132%", z: 10 }, // back  — punch-hole position (274:212)
-  { left: "19.833%", top: "7.772%", z: 20 }, // mid   — black card position (274:260)
-  { left: "32.574%", top: "27.254%", z: 30 }, // front — grey card position (274:284)
-];
+// Hover nudge direction per card, ~0.5cm (≈19px), confirmed by direct
+// mouse hover on the reference site (about→right, statement→up,
+// motto→left). Pure CSS transform, layered on the permanent position.
+const HOVER_CLASS = {
+  statement: "hover:-translate-y-[19px]",
+  about: "hover:translate-x-[19px]",
+  motto: "hover:-translate-x-[19px]",
+};
  
-// Each card's own native size, held fixed across every slot (see
-// "Simplification flagged honestly" above) — % of the 1440x1000 reference.
-const CARD_SIZE = [
-  { width: "58.35%", height: "74.99%" }, // A — black statement card
-  { width: "56.385%", height: "62.474%" }, // B — grey about card
-  { width: "32.847%", height: "64.5%" }, // C — punch-hole motto card
-];
+const CARD_COLOR = { statement: "#121212", about: "#7e7e7e", motto: "#f3f3f3" };
+const CARD_ORDER_IDS = ["statement", "about", "motto"];
  
-function StatementBody({ scaled }) {
+const STATEMENT_TEXT =
+  "Through structure, strategy and design thinking, I craft interaction and experience designs that connect human behaviour with digital systems.";
+ 
+// Shared internal layout for the two dark cards (statement/about) — Figma
+// 274:260 and 274:284 use the IDENTICAL relative padding pattern (heading
+// at +31/+91px from the card's own top-left; dividers at +51/+226/+441px;
+// ticks at +150/+689px; labels at +640,+266/+314/+362px) even though the
+// two cards are different sizes — confirming it's a literal px spacing
+// value, not a proportional one, which is exactly why these are expressed
+// as cqw/cqh off the outer 1440-wide stage rather than "% of this card."
+function DarkCardBody({ heading, headingSizeCqw, headingWidthCqw }) {
+  const labels = ["Lorem ipsum.", "Lorem ipsum.", "Lorem ipsum."];
+  const labelTops = ["26.6cqh", "31.4cqh", "36.2cqh"];
   return (
     <>
-      <div
-        className={`mb-4 flex items-center justify-between border-b border-white/20 pb-3 ${scaled ? "md:mb-[24px] md:pb-[16px]" : ""}`}
-      >
-        <span className={`text-[11px] uppercase tracking-widest text-white/50 ${scaled ? "md:text-[1.1cqw]" : ""}`}>
-          Statement
-        </span>
-        <span className={`text-[11px] text-white/50 ${scaled ? "md:text-[1.1cqw]" : ""}`}>2026</span>
-      </div>
+      {/* 2 vertical tick marks, top strip (Figma has no text here) */}
+      <span className="absolute bg-white/25" style={{ left: "10.417cqw", top: 0, height: "5.1cqh", width: "1px" }} aria-hidden="true" />
+      <span className="absolute bg-white/25" style={{ left: "47.847cqw", top: 0, height: "5.1cqh", width: "1px" }} aria-hidden="true" />
+      {/* 3 horizontal dividers */}
+      {["5.1cqh", "22.6cqh", "44.1cqh"].map((top) => (
+        <span key={top} className="absolute inset-x-0 bg-white/20" style={{ top, height: "1px" }} aria-hidden="true" />
+      ))}
+      {/* heading */}
       <p
-        className={`text-justify text-[15px] font-bold uppercase leading-[20px] tracking-normal ${scaled ? "md:text-[2.5cqw] md:leading-[1.15]" : ""}`}
+        className="absolute text-justify font-bold uppercase leading-[1.1] tracking-normal text-white"
+        style={{
+          left: "2.153cqw",
+          top: "9.1cqh",
+          width: headingWidthCqw ? `${headingWidthCqw}cqw` : "auto",
+          fontSize: `${headingSizeCqw}cqw`,
+          whiteSpace: headingWidthCqw ? "normal" : "nowrap",
+        }}
       >
-        Through structure, strategy and design thinking, I craft interaction
-        and experience designs that connect human behaviour with digital
-        systems.
+        {heading}
       </p>
-      <div
-        className={`mt-auto grid grid-cols-3 gap-3 border-t border-white/20 pt-3 ${scaled ? "md:gap-[16px] md:pt-[16px]" : ""}`}
-      >
-        {["Lorem ipsum.", "Lorem ipsum.", "Lorem ipsum."].map((t, i) => (
-          <p key={i} className={`text-[11px] text-white/70 ${scaled ? "md:text-[0.9cqw]" : ""}`}>
-            {t}
-          </p>
-        ))}
-      </div>
+      {/* 3 right-aligned labels, between divider 2 and divider 3 */}
+      {labels.map((t, i) => (
+        <p
+          key={i}
+          className="absolute whitespace-nowrap text-white/70"
+          style={{ left: "44.444cqw", top: labelTops[i], fontSize: "1.042cqw" }}
+        >
+          {t}
+        </p>
+      ))}
     </>
   );
 }
  
-function AboutBody({ scaled }) {
+// Motto/punch-hole card body — Figma 274:212. 23 dots (274:216–238) run the
+// full left edge at a fixed 27px step; heading box at +60,+163px (345px
+// wide); top label at +64,+25px; bottom label at +64,+602px — all
+// relative to the card's own Figma origin (179, 171.32), in cqw/cqh.
+function MottoCardBody() {
   return (
     <>
       <div
-        className={`mb-4 flex items-center justify-between border-b border-white/30 pb-3 ${scaled ? "md:mb-[24px] md:pb-[16px]" : ""}`}
-      >
-        <span className={`text-[11px] uppercase tracking-widest text-white/70 ${scaled ? "md:text-[1.1cqw]" : ""}`}>
-          About
-        </span>
-        <span className={`text-[11px] text-white/70 ${scaled ? "md:text-[1.1cqw]" : ""}`}>2026</span>
-      </div>
-      <p className={`text-[32px] font-bold uppercase leading-none tracking-[-1px] ${scaled ? "md:text-[6.944cqw]" : ""}`}>
-        SUKHMAN.
-      </p>
-      <div
-        className={`mt-auto grid grid-cols-3 gap-3 border-t border-white/30 pt-3 ${scaled ? "md:gap-[16px] md:pt-[16px]" : ""}`}
-      >
-        {["Lorem ipsum.", "Lorem ipsum.", "Lorem ipsum."].map((t, i) => (
-          <p key={i} className={`text-[11px] text-white/80 ${scaled ? "md:text-[0.9cqw]" : ""}`}>
-            {t}
-          </p>
-        ))}
-      </div>
-    </>
-  );
-}
- 
-function MottoBody({ scaled }) {
-  return (
-    <>
-      <div
-        className={`absolute bottom-3 left-2 top-3 flex flex-col items-center justify-between ${scaled ? "md:bottom-[12px] md:left-[10px] md:top-[16px]" : ""}`}
+        className="absolute flex flex-col justify-between"
+        style={{ left: "0.694cqw", top: "1.6cqh", height: "61.4cqh" }}
         aria-hidden="true"
       >
-        {Array.from({ length: 12 }).map((_, i) => (
-          <span key={i} className="h-[6px] w-[6px] rounded-full bg-black/70" />
+        {Array.from({ length: 23 }).map((_, i) => (
+          <span key={i} className="h-[8px] w-[8px] rounded-full bg-black/70" />
         ))}
       </div>
-      <span className={`text-[11px] uppercase tracking-widest text-black/50 ${scaled ? "md:text-[0.9cqw]" : ""}`}>
+      <span
+        className="absolute whitespace-nowrap uppercase tracking-widest text-black/50"
+        style={{ left: "4.444cqw", top: "2.5cqh", fontSize: "0.9cqw" }}
+      >
         My Design Philosophy
       </span>
       <p
-        className={`mt-6 text-[28px] font-bold uppercase leading-[0.95] tracking-[-1px] ${scaled ? "md:mt-[6%] md:text-[6.25cqw]" : ""}`}
+        className="absolute font-bold uppercase leading-[0.95] tracking-[-1px] text-black"
+        style={{ left: "4.167cqw", top: "16.3cqh", width: "23.958cqw", fontSize: "6.25cqw" }}
       >
-        See
-        <br />
-        Observe
-        <br />
-        Analyse
-        <br />
-        Implement.
+        See Observe Analyse Implement.
       </p>
-      <p className={`mt-auto pt-6 text-[11px] text-black/50 ${scaled ? "md:pt-[10%] md:text-[0.9cqw]" : ""}`}>
+      <p
+        className="absolute whitespace-nowrap text-black/50"
+        style={{ left: "4.444cqw", top: "60.2cqh", fontSize: "0.9cqw" }}
+      >
         the process behind everything I design.
       </p>
     </>
   );
 }
  
-export default function Hero() {
-  // order[0] = back, order[1] = mid, order[2] = front (active) card index.
-  // Default matches Figma's resting composition exactly: grey/about (card
-  // index 1) in the front slot, black/statement (0) in mid, punch-hole/
-  // motto (2) in back — i.e. order = [back, mid, front] = [2, 0, 1].
-  // (Caught live: [0,1,2] was shipped first and put the motto card, not
-  // the about card, in front by default — a plain off-by-mapping bug, not
-  // a design change; fixed here.)
-  const [order, setOrder] = useState([2, 0, 1]);
+// Simplified, non-cqw versions of the two card bodies for the mobile block
+// below (no container-query stage there — plain flow, plain px/rem).
+function MobileDark({ heading }) {
+  return (
+    <div className="relative text-white">
+      <div className="mb-4 flex items-center gap-6 border-b border-white/20 pb-3" aria-hidden="true">
+        <span className="h-px w-6 bg-white/25" />
+        <span className="h-px w-6 bg-white/25" />
+      </div>
+      <p className="text-[15px] font-bold uppercase leading-[20px] tracking-normal">{heading}</p>
+      <div className="mt-4 flex flex-col gap-1 border-t border-white/20 pt-3">
+        {["Lorem ipsum.", "Lorem ipsum.", "Lorem ipsum."].map((t, i) => (
+          <p key={i} className="text-[11px] text-white/70">{t}</p>
+        ))}
+      </div>
+    </div>
+  );
+}
  
-  function activate(cardIndex) {
-    setOrder((prev) => [...prev.filter((i) => i !== cardIndex), cardIndex]);
+function MobileMotto() {
+  return (
+    <div className="relative pl-6 text-black">
+      <span className="mb-2 block text-[11px] uppercase tracking-widest text-black/50">My Design Philosophy</span>
+      <p className="text-[26px] font-bold uppercase leading-[0.95] tracking-[-1px]">See Observe Analyse Implement.</p>
+      <p className="mt-4 text-[11px] text-black/50">the process behind everything I design.</p>
+    </div>
+  );
+}
+ 
+export default function Hero() {
+  // order = back → front. Default matches Figma's resting composition:
+  // about(grey) front, statement(black) mid, motto(light) back.
+  const [order, setOrder] = useState(["motto", "statement", "about"]);
+ 
+  function bringToFront(id) {
+    setOrder((prev) => [...prev.filter((x) => x !== id), id]);
   }
  
-  const slotOf = (cardIndex) => order.indexOf(cardIndex);
-  const active = order[2];
+  const zIndexOf = (id) => order.indexOf(id) + 10;
+  const frontId = order[order.length - 1];
  
-  const bodies = [StatementBody, AboutBody, MottoBody];
-  const cardBaseClass = [
-    "flex flex-col bg-[#121212] text-white",
-    "flex flex-col bg-[#7e7e7e] text-white",
-    "flex flex-col border border-black/10 bg-footer-band pl-8 text-black md:pl-[48px]",
-  ];
+  // Circles: 3 FIXED Figma slots (x=30, y=139/179/219) — never move. Only
+  // which card's color currently occupies each slot changes, read off the
+  // front→back order (top slot = front).
+  const frontToBack = [...order].reverse();
  
   return (
     <section className="relative w-full pb-16 pt-10 md:pb-24 md:pt-6">
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-[30px]">
-        {/* Mobile (< md) — plain flow: the 3 circles as a tab strip above a
-            single active card, crossfade on switch. */}
+        {/* Mobile (< md): no overlapping stack — a flat status row of the
+            3 (display-only) circles above one card. Since there's no
+            peeking edge to tap on mobile, tapping the visible card itself
+            advances to the next one in the stack — the closest mobile
+            equivalent of "click a card to bring it forward" when only one
+            card is ever shown at a time. Not a literal Figma/reference-
+            site behaviour (neither defines a mobile layout for this), so
+            flagged as an inferred adaptation rather than spec. */}
         <div className="md:hidden">
-          <div className="mb-4 flex gap-3">
-            {CARDS.map((card, i) => (
-              <button
-                key={card.id}
-                type="button"
-                onClick={() => activate(i)}
-                aria-label={`Show ${card.label} card`}
-                aria-pressed={active === i}
-                className={`h-[25px] w-[25px] shrink-0 rounded-full border transition-transform hover:scale-110 ${
-                  active === i ? "border-black ring-2 ring-black ring-offset-2" : "border-black/20"
-                }`}
-                style={{ backgroundColor: card.color }}
-              />
+          <div className="mb-4 flex gap-3" aria-hidden="true">
+            {frontToBack.map((id) => (
+              <span key={id} className="h-[25px] w-[25px] shrink-0 rounded-full" style={{ backgroundColor: CARD_COLOR[id] }} />
             ))}
           </div>
-          <div key={active} className="animate-[heroFadeIn_0.35s_ease-out]">
-            <div className={`relative rounded-sm p-5 ${cardBaseClass[active]}`}>
-              {(() => {
-                const Body = bodies[active];
-                return <Body scaled={false} />;
-              })()}
+          <button
+            type="button"
+            onClick={() => {
+              const idx = CARD_ORDER_IDS.indexOf(frontId);
+              bringToFront(CARD_ORDER_IDS[(idx + 1) % CARD_ORDER_IDS.length]);
+            }}
+            aria-label="Show the next card"
+            className="block w-full text-left"
+          >
+            <div key={frontId} className="relative animate-[heroFadeIn_0.35s_ease-out] rounded-sm p-5" style={{ backgroundColor: CARD_COLOR[frontId] }}>
+              {frontId === "motto" ? (
+                <MobileMotto />
+              ) : (
+                <MobileDark heading={frontId === "statement" ? STATEMENT_TEXT : "SUKHMAN."} />
+              )}
             </div>
-          </div>
+          </button>
         </div>
  
-        {/* Desktop (md+) — the real Figma stack: circles + 3 cards share
-            ONE positioning box (this div) so their percentages resolve
-            against the same 1440x1000 reference — Figma 274:174/175/176
-            put the circles at x=30,y=139/179/219 in that exact frame, and
-            splitting them into a separately-positioned ancestor would
-            silently misalign them against the cards below. */}
-        <div className="relative mt-16 hidden aspect-[1440/1000] w-full [container-type:inline-size] md:block">
-          {/* Circles — color = the card each one activates. */}
-          <div className="absolute z-40 flex flex-col gap-[14px]" style={{ left: "2.083%", top: "13.9%" }}>
-            {CARDS.map((card, i) => (
-              <button
-                key={card.id}
-                type="button"
-                onClick={() => activate(i)}
-                aria-label={`Show ${card.label} card`}
-                aria-pressed={active === i}
-                className={`h-[25px] w-[25px] shrink-0 rounded-full border transition-transform hover:scale-110 ${
-                  active === i ? "border-black ring-2 ring-black ring-offset-2" : "border-black/20"
-                }`}
-                style={{ backgroundColor: card.color }}
-              />
+        {/* Desktop (md+) — the real Figma stage: 3 cards, each PERMANENTLY
+            at its own Figma position (never animated), only z-index +
+            opacity change on click. Hover nudges layered independently. */}
+        <div className="relative mt-16 hidden aspect-[1440/1000] w-full [container-type:size] md:block">
+          {/* Circles — fixed Figma slots, display-only, flat fill, no stroke. */}
+          <div className="pointer-events-none absolute z-50 flex flex-col gap-[14px]" style={{ left: "2.083%", top: "13.9%" }}>
+            {frontToBack.map((id) => (
+              <span key={id} className="h-[25px] w-[25px] rounded-full" style={{ backgroundColor: CARD_COLOR[id] }} />
             ))}
           </div>
  
-          {CARDS.map((card, i) => {
-            const Body = bodies[i];
-            const slot = SLOTS[slotOf(i)];
-            const size = CARD_SIZE[i];
-            return (
-              <button
-                key={card.id}
-                type="button"
-                onClick={() => activate(i)}
-                aria-label={`Bring the ${card.label} card to the front`}
-                className={`absolute p-[36px] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${cardBaseClass[i]}`}
-                style={{
-                  left: slot.left,
-                  top: slot.top,
-                  width: size.width,
-                  height: size.height,
-                  zIndex: slot.z,
-                }}
-              >
-                <Body scaled={true} />
-              </button>
-            );
-          })}
+          {/* Statement / black — 274:260 */}
+          <button
+            type="button"
+            onClick={() => bringToFront("statement")}
+            aria-label="Bring the statement card to the front"
+            className={`absolute p-0 text-left transition-[transform,opacity] duration-300 ease-out ${HOVER_CLASS.statement}`}
+            style={{ ...CARD_POS.statement, backgroundColor: CARD_COLOR.statement, zIndex: zIndexOf("statement"), opacity: frontId === "statement" ? 1 : 0.94 }}
+          >
+            <DarkCardBody heading={STATEMENT_TEXT} headingSizeCqw={2.5} headingWidthCqw={53.958} />
+          </button>
+ 
+          {/* About / grey — 274:284 */}
+          <button
+            type="button"
+            onClick={() => bringToFront("about")}
+            aria-label="Bring the about card to the front"
+            className={`absolute p-0 text-left transition-[transform,opacity] duration-300 ease-out ${HOVER_CLASS.about}`}
+            style={{ ...CARD_POS.about, backgroundColor: CARD_COLOR.about, zIndex: zIndexOf("about"), opacity: frontId === "about" ? 1 : 0.94 }}
+          >
+            <DarkCardBody heading="SUKHMAN." headingSizeCqw={6.944} />
+          </button>
+ 
+          {/* Motto / punch-hole — 274:212 */}
+          <button
+            type="button"
+            onClick={() => bringToFront("motto")}
+            aria-label="Bring the design motto card to the front"
+            className={`absolute overflow-hidden border border-black/10 p-0 text-left transition-[transform,opacity] duration-300 ease-out ${HOVER_CLASS.motto}`}
+            style={{ ...CARD_POS.motto, backgroundColor: CARD_COLOR.motto, zIndex: zIndexOf("motto"), opacity: frontId === "motto" ? 1 : 0.94 }}
+          >
+            <MottoCardBody />
+          </button>
         </div>
       </div>
  
