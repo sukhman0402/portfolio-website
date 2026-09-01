@@ -35,12 +35,31 @@
 // 6.0's own y=0, since the Prototype frame stacks every section with
 // ZERO gap between frame boundaries — confirmed directly this round by
 // checking every section pair in 241:452, not just inferred):
-//   - Section top -> quote block's top label row: 170px (was 369px pre-
-//     redesign; the whole quote area moved much closer to the top of this
-//     section).
+//   - Section top -> quote block's top label row: was set to 170px in the
+//     first redesign pass, using ONLY Section 6.0's own local coordinate
+//     (170) under the site's usual "sections stack with zero gap, so the
+//     next section's own top padding IS the whole visual gap" rule.
+//     CORRECTED 2026-09-01: that rule only holds when the PREVIOUS section
+//     supplies no bottom padding of its own — which is true here (see
+//     AboutSection.js's "Along the Journey" block: "No trailing pb here —
+//     Footer's own pt provides the gap to the next section"), but Section
+//     5.0's own Figma frame is 249px taller than its last visible content
+//     (last closing border line at local y=1401, frame height 1650) — that
+//     249px of dead space at the bottom of Section 5.0's frame was being
+//     silently dropped because AboutSection.js renders no pb to reproduce
+//     it. Confirmed directly against the user's own Figma measurement: the
+//     real gap from "Along the Journey"'s last line to this quote block's
+//     top row is 418px, not 170px (249 dead-space + this section's own 170
+//     ≈ 419, matching within a hairline). Footer.js is the only place this
+//     gap can be corrected without touching AboutSection.js's own layout,
+//     so pt-[170px] below is now pt-[418px] — it stands in for BOTH
+//     Section 5.0's own leftover 249px AND this section's genuine 170px,
+//     not just the latter alone.
 //   - Quote block's own bottom -> "Contact" row: 432px (measured as
 //     Contact's y=750 minus the quote block's bottom y=318; was 390px
-//     pre-redesign).
+//     pre-redesign). Unaffected by the 2026-09-01 correction above — only
+//     the section's own top offset was wrong, this and everything below it
+//     were already re-verified correct against the fresh pull.
 //   - Row rhythm inside the block: 12px gap before the divider, 10px
 //     after it — same as the row rhythm used everywhere else in this
 //     file (Contact rows, below).
@@ -82,7 +101,7 @@ const CONTACT_ROWS = [
 export default function Footer() {
   return (
     <footer id="contact" className="w-full">
-      <div className="mx-auto max-w-[1440px] px-5 pt-16 pb-16 sm:px-[30px] md:pt-[170px] md:pb-[62px]">
+      <div className="mx-auto max-w-[1440px] px-5 pt-16 pb-16 sm:px-[30px] md:pt-[418px] md:pb-[62px]">
         {/* Row 1 — top labels, 15px regular */}
         <div className="grid grid-cols-1 gap-1 md:grid-cols-[350px_1fr] md:gap-x-0">
           <p className="font-normal tracking-[-0.375px] text-black md:text-[15px]">
