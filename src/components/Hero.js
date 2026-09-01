@@ -106,7 +106,10 @@ export default function Hero() {
           spacing. Desktop's branch below is untouched, only wrapped to
           stop rendering below md. */}
       <div className="flex h-full flex-col justify-center px-5 sm:px-[30px] md:hidden">
-        <div>
+        {/* Flagged 2026-09-02: shifted 100px up from dead-center, per direct
+            instruction — the set stays centered as its baseline position,
+            this is a deliberate offset on top of that, not a re-centering. */}
+        <div className="-translate-y-[100px]">
           <p className="font-semibold tracking-[-0.375px] text-black">
             {HERO_QUOTE_HEADING}
           </p>
@@ -118,8 +121,10 @@ export default function Hero() {
       </div>
       {/* Mobile's "Scroll Down" replaces the mouse icon (which stays for
           desktop, in the ScrollIndicator block below) — same bottom-8,
-          horizontally-centered slot the icon used to sit in on mobile. */}
-      <p className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[13px] font-normal tracking-normal text-[#bbbbbb] md:hidden">
+          horizontally-centered slot the icon used to sit in on mobile, then
+          shifted up 100px in the same 2026-09-02 flag as the set above, so
+          the two move together. */}
+      <p className="absolute bottom-8 left-1/2 -translate-x-1/2 -translate-y-[100px] text-[13px] font-normal tracking-normal text-[#bbbbbb] md:hidden">
         Scroll Down
       </p>
  
