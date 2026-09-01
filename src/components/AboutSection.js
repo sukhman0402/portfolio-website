@@ -4,7 +4,7 @@ import {
   workflowCategories,
   journeyEntries,
 } from "@/lib/aboutData";
-
+ 
 // Landing Page Section 5.0 — About Me / How I Function / My Workflow /
 // Along the Journey (design.md §3, Section 5.0).
 //
@@ -39,7 +39,14 @@ export default function AboutSection() {
     <section id="about" className="w-full scroll-mt-24">
       <div className="mx-auto max-w-[1440px] px-5 sm:px-[30px]">
         {/* About Me */}
-        <div className="grid grid-cols-1 gap-6 pt-16 md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[249px]">
+        {/* pt-[300px] (mobile only, md:pt-[249px] unchanged) — same site-wide
+            300px inter-section rule as Research/Timeline, flagged
+            2026-09-02: this is the TOP-LEVEL Timeline -> About boundary
+            only. The other 3 subsections below (How I Function, My
+            Workflow, Along the Journey) keep their own pt-16 — those are
+            internal rhythm within Section 5.0, not section-to-section
+            gaps, and weren't part of this instruction. */}
+        <div className="grid grid-cols-1 gap-6 pt-[300px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[249px]">
           <h2 className="font-bold uppercase tracking-normal">About Me</h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-x-[20px]">
             {aboutMeColumns.map((text, i) => (
@@ -49,7 +56,7 @@ export default function AboutSection() {
             ))}
           </div>
         </div>
-
+ 
         {/* How I Function — each card's title→description is a bare 0px
             gap (leading only); the 191px block below the description is a
             real, exact-pixel reserved area in Figma — confirmed by explicit
@@ -76,7 +83,7 @@ export default function AboutSection() {
             ))}
           </div>
         </div>
-
+ 
         {/* My Workflow — 0px gap from How I Function above it (see note at
             top of file); each category's own border-t+pt-[10px] provides
             all the visible separation. Tile gap is 6px (not gap-2/8px) —
@@ -102,7 +109,7 @@ export default function AboutSection() {
             ))}
           </div>
         </div>
-
+ 
         {/* Along the Journey — every entry (including the first) sits below
             its own border-line in Figma, unlike the earlier version of this
             file which only bordered entries after the first. Title→detail
@@ -116,7 +123,7 @@ export default function AboutSection() {
             missing entirely, since only inter-entry borders were rendered.
             It reuses the same gap-[12px] rhythm as every other tag→divider
             gap on this site, so no extra spacing value is needed for it.
-
+ 
             Row-2 alignment fix 2026-08-23: in Figma (node 252:1420), points
             5 & 6 (row 2, columns 2 & 3 — "Lorem ipsum dolor", single-line
             title, node 252:1481/1483) have their tag pinned to the SAME
@@ -126,10 +133,18 @@ export default function AboutSection() {
             line below (also a fixed shared y=1401 across all three columns)
             then falls into place on its own via this column's existing
             gap-[12px] rhythm — it only needs the tag above it positioned
-            correctly. So only the tag's own top margin changes: +18px
-            (one title-line's worth) for just these two entries, landing the
-            tag — and with it the line — at the same height as point 4's.
-            Title and detail text are untouched. */}
+            correctly. Title and detail text are untouched — only the tag's
+            own top margin changes.
+            First pass used +18px (Figma's flat 18px-per-line text bounding
+            box) and landed close but not exact — a follow-up pixel diff
+            against the live production screenshot (both closing lines
+            measured directly, col1 vs col2/3, at the site's actual 2x
+            rendered scale) showed a residual ~4-5px gap, i.e. the browser's
+            real line-height for this text runs a little taller than
+            Figma's tight bounding box. +33px is calibrated against that
+            live measurement, not the Figma box alone — verify against a
+            fresh screenshot after this deploys, since it was tuned to one
+            data point. */}
         <div className="grid grid-cols-1 gap-6 pt-16 md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             Along the Journey
@@ -166,3 +181,4 @@ export default function AboutSection() {
     </section>
   );
 }
+ 
