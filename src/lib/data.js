@@ -32,7 +32,7 @@ export const projects = [
     ctaLabel: "Lorem ipsum",
     caption: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
     featured: true,
-    ...buildProjectDetail(5),
+    ...buildProjectDetail(5, { closingBodyIndex: 2 }),
   },
   {
     slug: "project-02",
@@ -147,7 +147,17 @@ export const research = [
 // vary project-to-project (some projects get a 2-paragraph body on one
 // section, matching the Figma source's own topic-2 example) without
 // hand-duplicating near-identical blocks 6 times.
-function buildProjectDetail(sectionCount) {
+// closingBodyIndex (added 2026-09-01, per direct instruction after spotting
+// "Lorem Ipsum Topic 3" newly added to Figma node 179:3614): a second
+// content-block TYPE the design now shows alongside the plain
+// heading→body→image sections — this one carries an extra paragraph
+// BELOW the image too (heading→body→image→closing paragraph), a 20px gap
+// off the image per Figma's own measurement (332:1533, x=380 y=2633,
+// image bottom at y=2613). Optional per-section, not per-project, since
+// real content sections will mix both types once real copy lands — pass
+// the 0-based section index that should demo it (see ProjectTopics.js for
+// the render side: `section.closingBody`, only rendered when present).
+function buildProjectDetail(sectionCount, { closingBodyIndex } = {}) {
   return {
     introLabel: "Title",
     intro:
@@ -163,16 +173,25 @@ function buildProjectDetail(sectionCount) {
     briefLabel: "Brief",
     brief:
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\n\nDonec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.",
-    sections: Array.from({ length: sectionCount }).map((_, i) => ({
-      id: `section-${i + 1}`,
-      tocLabel: "Lorem ipsum",
-      heading: `Lorem Ipsum Topic ${i + 1}`,
-      body:
-        i % 2 === 1
-          ? "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.\n\nAenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim."
-          : "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.",
-      image: true,
-    })),
+    sections: Array.from({ length: sectionCount }).map((_, i) => {
+      const section = {
+        id: `section-${i + 1}`,
+        tocLabel: "Lorem ipsum",
+        heading: `Lorem Ipsum Topic ${i + 1}`,
+        body:
+          i % 2 === 1
+            ? "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.\n\nAenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim."
+            : "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.",
+        image: true,
+      };
+      // Literal Figma placeholder text (node 332:1533) — the actual
+      // "Lorem Ipsum Topic 3" content block's closing paragraph.
+      if (i === closingBodyIndex) {
+        section.closingBody =
+          "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. AeneanCum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. AeneanCum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.\n\nLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. AeneanCum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.";
+      }
+      return section;
+    }),
   };
 }
  
