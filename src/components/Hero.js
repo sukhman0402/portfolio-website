@@ -83,8 +83,50 @@ const HERO_QUOTE_TEXT =
 // original brief — only their usage/positioning here changed.
 export default function Hero() {
   return (
-    <section className="relative w-full">
-      <div className="mx-auto max-w-[1440px] px-5 pb-24 pt-16 sm:px-[30px] md:pb-[460px] md:pt-[328px]">
+    <section className="relative h-[811.5px] w-full md:h-auto">
+      {/* MOBILE (below md) — 2026-09-02 redesign, direct instruction: drop
+          the two top "Lorem ipsum" labels, move the divider so it sits
+          between the heading and the quote paragraph instead (heading ->
+          divider -> paragraph, treated as one "set"), and center that set
+          inside a fixed 874px first screen. 874px = Figma's own "Frame
+          Size- Mobile" reference (node 3:8, 402x874), which represents the
+          FULL device screen — since the real sticky <Header> already
+          consumes 62.5px of that screen before this <section> even starts
+          (same header-height correction already used elsewhere in this
+          file, e.g. the desktop pt-[328px] note below), this section's own
+          height is 874 - 62.5 = 811.5px, not a flat 874px, so that (a) the
+          content set centers on the actual visible screen rather than a
+          box that starts 62.5px too low, and (b) header (62.5) + this
+          section (811.5) = 874px total scroll before ProjectsSection,
+          which follows with zero gap in the DOM — that scroll distance is
+          a consequence of this one height, not a separate change. Built
+          as a fully separate branch from desktop (not the same block
+          reflowed with classes) because the structure itself differs
+          here — no label row, divider relocated — not just
+          spacing. Desktop's branch below is untouched, only wrapped to
+          stop rendering below md. */}
+      <div className="flex h-full flex-col justify-center px-5 sm:px-[30px] md:hidden">
+        <div>
+          <p className="font-semibold tracking-[-0.375px] text-black">
+            {HERO_QUOTE_HEADING}
+          </p>
+          <div className="mt-[10px] border-t border-black" />
+          <p className="mt-[10px] whitespace-pre-wrap font-semibold tracking-[-0.5px] text-black">
+            {HERO_QUOTE_TEXT}
+          </p>
+        </div>
+      </div>
+      {/* Mobile's "Scroll Down" replaces the mouse icon (which stays for
+          desktop, in the ScrollIndicator block below) — same bottom-8,
+          horizontally-centered slot the icon used to sit in on mobile. */}
+      <p className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[13px] font-normal tracking-normal text-[#bbbbbb] md:hidden">
+        Scroll Down
+      </p>
+ 
+      {/* DESKTOP (md and up) — untouched from the prior redesign, see the
+          spacing notes above the constants; only change is the
+          hidden/md:block wrapper so it stops rendering below md. */}
+      <div className="hidden md:block mx-auto max-w-[1440px] px-5 pb-24 pt-16 sm:px-[30px] md:pb-[460px] md:pt-[328px]">
         {/* Row 1 — top labels, 15px regular */}
         <div className="grid grid-cols-1 gap-1 md:grid-cols-[350px_1fr] md:gap-x-0">
           <p className="font-normal tracking-[-0.375px] text-black md:text-[15px]">
@@ -116,8 +158,10 @@ export default function Hero() {
       {/* ScrollIndicator — unchanged this round: same component, same
           55.62px inset from the bottom of the 900px-tall stage,
           horizontally centered (Figma's own left=711px on a 1440-wide
-          frame is, to within half a pixel, dead center). */}
-      <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 text-black/60 md:bottom-[55.62px]">
+          frame is, to within half a pixel, dead center). Desktop-only now
+          (hidden md:block) — mobile's equivalent is the "Scroll Down"
+          text above. */}
+      <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 text-black/60 hidden md:block md:bottom-[55.62px]">
         <ScrollIndicator className="h-7 w-5" />
       </div>
     </section>
