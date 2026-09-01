@@ -1,7 +1,7 @@
 "use client";
-
+ 
 import { useState } from "react";
-
+ 
 // Landing Page Section 4.0 — Timeline (design.md §3, Section 4.0).
 // STATUS: this section is undesigned in Figma — the frame only contains the
 // label "( TIMELINE )", centered (both axes) in red (#ef0000), no border —
@@ -22,18 +22,22 @@ const STAGES = [
   { id: 4, label: "Lorem ipsum", year: "20XX", detail: "Donec quam felis, ultricies nec, pellentesque eu, pretium quis." },
   { id: 5, label: "Lorem ipsum", year: "20XX", detail: "Nulla consequat massa quis enim. Donec pede justo, fringilla." },
 ];
-
+ 
 export default function TimelineSection() {
   const [active, setActive] = useState(STAGES[0].id);
   const activeStage = STAGES.find((s) => s.id === active) ?? STAGES[0];
-
+ 
   return (
     <section className="w-full">
-      <div className="mx-auto max-w-[1440px] px-5 pt-20 text-center sm:px-[30px] md:pt-28">
+      {/* pt-[300px] (mobile only, md:pt-28 unchanged) — same site-wide 300px
+          inter-section rule as ResearchSection, flagged 2026-09-02: Research
+          carries no trailing bottom space of its own, so this pt- alone
+          produces the full 300px gap from Research's last row. */}
+      <div className="mx-auto max-w-[1440px] px-5 pt-[300px] text-center sm:px-[30px] md:pt-28">
         <h2 className="font-bold uppercase tracking-normal text-accent">
           ( Timeline )
         </h2>
-
+ 
         <div className="mt-16 md:mt-20">
           <div className="relative flex justify-between">
             <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-black/20" />
@@ -57,7 +61,7 @@ export default function TimelineSection() {
               </button>
             ))}
           </div>
-
+ 
           <div className="mt-10 border-t border-black pt-6 md:mt-14">
             <p className="font-semibold tracking-[-0.5px]">
               {activeStage.label} — {activeStage.year}
@@ -71,3 +75,4 @@ export default function TimelineSection() {
     </section>
   );
 }
+ 
