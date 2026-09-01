@@ -40,15 +40,34 @@ import ScrollIndicator from "./ScrollIndicator";
 // Prototype frame confirms zero gap between adjacent section frames, so
 // these offsets are the section's own top/bottom padding, same convention
 // as Footer.js):
-//   - Section top -> quote block's top label row: 364px. (The real global
-//     Header renders above this, untouched — per the Round 4 finding
-//     already documented for the old design, Figma's own Header shown at
-//     y=20 inside this frame is a preview overlay, not something to add
-//     extra padding for on top of.)
-//   - Quote block's own bottom -> frame bottom: 388px (900 - 364 - 148),
-//     which is where the ScrollIndicator sits, itself inset 55.62px from
-//     the very bottom of the frame (matches the old design's role for
-//     this icon, just a fresh pixel value).
+//   - Section top -> quote block's top label row: was set to 364px in the
+//     first redesign pass — Figma's raw frame-local y-coordinate, reasoning
+//     that the real global Header (rendered separately, above/outside this
+//     section) matched Figma's own preview-header placeholder inside the
+//     frame (y=20, height=18, bottom=38) closely enough to treat 364 as
+//     "the gap." CORRECTED 2026-09-01: the real <Header> component is
+//     sticky with its own py-5 padding and renders at 62.5px tall on the
+//     live site — nothing like Figma's 38px placeholder — so copying the
+//     frame-local 364 straight into pt- overstated the visible header-to-
+//     quote gap by the difference (measured live: 364px, not the 326px
+//     Figma actually specifies from the header's real bottom edge to the
+//     quote's top row). Since Hero's <section> begins immediately after
+//     the sticky Header in normal document flow (no absolute/overlap
+//     between them), this container's own pt- maps 1:1 onto that visual
+//     gap regardless of the Header's real rendered height — so the fix is
+//     pt-[326px] directly, not a frame-coordinate. (364 - 326 = 38, i.e.
+//     exactly Figma's placeholder-header height being double-subtracted
+//     out — confirms this was the same error as Footer's zero-gap
+//     miscalculation, just in the opposite direction.)
+//   - Quote block's own bottom -> ScrollIndicator: 305px per Figma (quote
+//     bottom y=512, icon top y=816.615, in 291:1177's local coordinates —
+//     305px, not the frame-bottom-relative 388px in the pb- below, which
+//     is a different measurement: 388px is quote-bottom-to-FRAME-bottom,
+//     used only to size this section's own total height so the absolutely
+//     positioned ScrollIndicator (bottom-[55.62px] off the <section>, see
+//     below) lands in the right place. Re-verified 2026-09-01 against the
+//     live render: this 305px gap holds already (304.4px rendered, sub-
+//     pixel rounding) and needed no change — only the pt- above was wrong.
 //   - Row rhythm inside the block: 12px gap before the divider, 10px
 //     after it (label row bottom -> +12 -> divider -> +10 -> heading row).
 //
@@ -67,7 +86,7 @@ const HERO_QUOTE_TEXT =
 export default function Hero() {
   return (
     <section className="relative w-full">
-      <div className="mx-auto max-w-[1440px] px-5 pb-24 pt-16 sm:px-[30px] md:pb-[388px] md:pt-[364px]">
+      <div className="mx-auto max-w-[1440px] px-5 pb-24 pt-16 sm:px-[30px] md:pb-[388px] md:pt-[326px]">
         {/* Row 1 — top labels, 15px regular */}
         <div className="grid grid-cols-1 gap-1 md:grid-cols-[350px_1fr] md:gap-x-0">
           <p className="font-normal tracking-[-0.375px] text-black md:text-[15px]">
