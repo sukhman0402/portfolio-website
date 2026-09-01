@@ -1,43 +1,49 @@
 import { notFound } from "next/navigation";
-import PageTopFramework from "@/components/PageTopFramework";
-import CaseStudySections from "@/components/CaseStudySections";
+import ProjectHeroTop from "@/components/ProjectHeroTop";
+import ProjectTopics from "@/components/ProjectTopics";
 import Footer from "@/components/Footer";
 import { projects, getProjectBySlug } from "@/lib/data";
-
+ 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
 }
-
+ 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   return { title: project ? `${project.title} — Sukhman` : "Project — Sukhman" };
 }
-
-// Proposed narrative skeleton for every project's content area (design.md
-// §5) — pending your sign-off, piloted here against every project until
-// then. Placeholder body text throughout.
-const SKELETON = [
-  { heading: "Context / Overview", body: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa." },
-  { heading: "Problem", body: "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem." },
-  { heading: "Research & Insights", body: "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo." },
-  { heading: "Process / Ideation", body: "Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi." },
-  { heading: "Solution", body: "Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim." },
-  { heading: "Outcome / Impact", body: "Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet." },
-  { heading: "Reflection", body: "Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi." },
-];
-
+ 
+// REDESIGN 2026-09-01 — full rebuild against Figma node 179:3614 "Project
+// 01 (D)- Section 1.0", replacing the previous PageTopFramework +
+// CaseStudySections skeleton (design.md §5, "pending your sign-off") for
+// Individual Project pages specifically. Per the brief ("exact visual copy
+// ... interaction of left 'content' section follows the Interaction
+// Reference"), this page no longer uses PageTopFramework at all — the
+// Figma source starts directly at Header -> hero image, with no separate
+// title+index breadcrumb row above it. Scope is intentionally limited to
+// Projects: Individual Research pages (src/app/research/[slug]/page.js)
+// still use the untouched PageTopFramework/CaseStudySections pair, since
+// the brief said "individual project pages," not Research.
+//
+// ProjectHeroTop renders Header + hero image + Title/intro/info-row +
+// Brief (static, ends on a divider). ProjectTopics renders the sticky
+// Contents nav + the repeatable heading/body/image sections below that
+// divider (client component — scrollspy). See both files for exact
+// per-element spacing pulled from the Figma node.
 export default async function ProjectPage({ params }) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) notFound();
-
+ 
   return (
     <>
-      <PageTopFramework title={project.title} index={project.index}>
-        <CaseStudySections sections={SKELETON} />
-      </PageTopFramework>
+      <main className="flex-1">
+        <ProjectHeroTop project={project} />
+        <ProjectTopics sections={project.sections} />
+      </main>
       <Footer />
     </>
   );
 }
+ 
