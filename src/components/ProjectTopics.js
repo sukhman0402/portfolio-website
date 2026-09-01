@@ -31,6 +31,15 @@ import { useEffect, useRef, useState } from "react";
 // first section only needs the 10px gap down to its heading, not another
 // border-t.
 //
+// SECOND content-block TYPE (added 2026-09-01, `section.closingBody`,
+// spotted as "Lorem Ipsum Topic 3" newly added to the Figma source):
+// heading -> body -> image -> +20px -> closing paragraph (same body
+// styling) -> 10px -> next divider. Optional per section (data.js's
+// `buildProjectDetail`'s `closingBodyIndex`) — this is what lets a real
+// content section mix "text then image" with "text, image, then more
+// text" as the actual case-study content calls for, per direct
+// instruction: "different layouts while placing different informations."
+//
 // Left column (Contents nav, x=30-350): 9-item list in the source Figma
 // frame, rows 25px apart (measured top-to-top; each row's own 20px
 // line-height leaves a 5px residual gap, reproduced below as mt-[5px], not
@@ -133,6 +142,11 @@ export default function ProjectTopics({ sections }) {
                   aria-hidden="true"
                   title="Content image placeholder — no asset in source yet"
                 />
+              )}
+              {section.closingBody && (
+                <p className="mt-4 max-w-[1030px] whitespace-pre-wrap font-normal tracking-[-0.5px] text-black/80 md:mt-[20px]">
+                  {section.closingBody}
+                </p>
               )}
             </section>
           ))}
