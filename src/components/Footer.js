@@ -108,32 +108,64 @@ const CONTACT_ROWS = [
 export default function Footer() {
   return (
     <footer id="contact" className="w-full">
-      <div className="mx-auto max-w-[1440px] px-5 pt-16 pb-16 sm:px-[30px] md:pt-[429px] md:pb-[62px]">
-        {/* Row 1 — top labels, 15px regular */}
-        <div className="grid grid-cols-1 gap-1 md:grid-cols-[350px_1fr] md:gap-x-0">
-          <p className="font-normal tracking-[-0.375px] text-black md:text-[15px]">
-            {QUOTE_TOP_LABEL_LEFT}
+      {/* pt-[300px] (mobile only, md:pt-[429px] unchanged) — site-wide 300px
+          inter-section rule (see ResearchSection/TimelineSection/
+          AboutSection), flagged 2026-09-02: gap from AboutSection's "Along
+          the Journey" closing border line to this quote block's heading. */}
+      <div className="mx-auto max-w-[1440px] px-5 pt-[300px] pb-16 sm:px-[30px] md:pt-[429px] md:pb-[62px]">
+        {/* MOBILE quote block — flagged 2026-09-02, direct instruction: "the
+            same thing we did for [Hero's] first quote... for the footer's
+            conclusion quote section, follow the same design principles and
+            rules." Same structural change as Hero's mobile redesign: drop
+            the two top "Lorem ipsum" labels, move the divider so it sits
+            between the heading and the quote paragraph instead (heading ->
+            divider -> paragraph, one "set"). Scoped to that structural
+            change only — Hero's other two mobile changes (centering inside
+            a fixed 874px "first screen", and swapping the scroll icon for
+            "Scroll Down" text) don't have an equivalent here: this quote
+            block isn't a standalone screen, it flows straight into Contact
+            right below it, and there's no scroll-icon element here to
+            begin with. Flag if a fuller replication was intended instead. */}
+        <div className="md:hidden">
+          <p className="font-semibold tracking-[-0.375px] text-black">
+            {QUOTE_HEADING}
           </p>
-          <p className="font-normal tracking-[-0.375px] text-black md:text-[15px]">
-            {QUOTE_TOP_LABEL_RIGHT}
+          <div className="mt-[10px] border-t border-black" />
+          <p className="mt-[10px] whitespace-pre-wrap font-semibold tracking-[-0.5px] text-black">
+            {QUOTE_TEXT}
           </p>
         </div>
  
-        {/* Divider — 10px below the label row (Figma: label top 180 + 18
-            tall -> divider at 208, i.e. 10px gap) */}
-        <div className="mt-[10px] border-t border-black" />
+        {/* DESKTOP quote block — untouched original markup (Row 1 top
+            labels, divider, Row 2 heading+quote), just gated to md+ so it
+            stops rendering below md. */}
+        <div className="hidden md:block">
+          {/* Row 1 — top labels, 15px regular */}
+          <div className="grid grid-cols-1 gap-1 md:grid-cols-[350px_1fr] md:gap-x-0">
+            <p className="font-normal tracking-[-0.375px] text-black md:text-[15px]">
+              {QUOTE_TOP_LABEL_LEFT}
+            </p>
+            <p className="font-normal tracking-[-0.375px] text-black md:text-[15px]">
+              {QUOTE_TOP_LABEL_RIGHT}
+            </p>
+          </div>
  
-        {/* Row 2 — heading + quote, 15px semibold, 10px below the divider
-            (Figma: divider at 208 -> row at 218). Quote text (right
-            column) carries its own -0.5px tracking, distinct from the
-            heading's -0.375px. */}
-        <div className="mt-[10px] grid grid-cols-1 gap-3 md:grid-cols-[350px_1fr] md:gap-x-0">
-          <p className="font-semibold tracking-[-0.375px] text-black md:text-[15px]">
-            {QUOTE_HEADING}
-          </p>
-          <p className="whitespace-pre-wrap font-semibold tracking-[-0.5px] text-black md:text-[15px]">
-            {QUOTE_TEXT}
-          </p>
+          {/* Divider — 10px below the label row (Figma: label top 180 + 18
+              tall -> divider at 208, i.e. 10px gap) */}
+          <div className="mt-[10px] border-t border-black" />
+ 
+          {/* Row 2 — heading + quote, 15px semibold, 10px below the divider
+              (Figma: divider at 208 -> row at 218). Quote text (right
+              column) carries its own -0.5px tracking, distinct from the
+              heading's -0.375px. */}
+          <div className="mt-[10px] grid grid-cols-1 gap-3 md:grid-cols-[350px_1fr] md:gap-x-0">
+            <p className="font-semibold tracking-[-0.375px] text-black md:text-[15px]">
+              {QUOTE_HEADING}
+            </p>
+            <p className="whitespace-pre-wrap font-semibold tracking-[-0.5px] text-black md:text-[15px]">
+              {QUOTE_TEXT}
+            </p>
+          </div>
         </div>
  
         <div className="mt-16 grid grid-cols-1 gap-6 md:mt-[496px] md:grid-cols-[350px_1fr] md:gap-x-0">
