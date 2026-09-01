@@ -9,66 +9,73 @@
 // to swap for the real Behance URL, instead of silently repeating the email.
 //
 // REDESIGN 2026-08-31 — the top "quote" area was rebuilt against a fresh
-// Figma pull (Section 6.0 re-pulled as node 304:1326, nested inside
-// "Landing Page (D)- Prototype" / 241:452 — the previous node id, 241:658,
-// no longer exists in the file; node ids shift when a frame is
-// redesigned/replaced, so always re-resolve by name+Prototype-nesting
-// rather than trusting an old id). The single-paragraph conclusion line
-// ("Behind every interaction is a decision...") has been replaced by a
-// quote block (label row + divider + heading/quote row) — the redesigned
-// Figma frame shows only fresh Lorem-ipsum placeholder text in this slot
-// now, not that sentence, so the old final copy has been DROPPED rather
-// than force-fit into the new structure. Flagging this explicitly since
-// design.md marked that line 🟢 final — worth confirming with
-// Sukhmanpreet this drop was intentional.
+// Figma pull as a quote block (label row + divider + heading/quote row),
+// replacing the old single-paragraph conclusion line ("Behind every
+// interaction is a decision...") — see git history. Section 6.0 itself
+// (the outer frame this quote block sits in) is node 304:1326 and has
+// stayed at that id across every redesign round so far, even though the
+// quote block inside it keeps getting a new id each time it's redesigned.
 //
-// NOTE ON DUPLICATION: Hero (Section 1.0) currently uses the visually
-// IDENTICAL label/divider/heading-row layout. An earlier pass factored
-// that shared layout into one <QuoteBlock/> component imported by both
-// files — reverted per direct instruction: the two blocks are NOT the
-// same thing, just currently dressed in the same placeholder layout/text.
-// This footer's quote and Hero's quote will hold different, independent
-// content once real copy goes in, so this file owns its own markup below
-// rather than sharing a component that would couple them.
+// REDESIGN 2026-09-01 (this round) — the quote block moved again: the
+// previous node (321:1405's predecessor) no longer matches the current
+// content; the block is now node 321:1405, still inside the same
+// Section 6.0 frame (304:1326). Two real design changes this round, not
+// just node-id churn — identical to what happened to Hero's quote block
+// in the same pass (see NOTE ON DUPLICATION below):
+//   1. Quote block font size dropped from 30px to 15px for BOTH the
+//      heading (left column) and the quote text (right column) — still
+//      SF Pro Semibold (weight 590, this codebase's font-semibold), but
+//      15px now, same size as the label row above it. The quote
+//      paragraph's own tracking is now -0.5px (was -0.375px, matching
+//      the heading); the heading itself stays -0.375px, same as the
+//      label row. This is why the block's own height shrank from 148px
+//      to 74px — the long quote text now wraps to 2 lines at 15px
+//      instead of rendering large.
+//   2. Row rhythm inside the block is now a flat 10px both before AND
+//      after the divider (label row bottom -> +10 -> divider -> +10 ->
+//      heading row), not the previous 12px-before/10px-after split.
+//      Re-measured directly off the new node's raw coordinates (label
+//      top 180, divider 208, heading row 218).
+//
+// NOTE ON DUPLICATION: Hero (Section 1.0) went through the exact same two
+// changes this round, on its own quote block. Still NOT shared between
+// the two files — reverted to separate markup per direct instruction
+// earlier (the blocks are laid out identically but hold independent
+// content), and that still holds; only the numbers were re-synced from
+// the fresh Figma pull, in both files separately.
 //
 // Spacing re-derived from the fresh pull (all values measured off Section
 // 6.0's own y=0, since the Prototype frame stacks every section with
-// ZERO gap between frame boundaries — confirmed directly this round by
-// checking every section pair in 241:452, not just inferred):
-//   - Section top -> quote block's top label row: was set to 170px in the
-//     first redesign pass, using ONLY Section 6.0's own local coordinate
-//     (170) under the site's usual "sections stack with zero gap, so the
-//     next section's own top padding IS the whole visual gap" rule.
-//     CORRECTED 2026-09-01: that rule only holds when the PREVIOUS section
-//     supplies no bottom padding of its own — which is true here (see
-//     AboutSection.js's "Along the Journey" block: "No trailing pb here —
-//     Footer's own pt provides the gap to the next section"), but Section
-//     5.0's own Figma frame is 249px taller than its last visible content
-//     (last closing border line at local y=1401, frame height 1650) — that
-//     249px of dead space at the bottom of Section 5.0's frame was being
-//     silently dropped because AboutSection.js renders no pb to reproduce
-//     it. Confirmed directly against the user's own Figma measurement: the
-//     real gap from "Along the Journey"'s last line to this quote block's
-//     top row is 418px, not 170px (249 dead-space + this section's own 170
-//     ≈ 419, matching within a hairline). Footer.js is the only place this
-//     gap can be corrected without touching AboutSection.js's own layout,
-//     so pt-[170px] below is now pt-[418px] — it stands in for BOTH
-//     Section 5.0's own leftover 249px AND this section's genuine 170px,
-//     not just the latter alone.
-//   - Quote block's own bottom -> "Contact" row: 432px (measured as
-//     Contact's y=750 minus the quote block's bottom y=318; was 390px
-//     pre-redesign). Unaffected by the 2026-09-01 correction above — only
-//     the section's own top offset was wrong, this and everything below it
-//     were already re-verified correct against the fresh pull.
-//   - Row rhythm inside the block: 12px gap before the divider, 10px
-//     after it — same as the row rhythm used everywhere else in this
-//     file (Contact rows, below).
+// ZERO gap between frame boundaries — unchanged convention, re-confirmed
+// this round too):
+//   - Section top -> quote block's top label row: the quote block's own
+//     local top moved from 170px to 180px this round (+10px). Per the
+//     2026-09-01 correction earlier in this file's history, Footer's own
+//     pt- has to stand in for BOTH Section 5.0's ~249px of Figma-frame
+//     dead space below "Along the Journey" (AboutSection.js deliberately
+//     renders no trailing pb — "Footer's own pt provides the gap to the
+//     next section") AND this section's own genuine local-top offset,
+//     since sections stack with zero gap. Recomputed fresh from raw
+//     coordinates this round (249 dead-space + 180 local-top = 429px),
+//     rather than carrying the old 418px forward and adding the +10px
+//     delta — both land within a hairline of each other, 429 is used
+//     here as the direct-from-Figma value. pt-[418px] below is now
+//     pt-[429px].
+//   - Quote block's own bottom -> "Contact" row: the block's own bottom
+//     moved from local y=318 (170+148) to local y=254 (180+74) as a
+//     direct result of the font-size shrink above — the block is
+//     shorter, so there's more room before "Contact" (still at its own
+//     unchanged local y=750). New gap: 750 - 254 = 496px (was 432px).
+//     mt-[432px] below is now mt-[496px].
+//   - Row rhythm inside the block: 10px gap before the divider, 10px
+//     after it — changed from 12px/10px, see the redesign note above.
 //   - Everything below "Contact" (row rhythm, footer band) is UNCHANGED —
 //     re-verified against the fresh pull, still exactly 12px-before-
 //     divider / 10px-after-divider per row, still 62px from the last row
-//     to the footer band.
+//     to the footer band. Contact itself wasn't touched by this redesign
+//     round at all, only the quote block above it.
  
-// Literal Figma placeholder text (node 304:1342, get_design_context) —
+// Literal Figma placeholder text (node 321:1405, get_design_context) —
 // not curated copy. Kept as-is per instruction to match the redesign
 // exactly. Currently identical to Hero's own placeholder strings (both
 // point at the same unfinished Figma text), but declared as this file's
@@ -88,7 +95,7 @@ const CONTACT_ROWS = [
   { label: "Behance", value: "Add your Behance URL", href: "#" },
 ];
  
-// Row rhythm below "Contact" (unchanged by the redesign, re-verified this
+// Row rhythm below "Contact" (unchanged by this or any prior redesign
 // round): the dl has NO top border in Figma — only 3 divider lines for 4
 // rows (between rows, not around them). Row rhythm is 12px-before-divider
 // / 10px-after-divider: row bottom → 12px → divider → 10px → next row top.
@@ -101,7 +108,7 @@ const CONTACT_ROWS = [
 export default function Footer() {
   return (
     <footer id="contact" className="w-full">
-      <div className="mx-auto max-w-[1440px] px-5 pt-16 pb-16 sm:px-[30px] md:pt-[418px] md:pb-[62px]">
+      <div className="mx-auto max-w-[1440px] px-5 pt-16 pb-16 sm:px-[30px] md:pt-[429px] md:pb-[62px]">
         {/* Row 1 — top labels, 15px regular */}
         <div className="grid grid-cols-1 gap-1 md:grid-cols-[350px_1fr] md:gap-x-0">
           <p className="font-normal tracking-[-0.375px] text-black md:text-[15px]">
@@ -112,22 +119,24 @@ export default function Footer() {
           </p>
         </div>
  
-        {/* Divider — 12px below the label row (Figma: label top 170 + 18
-            tall -> divider at 200, i.e. 12px gap) */}
-        <div className="mt-3 border-t border-black md:mt-[12px]" />
+        {/* Divider — 10px below the label row (Figma: label top 180 + 18
+            tall -> divider at 208, i.e. 10px gap) */}
+        <div className="mt-[10px] border-t border-black" />
  
-        {/* Row 2 — heading + quote, 30px semibold, 10px below the divider
-            (Figma: divider at 200 -> row at 210) */}
-        <div className="mt-4 grid grid-cols-1 gap-3 md:mt-[10px] md:grid-cols-[350px_1fr] md:gap-x-0">
-          <p className="font-semibold tracking-[-0.375px] text-black md:text-[30px]">
+        {/* Row 2 — heading + quote, 15px semibold, 10px below the divider
+            (Figma: divider at 208 -> row at 218). Quote text (right
+            column) carries its own -0.5px tracking, distinct from the
+            heading's -0.375px. */}
+        <div className="mt-[10px] grid grid-cols-1 gap-3 md:grid-cols-[350px_1fr] md:gap-x-0">
+          <p className="font-semibold tracking-[-0.375px] text-black md:text-[15px]">
             {QUOTE_HEADING}
           </p>
-          <p className="whitespace-pre-wrap font-semibold tracking-[-0.375px] text-black md:text-[30px]">
+          <p className="whitespace-pre-wrap font-semibold tracking-[-0.5px] text-black md:text-[15px]">
             {QUOTE_TEXT}
           </p>
         </div>
  
-        <div className="mt-16 grid grid-cols-1 gap-6 md:mt-[432px] md:grid-cols-[350px_1fr] md:gap-x-0">
+        <div className="mt-16 grid grid-cols-1 gap-6 md:mt-[496px] md:grid-cols-[350px_1fr] md:gap-x-0">
           <h2 className="font-bold uppercase tracking-normal text-black">
             Contact
           </h2>
