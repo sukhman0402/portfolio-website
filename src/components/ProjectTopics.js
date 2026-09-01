@@ -80,8 +80,15 @@ export default function ProjectTopics({ sections }) {
   return (
     <div className="mx-auto max-w-[1440px] px-5 sm:px-[30px]">
       <div className="grid grid-cols-1 md:grid-cols-[350px_1fr] md:gap-x-0">
-        {/* Contents — sticky on desktop, plain stacked list on mobile */}
-        <nav aria-label="Contents" className="mb-10 md:sticky md:top-24 md:mb-0 md:h-fit">
+        {/* Contents — sticky on desktop, plain stacked list on mobile.
+            md:pt-[10px] aligns the first item's top with "Lorem Ipsum Topic
+            1"'s heading on the right: that first section carries its own
+            pt-[10px] (the 10px gap down from ProjectHeroTop's closing
+            divider, see the note on this component above), which the nav
+            didn't have — without it the nav sat 10px higher than the
+            heading it points at. Flagged directly 2026-09-01, measured
+            exactly via the live page's own DOM (10.0px), not guessed. */}
+        <nav aria-label="Contents" className="mb-10 md:sticky md:top-24 md:pt-[10px] md:mb-0 md:h-fit">
           <ol className="flex flex-col">
             {sections.map((section, i) => {
               const active = activeId === section.id;
