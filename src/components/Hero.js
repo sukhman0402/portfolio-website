@@ -4,74 +4,72 @@ import ScrollIndicator from "./ScrollIndicator";
  
 // Landing Page Section 1.0 — Hero (design.md §3, Section 1.0).
 //
-// REDESIGN 2026-08-31 — this is a full rebuild against a completely new
-// Figma frame. The previous "3 overlapping cards" composition (Rounds 1-6,
-// node 274:145) has been REPLACED — the current "Landing Page (D1)-
-// Section 1.0" frame nested inside "Landing Page (D)- Prototype" (node
-// 291:1177, 1440x900) no longer contains any of that card-stack geometry
-// at all. Its only content, besides the untouched global Header, is a
+// REDESIGN 2026-08-31 — full rebuild against a completely new Figma frame
+// (see git history for the old "3 overlapping cards" composition this
+// replaced). Its only content, besides the untouched global Header, is a
 // quote block (label row -> divider -> heading/quote row) plus the
-// ScrollIndicator. Per instruction ("keep the line, text and white
-// spacing exact as the re-designed section"), this file now implements
-// that new, much simpler composition rather than preserving the old
-// cards — the whole punch-card/statement/about interaction model is gone
-// from Figma, not just its spacing.
+// ScrollIndicator.
 //
-// NOTE ON DUPLICATION: the Footer (Section 6.0) uses the visually
-// IDENTICAL label/divider/heading-row layout right now. An earlier pass
-// factored that shared layout into one <QuoteBlock/> component imported
-// by both files — reverted per direct instruction: the two blocks are
-// NOT the same thing, just currently dressed in the same placeholder
-// layout/text. Hero's quote and the Footer's quote will hold different,
-// independent content once real copy goes in, so each file owns its own
-// markup below rather than sharing a component that would couple them.
+// REDESIGN 2026-09-01 (this round) — the Figma frame moved again: node
+// 291:1177 no longer exists, the current canonical "Landing Page (D1)-
+// Section 1.0" (still nested inside "Landing Page (D)- Prototype",
+// 1440x900) is now node 321:1367, quote block "Group 337" is now
+// 321:1393. Two real design changes this round, not just node-id churn:
+//   1. Quote block font size dropped from 30px to 15px for BOTH the
+//      heading (left column) and the quote text (right column) — still
+//      SF Pro Semibold (weight 590, i.e. this codebase's font-semibold),
+//      but 15px now, same size as the label row above it. Confirmed via
+//      get_design_context, not inferred from the screenshot alone. The
+//      quote paragraph's own tracking is now -0.5px (was -0.375px to
+//      match the heading); the heading itself stays -0.375px, same as
+//      the label row. This is why the block's own height shrank from
+//      148px to 74px — the long quote text now wraps to 2 lines at 15px
+//      instead of rendering large.
+//   2. Row rhythm inside the block is now a flat 10px both before AND
+//      after the divider (label row bottom -> +10 -> divider -> +10 ->
+//      heading row), not the previous 12px-before/10px-after split.
+//      Re-measured directly off the new node's raw coordinates (label
+//      top 366, divider 394, heading row 404) rather than assumed
+//      carried over from the old block.
 //
-// Node ids matter for re-syncing later: 291:1177 is the CURRENT canonical
-// Section 1.0 (the one actually nested inside the Prototype frame) — the
-// file also still contains several OTHER frames named identically
-// ("Landing Page (D1)- Section 1.0": 295:1219, 291:1043, 274:145 [old],
-// 288:506, 291:947) at different sizes. Those read as design-exploration
-// duplicates left on the canvas, not alternate live versions — only the
-// one actually nested in the Prototype frame was used here, per the same
-// "resolve by Prototype-nesting, not by name alone" rule now documented
-// in Footer.js.
+// NOTE ON DUPLICATION: the Footer (Section 6.0) went through the exact
+// same two changes this round, on its own quote block (node 321:1405).
+// Still NOT shared between the two files — reverted to separate markup
+// per direct instruction earlier (the blocks are laid out identically but
+// hold independent content), and that still holds; only the numbers were
+// re-synced from the fresh Figma pull, in both files separately.
 //
-// Spacing (measured directly off 291:1177, frame height 900 — the
-// Prototype frame confirms zero gap between adjacent section frames, so
-// these offsets are the section's own top/bottom padding, same convention
-// as Footer.js):
-//   - Section top -> quote block's top label row: was set to 364px in the
-//     first redesign pass — Figma's raw frame-local y-coordinate, reasoning
-//     that the real global Header (rendered separately, above/outside this
-//     section) matched Figma's own preview-header placeholder inside the
-//     frame (y=20, height=18, bottom=38) closely enough to treat 364 as
-//     "the gap." CORRECTED 2026-09-01: the real <Header> component is
-//     sticky with its own py-5 padding and renders at 62.5px tall on the
-//     live site — nothing like Figma's 38px placeholder — so copying the
-//     frame-local 364 straight into pt- overstated the visible header-to-
-//     quote gap by the difference (measured live: 364px, not the 326px
-//     Figma actually specifies from the header's real bottom edge to the
-//     quote's top row). Since Hero's <section> begins immediately after
-//     the sticky Header in normal document flow (no absolute/overlap
-//     between them), this container's own pt- maps 1:1 onto that visual
-//     gap regardless of the Header's real rendered height — so the fix is
-//     pt-[326px] directly, not a frame-coordinate. (364 - 326 = 38, i.e.
-//     exactly Figma's placeholder-header height being double-subtracted
-//     out — confirms this was the same error as Footer's zero-gap
-//     miscalculation, just in the opposite direction.)
-//   - Quote block's own bottom -> ScrollIndicator: 305px per Figma (quote
-//     bottom y=512, icon top y=816.615, in 291:1177's local coordinates —
-//     305px, not the frame-bottom-relative 388px in the pb- below, which
-//     is a different measurement: 388px is quote-bottom-to-FRAME-bottom,
-//     used only to size this section's own total height so the absolutely
-//     positioned ScrollIndicator (bottom-[55.62px] off the <section>, see
-//     below) lands in the right place. Re-verified 2026-09-01 against the
-//     live render: this 305px gap holds already (304.4px rendered, sub-
-//     pixel rounding) and needed no change — only the pt- above was wrong.
-//   - Row rhythm inside the block: 12px gap before the divider, 10px
-//     after it (label row bottom -> +12 -> divider -> +10 -> heading row).
+// Spacing (measured directly off 321:1367 / 321:1393, frame height 900 —
+// the Prototype frame still stacks every section with zero gap, so these
+// offsets are the section's own top/bottom padding, same convention as
+// Footer.js):
+//   - Header -> quote block's top label row: 328px. Per the 2026-09-01
+//     correction earlier in this file's history, this is NOT copied
+//     straight from Figma's frame-local y-coordinate (366) — that
+//     coordinate assumes the real global <Header> matches Figma's own
+//     38px preview-header placeholder (y=20, height=18), but the real
+//     sticky <Header> renders at 62.5px tall. Since Hero's <section>
+//     begins immediately after the sticky Header in normal flow, this
+//     container's pt- maps 1:1 onto the true visual gap regardless of
+//     the Header's real height, so the value used is
+//     (quote block's local top 366) - (Figma's preview-header bottom 38)
+//     = 328px, not the raw 366.
+//   - Quote block's own bottom -> ScrollIndicator: 376.6px (quote block
+//     bottom, local y = 366 + 74 = 440; icon top, local y = 816.615, per
+//     node 321:1384 — unchanged from before, the icon itself wasn't
+//     touched this round). Reproduced via pb-[460px] below (900 - 440),
+//     which sizes this section's own total height so the absolutely
+//     positioned ScrollIndicator (bottom-[55.62px] off the <section>)
+//     lands in the right place — same "quote-bottom-to-frame-bottom, not
+//     quote-bottom-to-icon directly" indirection documented in the prior
+//     redesign, still correct because this portion of the geometry
+//     (below the quote block) is untouched by the header-height issue
+//     above it.
+//   - Row rhythm inside the block: 10px gap before the divider, 10px
+//     after it (label row bottom -> +10 -> divider -> +10 -> heading
+//     row) — changed from 12px/10px, see the redesign note above.
 //
-// Literal Figma placeholder text (node 295:1200, get_design_context) —
+// Literal Figma placeholder text (node 321:1393, get_design_context) —
 // not curated copy. Kept as-is per instruction to match the redesign
 // exactly, same reasoning as this file's earlier rounds (see git history)
 // for the old card copy.
@@ -86,7 +84,7 @@ const HERO_QUOTE_TEXT =
 export default function Hero() {
   return (
     <section className="relative w-full">
-      <div className="mx-auto max-w-[1440px] px-5 pb-24 pt-16 sm:px-[30px] md:pb-[388px] md:pt-[326px]">
+      <div className="mx-auto max-w-[1440px] px-5 pb-24 pt-16 sm:px-[30px] md:pb-[460px] md:pt-[328px]">
         {/* Row 1 — top labels, 15px regular */}
         <div className="grid grid-cols-1 gap-1 md:grid-cols-[350px_1fr] md:gap-x-0">
           <p className="font-normal tracking-[-0.375px] text-black md:text-[15px]">
@@ -97,26 +95,28 @@ export default function Hero() {
           </p>
         </div>
  
-        {/* Divider — 12px below the label row (Figma: label top 364 + 18
-            tall -> divider at 394, i.e. 12px gap) */}
-        <div className="mt-3 border-t border-black md:mt-[12px]" />
+        {/* Divider — 10px below the label row (Figma: label top 366 + 18
+            tall -> divider at 394, i.e. 10px gap) */}
+        <div className="mt-[10px] border-t border-black" />
  
-        {/* Row 2 — heading + quote, 30px semibold, 10px below the divider
-            (Figma: divider at 394 -> row at 404) */}
-        <div className="mt-4 grid grid-cols-1 gap-3 md:mt-[10px] md:grid-cols-[350px_1fr] md:gap-x-0">
-          <p className="font-semibold tracking-[-0.375px] text-black md:text-[30px]">
+        {/* Row 2 — heading + quote, 15px semibold, 10px below the divider
+            (Figma: divider at 394 -> row at 404). Quote text (right
+            column) carries its own -0.5px tracking, distinct from the
+            heading's -0.375px. */}
+        <div className="mt-[10px] grid grid-cols-1 gap-3 md:grid-cols-[350px_1fr] md:gap-x-0">
+          <p className="font-semibold tracking-[-0.375px] text-black md:text-[15px]">
             {HERO_QUOTE_HEADING}
           </p>
-          <p className="whitespace-pre-wrap font-semibold tracking-[-0.375px] text-black md:text-[30px]">
+          <p className="whitespace-pre-wrap font-semibold tracking-[-0.5px] text-black md:text-[15px]">
             {HERO_QUOTE_TEXT}
           </p>
         </div>
       </div>
  
-      {/* ScrollIndicator — same component as before, position re-derived
-          from the new frame (55.62px inset from the bottom of the 900px-
-          tall stage, horizontally centered — Figma's own left=711px on a
-          1440-wide frame is, to within half a pixel, dead center). */}
+      {/* ScrollIndicator — unchanged this round: same component, same
+          55.62px inset from the bottom of the 900px-tall stage,
+          horizontally centered (Figma's own left=711px on a 1440-wide
+          frame is, to within half a pixel, dead center). */}
       <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 text-black/60 md:bottom-[55.62px]">
         <ScrollIndicator className="h-7 w-5" />
       </div>
