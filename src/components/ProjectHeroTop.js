@@ -58,7 +58,13 @@ export default function ProjectHeroTop({ project }) {
           title="Hero image placeholder — no asset in source yet"
         />
  
-        <div className="mt-2 border-t border-black md:mt-[2px]" />
+        {/* mt-0 (mobile only, md:mt-[2px] unchanged) — flagged 2026-09-02:
+            site-wide "placeholder image, then line" rule — was mt-2 (8px)
+            on mobile, dropped to flush/0px so the hero image placeholder's
+            bottom edge touches this divider directly. Desktop's own
+            near-flush 2px (documented above as "near-zero, negligible, not
+            a real design interval," measured off Figma) is left as-is. */}
+        <div className="mt-0 border-t border-black md:mt-[2px]" />
  
         {/* Title + intro + info row */}
         <div className="pt-4 md:pt-[9px]">
