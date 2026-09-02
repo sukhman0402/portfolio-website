@@ -76,9 +76,27 @@ export default function AboutSection() {
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             How I Function
           </h2>
-          <div className="grid grid-cols-1 gap-x-10 gap-y-10 md:grid-cols-3 md:gap-x-[20px] md:gap-y-0">
+          {/* gap-y-0 (mobile only, md:gap-y-0 unchanged) — flagged
+              2026-09-02: site-wide "placeholder image, then line" rule —
+              every card in this grid ends in the Illustration placeholder
+              tile, so the vertical gap between cards IS the "image -> next
+              card's own line" junction; was gap-y-10 (40px) on mobile,
+              dropped to 0 so that boundary is flush. The card's own
+              pt-[10px] above (set from the same rule's other half) still
+              supplies the correct 10px from that line down to the next
+              card's title, so nothing collapses — only the image-to-line
+              segment changed. My Workflow/Along the Journey below don't
+              get this treatment: neither ends in a placeholder image
+              (small design tiles / plain text respectively), so that part
+              of the rule doesn't apply to them. */}
+          {/* Each card: pt-[10px] (mobile only, md:pt-[10px] unchanged) —
+              flagged 2026-09-02: site-wide "line, then text" rule, set from
+              the Projects heading -> divider -> first row reference (that
+              gap measures exactly 10px in the live DOM). Was pt-3 (12px) on
+              mobile; standardized to 10px to match. */}
+          <div className="grid grid-cols-1 gap-x-10 gap-y-0 md:grid-cols-3 md:gap-x-[20px] md:gap-y-0">
             {principles.map((p, i) => (
-              <div key={i} className="border-t border-black pt-3 md:pt-[10px]">
+              <div key={i} className="border-t border-black pt-[10px]">
                 <p className="font-semibold tracking-[-0.5px]">{p.title}</p>
                 <p className="font-normal tracking-[-0.5px] text-muted">
                   {p.description}
@@ -107,9 +125,12 @@ export default function AboutSection() {
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             My Workflow
           </h2>
+          {/* Each card: pt-[10px] (mobile only, md:pt-[10px] unchanged) —
+              same site-wide "line, then text" fix as How I Function above
+              (was pt-3/12px on mobile). */}
           <div className="grid grid-cols-1 gap-x-10 gap-y-10 md:grid-cols-3 md:gap-x-[20px]">
             {workflowCategories.map((cat) => (
-              <div key={cat.label} className="border-t border-black pt-3 md:pt-[10px]">
+              <div key={cat.label} className="border-t border-black pt-[10px]">
                 <p className="font-semibold uppercase tracking-[-0.5px]">
                   {cat.label}
                 </p>
@@ -170,8 +191,11 @@ export default function AboutSection() {
               <div key={colIdx} className="flex flex-col gap-6 md:gap-[12px]">
                 {column.map((entry, i) => {
                   const isShortRow2 = colIdx !== 0 && i === 1;
+                  // Entry: pt-[10px] (mobile only, md:pt-[10px] unchanged) —
+                  // same site-wide "line, then text" fix as How I
+                  // Function/My Workflow above (was pt-3/12px on mobile).
                   return (
-                    <div key={i} className="border-t border-black pt-3 md:pt-[10px]">
+                    <div key={i} className="border-t border-black pt-[10px]">
                       <p className="font-semibold tracking-[-0.5px]">
                         {entry.title}
                       </p>
