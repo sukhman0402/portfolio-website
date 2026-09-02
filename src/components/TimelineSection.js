@@ -29,11 +29,13 @@ export default function TimelineSection() {
  
   return (
     <section className="w-full">
-      {/* pt-[300px] (mobile only, md:pt-28 unchanged) — same site-wide 300px
-          inter-section rule as ResearchSection, flagged 2026-09-02: Research
-          carries no trailing bottom space of its own, so this pt- alone
-          produces the full 300px gap from Research's last row. */}
-      <div className="mx-auto max-w-[1440px] px-5 pt-[300px] text-center sm:px-[30px] md:pt-28">
+      {/* pt-[180px] (mobile only, md:pt-28 unchanged) — same site-wide
+          inter-section rule as ResearchSection, flagged 2026-09-02, revised
+          same day from 300px down to 180px (see ResearchSection.js for the
+          full note). Research carries no trailing bottom space of its own,
+          so this pt- alone produces the full 180px gap from Research's last
+          row. */}
+      <div className="mx-auto max-w-[1440px] px-5 pt-[180px] text-center sm:px-[30px] md:pt-28">
         <h2 className="font-bold uppercase tracking-normal text-accent">
           ( Timeline )
         </h2>
