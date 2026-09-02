@@ -1,9 +1,9 @@
 "use client";
-
+ 
 import { useState } from "react";
 import Link from "next/link";
 import Chevron from "./Chevron";
-
+ 
 // A single Projects row (design.md §3 Section 2.0 + §3a Section 2.1–2.4,
 // and reused always-expanded on /projects per §4).
 //
@@ -19,7 +19,7 @@ import Chevron from "./Chevron";
 // expandable=false -> /projects listing: always renders the expanded card
 export default function ProjectRow({ project, expandable = true }) {
   const [open, setOpen] = useState(!expandable);
-
+ 
   return (
     <div className="border-b border-black pt-[10px] pb-[10px] first:border-t">
       <button
@@ -33,20 +33,38 @@ export default function ProjectRow({ project, expandable = true }) {
         <span className="font-medium uppercase leading-[18px] tracking-normal">
           {project.index}
         </span>
-
+ 
         <span className="flex flex-col gap-0">
           <span className="font-semibold leading-[18px] tracking-[-0.5px]">
             {project.title}
           </span>
+          {/* Flagged 2026-09-02, direct instruction: the collapsed one-liner
+              keeps the tight leading-[18px] (still correct — matches the
+              Figma row height for a single clamped line, same fixed-height
+              row convention as ResearchSection's rows). But once expanded,
+              this renders project.fullDescription — several lines of real
+              paragraph copy, not a row caption — and using that same
+              18px/15px (1.2) line-height there read as visibly cramped next
+              to the site's paragraph text (Hero/Footer quotes, About Me,
+              case study body copy), which all use the browser/Tailwind
+              default 1.5 line-height (22.5px on this site's 15px base) with
+              no leading- override at all. So: drop the leading-[18px]
+              override entirely when open, falling back to that same
+              no-override default — deliberately NOT leading-[22.5px] or
+              similar, to match the exact mechanism the rest of the site's
+              paragraph text already relies on, not just its resulting
+              pixel value. expandable=false routes (the /projects listing,
+              where every row renders pre-opened) get this fix automatically
+              too, since it's the same shared component. */}
           <span
-            className={`font-normal leading-[18px] tracking-[-0.5px] ${
-              open ? "" : "line-clamp-1"
+            className={`font-normal tracking-[-0.5px] ${
+              open ? "" : "leading-[18px] line-clamp-1"
             }`}
           >
             {open ? project.fullDescription : project.description}
           </span>
         </span>
-
+ 
         {expandable && (
           <Chevron
             className={`ml-4 mt-1 h-3 w-3 shrink-0 transition-transform md:ml-6 ${
@@ -55,7 +73,7 @@ export default function ProjectRow({ project, expandable = true }) {
           />
         )}
       </button>
-
+ 
       {/* Tag row + (when open) CTA + caption — mirrors the label column /
           content column split used throughout the Figma layout. Same
           first-column width as the row above (fixed px, not "auto" on an
@@ -82,7 +100,7 @@ export default function ProjectRow({ project, expandable = true }) {
               {project.tag}
             </span>
           )}
-
+ 
           {open && (
             <>
               {/* ⚠️ design.md §3a: Figma reserves an empty ~400px region here,
@@ -102,3 +120,4 @@ export default function ProjectRow({ project, expandable = true }) {
     </div>
   );
 }
+ 
