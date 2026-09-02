@@ -144,12 +144,22 @@ export default function ProjectTopics({ sections }) {
         {/* Content sections */}
         <div>
           {sections.map((section, i) => (
+            // pt-[10px] (was pt-8/32px, mobile only) — flagged 2026-09-02:
+            // heading -> line above it (its own border-t, or for the first
+            // section, ProjectHeroTop's closing divider) rule, "line, then
+            // text" — standardized to 10px like every other instance.
+            // pb-[10px] (mobile only) added when closingBody is present:
+            // that's a text ending (not an image), so per the site-wide
+            // "image + line = 0px, text + line = 10px" split, it needs the
+            // same 10px gap down to the NEXT section's border-t that a
+            // trailing image already gets for free (image-ending sections
+            // still correctly land at 0px, untouched).
             <section
               key={section.id}
               id={section.id}
-              className={`scroll-mt-24 pt-8 md:pt-[10px] ${
+              className={`scroll-mt-24 pt-[10px] ${
                 i !== 0 ? "border-t border-black" : ""
-              }`}
+              } ${section.closingBody ? "pb-[10px]" : ""}`}
             >
               <h2 className="font-bold uppercase tracking-[-1px]">
                 {section.heading}
