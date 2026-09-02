@@ -64,7 +64,14 @@ export default function TimelineSection() {
             ))}
           </div>
  
-          <div className="mt-10 border-t border-black pt-6 md:mt-14">
+          {/* pt-[10px] (mobile only, md:pt-6 unchanged) — flagged
+              2026-09-02: site-wide "line, then text" rule, set from the
+              Projects heading -> divider -> first row reference (10px in
+              the live DOM). Was pt-6 (24px) on mobile; standardized to
+              10px. mt-10 (the gap ABOVE this divider, from the stage-dots
+              row) is untouched — that's a different kind of boundary, not
+              covered by this rule. */}
+          <div className="mt-10 border-t border-black pt-[10px] md:pt-6 md:mt-14">
             <p className="font-semibold tracking-[-0.5px]">
               {activeStage.label} — {activeStage.year}
             </p>
