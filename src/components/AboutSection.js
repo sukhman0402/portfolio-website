@@ -39,14 +39,17 @@ export default function AboutSection() {
     <section id="about" className="w-full scroll-mt-24">
       <div className="mx-auto max-w-[1440px] px-5 sm:px-[30px]">
         {/* About Me */}
-        {/* pt-[300px] (mobile only, md:pt-[249px] unchanged) — same site-wide
-            300px inter-section rule as Research/Timeline, flagged
-            2026-09-02: this is the TOP-LEVEL Timeline -> About boundary
-            only. The other 3 subsections below (How I Function, My
-            Workflow, Along the Journey) keep their own pt-16 — those are
-            internal rhythm within Section 5.0, not section-to-section
-            gaps, and weren't part of this instruction. */}
-        <div className="grid grid-cols-1 gap-6 pt-[300px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[249px]">
+        {/* pt-[180px] (mobile only, md:pt-[249px] unchanged) — same
+            site-wide inter-section rule as Research/Timeline, flagged
+            2026-09-02, revised same day from 300px down to 180px (see
+            ResearchSection.js for the full note). This is the TOP-LEVEL
+            Timeline -> About boundary only. The other 3 subsections below
+            (How I Function, My Workflow, Along the Journey) have their own
+            separate mobile spacing — see the pt-[164px] note on each,
+            flagged the same day: increased 100px beyond their prior pt-16
+            (64px), which is a different, unrelated adjustment from this
+            section-to-section 300->180px change. */}
+        <div className="grid grid-cols-1 gap-6 pt-[180px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[249px]">
           <h2 className="font-bold uppercase tracking-normal">About Me</h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-x-[20px]">
             {aboutMeColumns.map((text, i) => (
@@ -63,7 +66,13 @@ export default function AboutSection() {
             placeholder Frame nodes now visible in the file (Frame 23/25/27/
             24/26/28 under node 252:1420, each 330x191 at exactly this
             position), not just inferred from blank whitespace. */}
-        <div className="grid grid-cols-1 gap-6 pt-16 md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
+        {/* pt-[164px] (mobile only, md:pt-[70px] unchanged) — flagged
+            2026-09-02: mobile-only internal subsection rhythm, increased
+            100px beyond the prior pt-16 (64px), i.e. 64 + 100 = 164px. This
+            is the gap from About Me to How I Function specifically, not the
+            site-wide section-to-section rule (that one dropped 300->180px
+            elsewhere in this same round — an unrelated, separate change). */}
+        <div className="grid grid-cols-1 gap-6 pt-[164px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             How I Function
           </h2>
@@ -90,7 +99,11 @@ export default function AboutSection() {
             at exactly 330px column width and 6px gaps, AI Assistance's 9
             tiles wrap to 6-then-3 across two rows purely from flex-wrap,
             same as Figma, with no manual row-splitting needed. */}
-        <div className="grid grid-cols-1 gap-6 pt-16 md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-0">
+        {/* pt-[164px] (mobile only, md:pt-0 unchanged — desktop keeps its 0px
+            gap from How I Function, see note at top of file) — flagged
+            2026-09-02: same 100px-beyond-pt-16 increase as How I Function's
+            gap above (64 + 100 = 164px), applied to mobile only. */}
+        <div className="grid grid-cols-1 gap-6 pt-[164px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-0">
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             My Workflow
           </h2>
@@ -145,7 +158,10 @@ export default function AboutSection() {
             live measurement, not the Figma box alone — verify against a
             fresh screenshot after this deploys, since it was tuned to one
             data point. */}
-        <div className="grid grid-cols-1 gap-6 pt-16 md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
+        {/* pt-[164px] (mobile only, md:pt-[70px] unchanged) — flagged
+            2026-09-02: same 100px-beyond-pt-16 increase as the two gaps
+            above (64 + 100 = 164px), applied to mobile only. */}
+        <div className="grid grid-cols-1 gap-6 pt-[164px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             Along the Journey
           </h2>
