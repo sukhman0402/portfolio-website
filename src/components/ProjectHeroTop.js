@@ -66,8 +66,13 @@ export default function ProjectHeroTop({ project }) {
             a real design interval," measured off Figma) is left as-is. */}
         <div className="mt-0 border-t border-black md:mt-[2px]" />
  
+        {/* pt-[10px] (was pt-4/16px, mobile only, md:pt-[9px] unchanged) —
+            flagged 2026-09-02: site-wide "line, then text" rule — this
+            divider->"Title" gap was missed in the first pass (classified as
+            a different structural boundary at the time); standardized to
+            10px like every other line->text gap on the site. */}
         {/* Title + intro + info row */}
-        <div className="pt-4 md:pt-[9px]">
+        <div className="pt-[10px] md:pt-[9px]">
           <h2 className="font-bold uppercase tracking-[-1px]">
             {project.introLabel}
           </h2>
@@ -89,10 +94,14 @@ export default function ProjectHeroTop({ project }) {
           </div>
         </div>
  
-        <div className="mt-8 border-t border-black md:mt-[10px]" />
+        {/* mt-[10px] (was mt-8/32px, mobile only) — flagged 2026-09-02:
+            info-row -> divider gap, "text, then line" rule. */}
+        <div className="mt-[10px] border-t border-black md:mt-[10px]" />
  
         {/* Brief */}
-        <div className="pt-4 md:pt-[10px]">
+        {/* pt-[10px] (was pt-4/16px, mobile only) — same divider -> text
+            rule as above. */}
+        <div className="pt-[10px] md:pt-[10px]">
           <h2 className="font-bold uppercase tracking-[-1px]">
             {project.briefLabel}
           </h2>
@@ -101,7 +110,12 @@ export default function ProjectHeroTop({ project }) {
           </p>
         </div>
  
-        <div className="mt-8 border-t border-black md:mt-[10px]" />
+        {/* mt-[10px] (was mt-8/32px, mobile only) — flagged 2026-09-02: same
+            "text, then line" rule as the info-row divider above — this is
+            the divider ProjectTopics.js's first content section sits below
+            (that component's own first section carries no border-t of its
+            own, see the note there). */}
+        <div className="mt-[10px] border-t border-black md:mt-[10px]" />
       </div>
     </>
   );
