@@ -17,14 +17,16 @@ export default function ResearchSection() {
  
   return (
     <section id="research" className="w-full scroll-mt-24">
-      {/* pt-[300px] (mobile only, md:pt-28 unchanged) — flagged 2026-09-02:
-          site-wide mobile rule, "space between each section = 300px" (this
-          is the concrete example given: More Projects -> RESEARCH). Since
-          ProjectsSection carries no trailing bottom space of its own (same
-          convention as every other section on this site — the NEXT
-          section's own top offset is the entire gap), this pt- alone
-          produces the full 300px. */}
-      <div className="mx-auto max-w-[1440px] px-5 pt-[300px] sm:px-[30px] md:pt-28">
+      {/* pt-[180px] (mobile only, md:pt-28 unchanged) — flagged 2026-09-02,
+          revised same day: the site-wide mobile inter-section rule was
+          originally set to 300px ("space between each section = 300px",
+          this being the concrete example given: More Projects -> RESEARCH)
+          but 300px read as too large a gap in practice, so the rule value
+          itself was lowered to 180px. Since ProjectsSection carries no
+          trailing bottom space of its own (same convention as every other
+          section on this site — the NEXT section's own top offset is the
+          entire gap), this pt- alone produces the full 180px. */}
+      <div className="mx-auto max-w-[1440px] px-5 pt-[180px] sm:px-[30px] md:pt-28">
         <h2 className="border-b border-black pb-[10px] font-bold uppercase leading-[18px] tracking-normal">
           RESEARCH
         </h2>
