@@ -180,18 +180,42 @@ export default function Footer() {
             "Along the Journey" end -> quote-block gap above (was mt-16/
             64px). Deliberately matches that specific 300px value, not the
             180px general rule used elsewhere in this round. */}
-        <div className="mt-[300px] grid grid-cols-1 gap-6 md:mt-[496px] md:grid-cols-[350px_1fr] md:gap-x-0">
+        {/* gap-[10px] (was gap-6/24px, mobile only) — flagged 2026-09-02:
+            "Contact" title -> line rule, same family as the About Me/How I
+            Function/etc. title->line fixes. Desktop unaffected (row-gap
+            unused there, label sits beside content). */}
+        <div className="mt-[300px] grid grid-cols-1 gap-[10px] md:mt-[496px] md:grid-cols-[350px_1fr] md:gap-x-0">
           <h2 className="font-bold uppercase tracking-normal text-black">
             Contact
           </h2>
  
-          <dl className="divide-y divide-black">
+          {/* border-t (mobile only, md:border-t-0) — flagged 2026-09-02,
+              direct instruction: mobile gets a divider between "Contact"
+              and the first row (E-mail), unlike desktop/Figma which
+              deliberately has none (see the file-top note — "the dl has NO
+              top border in Figma"). No extra pt- here on the dl itself —
+              row 1's own pt-[10px] below already supplies the 10px from
+              this new line down to "E-mail" (adding one here too would
+              double it to 20px). */}
+          <dl className="border-t border-black divide-y divide-black md:border-t-0">
             {CONTACT_ROWS.map((row, i) => (
+              // Row layout: flex-row/items-baseline/justify-between/gap-6
+              // unconditional (was gated behind sm:, so it only kicked in
+              // at >=640px) — flagged 2026-09-02: label/value should sit
+              // on the same line, left/right aligned, on mobile too, not
+              // stack. pt-[10px] (mobile only, replaces py-4) on every
+              // row; pb-[10px] (mobile only) on every row except the last
+              // (Behance has no divider below it — same "no pb of its
+              // own, container's own bottom padding handles the gap to
+              // the footer band" logic desktop already used, see the
+              // file-top note).
               <div
                 key={row.label}
-                className={`flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6 md:py-0 ${
-                  i !== 0 ? "md:pt-[10px]" : ""
-                } ${i !== CONTACT_ROWS.length - 1 ? "md:pb-[12px]" : ""}`}
+                className={`flex flex-row items-baseline justify-between gap-6 pt-[10px] ${
+                  i !== CONTACT_ROWS.length - 1 ? "pb-[10px]" : ""
+                } md:py-0 ${i !== 0 ? "md:pt-[10px]" : ""} ${
+                  i !== CONTACT_ROWS.length - 1 ? "md:pb-[12px]" : ""
+                }`}
               >
                 <dt className="font-semibold uppercase tracking-[-0.5px]">
                   {row.label}
@@ -207,12 +231,13 @@ export default function Footer() {
         </div>
       </div>
  
+      {/* Footer band — "SUKHMAN." removed and the copyright line centered,
+          flagged 2026-09-02, direct instruction. Same markup on both
+          breakpoints (no md: split here previously), so this applies to
+          mobile and desktop alike. */}
       <div className="w-full bg-footer-band">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-4 sm:px-[30px]">
-          <span className="font-bold tracking-normal text-muted">
-            SUKHMAN.
-          </span>
-          <span className="text-right text-muted font-normal tracking-[-0.5px]">
+        <div className="mx-auto flex max-w-[1440px] items-center justify-center px-5 py-4 sm:px-[30px]">
+          <span className="text-center text-muted font-normal tracking-[-0.5px]">
             © All rights reserved- Sukhmanpreet Singh Saini
           </span>
         </div>
