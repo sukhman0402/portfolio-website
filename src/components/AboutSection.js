@@ -49,9 +49,30 @@ export default function AboutSection() {
             flagged the same day: increased 100px beyond their prior pt-16
             (64px), which is a different, unrelated adjustment from this
             section-to-section 300->180px change. */}
-        <div className="grid grid-cols-1 gap-6 pt-[180px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[249px]">
-          <h2 className="font-bold uppercase tracking-normal">About Me</h2>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-x-[20px]">
+        {/* gap-[10px] (was gap-6/24px) — flagged 2026-09-02: "About Me" title
+            -> divider rule, same "line, then text" family as How I
+            Function/My Workflow/Along the Journey below, applied on BOTH
+            breakpoints since this row-gap is otherwise unused on desktop
+            (label|content sit side by side there, single row). */}
+        <div className="grid grid-cols-1 gap-[10px] pt-[180px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[249px]">
+          <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
+            About Me
+          </h2>
+          {/* Divider ADDED 2026-09-02, direct instruction: "About Me" had no
+              line between its title and body copy, unlike How I
+              Function/My Workflow/Along the Journey which all sit below a
+              border-line. New border-t on the content column only (never
+              under the label), matching that exact convention — h2 gets the
+              same borderless md:pt-[10px] twin those other 3 labels use, so
+              both land at the same baseline on desktop. border-t + pt-[10px]
+              on both breakpoints since this is a brand-new element, not an
+              existing desktop value being preserved. */}
+          <div className="grid grid-cols-1 gap-[28px] border-t border-black pt-[10px] md:grid-cols-3 md:gap-x-[20px] md:pt-[10px]">
+            {/* gap-[28px] (was gap-8/32px) — flagged 2026-09-02: paragraph
+                -> paragraph rule, matching the Brief paragraph-break gap
+                (confirmed 28px = one blank line). Mobile only — desktop's
+                3 columns sit in a single row, this gap is column-gutter
+                territory there (md:gap-x-[20px]), not paragraph spacing. */}
             {aboutMeColumns.map((text, i) => (
               <p key={i} className="font-normal tracking-[-0.5px]">
                 {text}
@@ -72,7 +93,12 @@ export default function AboutSection() {
             is the gap from About Me to How I Function specifically, not the
             site-wide section-to-section rule (that one dropped 300->180px
             elsewhere in this same round — an unrelated, separate change). */}
-        <div className="grid grid-cols-1 gap-6 pt-[164px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
+        {/* gap-[10px] (was gap-6/24px) — flagged 2026-09-02: "How I
+            Function" title -> line (card 1's own border-t) was more than
+            10px on mobile; standardized to match the site-wide rule.
+            Desktop unaffected — this row-gap isn't used there (label sits
+            beside content, single row). */}
+        <div className="grid grid-cols-1 gap-[10px] pt-[164px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             How I Function
           </h2>
@@ -121,7 +147,9 @@ export default function AboutSection() {
             gap from How I Function, see note at top of file) — flagged
             2026-09-02: same 100px-beyond-pt-16 increase as How I Function's
             gap above (64 + 100 = 164px), applied to mobile only. */}
-        <div className="grid grid-cols-1 gap-6 pt-[164px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-0">
+        {/* gap-[10px] (was gap-6/24px) — flagged 2026-09-02: same
+            title -> line fix as How I Function above. */}
+        <div className="grid grid-cols-1 gap-[10px] pt-[164px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-0">
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             My Workflow
           </h2>
@@ -182,13 +210,21 @@ export default function AboutSection() {
         {/* pt-[164px] (mobile only, md:pt-[70px] unchanged) — flagged
             2026-09-02: same 100px-beyond-pt-16 increase as the two gaps
             above (64 + 100 = 164px), applied to mobile only. */}
-        <div className="grid grid-cols-1 gap-6 pt-[164px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
+        {/* gap-[10px] (was gap-6/24px) — flagged 2026-09-02: same
+            title -> line fix as How I Function/My Workflow above. */}
+        <div className="grid grid-cols-1 gap-[10px] pt-[164px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             Along the Journey
           </h2>
           <div className="grid grid-cols-1 gap-x-10 gap-y-8 md:grid-cols-3 md:gap-x-[20px]">
             {journeyEntries.map((column, colIdx) => (
-              <div key={colIdx} className="flex flex-col gap-6 md:gap-[12px]">
+              // gap-[10px] (was gap-6/24px, mobile only, md:gap-[12px]
+              // unchanged) — flagged 2026-09-02: grey tag -> next line
+              // (or the column's closing border) was more than 10px on
+              // mobile; standardized to match the site-wide rule. Desktop's
+              // 12px is a separate, already-calibrated "tag -> divider"
+              // rhythm reused site-wide (see the file-top note) — left as-is.
+              <div key={colIdx} className="flex flex-col gap-[10px] md:gap-[12px]">
                 {column.map((entry, i) => {
                   const isShortRow2 = colIdx !== 0 && i === 1;
                   // Entry: pt-[10px] (mobile only, md:pt-[10px] unchanged) —
@@ -202,8 +238,15 @@ export default function AboutSection() {
                       <p className="font-normal tracking-[-0.5px]">
                         {entry.detail}
                       </p>
+                      {/* mt-[15px] (was mt-1/4px, mobile only) — flagged
+                          2026-09-02: detail -> tag rule, matching the
+                          site-wide description->tag exemption (ProjectRow.js,
+                          15px). md: values untouched — md:mt-[33px] is a
+                          separate, unrelated row-2 cross-column alignment
+                          calibration (see the file-top note), not a plain
+                          detail->tag spacing value. */}
                       <p
-                        className={`mt-1 font-normal tracking-[-0.5px] text-muted ${
+                        className={`mt-[15px] font-normal tracking-[-0.5px] text-muted ${
                           isShortRow2 ? "md:mt-[33px]" : "md:mt-[10px]"
                         }`}
                       >
