@@ -56,3 +56,26 @@ body {
   }
 }
  
+/* Hero.js mobile "Scroll Down" + chevron bounce (Section 1.0, 2026-09-02,
+   direct instruction, motion reference: a Pinterest pin) — referenced via
+   the arbitrary Tailwind class
+   animate-[scrollDownBounce_1.6s_ease-in-out_infinite] on the "Scroll
+   Down" text + Chevron group (animated together as one unit so they move
+   in lockstep, not two independently-timed animations). The Pinterest pin
+   itself couldn't be fetched (blocked by robots.txt, no workaround
+   attempted per this session's web-fetch policy) — this reproduces the
+   standard version of that "scroll cue" motion (gentle downward nudge +
+   fade, looping) rather than an exact frame-by-frame match; flag if the
+   real pin's motion differs and this needs adjusting. */
+@keyframes scrollDownBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+ 
