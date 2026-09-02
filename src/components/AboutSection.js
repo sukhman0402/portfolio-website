@@ -216,7 +216,17 @@ export default function AboutSection() {
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             Along the Journey
           </h2>
-          <div className="grid grid-cols-1 gap-x-10 gap-y-8 md:grid-cols-3 md:gap-x-[20px]">
+          {/* gap-y-[10px] (was gap-y-8/32px, mobile only) — flagged
+              2026-09-02: on mobile the 3 columns stack (grid-cols-1), so
+              each column's own closing border-t (below) landed directly
+              above the NEXT column's first entry border-t — two lines
+              with a bare 32px gap and no content between them, reading as
+              a duplicate/double line. Fixed alongside hiding the
+              redundant closing lines below; this gap is now the sole
+              "content -> next line" boundary between columns, so it gets
+              the standard 10px like everywhere else. Desktop unaffected —
+              columns sit side by side there, this row-gap isn't used. */}
+          <div className="grid grid-cols-1 gap-x-10 gap-y-[10px] md:grid-cols-3 md:gap-x-[20px]">
             {journeyEntries.map((column, colIdx) => (
               // gap-[10px] (was gap-6/24px, mobile only, md:gap-[12px]
               // unchanged) — flagged 2026-09-02: grey tag -> next line
@@ -255,7 +265,18 @@ export default function AboutSection() {
                     </div>
                   );
                 })}
-                <div className="border-t border-black" aria-hidden="true" />
+                {/* Closing line: hidden on mobile for every column except
+                    the last (hidden md:block), flagged 2026-09-02 — this is
+                    the redundant line that caused the "double line" issue
+                    fixed above. Desktop keeps it on all 3 columns, unchanged
+                    (they sit side by side there, so it's never adjacent to
+                    another column's opening line). */}
+                <div
+                  className={`border-t border-black ${
+                    colIdx !== journeyEntries.length - 1 ? "hidden md:block" : ""
+                  }`}
+                  aria-hidden="true"
+                />
               </div>
             ))}
           </div>
