@@ -108,10 +108,16 @@ const CONTACT_ROWS = [
 export default function Footer() {
   return (
     <footer id="contact" className="w-full">
-      {/* pt-[300px] (mobile only, md:pt-[429px] unchanged) — site-wide 300px
+      {/* pt-[300px] (mobile only, md:pt-[429px] unchanged) — gap from
+          AboutSection's "Along the Journey" closing border line to this
+          quote block's heading. Originally set from the site-wide
           inter-section rule (see ResearchSection/TimelineSection/
-          AboutSection), flagged 2026-09-02: gap from AboutSection's "Along
-          the Journey" closing border line to this quote block's heading. */}
+          AboutSection); flagged 2026-09-02 same day that rule's value was
+          lowered to 180px everywhere else, but THIS specific gap was
+          explicitly confirmed correct as-is at 300px — direct instruction:
+          "the 300px space between Along the Journey's end and footer
+          quote is right." Kept at 300px deliberately; do not fold into
+          the general 180px change made elsewhere. */}
       <div className="mx-auto max-w-[1440px] px-5 pt-[300px] pb-16 sm:px-[30px] md:pt-[429px] md:pb-[62px]">
         {/* MOBILE quote block — flagged 2026-09-02, direct instruction: "the
             same thing we did for [Hero's] first quote... for the footer's
@@ -168,7 +174,13 @@ export default function Footer() {
           </div>
         </div>
  
-        <div className="mt-16 grid grid-cols-1 gap-6 md:mt-[496px] md:grid-cols-[350px_1fr] md:gap-x-0">
+        {/* mt-[300px] (mobile only, md:mt-[496px] unchanged) — flagged
+            2026-09-02: direct instruction to match this quote-block-end ->
+            "Contact" gap to the same 300px value confirmed correct for the
+            "Along the Journey" end -> quote-block gap above (was mt-16/
+            64px). Deliberately matches that specific 300px value, not the
+            180px general rule used elsewhere in this round. */}
+        <div className="mt-[300px] grid grid-cols-1 gap-6 md:mt-[496px] md:grid-cols-[350px_1fr] md:gap-x-0">
           <h2 className="font-bold uppercase tracking-normal text-black">
             Contact
           </h2>
