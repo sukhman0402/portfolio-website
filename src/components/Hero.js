@@ -1,6 +1,7 @@
 "use client";
  
 import ScrollIndicator from "./ScrollIndicator";
+import Chevron from "./Chevron";
  
 // Landing Page Section 1.0 — Hero (design.md §3, Section 1.0).
 //
@@ -123,10 +124,28 @@ export default function Hero() {
           desktop, in the ScrollIndicator block below) — same bottom-8,
           horizontally-centered slot the icon used to sit in on mobile, then
           shifted up 100px in the same 2026-09-02 flag as the set above, so
-          the two move together. */}
-      <p className="absolute bottom-8 left-1/2 -translate-x-1/2 -translate-y-[100px] text-[13px] font-normal tracking-normal text-[#bbbbbb] md:hidden">
-        Scroll Down
-      </p>
+          the two move together.
+          2026-09-02 update, direct instruction: added the chevron (reused
+          Chevron.js, rotated to point down, so its stroke-width matches
+          every other dropdown arrow on the site by construction — not a
+          new SVG) and a looping bounce animation, motion inspired by the
+          supplied Pinterest reference (see globals.css's scrollDownBounce
+          keyframe for the fetch-blocked caveat). Split into two nested
+          elements on purpose: the outer div owns the static
+          position/centering transform (bottom-8, -translate-x-1/2,
+          -translate-y-[100px]), the inner div owns the animated transform
+          (the bounce) — stacking both transforms on one element would
+          have one silently overwrite the other instead of combining.
+          Color switched from the hardcoded text-[#bbbbbb] to text-muted,
+          the site's existing token for this exact color (globals.css
+          --muted: #bbbbbb) — same value, now via the shared token like
+          every other gray label on the site. */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 -translate-y-[100px] md:hidden">
+        <div className="flex animate-[scrollDownBounce_1.6s_ease-in-out_infinite] items-center gap-1 text-muted">
+          <p className="text-[13px] font-normal tracking-normal">Scroll Down</p>
+          <Chevron className="h-2.5 w-2.5 rotate-90" />
+        </div>
+      </div>
  
       {/* DESKTOP (md and up) — untouched from the prior redesign, see the
           spacing notes above the constants; only change is the
