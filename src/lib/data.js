@@ -4,8 +4,15 @@
 // list of 4 projects + 4 research pieces is confirmed; slugs are stable
 // so routes won't need to change when the copy does.
 //
-// PROJECT DETAIL FIELDS (added 2026-09-01, Figma node 179:3614 "Project 01
-// (D)- Section 1.0" — individual project page redesign):
+// DETAIL PAGE FIELDS — shared by Projects AND Research (added 2026-09-01,
+// Figma node 179:3614 "Project 01 (D)- Section 1.0" for the individual
+// project page redesign; extended to Research 2026-09-03, flagged: "the
+// layout for individual research project is not matching with the one we
+// finalised for individual project... replicate the same layout" — see
+// ProjectHeroTop.js/ProjectTopics.js, now rendered by BOTH
+// src/app/projects/[slug]/page.js and src/app/research/[slug]/page.js.
+// PageTopFramework.js/CaseStudySections.js (Research's old layout) are no
+// longer imported anywhere as of this change — orphaned, safe to delete:
 //   - intro: the paragraph under the "Title" label, above the info row.
 //   - infoFields: the 4-column Discipline/Timeline/Role/Tools row. The 4
 //     FIELDS themselves are confirmed; their exact display LABELS are not
@@ -16,9 +23,9 @@
 //     Figma source which shows Brief as two short paragraphs, not one.
 //   - sections: the repeatable right-column content blocks (heading + body
 //     + image) that the left-hand sticky Contents nav points at. Deliberately
-//     variable in length per project (see ProjectTopics.js) — count and
-//     body length below vary project-to-project on purpose, standing in for
-//     real case-study content of differing depth.
+//     variable in length per item (see ProjectTopics.js) — count and body
+//     length below vary item-to-item on purpose, standing in for real
+//     case-study/research content of differing depth.
 export const projects = [
   {
     slug: "project-01",
@@ -32,7 +39,7 @@ export const projects = [
     ctaLabel: "Lorem ipsum",
     caption: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
     featured: true,
-    ...buildProjectDetail(5, { closingBodyIndex: 2 }),
+    ...buildDetailFields(5, { closingBodyIndex: 2 }),
   },
   {
     slug: "project-02",
@@ -46,7 +53,7 @@ export const projects = [
     ctaLabel: "Lorem ipsum",
     caption: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
     featured: true,
-    ...buildProjectDetail(3),
+    ...buildDetailFields(3),
   },
   {
     slug: "project-03",
@@ -60,7 +67,7 @@ export const projects = [
     ctaLabel: "Lorem ipsum",
     caption: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
     featured: true,
-    ...buildProjectDetail(4),
+    ...buildDetailFields(4),
   },
   {
     slug: "project-04",
@@ -74,7 +81,7 @@ export const projects = [
     ctaLabel: "Lorem ipsum",
     caption: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
     featured: true,
-    ...buildProjectDetail(6),
+    ...buildDetailFields(6),
   },
   {
     slug: "project-05",
@@ -88,7 +95,7 @@ export const projects = [
     ctaLabel: "Lorem ipsum",
     caption: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
     featured: false,
-    ...buildProjectDetail(3),
+    ...buildDetailFields(3),
   },
   {
     slug: "project-06",
@@ -102,10 +109,16 @@ export const projects = [
     ctaLabel: "Lorem ipsum",
     caption: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
     featured: false,
-    ...buildProjectDetail(4),
+    ...buildDetailFields(4),
   },
 ];
  
+// research items now carry the same ...buildDetailFields(...) spread as
+// projects (added 2026-09-03, flagged: "the layout for individual research
+// project is not matching with the one we finalised for individual
+// project... replicate the same layout") — see the DETAIL PAGE FIELDS note
+// at the top of this file. research-01 demos closingBody, same as
+// project-01, so that content-block type is exercised here too.
 export const research = [
   {
     slug: "research-01",
@@ -114,6 +127,7 @@ export const research = [
     description:
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
     tag: "Lorem ipsum",
+    ...buildDetailFields(4, { closingBodyIndex: 1 }),
   },
   {
     slug: "research-02",
@@ -122,6 +136,7 @@ export const research = [
     description:
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
     tag: "Lorem ipsum",
+    ...buildDetailFields(3),
   },
   {
     slug: "research-03",
@@ -130,6 +145,7 @@ export const research = [
     description:
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
     tag: "Lorem ipsum",
+    ...buildDetailFields(5),
   },
   {
     slug: "research-04",
@@ -138,15 +154,16 @@ export const research = [
     description:
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
     tag: "Lorem ipsum",
+    ...buildDetailFields(3),
   },
 ];
  
-// Shared placeholder builder for the project-detail fields (see comment
-// block at the top of this file). Kept as a function — not static
-// per-project literals — specifically so section COUNT and body LENGTH can
-// vary project-to-project (some projects get a 2-paragraph body on one
+// Shared placeholder builder for the detail-page fields (see comment block
+// at the top of this file) — used by BOTH projects and research. Kept as a
+// function — not static per-item literals — specifically so section COUNT
+// and body LENGTH can vary item-to-item (some get a 2-paragraph body on one
 // section, matching the Figma source's own topic-2 example) without
-// hand-duplicating near-identical blocks 6 times.
+// hand-duplicating near-identical blocks a dozen times.
 // closingBodyIndex (added 2026-09-01, per direct instruction after spotting
 // "Lorem Ipsum Topic 3" newly added to Figma node 179:3614): a second
 // content-block TYPE the design now shows alongside the plain
@@ -157,7 +174,7 @@ export const research = [
 // real content sections will mix both types once real copy lands — pass
 // the 0-based section index that should demo it (see ProjectTopics.js for
 // the render side: `section.closingBody`, only rendered when present).
-function buildProjectDetail(sectionCount, { closingBodyIndex } = {}) {
+function buildDetailFields(sectionCount, { closingBodyIndex } = {}) {
   return {
     introLabel: "Title",
     intro:
