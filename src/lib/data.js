@@ -119,6 +119,17 @@ export const projects = [
 // project... replicate the same layout") — see the DETAIL PAGE FIELDS note
 // at the top of this file. research-01 demos closingBody, same as
 // project-01, so that content-block type is exercised here too.
+//
+// fullDescription/ctaLabel/caption added 2026-09-03, flagged: "the layout
+// for 'all research' is not what we intended. needs to be similar to
+// [/projects]" — the /research listing page now reuses ProjectRow.js
+// (always-expanded, expandable=false) instead of the compact ResearchRow,
+// so these items need the same three fields projects already carry for
+// that expanded card (fullDescription, ctaLabel, caption). Homepage
+// ResearchSection still uses the compact ResearchRow, unaffected — those
+// three fields are simply unused there. Same shared dummy-tier placeholder
+// strings projects use (identical across every project item already;
+// kept identical here for consistency, not a copy-paste oversight).
 export const research = [
   {
     slug: "research-01",
@@ -126,7 +137,11 @@ export const research = [
     title: "Lorem ipsum dolor",
     description:
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
+    fullDescription:
+      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. AeneanCum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.",
     tag: "Lorem ipsum",
+    ctaLabel: "Lorem ipsum",
+    caption: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
     ...buildDetailFields(4, { closingBodyIndex: 1 }),
   },
   {
@@ -135,7 +150,11 @@ export const research = [
     title: "Lorem ipsum dolor",
     description:
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
+    fullDescription:
+      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. AeneanCum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.",
     tag: "Lorem ipsum",
+    ctaLabel: "Lorem ipsum",
+    caption: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
     ...buildDetailFields(3),
   },
   {
@@ -144,7 +163,11 @@ export const research = [
     title: "Lorem ipsum dolor",
     description:
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
+    fullDescription:
+      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. AeneanCum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.",
     tag: "Lorem ipsum",
+    ctaLabel: "Lorem ipsum",
+    caption: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
     ...buildDetailFields(5),
   },
   {
@@ -153,7 +176,11 @@ export const research = [
     title: "Lorem ipsum dolor",
     description:
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
+    fullDescription:
+      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. AeneanCum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.",
     tag: "Lorem ipsum",
+    ctaLabel: "Lorem ipsum",
+    caption: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
     ...buildDetailFields(3),
   },
 ];
