@@ -1,17 +1,19 @@
 import Link from "next/link";
+import ResearchRow from "./ResearchRow";
 import Chevron from "./Chevron";
 import { research } from "@/lib/data";
  
 // Landing Page Section 3.0 — RESEARCH (design.md §3, Section 3.0).
-// Same visual row pattern as collapsed Projects rows, but the icon is a
-// direct link (no expand/collapse) and there's no "More Research" link
-// per design.md §1 (no separate Research listing page).
+// Row markup lives in ResearchRow.js (extracted 2026-09-03) — a direct link
+// (no expand/collapse), shared with the new /research "All" listing page.
 //
-// Spacing matches ProjectRow.js exactly (both pulled from the same Figma
-// row pattern, corrected 2026-08-20): fixed label column (not "auto" +
-// gap, which is what was closing the "01"-to-title gap), 18px title→
-// description with zero extra margin, 15px description→tag, flat 10px
-// row padding above/below the divider.
+// "More Research" link added 2026-09-03, flagged: "we need to add a 'More
+// Research' button after 'Research' section, the same way there is a 'More
+// Projects' section after 'Projects'." Reverses the original design.md §1
+// decision noted here previously ("no separate Research listing page") —
+// styled identically to ProjectsSection.js's "More Projects" link (same
+// classes: 56px/350px label-column offset, mt-[60px] below the last row's
+// divider) so the two sections read as one consistent pattern.
 export default function ResearchSection() {
   const featured = research.slice(0, 4);
  
@@ -25,7 +27,13 @@ export default function ResearchSection() {
           itself was lowered to 180px. Since ProjectsSection carries no
           trailing bottom space of its own (same convention as every other
           section on this site — the NEXT section's own top offset is the
-          entire gap), this pt- alone produces the full 180px. */}
+          entire gap), this pt- alone produces the full 180px. Unaffected by
+          the "More Research" link added below (2026-09-03): that link adds
+          height to the BOTTOM of this section, not the top, so the gap
+          this pt- controls (Projects -> Research) is unchanged; the gap
+          this section hands off to Timeline below is likewise still
+          entirely Timeline's own top offset to set, per the same
+          no-trailing-bottom-padding convention — verified unchanged. */}
       <div className="mx-auto max-w-[1440px] px-5 pt-[180px] sm:px-[30px] md:pt-28">
         <h2 className="border-b border-black pb-[10px] font-bold uppercase leading-[18px] tracking-normal">
           RESEARCH
@@ -33,29 +41,21 @@ export default function ResearchSection() {
  
         <div>
           {featured.map((item) => (
-            <Link
-              key={item.slug}
-              href={`/research/${item.slug}`}
-              className="grid w-full grid-cols-[56px_1fr_auto] items-start border-b border-black pt-[10px] pb-[10px] hover:opacity-70 transition-opacity md:grid-cols-[350px_1fr_auto]"
-            >
-              <span className="font-medium uppercase leading-[18px] tracking-normal">
-                {item.index}
-              </span>
-              <span className="flex flex-col gap-0">
-                <span className="font-semibold leading-[18px] tracking-[-0.5px]">
-                  {item.title}
-                </span>
-                <span className="font-normal leading-[18px] tracking-[-0.5px] line-clamp-1">
-                  {item.description}
-                </span>
-                <span className="mt-[15px] font-normal tracking-[-0.5px] text-muted">
-                  {item.tag}
-                </span>
-              </span>
-              <Chevron className="ml-4 mt-1 h-3 w-3 shrink-0 md:ml-6" />
-            </Link>
+            <ResearchRow key={item.slug} item={item} />
           ))}
         </div>
+ 
+        {/* Mirrors ProjectsSection.js's "More Projects" link exactly — same
+            60px gap below the last row's divider, same label-column-aligned
+            indent (56px mobile / 350px desktop, matching the row titles
+            above it, not the "01"-"04" index column). */}
+        <Link
+          href="/research"
+          className="ml-[56px] mt-[60px] inline-flex items-center gap-1 font-bold uppercase tracking-normal hover:opacity-60 transition-opacity md:ml-[350px]"
+        >
+          More Research
+          <Chevron className="h-2.5 w-2.5" />
+        </Link>
       </div>
     </section>
   );
