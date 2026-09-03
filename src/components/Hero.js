@@ -109,8 +109,35 @@ export default function Hero() {
       <div className="flex h-full flex-col justify-center px-5 sm:px-[30px] md:hidden">
         {/* Flagged 2026-09-02: shifted 100px up from dead-center, per direct
             instruction — the set stays centered as its baseline position,
-            this is a deliberate offset on top of that, not a re-centering. */}
-        <div className="-translate-y-[100px]">
+            this is a deliberate offset on top of that, not a re-centering.
+ 
+            Changed from -translate-y-[100px] to relative + -top-[100px]
+            (2026-09-03, flagged: "both the lines look visually different.
+            it should look the same if its 1px" — the quote's divider vs.
+            the "PROJECTS" heading's divider). Root cause: Tailwind's
+            translate utility compiles to the CSS `translate` property,
+            which — like `transform` — promotes this subtree onto its own
+            GPU compositing layer. On phones with a non-integer device
+            pixel ratio, the compositor can position that layer at a
+            fractional device pixel even when the CSS position is a whole
+            number, which anti-aliases/blurs any 1px border inside it (the
+            divider below). `position: relative` + `top` produces the
+            IDENTICAL visual offset — it's a layout-neutral, post-flow
+            shift exactly like transform, doesn't affect the parent's
+            justify-center math, doesn't affect sibling layout — but it's
+            resolved by the normal layout/paint pipeline instead of the
+            compositor, so the browser pixel-snaps it like every other
+            un-transformed element on the page (e.g. the "PROJECTS"
+            divider). Net effect: identical 100px-up position, crisp
+            border. (A straight swap to a negative margin-top was
+            considered and rejected — inside this flex `justify-center`
+            parent, a negative margin only shifts the rendered box by
+            HALF its value, since it's counted twice in the centering
+            math; that would have silently changed the shift from 100px
+            to 50px. `relative`/`top` has no such interaction, since it
+            never enters the box-model/layout calculation at all — same
+            as transform.) */}
+        <div className="relative -top-[100px]">
           <p className="font-semibold tracking-[-0.375px] text-black">
             {HERO_QUOTE_HEADING}
           </p>
