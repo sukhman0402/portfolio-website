@@ -22,17 +22,28 @@ import Chevron from "./Chevron";
 // not what we intended. needs to be similar to [the /projects listing
 // page]") — this component is now ALSO used by /research (always-expanded,
 // same as /projects) so the "all research" listing visually matches "all
-// projects" exactly: full description, image placeholder, tag + CTA row,
-// caption. Only the CTA's destination differs between the two routes,
-// hence this prop instead of the hardcoded "/projects" it used to have.
-// research items in data.js were extended with the same
-// fullDescription/ctaLabel/caption fields projects already carry so this
-// component needs zero per-content-type branching.
+// projects" exactly: full description, image placeholder, tag + CTA row.
+// Only the CTA's destination differs between the two routes, hence this
+// prop instead of the hardcoded "/projects" it used to have. research
+// items in data.js were extended with the same fullDescription/ctaLabel
+// fields projects already carry so this component needs zero
+// per-content-type branching. (caption field still exists on both content
+// types in data.js but is no longer rendered here — see the note further
+// down where it used to be shown.)
 export default function ProjectRow({ project, expandable = true, basePath = "/projects" }) {
   const [open, setOpen] = useState(!expandable);
  
   return (
-    <div className="border-b border-black pt-[10px] pb-[10px] first:border-t">
+    // pb-0 when open (2026-09-03, flagged directly: "remove the grey text
+    // [caption] in dropdown... instead we will extend the placeholder image
+    // [to meet] the horizontal line") — the caption span below the image
+    // placeholder is gone (see below), so the image is now the last thing
+    // in the open card. Per the site-wide "image + line = 0px, text + line
+    // = 10px" rule (already established in ProjectTopics.js for the same
+    // image-ending case), the row's own trailing pb- drops to 0 so the
+    // image's bottom edge sits flush against this row's closing divider.
+    // Collapsed (tag-only, no image) rows are untouched — still pb-[10px].
+    <div className={`border-b border-black pt-[10px] first:border-t ${open ? "pb-0" : "pb-[10px]"}`}>
       <button
         type="button"
         onClick={() => expandable && setOpen((v) => !v)}
@@ -85,7 +96,7 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
         )}
       </button>
  
-      {/* Tag row + (when open) CTA + caption — mirrors the label column /
+      {/* Tag row + (when open) CTA + image — mirrors the label column /
           content column split used throughout the Figma layout. Same
           first-column width as the row above (fixed px, not "auto" on an
           empty spacer — an empty span has zero intrinsic width, so the two
@@ -121,13 +132,18 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
                   "Project image placeholder" to "Content image placeholder"
                   (2026-09-03) now that this component is also used by the
                   /research listing — matches the generic wording
-                  ProjectTopics.js already uses for the same reason. */}
+                  ProjectTopics.js already uses for the same reason.
+ 
+                  The caption span that used to follow this (project.caption)
+                  was removed 2026-09-03, flagged directly: "remove the grey
+                  text... instead we will extend the placeholder image [to
+                  meet] the horizontal line" — this placeholder is now the
+                  last element in the open card, its bottom edge flush
+                  against the row's own closing divider (see the pb-0
+                  on the row wrapper above, when open). */}
               <div className="mt-2 flex h-48 w-full items-center justify-center rounded-sm bg-tile text-xs text-black/40 md:h-72">
                 Content image placeholder — position unconfirmed (design.md §8.1)
               </div>
-              <span className="font-normal tracking-[-0.5px] text-muted">
-                {project.caption}
-              </span>
             </>
           )}
         </div>
