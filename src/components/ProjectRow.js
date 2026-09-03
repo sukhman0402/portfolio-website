@@ -17,7 +17,18 @@ import Chevron from "./Chevron";
 //
 // expandable=true  -> homepage: collapsed one-liner, click to expand in place
 // expandable=false -> /projects listing: always renders the expanded card
-export default function ProjectRow({ project, expandable = true }) {
+//
+// basePath (added 2026-09-03, flagged: "the layout for 'all research' is
+// not what we intended. needs to be similar to [the /projects listing
+// page]") — this component is now ALSO used by /research (always-expanded,
+// same as /projects) so the "all research" listing visually matches "all
+// projects" exactly: full description, image placeholder, tag + CTA row,
+// caption. Only the CTA's destination differs between the two routes,
+// hence this prop instead of the hardcoded "/projects" it used to have.
+// research items in data.js were extended with the same
+// fullDescription/ctaLabel/caption fields projects already carry so this
+// component needs zero per-content-type branching.
+export default function ProjectRow({ project, expandable = true, basePath = "/projects" }) {
   const [open, setOpen] = useState(!expandable);
  
   return (
@@ -88,7 +99,7 @@ export default function ProjectRow({ project, expandable = true }) {
                 {project.tag}
               </span>
               <Link
-                href={`/projects/${project.slug}`}
+                href={`${basePath}/${project.slug}`}
                 className="flex items-center gap-1 font-semibold tracking-[-0.5px] hover:opacity-60 transition-opacity"
               >
                 {project.ctaLabel}
@@ -104,11 +115,15 @@ export default function ProjectRow({ project, expandable = true }) {
           {open && (
             <>
               {/* ⚠️ design.md §3a: Figma reserves an empty ~400px region here,
-                  inferred to be the project's cover image — not confirmed.
-                  Rendered as a placeholder block so the gap is visible and
-                  easy to swap for a real image once confirmed. */}
+                  inferred to be the cover image — not confirmed. Rendered as
+                  a placeholder block so the gap is visible and easy to swap
+                  for a real image once confirmed. Label reworded from
+                  "Project image placeholder" to "Content image placeholder"
+                  (2026-09-03) now that this component is also used by the
+                  /research listing — matches the generic wording
+                  ProjectTopics.js already uses for the same reason. */}
               <div className="mt-2 flex h-48 w-full items-center justify-center rounded-sm bg-tile text-xs text-black/40 md:h-72">
-                Project image placeholder — position unconfirmed (design.md §8.1)
+                Content image placeholder — position unconfirmed (design.md §8.1)
               </div>
               <span className="font-normal tracking-[-0.5px] text-muted">
                 {project.caption}
