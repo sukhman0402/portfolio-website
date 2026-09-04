@@ -67,7 +67,7 @@ export default function AboutSection() {
               both land at the same baseline on desktop. border-t + pt-[10px]
               on both breakpoints since this is a brand-new element, not an
               existing desktop value being preserved. */}
-          <div className="grid grid-cols-1 gap-[28px] border-t border-black pt-[10px] md:grid-cols-3 md:gap-x-[20px] md:pt-[10px]">
+          <div className="grid grid-cols-1 gap-[28px] border-t-2 border-black pt-[10px] md:grid-cols-3 md:gap-x-[20px] md:pt-[10px]">
             {/* gap-[28px] (was gap-8/32px) — flagged 2026-09-02: paragraph
                 -> paragraph rule, matching the Brief paragraph-break gap
                 (confirmed 28px = one blank line). Mobile only — desktop's
@@ -122,7 +122,7 @@ export default function AboutSection() {
               mobile; standardized to 10px to match. */}
           <div className="grid grid-cols-1 gap-x-10 gap-y-0 md:grid-cols-3 md:gap-x-[20px] md:gap-y-0">
             {principles.map((p, i) => (
-              <div key={i} className="border-t border-black pt-[10px]">
+              <div key={i} className="border-t-2 border-black pt-[10px]">
                 <p className="font-semibold tracking-[-0.5px]">{p.title}</p>
                 <p className="font-normal tracking-[-0.5px] text-muted">
                   {p.description}
@@ -158,7 +158,7 @@ export default function AboutSection() {
               (was pt-3/12px on mobile). */}
           <div className="grid grid-cols-1 gap-x-10 gap-y-10 md:grid-cols-3 md:gap-x-[20px]">
             {workflowCategories.map((cat) => (
-              <div key={cat.label} className="border-t border-black pt-[10px]">
+              <div key={cat.label} className="border-t-2 border-black pt-[10px]">
                 <p className="font-semibold uppercase tracking-[-0.5px]">
                   {cat.label}
                 </p>
@@ -241,7 +241,7 @@ export default function AboutSection() {
                   // same site-wide "line, then text" fix as How I
                   // Function/My Workflow above (was pt-3/12px on mobile).
                   return (
-                    <div key={i} className="border-t border-black pt-[10px]">
+                    <div key={i} className="border-t-2 border-black pt-[10px]">
                       <p className="font-semibold tracking-[-0.5px]">
                         {entry.title}
                       </p>
@@ -272,7 +272,7 @@ export default function AboutSection() {
                     (they sit side by side there, so it's never adjacent to
                     another column's opening line). */}
                 <div
-                  className={`border-t border-black ${
+                  className={`border-t-2 border-black ${
                     colIdx !== journeyEntries.length - 1 ? "hidden md:block" : ""
                   }`}
                   aria-hidden="true"
