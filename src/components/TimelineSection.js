@@ -92,6 +92,26 @@ import { timelineClusters, timelinePoints } from "@/lib/data";
 //   hit-target is also now 2px wider on each side than its visible bar
 //   (TICK_CLICK_PADDING below), since the bars themselves are only
 //   1-2px wide and were hard to hit precisely.
+//
+// ROUND 3 FIXES (2026-09-04, direct instruction):
+//   Mobile — the browser's native horizontal scrollbar under the ticks
+//   is now hidden (globals.css .no-scrollbar; the track itself is still
+//   scrollable, only the OS-drawn bar chrome is gone), non-selected
+//   ticks are now #bbbbbb/text-muted instead of solid black (only the
+//   centered/selected one stays black), and the "TIMELINE" title's
+//   tracking changed from a one-off -1.5px to tracking-normal, matching
+//   every other landing-page section heading (Research/Projects/About/
+//   Footer all use tracking-normal — -1.5px had no match anywhere else
+//   on the site).
+//   Desktop — same non-selected/hover-are-#bbbbbb rule applies to the
+//   tick marks themselves (previously every tick rendered solid black
+//   regardless of state; only its height/width changed on
+//   hover/selection). Only the truly selected point's bar is black now;
+//   both the plain-default and the hovered-but-not-selected bars are
+//   text-muted's #bbbbbb — the tall/short sizing still carries the
+//   hover/selection distinction visually. TICK_CLICK_PADDING also grew
+//   from 2px to 5px per direct instruction ("still small... extend...
+//   by 5px").
 const DEFAULT_POINT =
   timelinePoints.find((p) => p.defaultSelected) ?? timelinePoints[0];
  
@@ -100,7 +120,7 @@ const MOBILE_ITEM_WIDTH = 56; // px — 7 * 56 = 392px, close to the site's 402p
 const MOBILE_EDGE_SPACERS = Math.floor(MOBILE_VISIBLE_COUNT / 2); // empty slots on each end so the first/last real point can still scroll to center
  
 const CLUSTER_HOVER_PADDING = 15; // px, each side — sizes the invisible per-cluster hover region beyond its outermost ticks. Not a Figma number (nothing about hover regions is specified there) — sized to roughly match the red boxes in your reference screenshot; adjust if you want it tighter/looser.
-const TICK_CLICK_PADDING = 2; // px, each side — per direct instruction: extends each point's click/hover hit-target 2px beyond its visible bar.
+const TICK_CLICK_PADDING = 5; // px, each side — per direct instruction (round 3): extends each point's click/hover hit-target 5px beyond its visible bar (was 2px in round 2, still reported as too small).
  
 // One group per year-cluster: its own points plus the invisible hover
 // region's bounds (in the same "relative to the 1380px content box"
@@ -131,7 +151,7 @@ export default function TimelineSection() {
   return (
     <section className="w-full">
       <div className="mx-auto max-w-[1440px] px-5 pt-[180px] sm:px-[30px] md:pt-28">
-        <h2 className="font-bold uppercase tracking-[-1.5px] text-black">
+        <h2 className="font-bold uppercase tracking-normal text-black">
           Timeline
         </h2>
         <div className="mt-[10px] border-t-2 border-black" />
@@ -167,15 +187,15 @@ export default function TimelineSection() {
                   }
                 >
                   {group.points.map((point) => {
-                    const tall =
-                      point.id === selectedId || point.id === hoveredId;
+                    const isSelected = point.id === selectedId;
+                    const tall = isSelected || point.id === hoveredId;
                     const visualWidth = tall ? 2 : 1;
                     const hitWidth = visualWidth + TICK_CLICK_PADDING * 2;
                     return (
                       <button
                         key={point.id}
                         type="button"
-                        aria-pressed={point.id === selectedId}
+                        aria-pressed={isSelected}
                         aria-label={`${group.year} timeline point ${point.id}`}
                         onMouseEnter={() => setHoveredId(point.id)}
                         onMouseLeave={() =>
@@ -199,8 +219,14 @@ export default function TimelineSection() {
                           height: 40,
                         }}
                       >
+                        {/* Only the truly selected point is black — a
+                            non-selected point stays #bbbbbb/bg-muted
+                            whether it's hovered or plain default; the
+                            tall/short sizing above still carries the
+                            hover distinction (round 3 direct
+                            instruction). */}
                         <span
-                          className={`bg-black ${tall ? "h-[40px] w-[2px]" : "h-[20px] w-px"}`}
+                          className={`${isSelected ? "bg-black" : "bg-muted"} ${tall ? "h-[40px] w-[2px]" : "h-[20px] w-px"}`}
                         />
                       </button>
                     );
@@ -345,7 +371,7 @@ function TimelineMobileTrack({ selectedId, onSelect }) {
         <div
           ref={trackRef}
           onScroll={handleScroll}
-          className="flex snap-x snap-mandatory overflow-x-auto"
+          className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto"
         >
           {Array.from({ length: MOBILE_EDGE_SPACERS }).map((_, i) => (
             <div
@@ -364,7 +390,12 @@ function TimelineMobileTrack({ selectedId, onSelect }) {
               className="flex h-[40px] shrink-0 snap-center items-center justify-center"
               style={{ width: MOBILE_ITEM_WIDTH }}
             >
-              <span className="h-[20px] w-px bg-black" />
+              {/* Non-selected ticks are #bbbbbb/bg-muted; only the one
+                  currently centered under the fixed marker (i.e.
+                  selected) is black (round 3 direct instruction). */}
+              <span
+                className={`h-[20px] w-px ${point.id === selectedId ? "bg-black" : "bg-muted"}`}
+              />
             </button>
           ))}
           {Array.from({ length: MOBILE_EDGE_SPACERS }).map((_, i) => (
