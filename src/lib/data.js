@@ -247,3 +247,102 @@ export function getResearchBySlug(slug) {
   return research.find((r) => r.slug === slug);
 }
  
+// Timeline (Landing Page Section 4.0, redesigned 2026-09-04 — see
+// src/components/TimelineSection.js) — pixel-exact point positions pulled
+// directly from Figma nodes 360:1550 (default), 364:1649 (hover),
+// 376:9343 (after-click), fileKey 2yjcklO1oFjK8rICoeBD67. Per direct
+// instruction ("the section should be the exact replication of my design
+// in Figma file... do not change [spacing] on your own"), every `x` below
+// is the tick's raw Figma left-coordinate minus 30 (the frame's own
+// left/right padding, already supplied by this component's
+// `sm:px-[30px]` wrapper on the desktop branch — see TimelineSection.js
+// for how these map onto the 1380px-wide content box at the 1440px
+// desktop canvas Figma was authored at).
+//
+// 44 points, grouped into 7 clusters by gap size (25px within a cluster,
+// 65px between clusters, both confirmed directly off the raw coordinates
+// — not a rounding choice). `cluster` is the 0-based index into
+// timelineClusters below, used to brighten that cluster's year label
+// whenever one of its points is hovered/selected (confirmed by comparing
+// all three Figma frames: hovering/selecting any point in a cluster
+// affects that cluster's single shared label, not a per-point label).
+// id 13 (x:478) is the point shown selected by default in node 360:1550
+// — this is the "one event already clicked" visual cue from the original
+// task description, so the component should initialize its selection to
+// this id.
+export const timelinePoints = [
+  { id: 1, x: 58, cluster: 0 },
+  { id: 2, x: 83, cluster: 0 },
+  { id: 3, x: 108, cluster: 0 },
+  { id: 4, x: 173, cluster: 1 },
+  { id: 5, x: 198, cluster: 1 },
+  { id: 6, x: 223, cluster: 1 },
+  { id: 7, x: 248, cluster: 1 },
+  { id: 8, x: 313, cluster: 2 },
+  { id: 9, x: 338, cluster: 2 },
+  { id: 10, x: 363, cluster: 2 },
+  { id: 11, x: 428, cluster: 3 },
+  { id: 12, x: 453, cluster: 3 },
+  { id: 13, x: 478, cluster: 3, defaultSelected: true },
+  { id: 14, x: 503, cluster: 3 },
+  { id: 15, x: 568, cluster: 4 },
+  { id: 16, x: 593, cluster: 4 },
+  { id: 17, x: 618, cluster: 4 },
+  { id: 18, x: 643, cluster: 4 },
+  { id: 19, x: 668, cluster: 4 },
+  { id: 20, x: 693, cluster: 4 },
+  { id: 21, x: 718, cluster: 4 },
+  { id: 22, x: 743, cluster: 4 },
+  { id: 23, x: 808, cluster: 5 },
+  { id: 24, x: 833, cluster: 5 },
+  { id: 25, x: 858, cluster: 5 },
+  { id: 26, x: 883, cluster: 5 },
+  { id: 27, x: 908, cluster: 5 },
+  { id: 28, x: 933, cluster: 5 },
+  { id: 29, x: 958, cluster: 5 },
+  { id: 30, x: 983, cluster: 5 },
+  { id: 31, x: 1008, cluster: 5 },
+  { id: 32, x: 1033, cluster: 5 },
+  { id: 33, x: 1058, cluster: 5 },
+  { id: 34, x: 1123, cluster: 6 },
+  { id: 35, x: 1148, cluster: 6 },
+  { id: 36, x: 1173, cluster: 6 },
+  { id: 37, x: 1198, cluster: 6 },
+  { id: 38, x: 1223, cluster: 6 },
+  { id: 39, x: 1248, cluster: 6 },
+  { id: 40, x: 1273, cluster: 6 },
+  { id: 41, x: 1298, cluster: 6 },
+  { id: 42, x: 1323, cluster: 6 },
+  { id: 43, x: 1348, cluster: 6 },
+  { id: 44, x: 1373, cluster: 6 },
+].map((point) => ({
+  ...point,
+  // Shared dummy-tier placeholder (design.md §6) — literal Figma text,
+  // identical per point for the same reason data.js's other placeholder
+  // arrays keep identical copy across items (see buildDetailFields above):
+  // no real milestone content exists yet, and every point in every one of
+  // the three Figma frames shows this exact same info-panel copy
+  // regardless of which point is selected.
+  title: "Lorem ipsum dolor",
+  description:
+    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean",
+  tag: "Lorem ipsum",
+  metaTop: "Lorem ipsum",
+  metaBottom: "Lorem ipsum",
+}));
+ 
+// One shared label per cluster (literal "202X" in every Figma frame, not
+// varying per cluster — kept as-is, same reasoning as the point content
+// above). `x` is the label's raw Figma left-coordinate minus 30, same
+// convention as timelinePoints — confirmed to equal (first point in the
+// cluster).x - 51 for all 7 clusters, not independently eyeballed.
+export const timelineClusters = [
+  { year: "202X", x: 7 },
+  { year: "202X", x: 122 },
+  { year: "202X", x: 262 },
+  { year: "202X", x: 377 },
+  { year: "202X", x: 517 },
+  { year: "202X", x: 757 },
+  { year: "202X", x: 1072 },
+];
+ 
