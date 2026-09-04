@@ -64,6 +64,34 @@ import { timelineClusters, timelinePoints } from "@/lib/data";
 // scroll-snaps it to center). This is my own interaction build per your
 // spec, not a Figma replication — see TimelineMobileTrack below and the
 // MOBILE_* constants for the specific numbers chosen.
+//
+// ROUND 2 FIXES (2026-09-04, direct instruction from your annotated
+// screenshots):
+//   Mobile — the line→ticks and ticks→(new divider) gaps are now 170px
+//   each (previously 0 and absent), a NEW divider was added above the
+//   info panel at a 10px gap (previously missing entirely), the readout
+//   below the ticks now shows the selected point's year instead of an
+//   "N / 44" position counter, the info-panel layout was rebuilt to
+//   match your reference image (thumbnail+title row, description below,
+//   tag, then a stacked meta pair with a 15px gap above it), and the
+//   selection indicator is now a FIXED marker pinned at the horizontal
+//   center at all times — previously the tall tick was one of the 44
+//   scrolling buttons, so it visibly slid away from center mid-drag
+//   before the debounced selection caught up; now the 44 points render
+//   uniformly and simply pass underneath the fixed marker.
+//   Desktop — hovering used to be tracked per individual point, so
+//   moving the cursor across the ~25px gap BETWEEN two points in the
+//   same year-set briefly left every hit-target and flickered the
+//   "202X" label back to its default styling. Ticks are now grouped
+//   into an invisible per-cluster hover region (CLUSTER_GROUPS below,
+//   sized to roughly match your reference screenshot's red boxes) so
+//   the label only drops out of its hovered state when the cursor
+//   actually leaves that year-set's region — crossing into the next
+//   set's region, or the genuinely blank space between two sets,
+//   switches/clears it as expected. Each point's own click/hover
+//   hit-target is also now 2px wider on each side than its visible bar
+//   (TICK_CLICK_PADDING below), since the bars themselves are only
+//   1-2px wide and were hard to hit precisely.
 const DEFAULT_POINT =
   timelinePoints.find((p) => p.defaultSelected) ?? timelinePoints[0];
  
@@ -71,15 +99,34 @@ const MOBILE_VISIBLE_COUNT = 7;
 const MOBILE_ITEM_WIDTH = 56; // px — 7 * 56 = 392px, close to the site's 402px mobile reference frame (Hero.js's "Frame Size- Mobile" note) once the section's own side padding is accounted for.
 const MOBILE_EDGE_SPACERS = Math.floor(MOBILE_VISIBLE_COUNT / 2); // empty slots on each end so the first/last real point can still scroll to center
  
+const CLUSTER_HOVER_PADDING = 15; // px, each side — sizes the invisible per-cluster hover region beyond its outermost ticks. Not a Figma number (nothing about hover regions is specified there) — sized to roughly match the red boxes in your reference screenshot; adjust if you want it tighter/looser.
+const TICK_CLICK_PADDING = 2; // px, each side — per direct instruction: extends each point's click/hover hit-target 2px beyond its visible bar.
+ 
+// One group per year-cluster: its own points plus the invisible hover
+// region's bounds (in the same "relative to the 1380px content box"
+// coordinate space as point.x). Computed once at module load since
+// timelinePoints/timelineClusters are static imports, not per-render
+// state.
+const CLUSTER_GROUPS = timelineClusters.map((cluster, i) => {
+  const points = timelinePoints.filter((p) => p.cluster === i);
+  const minX = Math.min(...points.map((p) => p.x));
+  const maxX = Math.max(...points.map((p) => p.x));
+  return {
+    ...cluster,
+    index: i,
+    points,
+    left: minX - CLUSTER_HOVER_PADDING,
+    width: maxX - minX + CLUSTER_HOVER_PADDING * 2,
+  };
+});
+ 
 export default function TimelineSection() {
   const [selectedId, setSelectedId] = useState(DEFAULT_POINT.id);
   const [hoveredId, setHoveredId] = useState(null);
+  const [hoveredCluster, setHoveredCluster] = useState(null);
  
   const selectedPoint =
     timelinePoints.find((p) => p.id === selectedId) ?? DEFAULT_POINT;
-  const hoveredPoint = hoveredId
-    ? timelinePoints.find((p) => p.id === hoveredId)
-    : null;
  
   return (
     <section className="w-full">
@@ -91,10 +138,13 @@ export default function TimelineSection() {
  
         {/* MOBILE (below md) */}
         <div className="md:hidden">
-          <TimelineMobileTrack
-            selectedId={selectedId}
-            onSelect={setSelectedId}
-          />
+          <div className="mt-[170px]">
+            <TimelineMobileTrack
+              selectedId={selectedId}
+              onSelect={setSelectedId}
+            />
+          </div>
+          <div className="mt-[170px] border-t-2 border-black" />
           <TimelineInfoPanelMobile point={selectedPoint} />
         </div>
  
@@ -106,38 +156,63 @@ export default function TimelineSection() {
         <div className="hidden overflow-x-auto md:block">
           <div className="relative w-[1380px]">
             <div className="relative mt-[177px] h-[40px]">
-              {timelinePoints.map((point) => {
-                const active =
-                  point.id === selectedId || point.id === hoveredId;
-                return (
-                  <button
-                    key={point.id}
-                    type="button"
-                    aria-pressed={point.id === selectedId}
-                    aria-label={`${timelineClusters[point.cluster].year} timeline point ${point.id}`}
-                    onMouseEnter={() => setHoveredId(point.id)}
-                    onMouseLeave={() =>
-                      setHoveredId((v) => (v === point.id ? null : v))
-                    }
-                    onFocus={() => setHoveredId(point.id)}
-                    onBlur={() =>
-                      setHoveredId((v) => (v === point.id ? null : v))
-                    }
-                    onClick={() => setSelectedId(point.id)}
-                    className={`absolute top-1/2 -translate-y-1/2 bg-black ${
-                      active ? "h-[40px] w-[2px]" : "h-[20px] w-px"
-                    }`}
-                    style={{ left: point.x }}
-                  />
-                );
-              })}
+              {CLUSTER_GROUPS.map((group) => (
+                <div
+                  key={group.index}
+                  className="absolute top-0 h-full"
+                  style={{ left: group.left, width: group.width }}
+                  onMouseEnter={() => setHoveredCluster(group.index)}
+                  onMouseLeave={() =>
+                    setHoveredCluster((v) => (v === group.index ? null : v))
+                  }
+                >
+                  {group.points.map((point) => {
+                    const tall =
+                      point.id === selectedId || point.id === hoveredId;
+                    const visualWidth = tall ? 2 : 1;
+                    const hitWidth = visualWidth + TICK_CLICK_PADDING * 2;
+                    return (
+                      <button
+                        key={point.id}
+                        type="button"
+                        aria-pressed={point.id === selectedId}
+                        aria-label={`${group.year} timeline point ${point.id}`}
+                        onMouseEnter={() => setHoveredId(point.id)}
+                        onMouseLeave={() =>
+                          setHoveredId((v) => (v === point.id ? null : v))
+                        }
+                        onFocus={() => {
+                          setHoveredId(point.id);
+                          setHoveredCluster(group.index);
+                        }}
+                        onBlur={() => {
+                          setHoveredId((v) => (v === point.id ? null : v));
+                          setHoveredCluster((v) =>
+                            v === group.index ? null : v,
+                          );
+                        }}
+                        onClick={() => setSelectedId(point.id)}
+                        className="absolute top-1/2 flex -translate-y-1/2 items-center justify-center"
+                        style={{
+                          left: point.x - group.left - hitWidth / 2,
+                          width: hitWidth,
+                          height: 40,
+                        }}
+                      >
+                        <span
+                          className={`bg-black ${tall ? "h-[40px] w-[2px]" : "h-[20px] w-px"}`}
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
  
             <div className="relative mt-[10px] h-[18px]">
               {timelineClusters.map((cluster, i) => {
                 const isSelected = selectedPoint.cluster === i;
-                const isHovered =
-                  !isSelected && hoveredPoint && hoveredPoint.cluster === i;
+                const isHovered = !isSelected && hoveredCluster === i;
                 return (
                   <span
                     key={i}
@@ -196,6 +271,9 @@ function TimelineMobileTrack({ selectedId, onSelect }) {
   const trackRef = useRef(null);
   const settleTimeout = useRef(null);
  
+  const selectedPoint =
+    timelinePoints.find((p) => p.id === selectedId) ?? DEFAULT_POINT;
+ 
   const centerOffsetFor = useCallback(
     (index) =>
       (MOBILE_EDGE_SPACERS + index) * MOBILE_ITEM_WIDTH +
@@ -253,90 +331,90 @@ function TimelineMobileTrack({ selectedId, onSelect }) {
  
   return (
     <>
-      <div
-        ref={trackRef}
-        onScroll={handleScroll}
-        className="flex snap-x snap-mandatory overflow-x-auto"
-      >
-        {Array.from({ length: MOBILE_EDGE_SPACERS }).map((_, i) => (
-          <div
-            key={`spacer-start-${i}`}
-            className="shrink-0"
-            style={{ width: MOBILE_ITEM_WIDTH }}
-          />
-        ))}
-        {timelinePoints.map((point, index) => {
-          const active = point.id === selectedId;
-          return (
+      <div className="relative">
+        {/* Fixed center-selection marker, per direct instruction: "while
+            dragging horizontally, the black selection line of
+            points/events also moves. i want the black selection line to
+            stay at the centre at all times. other points/events move
+            behind it". pointer-events-none so it never intercepts taps
+            on the real buttons scrolling underneath it. */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-1/2 z-10 h-[40px] w-[2px] -translate-x-1/2 -translate-y-1/2 bg-black"
+        />
+        <div
+          ref={trackRef}
+          onScroll={handleScroll}
+          className="flex snap-x snap-mandatory overflow-x-auto"
+        >
+          {Array.from({ length: MOBILE_EDGE_SPACERS }).map((_, i) => (
+            <div
+              key={`spacer-start-${i}`}
+              className="shrink-0"
+              style={{ width: MOBILE_ITEM_WIDTH }}
+            />
+          ))}
+          {timelinePoints.map((point, index) => (
             <button
               key={point.id}
               type="button"
-              aria-pressed={active}
+              aria-pressed={point.id === selectedId}
               aria-label={`${timelineClusters[point.cluster].year} timeline point ${point.id}`}
               onClick={() => handlePointClick(index, point.id)}
               className="flex h-[40px] shrink-0 snap-center items-center justify-center"
               style={{ width: MOBILE_ITEM_WIDTH }}
             >
-              <span
-                className={`bg-black ${active ? "h-[40px] w-[2px]" : "h-[20px] w-px"}`}
-              />
+              <span className="h-[20px] w-px bg-black" />
             </button>
-          );
-        })}
-        {Array.from({ length: MOBILE_EDGE_SPACERS }).map((_, i) => (
-          <div
-            key={`spacer-end-${i}`}
-            className="shrink-0"
-            style={{ width: MOBILE_ITEM_WIDTH }}
-          />
-        ))}
+          ))}
+          {Array.from({ length: MOBILE_EDGE_SPACERS }).map((_, i) => (
+            <div
+              key={`spacer-end-${i}`}
+              className="shrink-0"
+              style={{ width: MOBILE_ITEM_WIDTH }}
+            />
+          ))}
+        </div>
       </div>
-      {/* Position readout (mt-[10px], same "line/track -> text" gap used
-          everywhere else on the site) — added after first-pass testing
-          showed that re-centering the newly-selected tick on every click
-          erases the only visual cue a point had changed (all 44 points
-          currently share identical placeholder copy, same as every one
-          of Figma's own three mock frames, so the info panel below can't
-          carry that feedback either). This is real UI chrome, not
-          placeholder content, so it's not standing in for anything that
-          needs to be swapped out later. */}
-      <p className="mt-[10px] text-center font-normal tracking-[-0.5px] text-muted">
-        {selectedId} / {timelinePoints.length}
+      {/* Readout below the ticks — now the selected point's year (was an
+          "N / 44" counter in the first pass; replaced per direct
+          instruction). Always the bold/black "selected" treatment since
+          it's reporting the current selection, same as desktop's active
+          cluster label. */}
+      <p className="mt-[10px] text-center font-semibold tracking-[-0.5px] text-black">
+        {timelineClusters[selectedPoint.cluster].year}
       </p>
     </>
   );
 }
  
-// Mobile info panel — same content/spacing rules as the desktop grid
-// (divider→content=10px, description→tag=15px, text→closing line=10px,
-// all already established site-wide) laid out in a fluid single column
-// instead of the desktop's fixed 1380px pixel grid, matching how
-// ProjectRow.js already adapts its own desktop grid down to mobile.
+// Mobile info panel — rebuilt per your reference screenshot: thumbnail +
+// title share a row, description runs full-width beneath, then tag,
+// then a stacked meta pair set off with a 15px gap above it. Still the
+// same site-wide spacing rules as the desktop grid
+// (divider→content=10px, description→tag=15px) just in a fluid single
+// column instead of the desktop's fixed 1380px pixel grid.
 function TimelineInfoPanelMobile({ point }) {
   return (
     <>
       <div className="mt-[10px] flex gap-4">
         <div className="h-12 w-12 shrink-0 bg-tile" />
         <div className="flex flex-1 flex-col">
-          <div className="flex items-baseline justify-between gap-4">
-            <p className="font-semibold tracking-[-0.5px] text-black">
-              {point.title}
-            </p>
-            <span className="shrink-0 font-normal tracking-[-0.5px] text-black">
-              {point.metaTop}
-            </span>
-          </div>
+          <p className="font-semibold tracking-[-0.5px] text-black">
+            {point.title}
+          </p>
           <p className="font-normal tracking-[-0.5px] text-black">
             {point.description}
           </p>
-          <div className="mt-[15px] flex items-baseline justify-between gap-4">
-            <span className="font-normal tracking-[-0.5px] text-muted">
-              {point.tag}
-            </span>
-            <span className="shrink-0 font-normal tracking-[-0.5px] text-muted">
-              {point.metaBottom}
-            </span>
-          </div>
+          <p className="mt-[15px] font-normal tracking-[-0.5px] text-muted">
+            {point.tag}
+          </p>
+          <p className="mt-[15px] font-normal tracking-[-0.5px] text-black">
+            {point.metaTop}
+          </p>
+          <p className="font-normal tracking-[-0.5px] text-muted">
+            {point.metaBottom}
+          </p>
         </div>
       </div>
       <div className="mt-[10px] border-t-2 border-black" />
