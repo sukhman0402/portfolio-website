@@ -71,7 +71,7 @@ export default function TimelineSection() {
               10px. mt-10 (the gap ABOVE this divider, from the stage-dots
               row) is untouched — that's a different kind of boundary, not
               covered by this rule. */}
-          <div className="mt-10 border-t border-black pt-[10px] md:pt-6 md:mt-14">
+          <div className="mt-10 border-t-2 border-black pt-[10px] md:pt-6 md:mt-14">
             <p className="font-semibold tracking-[-0.5px]">
               {activeStage.label} — {activeStage.year}
             </p>
