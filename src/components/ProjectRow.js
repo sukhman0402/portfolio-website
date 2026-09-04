@@ -43,7 +43,20 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
     // image-ending case), the row's own trailing pb- drops to 0 so the
     // image's bottom edge sits flush against this row's closing divider.
     // Collapsed (tag-only, no image) rows are untouched — still pb-[10px].
-    <div className={`border-b border-black pt-[10px] first:border-t ${open ? "pb-0" : "pb-[10px]"}`}>
+    //
+    // No first:border-t here (removed 2026-09-04, flagged directly: "the
+    // Projects/Research heading line needs to be 2px too, like the
+    // others"). Every place this component is used (ProjectsSection.js,
+    // /app/projects/page.js, /app/research/page.js) already renders a
+    // bordered heading/label row directly above this list with zero gap,
+    // so a first-row border-t here was a second, independently-declared
+    // border sitting flush against the heading's own border-b — the two
+    // stacked into what looked like one ~doubled-weight line. Dropping it
+    // makes the heading boundary a single clean line at the same width as
+    // every other divider on the site, matching ResearchRow.js (used by
+    // the homepage's Research teaser), which never had this first-row
+    // border to begin with — that section never showed the doubling.
+    <div className={`border-b-2 border-black pt-[10px] ${open ? "pb-0" : "pb-[10px]"}`}>
       <button
         type="button"
         onClick={() => expandable && setOpen((v) => !v)}
