@@ -7,6 +7,13 @@
   --tile: #d9d9d9;
   --footer-band: #f3f3f3;
   --accent: #ef0000;
+  /* Timeline's default/inactive year-label color (Section 4.0 redesign,
+     2026-09-04, Figma node 360:1550) — no existing token was this exact
+     shade (lighter than --muted's #bbb), so it's added here rather than
+     used as a raw arbitrary hex, following the same
+     --tile/--footer-band precedent of naming one-off Figma colors as
+     tokens instead of inlining them. */
+  --faint: #e9e9e9;
  
   /* SF Pro is Apple system-proprietary and can't be licensed for web
      self-hosting. -apple-system/BlinkMacSystemFont render as real San
@@ -30,6 +37,7 @@
   --color-tile: var(--tile);
   --color-footer-band: var(--footer-band);
   --color-accent: var(--accent);
+  --color-faint: var(--faint);
   --font-sans: var(--font-system);
 }
  
