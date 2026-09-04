@@ -18,7 +18,7 @@ export default function ResearchRow({ item }) {
   return (
     <Link
       href={`/research/${item.slug}`}
-      className="grid w-full grid-cols-[56px_1fr_auto] items-start border-b border-black pt-[10px] pb-[10px] hover:opacity-70 transition-opacity md:grid-cols-[350px_1fr_auto]"
+      className="grid w-full grid-cols-[56px_1fr_auto] items-start border-b-2 border-black pt-[10px] pb-[10px] hover:opacity-70 transition-opacity md:grid-cols-[350px_1fr_auto]"
     >
       <span className="font-medium uppercase leading-[18px] tracking-normal">
         {item.index}
