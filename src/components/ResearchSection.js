@@ -35,7 +35,7 @@ export default function ResearchSection() {
           entirely Timeline's own top offset to set, per the same
           no-trailing-bottom-padding convention — verified unchanged. */}
       <div className="mx-auto max-w-[1440px] px-5 pt-[180px] sm:px-[30px] md:pt-28">
-        <h2 className="border-b border-black pb-[10px] font-bold uppercase leading-[18px] tracking-normal">
+        <h2 className="border-b-2 border-black pb-[10px] font-bold uppercase leading-[18px] tracking-normal">
           RESEARCH
         </h2>
  
