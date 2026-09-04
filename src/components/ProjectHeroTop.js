@@ -64,7 +64,7 @@ export default function ProjectHeroTop({ project }) {
             bottom edge touches this divider directly. Desktop's own
             near-flush 2px (documented above as "near-zero, negligible, not
             a real design interval," measured off Figma) is left as-is. */}
-        <div className="mt-0 border-t border-black md:mt-[2px]" />
+        <div className="mt-0 border-t-2 border-black md:mt-[2px]" />
  
         {/* pt-[10px] (was pt-4/16px, mobile only, md:pt-[9px] unchanged) —
             flagged 2026-09-02: site-wide "line, then text" rule — this
@@ -96,7 +96,7 @@ export default function ProjectHeroTop({ project }) {
  
         {/* mt-[10px] (was mt-8/32px, mobile only) — flagged 2026-09-02:
             info-row -> divider gap, "text, then line" rule. */}
-        <div className="mt-[10px] border-t border-black md:mt-[10px]" />
+        <div className="mt-[10px] border-t-2 border-black md:mt-[10px]" />
  
         {/* Brief */}
         {/* pt-[10px] (was pt-4/16px, mobile only) — same divider -> text
@@ -115,7 +115,7 @@ export default function ProjectHeroTop({ project }) {
             the divider ProjectTopics.js's first content section sits below
             (that component's own first section carries no border-t of its
             own, see the note there). */}
-        <div className="mt-[10px] border-t border-black md:mt-[10px]" />
+        <div className="mt-[10px] border-t-2 border-black md:mt-[10px]" />
       </div>
     </>
   );
