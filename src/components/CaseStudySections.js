@@ -10,7 +10,7 @@ export default function CaseStudySections({ sections }) {
         <section
           key={section.heading}
           className={`grid grid-cols-1 gap-4 py-10 md:grid-cols-[350px_1fr] md:gap-10 md:py-12 ${
-            i !== 0 ? "border-t border-black" : "pt-14 md:pt-20"
+            i !== 0 ? "border-t-2 border-black" : "pt-14 md:pt-20"
           }`}
         >
           <h2 className="font-bold uppercase tracking-normal">
@@ -24,3 +24,4 @@ export default function CaseStudySections({ sections }) {
     </div>
   );
 }
+ 
