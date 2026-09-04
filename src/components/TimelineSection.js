@@ -172,8 +172,14 @@ export default function TimelineSection() {
             the outer wrapper is a non-destructive safety net only for the
             768–1439px range the Figma frame never defined (it's a fixed
             1440px canvas) — at >=1440px this content box is exactly
-            1380px and never needs to scroll. */}
-        <div className="hidden overflow-x-auto md:block">
+            1380px and never needs to scroll. ROUND 4 (2026-09-04, direct
+            instruction: "there is a horizontal scroll in the information
+            section... remove it"): the browser's native scrollbar for
+            that safety net was visible below ~1440px viewports. Same fix
+            as the mobile carousel's own no-scrollbar class — hides the
+            OS-drawn scrollbar chrome, the div is still scrollable so
+            narrower desktop windows aren't otherwise broken. */}
+        <div className="no-scrollbar hidden overflow-x-auto md:block">
           <div className="relative w-[1380px]">
             <div className="relative mt-[177px] h-[40px]">
               {CLUSTER_GROUPS.map((group) => (
