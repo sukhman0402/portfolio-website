@@ -136,7 +136,7 @@ export default function Footer() {
           <p className="font-semibold tracking-[-0.375px] text-black">
             {QUOTE_HEADING}
           </p>
-          <div className="mt-[10px] border-t border-black" />
+          <div className="mt-[10px] border-t-2 border-black" />
           <p className="mt-[10px] whitespace-pre-wrap font-semibold tracking-[-0.5px] text-black">
             {QUOTE_TEXT}
           </p>
@@ -158,7 +158,7 @@ export default function Footer() {
  
           {/* Divider — 10px below the label row (Figma: label top 180 + 18
               tall -> divider at 208, i.e. 10px gap) */}
-          <div className="mt-[10px] border-t border-black" />
+          <div className="mt-[10px] border-t-2 border-black" />
  
           {/* Row 2 — heading + quote, 15px semibold, 10px below the divider
               (Figma: divider at 208 -> row at 218). Quote text (right
@@ -197,7 +197,7 @@ export default function Footer() {
               row 1's own pt-[10px] below already supplies the 10px from
               this new line down to "E-mail" (adding one here too would
               double it to 20px). */}
-          <dl className="border-t border-black divide-y divide-black md:border-t-0">
+          <dl className="border-t-2 border-black divide-y-2 divide-black md:border-t-0">
             {CONTACT_ROWS.map((row, i) => (
               // Row layout: flex-row/items-baseline/justify-between/gap-6
               // unconditional (was gated behind sm:, so it only kicked in
