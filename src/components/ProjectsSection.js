@@ -14,7 +14,7 @@ export default function ProjectsSection() {
           100px upward shift (previous round) opened up beneath it.
           Desktop is untouched (md:mt-0). */}
       <div className="mx-auto max-w-[1440px] px-5 pt-20 sm:px-[30px] md:pt-28">
-        <h2 className="border-b border-black pb-[10px] font-bold uppercase leading-[18px] tracking-normal">
+        <h2 className="border-b-2 border-black pb-[10px] font-bold uppercase leading-[18px] tracking-normal">
           Projects
         </h2>
  
