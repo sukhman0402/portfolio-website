@@ -158,7 +158,7 @@ export default function ProjectTopics({ sections }) {
               key={section.id}
               id={section.id}
               className={`scroll-mt-24 pt-[10px] ${
-                i !== 0 ? "border-t border-black" : ""
+                i !== 0 ? "border-t-2 border-black" : ""
               } ${section.closingBody ? "pb-[10px]" : ""}`}
             >
               <h2 className="font-bold uppercase tracking-[-1px]">
