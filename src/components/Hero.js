@@ -141,7 +141,7 @@ export default function Hero() {
           <p className="font-semibold tracking-[-0.375px] text-black">
             {HERO_QUOTE_HEADING}
           </p>
-          <div className="mt-[10px] border-t border-black" />
+          <div className="mt-[10px] border-t-2 border-black" />
           <p className="mt-[10px] whitespace-pre-wrap font-semibold tracking-[-0.5px] text-black">
             {HERO_QUOTE_TEXT}
           </p>
@@ -190,7 +190,7 @@ export default function Hero() {
  
         {/* Divider — 10px below the label row (Figma: label top 366 + 18
             tall -> divider at 394, i.e. 10px gap) */}
-        <div className="mt-[10px] border-t border-black" />
+        <div className="mt-[10px] border-t-2 border-black" />
  
         {/* Row 2 — heading + quote, 15px semibold, 10px below the divider
             (Figma: divider at 394 -> row at 404). Quote text (right
