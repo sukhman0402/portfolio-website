@@ -12,10 +12,12 @@ import {
 // Figma node 252:1420 (fresh metadata — node IDs regenerate on file edits;
 // this was 241:462 earlier in the same day before another Figma edit).
 // Every offset below is a literal Figma coordinate, not an approximation:
-//   - Timeline → About Me gap: 249px (this block sits further from the
-//     section above it than every other section transition on the site —
-//     confirmed via screenshot, it's genuine breathing room, not a missing
-//     image).
+//   - Timeline → About Me gap: originally 249px, this block sitting
+//     further from the section above it than every other section
+//     transition on the site (confirmed via screenshot, it's genuine
+//     breathing room, not a missing image) — superseded 2026-09-05 by
+//     direct instruction to 300px desktop (see the md:pt-[300px] comment
+//     below); mobile's separate 180px rule is untouched.
 //   - Content-column gutter: 20px (column x = 380/730/1080, width 330 each
 //     — NOT the 40px "gap-10" this file used before).
 //   - Label column ↔ content column: 0px extra gap. The 350px column width
@@ -39,22 +41,32 @@ export default function AboutSection() {
     <section id="about" className="w-full scroll-mt-24">
       <div className="mx-auto max-w-[1440px] px-5 sm:px-[30px]">
         {/* About Me */}
-        {/* pt-[180px] (mobile only, md:pt-[249px] unchanged) — same
-            site-wide inter-section rule as Research/Timeline, flagged
-            2026-09-02, revised same day from 300px down to 180px (see
-            ResearchSection.js for the full note). This is the TOP-LEVEL
-            Timeline -> About boundary only. The other 3 subsections below
-            (How I Function, My Workflow, Along the Journey) have their own
-            separate mobile spacing — see the pt-[164px] note on each,
-            flagged the same day: increased 100px beyond their prior pt-16
-            (64px), which is a different, unrelated adjustment from this
-            section-to-section 300->180px change. */}
+        {/* pt-[180px] (mobile only) — same site-wide inter-section rule as
+            Research/Timeline, flagged 2026-09-02, revised same day from
+            300px down to 180px (see ResearchSection.js for the full
+            note). This is the TOP-LEVEL Timeline -> About boundary only.
+            The other 3 subsections below (How I Function, My Workflow,
+            Along the Journey) have their own separate mobile spacing —
+            see the pt-[164px] note on each, flagged the same day:
+            increased 100px beyond their prior pt-16 (64px), which is a
+            different, unrelated adjustment from this section-to-section
+            300->180px change.
+ 
+            md:pt-[300px] — 2026-09-05 direct instruction: "spacing
+            between 'Timeline' section and 'About Me' section to be
+            300px" (desktop only, per your follow-up — mobile's
+            pt-[180px] above is untouched). Was md:pt-[249px], the
+            Figma-measured value this file's top comment documents;
+            superseded here per this direct instruction. Same
+            no-trailing-bottom-padding convention still applies (Timeline
+            itself adds no bottom space of its own), so this one value is
+            still the entire desktop Timeline -> About Me gap. */}
         {/* gap-[10px] (was gap-6/24px) — flagged 2026-09-02: "About Me" title
             -> divider rule, same "line, then text" family as How I
             Function/My Workflow/Along the Journey below, applied on BOTH
             breakpoints since this row-gap is otherwise unused on desktop
             (label|content sit side by side there, single row). */}
-        <div className="grid grid-cols-1 gap-[10px] pt-[180px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[249px]">
+        <div className="grid grid-cols-1 gap-[10px] pt-[180px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[300px]">
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             About Me
           </h2>
