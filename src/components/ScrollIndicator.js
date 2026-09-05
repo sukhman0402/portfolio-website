@@ -29,6 +29,17 @@
 //     scrollDownBounce's translateY(6px) covers, so the size of the
 //     movement is unchanged — only the mechanism and the glyph's shape
 //     are.
+//
+// ROUND 6 FIX (2026-09-05, direct instruction: "the whole mouse along with
+// the short vertical dash, both are supposed to move vertically... the
+// whole design is treated as one component"): the bounce previously only
+// animated the wheel-dash <line>, leaving the capsule outline static —
+// matching the mobile "Scroll Down" cue's own OUTER/INNER split (the
+// outer div there owns static position, the inner div owns the animated
+// transform; see Hero.js's comment on that block), the animation moved
+// from the <line> alone to a <g> wrapping both the capsule <rect> and the
+// wheel <line>, so the whole glyph now bounces together as a single unit
+// instead of the dash moving independently inside a fixed outline.
 export default function ScrollIndicator({ className = "" }) {
   return (
     <svg
@@ -38,25 +49,26 @@ export default function ScrollIndicator({ className = "" }) {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      <rect
-        x="1"
-        y="1"
-        width="17"
-        height="26"
-        rx="8.5"
-        stroke="currentColor"
-        strokeWidth="1"
-      />
-      <line
-        x1="9.5"
-        y1="7"
-        x2="9.5"
-        y2="11"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        className="animate-[scrollDownBounce_1.6s_ease-in-out_infinite]"
-      />
+      <g className="animate-[scrollDownBounce_1.6s_ease-in-out_infinite]">
+        <rect
+          x="1"
+          y="1"
+          width="17"
+          height="26"
+          rx="8.5"
+          stroke="currentColor"
+          strokeWidth="1"
+        />
+        <line
+          x1="9.5"
+          y1="7"
+          x2="9.5"
+          y2="11"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </g>
     </svg>
   );
 }
