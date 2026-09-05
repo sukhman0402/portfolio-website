@@ -40,10 +40,26 @@
 // from the <line> alone to a <g> wrapping both the capsule <rect> and the
 // wheel <line>, so the whole glyph now bounces together as a single unit
 // instead of the dash moving independently inside a fixed outline.
+//
+// ROUND 7 FIX (2026-09-05, direct instruction: "the mouse is partially
+// being cut when the interaction happens. we need to move the initial
+// position of mouse up by 6px"): the capsule (y=1, height=26) already
+// filled its 28-tall viewBox down to a 1px bottom margin, so the
+// downward half of the scrollDownBounce (translateY up to +6px) pushed
+// it past y=28 — clipped, because an SVG's own viewBox is a clip
+// boundary by default. Fixed exactly as instructed: the viewBox height
+// grew from 28 to 34 (width unchanged) while every shape's own
+// coordinates stayed the same, so the whole glyph now sits 6px higher
+// inside the taller box, leaving that 6px as empty headroom at the
+// bottom for the bounce to move into. Hero.js's h-7 (28px) sizing prop
+// changed to h-[34px] to match 1:1, same as before — since the
+// component's height is set via the wrapper's bottom-anchored
+// positioning, this also raises where the glyph actually sits on
+// screen by that same 6px, which is the visible fix.
 export default function ScrollIndicator({ className = "" }) {
   return (
     <svg
-      viewBox="0 0 19 28"
+      viewBox="0 0 19 34"
       className={className}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
