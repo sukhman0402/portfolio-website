@@ -46,11 +46,17 @@ import { timelineClusters, timelinePoints } from "@/lib/data";
 // else on the site.
 //
 // The outer inter-section spacing (pt-[180px] mobile / md:pt-28 desktop,
-// no trailing bottom padding of its own) is UNCHANGED from before this
+// no trailing bottom padding of its own) was UNCHANGED from before this
 // redesign, per your instruction to keep that on the site-wide rule
 // rather than Figma's own frame-boundary numbers — this section's
 // internal layout changed completely, but where it sits relative to
 // Research above and About Me below did not.
+//
+// 2026-09-05 direct instruction: "spacing between 'Research' section and
+// 'Timeline' section to be 300px" (desktop only, per your follow-up —
+// mobile's pt-[180px] is untouched). md:pt-28 (112px) -> md:pt-[300px]
+// below, same no-trailing-bottom-padding convention so this one value is
+// still the entire desktop Research -> Timeline gap.
 //
 // MOBILE — no Figma mobile frame exists for this redesign (all three
 // frames are explicitly "(D)" desktop-only, authored at a fixed 1440px
@@ -150,7 +156,7 @@ export default function TimelineSection() {
  
   return (
     <section className="w-full">
-      <div className="mx-auto max-w-[1440px] px-5 pt-[180px] sm:px-[30px] md:pt-28">
+      <div className="mx-auto max-w-[1440px] px-5 pt-[180px] sm:px-[30px] md:pt-[300px]">
         <h2 className="font-bold uppercase tracking-normal text-black">
           Timeline
         </h2>
