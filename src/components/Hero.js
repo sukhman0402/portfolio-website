@@ -206,14 +206,25 @@ export default function Hero() {
         </div>
       </div>
  
-      {/* ScrollIndicator — unchanged this round: same component, same
-          55.62px inset from the bottom of the 900px-tall stage,
-          horizontally centered (Figma's own left=711px on a 1440-wide
-          frame is, to within half a pixel, dead center). Desktop-only now
-          (hidden md:block) — mobile's equivalent is the "Scroll Down"
-          text above. */}
+      {/* ScrollIndicator — 55.62px inset from the bottom of the 900px-tall
+          stage, horizontally centered (Figma's own left=711px on a
+          1440-wide frame is, to within half a pixel, dead center).
+          Desktop-only now (hidden md:block) — mobile's equivalent is the
+          "Scroll Down" text above.
+ 
+          ROUND 7 FIX (2026-09-05, direct instruction: "the mouse is
+          partially being cut when the interaction happens. we need to
+          move the initial position of mouse up by 6px"): height changed
+          from h-7 (28px) to h-[34px] to match ScrollIndicator.js's own
+          viewBox growing from 28 to 34 tall (see that file's ROUND 7
+          comment for the clipping diagnosis). Since this wrapper is
+          bottom-anchored (bottom-[55.62px], no fixed height of its own —
+          it hugs the child SVG's rendered height), the taller SVG's TOP
+          edge rises while its bottom edge stays put, which visually
+          raises the glyph's rest position by exactly that same 6px — the
+          literal fix the instruction asked for. */}
       <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 text-black/60 hidden md:block md:bottom-[55.62px]">
-        <ScrollIndicator className="h-7 w-5" />
+        <ScrollIndicator className="h-[34px] w-5" />
       </div>
     </section>
   );
