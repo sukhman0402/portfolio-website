@@ -69,21 +69,31 @@ body {
    the arbitrary Tailwind class
    animate-[scrollDownBounce_1.6s_ease-in-out_infinite] on the "Scroll
    Down" text + Chevron group (animated together as one unit so they move
-   in lockstep, not two independently-timed animations). The Pinterest pin
-   itself couldn't be fetched (blocked by robots.txt, no workaround
-   attempted per this session's web-fetch policy) — this reproduces the
-   standard version of that "scroll cue" motion (gentle downward nudge +
-   fade, looping) rather than an exact frame-by-frame match; flag if the
-   real pin's motion differs and this needs adjusting. */
+   in lockstep, not two independently-timed animations), and reused as-is
+   by ScrollIndicator.js's desktop mouse icon. The Pinterest pin itself
+   couldn't be fetched (blocked by robots.txt, no workaround attempted per
+   this session's web-fetch policy) — this reproduces the standard
+   version of that "scroll cue" motion (gentle downward nudge, looping)
+   rather than an exact frame-by-frame match; flag if the real pin's
+   motion differs and this needs adjusting.
+ 
+   COLOR FIX (2026-09-05, direct instruction: "the mouse interaction and
+   the 'scroll down' interaction change colors during the interaction. we
+   need to change that to #BBBBBB with no change in color"): originally
+   also animated opacity 0.6->1->0.6 alongside the translateY bounce.
+   Fading a currentColor element's opacity reads as its color changing
+   (lighter at 0.6, darker/fuller at 1) even though the underlying color
+   value never did — removed so only the vertical motion animates and the
+   glyph's color stays visually constant at whatever text-color class its
+   wrapper sets (both usages now set text-muted, this codebase's #bbbbbb
+   token, so the rendered color is fixed at #BBBBBB throughout). */
 @keyframes scrollDownBounce {
   0%,
   100% {
     transform: translateY(0);
-    opacity: 0.6;
   }
   50% {
     transform: translateY(6px);
-    opacity: 1;
   }
 }
  
