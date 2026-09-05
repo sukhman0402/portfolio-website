@@ -222,8 +222,21 @@ export default function Hero() {
           it hugs the child SVG's rendered height), the taller SVG's TOP
           edge rises while its bottom edge stays put, which visually
           raises the glyph's rest position by exactly that same 6px — the
-          literal fix the instruction asked for. */}
-      <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 text-black/60 hidden md:block md:bottom-[55.62px]">
+          literal fix the instruction asked for.
+ 
+          ROUND 8 FIX (2026-09-05, direct instruction: "the mouse
+          interaction... change[s] colors during the interaction. we need
+          to change that to #BBBBBB with no change in color"): wrapper
+          color switched from text-black/60 (a translucent black, not the
+          site's #bbbbbb gray at all) to text-muted, the same --muted:
+          #bbbbbb token the mobile "Scroll Down" cue already used — now
+          both scroll cues render the identical fixed gray. The
+          "changes color during the interaction" part was actually
+          globals.css's scrollDownBounce keyframe animating opacity
+          0.6->1->0.6 alongside the bounce; removed there (see that
+          keyframe's own COLOR FIX comment) so this element's color is
+          constant regardless of which class sets it. */}
+      <div className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 text-muted hidden md:block md:bottom-[55.62px]">
         <ScrollIndicator className="h-[34px] w-5" />
       </div>
     </section>
