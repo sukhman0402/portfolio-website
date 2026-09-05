@@ -19,22 +19,29 @@ export default function ResearchSection() {
  
   return (
     <section id="research" className="w-full scroll-mt-24">
-      {/* pt-[180px] (mobile only, md:pt-28 unchanged) — flagged 2026-09-02,
-          revised same day: the site-wide mobile inter-section rule was
-          originally set to 300px ("space between each section = 300px",
-          this being the concrete example given: More Projects -> RESEARCH)
-          but 300px read as too large a gap in practice, so the rule value
-          itself was lowered to 180px. Since ProjectsSection carries no
-          trailing bottom space of its own (same convention as every other
-          section on this site — the NEXT section's own top offset is the
-          entire gap), this pt- alone produces the full 180px. Unaffected by
-          the "More Research" link added below (2026-09-03): that link adds
+      {/* pt-[180px] (mobile only) — flagged 2026-09-02, revised same day:
+          the site-wide mobile inter-section rule was originally set to
+          300px ("space between each section = 300px", this being the
+          concrete example given: More Projects -> RESEARCH) but 300px read
+          as too large a gap in practice, so the rule value itself was
+          lowered to 180px. Since ProjectsSection carries no trailing
+          bottom space of its own (same convention as every other section
+          on this site — the NEXT section's own top offset is the entire
+          gap), this pt- alone produces the full 180px. Unaffected by the
+          "More Research" link added below (2026-09-03): that link adds
           height to the BOTTOM of this section, not the top, so the gap
           this pt- controls (Projects -> Research) is unchanged; the gap
           this section hands off to Timeline below is likewise still
           entirely Timeline's own top offset to set, per the same
-          no-trailing-bottom-padding convention — verified unchanged. */}
-      <div className="mx-auto max-w-[1440px] px-5 pt-[180px] sm:px-[30px] md:pt-28">
+          no-trailing-bottom-padding convention — verified unchanged.
+ 
+          md:pt-[200px] — 2026-09-05, direct instruction: "spacing between
+          'Projects' section and 'Research' section to be 200px" (desktop
+          only, per your follow-up — mobile's pt-[180px] above is
+          untouched). Was md:pt-28 (112px); same no-trailing-bottom-padding
+          convention still applies, so this one value is the entire
+          desktop Projects -> Research gap. */}
+      <div className="mx-auto max-w-[1440px] px-5 pt-[180px] sm:px-[30px] md:pt-[200px]">
         <h2 className="border-b-2 border-black pb-[10px] font-bold uppercase leading-[18px] tracking-normal">
           RESEARCH
         </h2>
