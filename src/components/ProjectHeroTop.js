@@ -1,5 +1,5 @@
 import Header from "./Header";
- 
+
 // Individual Project page — top-of-page furniture, Figma node 179:3614
 // "Project 01 (D)- Section 1.0" (2026-09-01 redesign). Renders the real
 // global <Header> followed by: hero image -> divider -> "Title" label +
@@ -46,6 +46,12 @@ import Header from "./Header";
 //   - Brief paragraph -> divider: 838 -> 848, 10px (paragraph height 90,
 //     from y=748) — same 10px-before-divider rhythm used everywhere else
 //     on this site (AboutSection, Footer's Contact rows).
+//
+//   - "The Problem" (added 2026-09-12): a new stacked label+paragraph
+//     block, inserted directly below Brief, following the identical
+//     divider -> 10px -> label -> paragraph -> 10px -> divider rhythm used
+//     for every other band in this file. No new spacing values invented —
+//     just Brief's own pattern repeated once.
 export default function ProjectHeroTop({ project }) {
   return (
     <>
@@ -57,7 +63,7 @@ export default function ProjectHeroTop({ project }) {
           aria-hidden="true"
           title="Hero image placeholder — no asset in source yet"
         />
- 
+
         {/* mt-0 (mobile only, md:mt-[2px] unchanged) — flagged 2026-09-02:
             site-wide "placeholder image, then line" rule — was mt-2 (8px)
             on mobile, dropped to flush/0px so the hero image placeholder's
@@ -65,7 +71,7 @@ export default function ProjectHeroTop({ project }) {
             near-flush 2px (documented above as "near-zero, negligible, not
             a real design interval," measured off Figma) is left as-is. */}
         <div className="mt-0 border-t-2 border-black md:mt-[2px]" />
- 
+
         {/* pt-[10px] (was pt-4/16px, mobile only, md:pt-[9px] unchanged) —
             flagged 2026-09-02: site-wide "line, then text" rule — this
             divider->"Title" gap was missed in the first pass (classified as
@@ -79,7 +85,7 @@ export default function ProjectHeroTop({ project }) {
           <p className="max-w-[1380px] font-normal tracking-[-0.5px] text-black/80">
             {project.intro}
           </p>
- 
+
           <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 md:mt-[50px] md:grid-cols-4 md:gap-x-[20px] md:gap-y-0">
             {project.infoFields.map((field) => (
               <div key={field.label}>
@@ -93,11 +99,11 @@ export default function ProjectHeroTop({ project }) {
             ))}
           </div>
         </div>
- 
+
         {/* mt-[10px] (was mt-8/32px, mobile only) — flagged 2026-09-02:
             info-row -> divider gap, "text, then line" rule. */}
         <div className="mt-[10px] border-t-2 border-black md:mt-[10px]" />
- 
+
         {/* Brief */}
         {/* pt-[10px] (was pt-4/16px, mobile only) — same divider -> text
             rule as above. */}
@@ -109,7 +115,29 @@ export default function ProjectHeroTop({ project }) {
             {project.brief}
           </p>
         </div>
- 
+
+        {/* mt-[10px] — same "text, then line" rule as the info-row divider
+            above; now sits between Brief and the new Problem section
+            below, instead of leading straight into ProjectTopics. */}
+        <div className="mt-[10px] border-t-2 border-black md:mt-[10px]" />
+
+        {/* The Problem — NEW, added directly below Brief, same type
+            treatment and spacing rhythm (divider -> 10px -> label ->
+            paragraph -> 10px -> divider) as every other band in this
+            file. Placeholder copy — swap for real text per project/
+            research item whenever ready. */}
+        <div className="pt-[10px] md:pt-[10px]">
+          <h2 className="font-bold uppercase tracking-[-1px]">
+            The Problem
+          </h2>
+          <p className="whitespace-pre-wrap font-normal tracking-[-0.5px] text-black/80">
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
+            commodo ligula eget dolor. Aenean massa. Cum sociis natoque
+            penatibus et magnis dis parturient montes, nascetur ridiculus
+            mus.
+          </p>
+        </div>
+
         {/* mt-[10px] (was mt-8/32px, mobile only) — flagged 2026-09-02: same
             "text, then line" rule as the info-row divider above — this is
             the divider ProjectTopics.js's first content section sits below
@@ -120,4 +148,3 @@ export default function ProjectHeroTop({ project }) {
     </>
   );
 }
- 
