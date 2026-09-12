@@ -46,12 +46,6 @@ import Header from "./Header";
 //   - Brief paragraph -> divider: 838 -> 848, 10px (paragraph height 90,
 //     from y=748) — same 10px-before-divider rhythm used everywhere else
 //     on this site (AboutSection, Footer's Contact rows).
-//
-//   - "The Problem" (added 2026-09-12): a new stacked label+paragraph
-//     block, inserted directly below Brief, following the identical
-//     divider -> 10px -> label -> paragraph -> 10px -> divider rhythm used
-//     for every other band in this file. No new spacing values invented —
-//     just Brief's own pattern repeated once.
 export default function ProjectHeroTop({ project }) {
   return (
     <>
@@ -113,28 +107,6 @@ export default function ProjectHeroTop({ project }) {
           </h2>
           <p className="whitespace-pre-wrap font-normal tracking-[-0.5px] text-black/80">
             {project.brief}
-          </p>
-        </div>
-
-        {/* mt-[10px] — same "text, then line" rule as the info-row divider
-            above; now sits between Brief and the new Problem section
-            below, instead of leading straight into ProjectTopics. */}
-        <div className="mt-[10px] border-t-2 border-black md:mt-[10px]" />
-
-        {/* The Problem — NEW, added directly below Brief, same type
-            treatment and spacing rhythm (divider -> 10px -> label ->
-            paragraph -> 10px -> divider) as every other band in this
-            file. Placeholder copy — swap for real text per project/
-            research item whenever ready. */}
-        <div className="pt-[10px] md:pt-[10px]">
-          <h2 className="font-bold uppercase tracking-[-1px]">
-            The Problem
-          </h2>
-          <p className="whitespace-pre-wrap font-normal tracking-[-0.5px] text-black/80">
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-            commodo ligula eget dolor. Aenean massa. Cum sociis natoque
-            penatibus et magnis dis parturient montes, nascetur ridiculus
-            mus.
           </p>
         </div>
 
