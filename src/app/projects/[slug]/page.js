@@ -1,150 +1,48 @@
 import { notFound } from "next/navigation";
-import Header from "@/components/Header";
+import ProjectHeroTop from "@/components/ProjectHeroTop";
+import ProjectTopics from "@/components/ProjectTopics";
 import Footer from "@/components/Footer";
 import { projects, getProjectBySlug } from "@/lib/data";
- 
+
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
 }
- 
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   return { title: project ? `${project.title} — Sukhman` : "Project — Sukhman" };
 }
- 
-const FACTS = [
-  { label: "Discipline", key: "discipline" },
-  { label: "Timeline", key: "timeline" },
-  { label: "Role", key: "role" },
-  { label: "Tools Used", key: "tools" },
-];
- 
-// Placeholder topics — same shared skeleton for every project until real
-// case-study content replaces it.
-const TOPICS = [
-  {
-    heading: "Lorem Ipsum Topic 1",
-    body: "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.",
-    image: true,
-  },
-  {
-    heading: "Lorem Ipsum Topic 2",
-    body: "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.",
-    image: false,
-  },
-  {
-    heading: "Lorem Ipsum Topic 3",
-    body: "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.",
-    image: true,
-  },
-  {
-    heading: "Lorem Ipsum Topic 4",
-    body: "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.",
-    image: false,
-  },
-  {
-    heading: "Lorem Ipsum Topic 5",
-    body: "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.",
-    image: false,
-  },
-];
- 
+
+// REDESIGN 2026-09-01 — full rebuild against Figma node 179:3614 "Project
+// 01 (D)- Section 1.0", replacing the previous PageTopFramework +
+// CaseStudySections skeleton (design.md §5, "pending your sign-off") for
+// Individual Project pages specifically. Per the brief ("exact visual copy
+// ... interaction of left 'content' section follows the Interaction
+// Reference"), this page no longer uses PageTopFramework at all — the
+// Figma source starts directly at Header -> hero image, with no separate
+// title+index breadcrumb row above it. Scope is intentionally limited to
+// Projects: Individual Research pages (src/app/research/[slug]/page.js)
+// still use the untouched PageTopFramework/CaseStudySections pair, since
+// the brief said "individual project pages," not Research.
+//
+// ProjectHeroTop renders Header + hero image + Title/intro/info-row +
+// Brief (static, ends on a divider). ProjectTopics renders the sticky
+// Contents nav + the repeatable heading/body/image sections below that
+// divider (client component — scrollspy). See both files for exact
+// per-element spacing pulled from the Figma node.
 export default async function ProjectPage({ params }) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) notFound();
- 
+
   return (
     <>
-      <Header base="/" />
       <main className="flex-1">
-        <div className="mx-auto max-w-[1440px] px-5 pt-16 sm:px-[30px] md:pt-24">
-          {/* Hero image */}
-          <div className="h-[300px] w-full border-b border-black bg-[#ddd] md:h-[480px]" />
- 
-          {/* Title */}
-          <div className="mt-8">
-            <h2 className="font-bold uppercase tracking-normal">Title</h2>
-            <p className="mt-2 max-w-[1030px] font-normal text-black/80">
-              {project.fullDescription || project.description}
-            </p>
-          </div>
- 
-          {/* Facts grid */}
-          <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-6 md:grid-cols-4">
-            {FACTS.map((f) => (
-              <div key={f.key}>
-                <h3 className="font-bold">{f.label}</h3>
-                <p className="text-black/80">{project[f.key] || "Lorem ipsum"}</p>
-              </div>
-            ))}
-          </div>
- 
-          <div className="mt-8 border-t border-black" />
- 
-          {/* Brief */}
-          <div className="mt-8">
-            <h2 className="font-bold uppercase tracking-normal">Brief</h2>
-            <p className="mt-2 max-w-[1030px] font-normal text-black/80">
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-              commodo ligula eget dolor. Aenean massa. Cum sociis natoque
-              penatibus et magnis dis parturient montes, nascetur ridiculus
-              mus.
-            </p>
-            <p className="mt-4 max-w-[1030px] font-normal text-black/80">
-              Donec quam felis, ultricies nec, pellentesque eu, pretium quis,
-              sem. Nulla consequat massa quis enim. Donec pede justo,
-              fringilla vel, aliquet nec, vulputate eget, arcu.
-            </p>
-          </div>
- 
-          {/* The Problem — NEW, same style as Brief */}
-          <div className="mt-8">
-            <h2 className="font-bold uppercase tracking-normal">The Problem</h2>
-            <p className="mt-2 max-w-[1030px] font-normal text-black/80">
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-              commodo ligula eget dolor. Aenean massa. Cum sociis natoque
-              penatibus et magnis dis parturient montes, nascetur ridiculus
-              mus.
-            </p>
-          </div>
- 
-          {/* Topics: numbered index (left) + content (right) */}
-          <div className="mt-8 grid grid-cols-1 gap-8 border-t border-black pt-8 md:grid-cols-[200px_1fr]">
-            <div className="flex flex-row flex-wrap gap-4 md:sticky md:top-24 md:flex-col md:self-start md:gap-3">
-              {TOPICS.map((t, i) => (
-                <a
-                  key={t.heading}
-                  href={`#topic-${i + 1}`}
-                  className={i === 0 ? "font-bold text-black" : "text-black/40"}
-                >
-                  <span className="mr-2">{String(i + 1).padStart(2, "0")}</span>
-                  Lorem Ipsum
-                </a>
-              ))}
-            </div>
- 
-            <div className="flex flex-col gap-10">
-              {TOPICS.map((t, i) => (
-                <section key={t.heading} id={`topic-${i + 1}`}>
-                  <h2 className="font-bold uppercase tracking-normal">
-                    {t.heading}
-                  </h2>
-                  <p className="mt-2 max-w-[1030px] font-normal text-black/80">
-                    {t.body}
-                  </p>
-                  {t.image && (
-                    <div className="mt-4 h-[300px] w-full bg-[#ddd] md:h-[480px]" />
-                  )}
-                </section>
-              ))}
-            </div>
-          </div>
-        </div>
+        <ProjectHeroTop project={project} />
+        <ProjectTopics sections={project.sections} />
       </main>
       <Footer />
     </>
   );
 }
- 
