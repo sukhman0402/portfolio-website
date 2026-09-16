@@ -30,6 +30,17 @@ import Chevron from "./Chevron";
 // per-content-type branching. (caption field still exists on both content
 // types in data.js but is no longer rendered here — see the note further
 // down where it used to be shown.)
+//
+// externalUrl / comingSoon (added 2026-09-16, Paytm shortcut submission —
+// individual project/research pages stay hidden/unbuilt for now, so every
+// card's CTA needs to skip the internal route):
+//   - project.externalUrl set  -> CTA is a real <a>, opens in a new tab,
+//     pointing at the project's Behance page / working prototype instead
+//     of ${basePath}/${slug}.
+//   - project.comingSoon true (and no externalUrl yet) -> CTA renders as
+//     inert text, not a link — avoids shipping a dead/misleading link for
+//     content that isn't ready yet (see data.js TODOs).
+//   - neither set -> unchanged original behavior, links to ${basePath}/${slug}.
 export default function ProjectRow({ project, expandable = true, basePath = "/projects" }) {
   const [open, setOpen] = useState(!expandable);
  
@@ -122,13 +133,29 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
               <span className="font-normal tracking-[-0.5px] text-muted">
                 {project.tag}
               </span>
-              <Link
-                href={`${basePath}/${project.slug}`}
-                className="flex items-center gap-1 font-semibold tracking-[-0.5px] hover:opacity-60 transition-opacity"
-              >
-                {project.ctaLabel}
-                <Chevron className="h-2.5 w-2.5" />
-              </Link>
+              {project.externalUrl ? (
+                <a
+                  href={project.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 font-semibold tracking-[-0.5px] hover:opacity-60 transition-opacity"
+                >
+                  {project.ctaLabel}
+                  <Chevron className="h-2.5 w-2.5" />
+                </a>
+              ) : project.comingSoon ? (
+                <span className="flex items-center gap-1 font-semibold tracking-[-0.5px] text-black/40">
+                  Coming Soon
+                </span>
+              ) : (
+                <Link
+                  href={`${basePath}/${project.slug}`}
+                  className="flex items-center gap-1 font-semibold tracking-[-0.5px] hover:opacity-60 transition-opacity"
+                >
+                  {project.ctaLabel}
+                  <Chevron className="h-2.5 w-2.5" />
+                </Link>
+              )}
             </div>
           ) : (
             <span className="font-normal tracking-[-0.5px] text-muted">

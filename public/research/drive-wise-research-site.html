@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drive Wise — Vehicle Maintenance Research</title>
+<meta name="description" content="Drive Wise vehicle maintenance survey research. N=72, 9 exploratory hypotheses, MCA, K-Modes archetypes, and evidence-traced design directions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;430;450;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+/* ============================================================
+   Drive Wise — Research Site
+   Design system: Steep (styles.refero.design) with Drive Wise's
+   own brand colors (#0A56C3 blue, #0D0D0D near-black) replacing
+   Steep's peach/brown accent. Structure, type scale, spacing,
+   radii and component patterns follow Steep's DESIGN.md as-is.
+   ============================================================ */
+
+:root {
+  /* ---- Drive Wise brand colors (confirmed from source Figma) ---- */
+  --db-white: #ffffff;
+  --db-gray: #cdcdcd;
+  --db-blue: #0a56c3;
+  --db-blue-deep: #073a87;
+  --db-black: #0d0d0d;
+
+  /* ---- Steep-structure tokens, recolored ---- */
+  --color-ink-black: var(--db-black);
+  --color-paper-white: var(--db-white);
+  --color-mist-gray: #f2f2f3;
+  --color-fog-white: #fafafb;
+  --color-slate-gray: #6b7280;
+  --color-ash-gray: #8b8d93;
+  --color-smoke-gray: #a3a6af;
+  --color-border-gray: var(--db-gray);
+
+  --color-accent: var(--db-blue);
+  --color-accent-deep: var(--db-blue-deep);
+  --color-accent-wash: #e9f0fb;   /* the "peach" role, at Drive Wise blue's lightest tint */
+  --color-accent-hover: #0e63d9;
+
+  --color-sig: #16a34a; /* used only for "significant" markers in tables, kept rare */
+
+  /* ---- Typography: SF Pro system stack for titles, subheadings and body ---- */
+  --font-primary: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-primary);
+  --font-sans: var(--font-primary);
+
+  --text-caption: 15px;
+  --text-body: 17px;
+  --text-body-lg: 20px;
+  --text-subheading: 22px;
+  --text-heading-sm: 26px;
+  --text-heading: 44px;
+  --text-heading-lg: 64px;
+  --text-display: 90px;
+
+  /* ---- Spacing (4px base) ---- */
+  --sp-4: 4px;   --sp-8: 8px;   --sp-12: 12px; --sp-16: 16px;
+  --sp-20: 20px; --sp-24: 24px; --sp-32: 32px; --sp-40: 40px;
+  --sp-64: 64px; --sp-80: 80px; --sp-96: 96px; --sp-124: 124px;
+
+  /* ---- Radii ---- */
+  --r-cards: 24px;
+  --r-images: 12px;
+  --r-inputs: 16px;
+  --r-buttons: 9999px;
+  --r-small: 16px;
+  --r-elevated: 20px;
+
+  --shadow-artifact: 0 0 0 1px rgba(4,23,43,0.05), 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.06);
+
+  --page-max: 1200px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper-white);
+  color: var(--color-ink-black);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--color-accent-wash); color: var(--color-accent-deep); }
+
+a { color: var(--color-accent); }
+a:focus-visible, button:focus-visible, .navlink:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.wrap {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 0 var(--sp-24);
+}
+
+/* ---------------- Typography ---------------- */
+h1, h2, h3 { font-family: var(--font-primary); font-weight: 600; margin: 0; color: var(--color-ink-black); letter-spacing: -0.01em; }
+.serif-italic { font-style: normal; }
+
+h2.section-title {
+  font-size: var(--text-heading);
+  line-height: 1.3;
+  letter-spacing: -0.66px;
+  margin-bottom: var(--sp-12);
+}
+h3.card-title {
+  font-size: var(--text-heading-sm);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin-bottom: var(--sp-8);
+  font-family: var(--font-primary);
+}
+h3.card-title .subtitle {
+  display: block;
+  font-weight: 400;
+  color: var(--color-ash-gray);
+  font-size: 15px;
+  margin-top: 4px;
+  letter-spacing: 0;
+}
+
+p { margin: 0 0 var(--sp-16); max-width: none; }
+.lede { font-size: var(--text-body-lg); color: var(--color-slate-gray); font-weight: 400; line-height: 1.5; max-width: none; }
+
+.section-number {
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  color: var(--color-smoke-gray);
+  font-weight: 400;
+  margin-bottom: var(--sp-8);
+}
+
+/* ---------------- Nav ---------------- */
+header.topnav {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border-gray);
+}
+.topnav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.wordmark { font-family: var(--font-serif); font-size: 20px; font-weight: 600; color: var(--color-ink-black); text-decoration: none; }
+.wordmark .dot { color: var(--color-accent); }
+nav.crumbs { display: none; }
+@media (min-width: 900px) {
+  nav.crumbs { display: flex; gap: var(--sp-16); font-size: 14px; color: var(--color-slate-gray); }
+  nav.crumbs a { color: var(--color-slate-gray); text-decoration: none; }
+  nav.crumbs a:hover { color: var(--color-accent); }
+}
+.progress-bar { height: 2px; background: var(--color-mist-gray); }
+.progress-fill { height: 2px; background: var(--color-accent); width: 0%; transition: width 0.1s linear; }
+
+/* ---------------- Buttons ---------------- */
+.pill { display: inline-flex; align-items: center; gap: 8px; border-radius: var(--r-buttons); padding: 13px 22px; font-size: 16px; font-weight: 500; text-decoration: none; cursor: pointer; border: 1px solid transparent; }
+.pill-filled { background: var(--color-accent); color: var(--color-paper-white); }
+.pill-filled:hover { background: var(--color-accent-hover); }
+.pill-ghost { background: transparent; color: var(--color-ink-black); border-color: var(--color-ink-black); }
+.pill-ghost:hover { background: var(--color-mist-gray); }
+
+/* ---------------- Hero ---------------- */
+.hero { padding: var(--sp-64) 0 var(--sp-80); }
+.hero-eyebrow { font-size: 14px; color: var(--color-slate-gray); margin-bottom: var(--sp-16); }
+.hero h1 {
+  font-size: clamp(28px, 3.6vw, 46px);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  max-width: none;
+}
+.hero .lede { margin-top: var(--sp-24); }
+.hero-actions { display: flex; gap: var(--sp-12); margin-top: var(--sp-32); flex-wrap: wrap; }
+
+.hero-grid-wrap { margin-top: var(--sp-64); }
+.hero-grid-caption { font-size: 14px; color: var(--color-ash-gray); margin-bottom: var(--sp-12); }
+#respondent-grid { display: block; }
+#respondent-grid rect { cursor: pointer; }
+
+.kpi-strip { display: grid; grid-template-columns: repeat(2,1fr); gap: var(--sp-16); margin-top: var(--sp-32); }
+@media (min-width: 700px) { .kpi-strip { grid-template-columns: repeat(5,1fr); } }
+.kpi {
+  background: var(--color-paper-white);
+  border-radius: var(--r-elevated);
+  box-shadow: var(--shadow-artifact);
+  padding: var(--sp-16) var(--sp-20) var(--sp-12) var(--sp-12);
+}
+.kpi .num { font-family: var(--font-sans); font-size: 32px; font-weight: 600; color: var(--color-ink-black); letter-spacing: -0.02em; }
+.kpi .label { font-size: 14px; color: var(--color-slate-gray); margin-top: 2px; }
+
+/* ---------------- Sections ---------------- */
+section.block { padding: var(--sp-80) 0; }
+section.block.band { background: var(--color-fog-white); }
+section.block + section.block { border-top: 1px solid var(--color-border-gray); }
+
+.section-head { max-width: none; margin-bottom: var(--sp-40); }
+
+.plain-english {
+  background: var(--color-accent-wash);
+  border-radius: var(--r-cards);
+  padding: var(--sp-24) var(--sp-32);
+  margin: var(--sp-24) 0 var(--sp-40);
+  max-width: none;
+}
+.plain-english .tag { font-size: 13px; font-weight: 500; color: var(--color-accent-deep); margin-bottom: 6px; display:block; }
+.plain-english p { color: var(--color-ink-black); margin-bottom: 0; max-width: none; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: var(--sp-24); }
+@media (min-width: 860px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+.grid-3 { display: grid; grid-template-columns: 1fr; gap: var(--sp-24); }
+@media (min-width: 860px) { .grid-3 { grid-template-columns: repeat(3,1fr); } }
+.grid-4 { display: grid; grid-template-columns: repeat(2,1fr); gap: var(--sp-16); }
+@media (min-width: 860px) { .grid-4 { grid-template-columns: repeat(4,1fr); } }
+
+.card {
+  background: var(--color-mist-gray);
+  border-radius: var(--r-cards);
+  padding: var(--sp-24);
+}
+.card.white { background: var(--color-paper-white); box-shadow: var(--shadow-artifact); }
+.chart-caption { font-size: 14px; color: var(--color-ash-gray); margin-top: var(--sp-12); margin-bottom: 0; }
+.chart-caption b { color: var(--color-slate-gray); font-weight: 500; }
+
+.finding {
+  border-left: 3px solid var(--color-accent);
+  padding-left: var(--sp-16);
+  margin-top: var(--sp-24);
+}
+.finding .tag { font-size: 13px; font-weight: 500; color: var(--color-accent-deep); text-transform: none; display:block; margin-bottom: 4px;}
+.finding p { margin-bottom: 0; }
+
+/* method instrument list */
+.method-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-16); }
+.method-list li { display: grid; grid-template-columns: 28px 1fr; gap: var(--sp-12); }
+.method-list .n { color: var(--color-smoke-gray); font-size: 14px; padding-top: 2px; }
+.method-list b { font-weight: 500; }
+.method-list span.desc { color: var(--color-slate-gray); font-size: 15px; }
+
+/* ---------------- Tables ---------------- */
+table.hyp-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+table.hyp-table th { text-align: left; font-weight: 500; color: var(--color-slate-gray); padding: 10px 12px; border-bottom: 1px solid var(--color-border-gray); font-size: 13px; }
+table.hyp-table td { padding: 12px; border-bottom: 1px solid var(--color-mist-gray); vertical-align: top; }
+table.hyp-table tr:last-child td { border-bottom: none; }
+.verdict { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 500; white-space: nowrap; }
+.verdict.sig { background: #e7f6ec; color: #15803d; }
+.verdict.ns { background: var(--color-mist-gray); color: var(--color-ash-gray); }
+.mono-stat { font-variant-numeric: tabular-nums; color: var(--color-slate-gray); }
+
+/* ---------------- Archetypes ---------------- */
+.archetype-card {
+  background: var(--color-paper-white);
+  border: 1px solid var(--color-border-gray);
+  border-radius: var(--r-cards);
+  padding: var(--sp-24);
+}
+.archetype-card .segn { font-size: 13px; color: var(--color-ash-gray); }
+.archetype-card h3 { margin-top: 4px; }
+.archetype-card ul { padding-left: 18px; margin: var(--sp-16) 0 0; color: var(--color-slate-gray); font-size: 15px; }
+.archetype-card li { margin-bottom: 6px; }
+.archetype-card .segment-pct { font-family: var(--font-primary); font-size: 28px; font-weight: 600; color: var(--color-accent); }
+
+/* ---------------- Design directions ---------------- */
+.dd-card {
+  background: var(--color-mist-gray);
+  border-radius: var(--r-cards);
+  padding: var(--sp-24);
+}
+.dd-card .dd-id { font-size: 13px; color: var(--color-accent-deep); font-weight: 500; margin-bottom: 6px; }
+.dd-card .dd-source { font-size: 13px; color: var(--color-ash-gray); margin-bottom: var(--sp-12); }
+.dd-card h3 { font-size: 20px; margin-bottom: var(--sp-8); }
+.dd-card ul { margin: var(--sp-12) 0 0; padding-left: 18px; font-size: 15px; color: var(--color-slate-gray); }
+.dd-card li { margin-bottom: 6px; }
+
+/* ---------------- Limitations / references ---------------- */
+.limits-list, .refs-list { padding-left: 20px; color: var(--color-slate-gray); }
+.limits-list li, .refs-list li { margin-bottom: var(--sp-12); }
+.pending-note {
+  border: 1px dashed var(--color-border-gray);
+  border-radius: var(--r-small);
+  padding: var(--sp-16) var(--sp-20);
+  color: var(--color-ash-gray);
+  font-size: 15px;
+}
+
+/* ---------------- Tooltip ---------------- */
+.viz-tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: var(--color-ink-black);
+  color: var(--color-paper-white);
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  line-height: 1.4;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  z-index: 100;
+  max-width: 240px;
+}
+
+/* ---------------- Footer ---------------- */
+footer { padding: var(--sp-64) 0 var(--sp-96); }
+footer .credit-line { color: var(--color-ash-gray); font-size: 14px; }
+footer a.back-top { color: var(--color-ink-black); text-decoration: none; font-size: 15px; }
+
+/* chart axis styling */
+.axis path, .axis line { stroke: var(--color-border-gray); }
+.axis text { fill: var(--color-slate-gray); font-size: 12px; font-family: var(--font-sans); }
+.gridline line { stroke: var(--color-mist-gray); }
+.gridline path { stroke: none; }
+
+@media (max-width: 700px) {
+  section.block { padding: var(--sp-40) 0; }
+  h2.section-title { font-size: 30px; letter-spacing: -0.3px; }
+  .hero { padding: var(--sp-40) 0 var(--sp-64); }
+}
+
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<header class="topnav">
+  <div class="wrap">
+    <a href="#top" class="wordmark">Drive Wise<span class="dot">.</span></a>
+    <nav class="crumbs">
+      <a href="#methodology">Methodology</a>
+      <a href="#hypotheses">Hypotheses</a>
+      <a href="#models">Models</a>
+      <a href="#archetypes">Archetypes</a>
+      <a href="#directions">Design Directions</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <h1>Why vehicle owners wait until it's already broken.</h1>
+    <p class="lede">A 72-respondent questionnaire study behind Drive Wise, a vehicle health platform for everyday two-wheeler and four-wheeler owners, conducted in 2026. This site analyzes the primary research that fed the case study: what owners actually check, who they trust, when they delay, and whether they'd pay for a system that removes the guesswork.</p>
+    <div class="hero-actions">
+      <a href="#hypotheses" class="pill pill-filled">See the hypotheses</a>
+      <a href="#directions" class="pill pill-ghost">Jump to design directions</a>
+    </div>
+
+    <div class="kpi-strip">
+      <div class="kpi"><div class="num">72</div><div class="label">Respondents</div></div>
+      <div class="kpi"><div class="num">72%</div><div class="label">Delayed a service</div></div>
+      <div class="kpi"><div class="num">65%</div><div class="label">Would pay, unconditionally</div></div>
+      <div class="kpi"><div class="num">9</div><div class="label">Hypotheses tested</div></div>
+      <div class="kpi"><div class="num">3</div><div class="label">Owner archetypes</div></div>
+    </div>
+
+    <div class="hero-grid-wrap">
+      <div class="hero-grid-caption">72 respondents, arranged like a dashboard gauge cluster — each dot is one person, positioned by their confidence in explaining why a part needs replacing. Hover any dot to inspect it.</div>
+      <div id="respondent-grid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 01 METHODOLOGY ============ -->
+<section class="block band" id="methodology">
+  <div class="wrap">
+    <div class="section-number">01</div>
+    <div class="section-head">
+      <h2 class="section-title">Methodology</h2>
+      <p class="lede">The instrument, the sample, and the analytical pipeline.</p>
+    </div>
+
+    <div class="plain-english">
+      <span class="tag">In plain English</span>
+      <p>We asked 72 vehicle owners 19 questions about how they maintain their vehicle: what they check, who they trust, how they react to warning signs, and whether they'd pay for a service that tells them what's actually wrong. We then tested which patterns in the answers hold up statistically, and which don't.</p>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <h3 class="card-title">The instrument</h3>
+        <ul class="method-list">
+          <li><span class="n">01</span><div><b>Vehicle profile</b> <span class="desc">— type, age, weekly usage (3 questions)</span></div></li>
+          <li><span class="n">02</span><div><b>Maintenance habits & awareness</b> <span class="desc">— service triggers, component-check frequency, record-keeping (3 questions)</span></div></li>
+          <li><span class="n">03</span><div><b>The knowledge gap & emotional response</b> <span class="desc">— warning-light reactions, self-rated confidence, delay history (3 questions)</span></div></li>
+          <li><span class="n">04</span><div><b>Sourcing information & trust</b> <span class="desc">— trusted source, frustrations, overcharging perception (3 questions)</span></div></li>
+          <li><span class="n">05</span><div><b>Expenditure & consequences</b> <span class="desc">— self-diagnosis time, worry type, willingness to pay (3 questions, 2 free-response)</span></div></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="card-title">Analytical pipeline</h3>
+        <ul class="method-list">
+          <li><span class="n">•</span><div><b>Data cleaning</b> <span class="desc">— multi-select explosion into binary indicators, ordinal recoding, a derived frustration-count and component-check composite.</span></div></li>
+          <li><span class="n">•</span><div><b>Exploratory sweep</b> <span class="desc">— a broad correlation/association pass across all variable pairs, used to select which relationships were worth formally testing. This was exploratory, not pre-registered — flagged honestly below.</span></div></li>
+          <li><span class="n">•</span><div><b>Bivariate hypothesis testing</b> <span class="desc">— 9 hypotheses (Spearman, Kruskal-Wallis, Mann-Whitney U, Chi-square), each reported with raw p, Bonferroni-corrected p, and an effect size.</span></div></li>
+          <li><span class="n">•</span><div><b>Multivariate modeling</b> <span class="desc">— logistic regression predicting delayed service; ordinal logistic regression predicting willingness to pay.</span></div></li>
+          <li><span class="n">•</span><div><b>Multiple Correspondence Analysis</b> <span class="desc">— mapping response categories into a shared 2-D attitude space.</span></div></li>
+          <li><span class="n">•</span><div><b>K-Modes clustering</b> <span class="desc">— categorical segmentation into owner archetypes; cost-curve model selection, K=3 retained.</span></div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="finding">
+      <span class="tag">Honesty note</span>
+      <p>Unlike a pre-registered study, the exact hypotheses below were chosen after an initial exploratory pass across the data — a standard and reasonable approach for a primary-research questionnaire feeding a design project, but worth naming plainly rather than implying confirmatory rigor it doesn't have.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 RESPONDENTS ============ -->
+<section class="block" id="respondents">
+  <div class="wrap">
+    <div class="section-number">02</div>
+    <div class="section-head">
+      <h2 class="section-title">Respondents</h2>
+      <p class="lede">Who answered, and what they drive.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card white">
+        <h3 class="card-title">Vehicle type</h3>
+        <div id="chart-vehicle-type"></div>
+      </div>
+      <div class="card white">
+        <h3 class="card-title">Vehicle age</h3>
+        <div id="chart-vehicle-age"></div>
+      </div>
+      <div class="card white">
+        <h3 class="card-title">Weekly usage</h3>
+        <div id="chart-weekly-usage"></div>
+      </div>
+    </div>
+    <p class="chart-caption"><b>Key context:</b> 49% own both a two-wheeler and a four-wheeler — for these owners, "vehicle maintenance" isn't one relationship, it's two running in parallel, which is exactly the multi-vehicle scenario the original Drive Wise feature list (Section 12, "cater to multiple vehicle owners") was designed around.</p>
+  </div>
+</section>
+
+<!-- ============ 03 MAINTENANCE BEHAVIOR ============ -->
+<section class="block band" id="behavior">
+  <div class="wrap">
+    <div class="section-number">03</div>
+    <div class="section-head">
+      <h2 class="section-title">Maintenance Behavior</h2>
+      <p class="lede">What gets checked, what gets recorded, and what gets ignored.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card white">
+        <h3 class="card-title">How often key components get checked</h3>
+        <div id="chart-check-freq"></div>
+        <p class="chart-caption">Tire pressure is the one habit that sticks (78% check regularly); engine oil is the most neglected (60% only check at service time, or never).</p>
+      </div>
+      <div class="card white">
+        <h3 class="card-title">Record-keeping</h3>
+        <div id="chart-record-keeping"></div>
+        <p class="chart-caption">Under half keep their own bills and logs — the rest depend entirely on the service centre's memory, or on nothing at all.</p>
+      </div>
+    </div>
+
+    <div class="finding" style="margin-top: var(--sp-40);">
+      <span class="tag">H1 — significant, survives correction</span>
+      <p>Vehicle age correlates with how often engine oil gets checked (ρ=0.337, p<sub>corr</sub>=0.034). The line below shows the trend isn't perfectly linear — there's a dip at 2–5 years, a "honeymoon" period where a newer vehicle earns some complacency before age brings the habit back.</p>
+    </div>
+    <div class="card white" style="margin-top: var(--sp-24);">
+      <h3 class="card-title">Oil-check diligence by vehicle age</h3>
+      <div id="chart-age-oil"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 THE TRUST GAP ============ -->
+<section class="block" id="trust">
+  <div class="wrap">
+    <div class="section-number">04</div>
+    <div class="section-head">
+      <h2 class="section-title">The Trust Gap</h2>
+      <p class="lede">How owners react to the unknown, and who they believe when something goes wrong.</p>
+    </div>
+
+    <div class="plain-english">
+      <span class="tag">In plain English</span>
+      <p>When a warning light appears, most owners don't ignore it — but very few actually know what it means before acting. That gap between "I did something" and "I understood what I did" is where distrust of mechanics and service centres takes root.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card white">
+        <h3 class="card-title">Reaction to an unfamiliar warning light</h3>
+        <div id="chart-warning-reaction"></div>
+      </div>
+      <div class="card white">
+        <h3 class="card-title">Most trusted source</h3>
+        <div id="chart-trusted-source"></div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top: var(--sp-24);">
+      <div class="card white">
+        <h3 class="card-title">Feeling overcharged</h3>
+        <div id="chart-overcharged"></div>
+      </div>
+      <div class="card white">
+        <h3 class="card-title">Time spent self-diagnosing before a mechanic visit</h3>
+        <div id="chart-diagnosis-time"></div>
+      </div>
+    </div>
+
+    <div class="finding" style="margin-top: var(--sp-40);">
+      <span class="tag">H8 — suggestive (p_raw=0.022, not sig. after correction)</span>
+      <p>Owners who "know what the light means, then take it to the mechanic" also check their components most often (mean composite 6.7 of 8) — the savviest reaction correlates with the most diligent baseline habit. Owners who ignore warning lights check components least (5.2 of 8).</p>
+    </div>
+    <div class="card white" style="margin-top: var(--sp-24);">
+      <h3 class="card-title">Component check-diligence by warning-light reaction</h3>
+      <div id="chart-warning-check"></div>
+    </div>
+
+    <div class="finding" style="margin-top: var(--sp-40);">
+      <span class="tag">H2 &amp; H3 — suggestive, non-monotonic (not sig. after correction)</span>
+      <p>Both willingness-to-pay and feeling overcharged peak in the <i>middle</i> diagnosis-effort bracket (1–2 hours), not at the extremes. That's why a straight-line correlation test (Kendall) found nothing here, while a group-difference test (Kruskal-Wallis) did — the relationship isn't linear, it's a hump.</p>
+    </div>
+    <div class="grid-2" style="margin-top: var(--sp-24);">
+      <div class="card white">
+        <h3 class="card-title">Diagnosis time → willingness to pay</h3>
+        <div id="chart-heat-diag-wtp"></div>
+      </div>
+      <div class="card white">
+        <h3 class="card-title">Feeling overcharged → willingness to pay</h3>
+        <div id="chart-heat-overcharged-wtp"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 FRUSTRATIONS ============ -->
+<section class="block band" id="frustrations">
+  <div class="wrap">
+    <div class="section-number">05</div>
+    <div class="section-head">
+      <h2 class="section-title">Frustrations</h2>
+      <p class="lede">Five candidate pain points, and whether they travel together.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card white">
+        <h3 class="card-title">Frustration factors</h3>
+        <div id="chart-frustrations"></div>
+        <p class="chart-caption">Not knowing if replaced parts were actually faulty is the single most common frustration (57%) — a verification problem, not a convenience problem.</p>
+      </div>
+      <div class="card white">
+        <h3 class="card-title">Which frustrations co-occur</h3>
+        <div id="chart-frus-cooccur"></div>
+        <p class="chart-caption">Darker cells = more respondents selected both. Faulty-parts doubt and hidden costs are the most tightly paired frustration.</p>
+      </div>
+    </div>
+
+    <div class="finding" style="margin-top: var(--sp-40);">
+      <span class="tag">H7.1–5 — all not significant</span>
+      <p>None of the five individual frustration factors, tested alone, predicts willingness to pay (all p_corr > 0.5). No single pain point converts on its own — which is exactly why the multivariate model below matters more than any one bivariate test.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 HYPOTHESES ============ -->
+<section class="block" id="hypotheses">
+  <div class="wrap">
+    <div class="section-number">06</div>
+    <div class="section-head">
+      <h2 class="section-title">Hypothesis Testing</h2>
+      <p class="lede">Nine exploratory hypotheses, Bonferroni-corrected, with effect sizes for every test.</p>
+    </div>
+
+    <div class="plain-english">
+      <span class="tag">In plain English</span>
+      <p>Testing 9 things at once means some will look "significant" by chance alone. The Bonferroni correction raises the bar to compensate. Only one hypothesis survives it here — that's a real, modest-sample finding, not a failure of the analysis.</p>
+    </div>
+
+    <div class="card white" style="overflow-x:auto;">
+      <table class="hyp-table" id="hyp-table-target"></table>
+    </div>
+
+    <div class="finding" style="margin-top: var(--sp-32);">
+      <span class="tag">What actually holds up</span>
+      <p>Only H1 (vehicle age → oil-check frequency) survives correction as an isolated bivariate test. But three findings recur across independent tests (Spearman, Kruskal-Wallis, and the regression below) pointing at the same pattern: diagnosis effort, feeling overcharged, and willingness to pay are entangled — just not in a simple straight line.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 MULTIVARIATE MODELS ============ -->
+<section class="block band" id="models">
+  <div class="wrap">
+    <div class="section-number">07</div>
+    <div class="section-head">
+      <h2 class="section-title">Multivariate Models</h2>
+      <p class="lede">When every predictor competes at once, what actually survives?</p>
+    </div>
+
+    <div class="plain-english">
+      <span class="tag">In plain English</span>
+      <p>A bivariate test looks at one relationship in isolation. Regression makes predictors compete for credit. Here: does anything predict whether someone delays a service, once other factors are accounted for? And separately — what actually predicts willingness to pay?</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card white">
+        <h3 class="card-title">Model 1 — Who delays a service?<span class="subtitle">Logistic regression</span></h3>
+        <div id="chart-model1"></div>
+        <p class="chart-caption">Pseudo-R² = 0.062 · none of the four predictors reach conventional significance. Component check-diligence trends toward reducing delay (p=0.094) but the model is honestly weak — delay isn't well explained by attitude or age alone.</p>
+      </div>
+      <div class="card white">
+        <h3 class="card-title">Model 2 — Who's willing to pay?<span class="subtitle">Ordinal logistic regression</span></h3>
+        <div id="chart-model2"></div>
+        <p class="chart-caption"><b>Two real signals, pulling opposite ways:</b> feeling overcharged predicts <i>more</i> willingness to pay (β=+0.94, p=0.040) — distrust sells the tool. But a higher frustration <i>count</i> predicts <i>less</i> willingness to pay (β=−0.58, p=0.033) — too many compounding annoyances breeds fatigue, not conversion.</p>
+      </div>
+    </div>
+
+    <div class="finding" style="margin-top: var(--sp-40);">
+      <span class="tag">Design implication</span>
+      <p>This is the single most useful finding in the dataset. It means messaging should lead with a <i>specific</i> distrust — "verify you're not being overcharged" — rather than a generic list of pain points. Piling on frustration framing risks talking someone out of paying, not into it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 MCA ============ -->
+<section class="block" id="mca">
+  <div class="wrap">
+    <div class="section-number">08</div>
+    <div class="section-head">
+      <h2 class="section-title">Multiple Correspondence Analysis</h2>
+      <p class="lede">Mapping every answer category into one shared attitude space.</p>
+    </div>
+
+    <div class="plain-english">
+      <span class="tag">In plain English</span>
+      <p>MCA places answer categories near each other when the same people tend to choose them together. Reading the map: points far from the center and far from everything else represent an unusual, isolated response pattern.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card white">
+        <div id="chart-mca"></div>
+      </div>
+      <div>
+        <h3 class="card-title">Reading the map</h3>
+        <p>Dim 1 = 11.7% inertia · Dim 2 = 10.8% (2-D total 22.5% — modest, as expected for 8 categorical variables at N=72; read neighborhoods, not precise distances.)</p>
+        <p><b>The far-right outlier:</b> "Ignores if it feels fine" sits alone at the extreme edge, closest to "Pay: No" and "Rarely feels overcharged" — a small, genuinely disengaged cluster with no felt need for any solution.</p>
+        <p><b>The engaged-distrust cluster:</b> "Frequently overcharged," "Trusts OEM centre," and "Trusts online forums" sit near each other on the opposite side — people who are engaged enough to seek outside verification and distrustful enough to want it.</p>
+        <p><b>The local-relationship cluster:</b> "Trusts local mechanic" sits closer to the disengaged pole than the engaged one — a real, structural finding: trusting a specific person substitutes for wanting a verification system, it doesn't lead toward it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 ARCHETYPES ============ -->
+<section class="block band" id="archetypes">
+  <div class="wrap">
+    <div class="section-number">09</div>
+    <div class="section-head">
+      <h2 class="section-title">Owner Archetypes</h2>
+      <p class="lede">Three segments from K-Modes clustering on categorical response patterns.</p>
+    </div>
+
+    <div class="grid-3" id="archetype-cards"></div>
+
+    <div class="card white" style="margin-top: var(--sp-32);">
+      <h3 class="card-title">Segment comparison</h3>
+      <div id="chart-segments"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 DESIGN DIRECTIONS ============ -->
+<section class="block" id="directions">
+  <div class="wrap">
+    <div class="section-number">10</div>
+    <div class="section-head">
+      <h2 class="section-title">Design Directions</h2>
+      <p class="lede">Seven evidence-traced directions — each one names its statistical source first.</p>
+    </div>
+    <div class="grid-3" id="dd-cards" style="row-gap: var(--sp-24);"></div>
+  </div>
+</section>
+
+<!-- ============ 11 LIMITATIONS ============ -->
+<section class="block band" id="limitations">
+  <div class="wrap">
+    <div class="section-number">11</div>
+    <div class="section-head">
+      <h2 class="section-title">Limitations</h2>
+      <p class="lede">What this survey can't claim, honestly.</p>
+    </div>
+    <ul class="limits-list">
+      <li><b>Modest sample, exploratory framing.</b> N=72 with 9 tests means most raw-significant findings don't survive Bonferroni correction. Treat anything marked "suggestive" as a direction for further research, not a confirmed effect.</li>
+      <li><b>Not pre-registered.</b> Hypotheses were selected after an initial exploratory sweep across the data — appropriate for primary UX research, but a different (weaker) evidentiary standard than a pre-registered confirmatory study.</li>
+      <li><b>Self-reported, cross-sectional data.</b> Diagnosis time, check frequency, and delay history are recalled estimates, not logged behavior.</li>
+      <li><b>Convenience sample.</b> Recruited through the same network as the original Drive Wise project; demographic and regional representativeness is unverified.</li>
+      <li><b>Modest MCA inertia.</b> The 2-D map explains 22.5% of variance — normal for MCA with 8 categorical variables, but read it for neighborhoods, not precise distances.</li>
+      <li><b>K=3 from a cost curve without a sharp elbow.</b> The three archetypes are a useful, interpretable segmentation — not a definitive typology.</li>
+      <li><b>Multi-select questions exploded into binary indicators.</b> Co-occurrence patterns (frustrations, service triggers) are descriptive, not causally tested.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 12 BIBLIOGRAPHY ============ -->
+<section class="block" id="bibliography">
+  <div class="wrap">
+    <div class="section-number">12</div>
+    <div class="section-head">
+      <h2 class="section-title">Bibliography &amp; References</h2>
+      <p class="lede">Sources cited across the research and the original Drive Wise case study.</p>
+    </div>
+    <div class="pending-note">
+      The original Drive Wise deck doesn't cite external sources — this section is reserved for references still to be added. Once supplied, they'll be listed here in full.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p class="credit-line">Drive Wise — Vehicle Maintenance Research. Questionnaire-based study, N=72, conducted alongside the Drive Wise vehicle health platform case study.<br>
+    Analysis: Python 3 (pandas, SciPy, statsmodels, prince (MCA), kmodes) · Visualization: D3.js v7.</p>
+    <p style="margin-top: var(--sp-16);"><b>Sukhmanpreet Singh Saini</b> · M.Des (IUxD)</p>
+    <p style="margin-top: var(--sp-24);"><a href="#top" class="back-top">Back to top ↑</a></p>
+  </div>
+</footer>
+
+</main>
+
+<script>
+const DATA = {"N": 72, "vehicle_type": [{"label": "Two-wheeler only", "value": 28, "pct": 38.9}, {"label": "Four-wheeler only", "value": 9, "pct": 12.5}, {"label": "Both", "value": 35, "pct": 48.6}], "vehicle_age": [{"label": "Less than 2 years", "value": 9, "pct": 12.5}, {"label": "2-5 years", "value": 25, "pct": 34.7}, {"label": "5-10 years", "value": 21, "pct": 29.2}, {"label": "10+ years", "value": 17, "pct": 23.6}], "weekly_usage": [{"label": "Less than 50 km", "value": 30, "pct": 41.7}, {"label": "50-150 km", "value": 26, "pct": 36.1}, {"label": "150-300 km", "value": 13, "pct": 18.1}, {"label": "300+ km", "value": 3, "pct": 4.2}], "record_keeping": [{"label": "Yes, I keep all bills/logs.", "value": 32, "pct": 44.4}, {"label": "No, I rely on the service center's records.", "value": 24, "pct": 33.3}, {"label": "No, I don't keep track.", "value": 16, "pct": 22.2}], "warning_reaction": [{"label": "Search on YouTube or Google.", "value": 19, "pct": 26.4}, {"label": "Take it to a mechanic immediately.", "value": 18, "pct": 25.0}, {"label": "I know what the light means, then take it to the mechanic.", "value": 18, "pct": 25.0}, {"label": "Ignore it if the vehicle feels fine to drive.", "value": 10, "pct": 13.9}, {"label": "Call a friend or family member for advice.", "value": 7, "pct": 9.7}], "trusted_source": [{"label": "A specific 'local' mechanic I've known for years", "value": 29, "pct": 40.3}, {"label": "Authorized Brand Service Centre (OEM)", "value": 26, "pct": 36.1}, {"label": "Online forums / YouTube / Google", "value": 12, "pct": 16.7}, {"label": "Knowledgeable friends or colleagues", "value": 5, "pct": 6.9}], "delayed_service": [{"label": "Yes", "value": 52, "pct": 72.2}, {"label": "No", "value": 20, "pct": 27.8}], "overcharged": [{"label": "Rarely / Never.", "value": 8, "pct": 11.1}, {"label": "Sometimes.", "value": 44, "pct": 61.1}, {"label": "Yes, frequently.", "value": 20, "pct": 27.8}], "diagnosis_time": [{"label": "Less than 30 minutes", "value": 15, "pct": 20.8}, {"label": "1-2 hours", "value": 20, "pct": 27.8}, {"label": "A few days of observation", "value": 37, "pct": 51.4}], "worry": [{"label": "Sudden breakdown in the middle of a trip.", "value": 30, "pct": 41.7}, {"label": "Safety risks (brake failure, tire bursts).", "value": 19, "pct": 26.4}, {"label": "The drop in fuel mileage/economy.", "value": 18, "pct": 25.0}, {"label": "The long-term decrease in resale value.", "value": 5, "pct": 6.9}], "willingness_to_pay": [{"label": "No", "value": 3, "pct": 4.2}, {"label": "Depends on the cost difference", "value": 22, "pct": 30.6}, {"label": "Yes", "value": 47, "pct": 65.3}], "confidence": [{"label": 1, "value": 17, "pct": 23.6}, {"label": 2, "value": 13, "pct": 18.1}, {"label": 3, "value": 24, "pct": 33.3}, {"label": 4, "value": 10, "pct": 13.9}, {"label": 5, "value": 8, "pct": 11.1}], "check_frequency": [{"component": "Engine oil", "Never": 7, "Only during service": 43, "Regularly": 22}, {"component": "Tire pressure", "Never": 1, "Only during service": 15, "Regularly": 56}, {"component": "Brake response", "Never": 3, "Only during service": 27, "Regularly": 42}, {"component": "PUC & Insurance", "Never": 6, "Only during service": 35, "Regularly": 31}], "frustrations": [{"label": "Wait time at workshop", "value": 36, "pct": 50.0}, {"label": "Faulty-parts doubt", "value": 36, "pct": 50.0}, {"label": "Technical jargon", "value": 19, "pct": 26.4}, {"label": "Hidden costs", "value": 28, "pct": 38.9}, {"label": "Aftermarket-parts doubt", "value": 14, "pct": 19.4}], "frustration_cooccurrence": {"labels": ["Wait time at workshop", "Faulty-parts doubt", "Technical jargon", "Hidden costs", "Aftermarket-parts doubt"], "matrix": [[36, 14, 5, 11, 3], [14, 36, 11, 13, 9], [5, 11, 19, 10, 6], [11, 13, 10, 28, 7], [3, 9, 6, 7, 14]]}, "diag_wtp_heatmap": {"diag_order": ["Less than 30 minutes", "1-2 hours", "A few days of observation"], "wtp_order": ["No", "Depends on the cost difference", "Yes"], "cells": [{"diag": "Less than 30 minutes", "wtp": "No", "pct": 13.3, "n": 2}, {"diag": "Less than 30 minutes", "wtp": "Depends on the cost difference", "pct": 33.3, "n": 5}, {"diag": "Less than 30 minutes", "wtp": "Yes", "pct": 53.3, "n": 8}, {"diag": "1-2 hours", "wtp": "No", "pct": 0.0, "n": 0}, {"diag": "1-2 hours", "wtp": "Depends on the cost difference", "pct": 10.0, "n": 2}, {"diag": "1-2 hours", "wtp": "Yes", "pct": 90.0, "n": 18}, {"diag": "A few days of observation", "wtp": "No", "pct": 2.7, "n": 1}, {"diag": "A few days of observation", "wtp": "Depends on the cost difference", "pct": 40.5, "n": 15}, {"diag": "A few days of observation", "wtp": "Yes", "pct": 56.8, "n": 21}]}, "overcharged_wtp_heatmap": {"ov_order": ["Rarely / Never.", "Sometimes.", "Yes, frequently."], "wtp_order": ["No", "Depends on the cost difference", "Yes"], "cells": [{"ov": "Rarely / Never.", "wtp": "No", "pct": 0.0, "n": 0}, {"ov": "Rarely / Never.", "wtp": "Depends on the cost difference", "pct": 37.5, "n": 3}, {"ov": "Rarely / Never.", "wtp": "Yes", "pct": 62.5, "n": 5}, {"ov": "Sometimes.", "wtp": "No", "pct": 6.8, "n": 3}, {"ov": "Sometimes.", "wtp": "Depends on the cost difference", "pct": 36.4, "n": 16}, {"ov": "Sometimes.", "wtp": "Yes", "pct": 56.8, "n": 25}, {"ov": "Yes, frequently.", "wtp": "No", "pct": 0.0, "n": 0}, {"ov": "Yes, frequently.", "wtp": "Depends on the cost difference", "pct": 15.0, "n": 3}, {"ov": "Yes, frequently.", "wtp": "Yes", "pct": 85.0, "n": 17}]}, "age_oil_trend": [{"age": "Less than 2 years", "mean_score": 1.22}, {"age": "2-5 years", "mean_score": 0.88}, {"age": "5-10 years", "mean_score": 1.33}, {"age": "10+ years", "mean_score": 1.53}], "warning_check": [{"label": "Ignore it if the vehicle feels fine to drive.", "value": 5.2}, {"label": "Search on YouTube or Google.", "value": 5.42}, {"label": "Call a friend or family member for advice.", "value": 5.71}, {"label": "Take it to a mechanic immediately.", "value": 5.94}, {"label": "I know what the light means, then take it to the mechanic.", "value": 6.67}], "trusted_wtp": [{"label": "Knowledgeable friends or colleagues", "value": 1.2, "n": 5}, {"label": "A specific 'local' mechanic I've known for years", "value": 1.45, "n": 29}, {"label": "Online forums / YouTube / Google", "value": 1.75, "n": 12}, {"label": "Authorized Brand Service Centre (OEM)", "value": 1.81, "n": 26}], "vehicle_usage_mean": [{"label": "Two-wheeler only", "value": 0.54}, {"label": "Four-wheeler only", "value": 0.78}, {"label": "Both", "value": 1.11}], "hypotheses": [{"id": "H1", "hypothesis": "Older vehicles are checked more often (oil specifically)", "test": "Spearman \u03c1", "stat": "\u03c1=0.337", "p_raw": 0.0037412208961235182, "p_corr": 0.033670988065111665, "verdict": "Significant"}, {"id": "H2", "hypothesis": "Willingness to pay peaks at moderate (1\u20132hr) self-diagnosis effort", "test": "Kruskal-Wallis", "stat": "H=7.69", "p_raw": 0.021390820254348065, "p_corr": 0.1925173822891326, "verdict": "Not sig."}, {"id": "H3", "hypothesis": "Feeling overcharged also peaks at moderate diagnosis effort", "test": "Kruskal-Wallis", "stat": "H=6.66", "p_raw": 0.03586579438026128, "p_corr": 0.3227921494223515, "verdict": "Not sig."}, {"id": "H4", "hypothesis": "Feeling overcharged correlates with willingness to pay", "test": "Spearman \u03c1", "stat": "\u03c1=0.213", "p_raw": 0.07211546615457058, "p_corr": 0.6490391953911352, "verdict": "Not sig."}, {"id": "H5", "hypothesis": "Trusted-source type predicts willingness to pay", "test": "Kruskal-Wallis", "stat": "H=10.39", "p_raw": 0.015522748285424518, "p_corr": 0.13970473456882065, "verdict": "Not sig."}, {"id": "H6", "hypothesis": "Delaying a service is associated with a higher frustration count", "test": "Mann-Whitney U", "stat": "U=672", "p_raw": 0.04082251984011593, "p_corr": 0.36740267856104336, "verdict": "Not sig."}, {"id": "H7.1\u20135", "hypothesis": "Each individual frustration factor predicts willingness to pay", "test": "Chi-square \u00d75", "stat": "\u03c7\u00b2=0.0\u20132.0", "p_raw": 0.1583931830165083, "p_corr": 0.7919659150825414, "verdict": "All not sig."}, {"id": "H8", "hypothesis": "Warning-light savviness predicts component check-diligence", "test": "Kruskal-Wallis", "stat": "H=11.39", "p_raw": 0.02248482654968379, "p_corr": 0.2023634389471541, "verdict": "Not sig."}, {"id": "H9", "hypothesis": "Vehicle type predicts weekly usage intensity", "test": "Kruskal-Wallis", "stat": "H=8.50", "p_raw": 0.014257927838911359, "p_corr": 0.12832135055020222, "verdict": "Not sig."}], "model1": {"const": 2.544472147936734, "confidence": 0.09512680426296176, "age_c": 0.17483818825524655, "usage_c": 0.10193274464389505, "check_composite": -0.37020014569889087}, "model1_pvalues": {"const": 0.06482992683097623, "confidence": 0.6613862499958956, "age_c": 0.5379880925645435, "usage_c": 0.7589199599357377, "check_composite": 0.09381081478393713}, "model1_or": {"const": 12.736503321824104, "confidence": 1.0997983053979943, "age_c": 1.1910534745780001, "usage_c": 1.1073089967626457, "check_composite": 0.6905960969659002}, "model1_pseudo_r2": 0.03707401522332687, "model1_llr_p": 0.532342962464092, "model2": {"diag_c": -0.0021423975420639943, "overcharged_c": 0.942983252495862, "frustration_count": -0.5762545320043502, "confidence": -0.1098444308369278, "0/1": -3.654245221715404, "1/2": 0.9770125193140532}, "model2_pvalues": {"diag_c": 0.9948334905347073, "overcharged_c": 0.0400289664989623, "frustration_count": 0.03315907634763442, "confidence": 0.5832810241398296, "0/1": 0.0008464747101841313, "1/2": 1.1043537840885007e-05}, "archetypes": {"0": {"name": "Local-Mechanic Loyalists", "n": 34, "traits": ["Trust a specific local mechanic (62%)", "Keep their own bills/logs (56%) \u2014 yet still delay service most (82%)", "Lowest pay-intent of the three (38% Yes)"]}, "1": {"name": "Self-Directed Researchers", "n": 23, "traits": ["Own both a 2W and 4W (83%)", "Outsource record-keeping to the service centre (70%)", "Research warning lights online before acting (48%)", "High pay-intent (83% Yes)"]}, "2": {"name": "Overcharged Pragmatists", "n": 15, "traits": ["Feel overcharged frequently (67% \u2014 highest of any segment)", "Act fastest \u2014 least likely to delay service (67% No)", "Unanimous: 100% willing to pay"]}}};
+const MCA = {"inertia": [11.7, 10.8], "points": [{"label": "Owns both", "x": -0.254, "y": 0.157, "varr": "vehicle"}, {"label": "4W only", "x": -0.019, "y": 0.663, "varr": "vehicle"}, {"label": "2W only", "x": 0.324, "y": -0.41, "varr": "vehicle"}, {"label": "No tracking", "x": 0.409, "y": -0.615, "varr": "record"}, {"label": "Relies on centre records", "x": 0.264, "y": 0.583, "varr": "record"}, {"label": "Keeps own logs", "x": -0.402, "y": -0.129, "varr": "record"}, {"label": "Calls a friend", "x": -0.407, "y": 0.169, "varr": "warning"}, {"label": "Knows the light, then acts", "x": -0.123, "y": 0.023, "varr": "warning"}, {"label": "Ignores if it feels fine", "x": 1.571, "y": -0.385, "varr": "warning"}, {"label": "Searches online", "x": -0.173, "y": 0.985, "varr": "warning"}, {"label": "Immediate mechanic visit", "x": -0.409, "y": -0.915, "varr": "warning"}, {"label": "Rarely feels overcharged", "x": 1.351, "y": -1.158, "varr": "overcharged"}, {"label": "Sometimes overcharged", "x": 0.08, "y": 0.402, "varr": "overcharged"}, {"label": "Frequently overcharged", "x": -0.716, "y": -0.421, "varr": "overcharged"}, {"label": "Pay: depends on cost", "x": 0.742, "y": 0.514, "varr": "willingness"}, {"label": "Pay: No", "x": 1.792, "y": 0.171, "varr": "willingness"}, {"label": "Pay: Yes", "x": -0.462, "y": -0.251, "varr": "willingness"}, {"label": "Never delayed", "x": -0.309, "y": -0.752, "varr": "delayed"}, {"label": "Has delayed service", "x": 0.119, "y": 0.289, "varr": "delayed"}, {"label": "Trusts local mechanic", "x": 0.555, "y": -0.512, "varr": "trusted"}, {"label": "Trusts OEM centre", "x": -0.507, "y": 0.054, "varr": "trusted"}, {"label": "Trusts friends", "x": 0.399, "y": 1.276, "varr": "trusted"}, {"label": "Trusts online forums", "x": -0.409, "y": 0.589, "varr": "trusted"}, {"label": "Diagnoses in 1-2hrs", "x": -0.925, "y": -0.318, "varr": "diagnosis"}, {"label": "Diagnoses over days", "x": 0.148, "y": 0.422, "varr": "diagnosis"}, {"label": "Diagnoses in <30min", "x": 0.869, "y": -0.618, "varr": "diagnosis"}]};
+const SEGMENTS = [{"name": "Local-Mechanic Loyalists", "confidence": 2.88, "frustration_count": 1.97, "check_composite": 5.94, "wtp_yes_pct": 38}, {"name": "Self-Directed Researchers", "confidence": 2.43, "frustration_count": 1.87, "check_composite": 5.83, "wtp_yes_pct": 83}, {"name": "Overcharged Pragmatists", "confidence": 2.73, "frustration_count": 1.53, "check_composite": 5.73, "wtp_yes_pct": 100}];
+</script>
+<script>
+/* ============================================================
+   Drive Wise — chart library (D3 v7)
+   Standard D3.js.org gallery patterns: horizontal bar, grouped
+   bar, heatmap, line, scatter, dot/coefficient plot.
+   All charts share one accent color (Drive Wise blue) as the
+   data-ink, per the site's design brief.
+   ============================================================ */
+
+const ACCENT = '#0a56c3';
+const ACCENT_DEEP = '#073a87';
+const INK = '#0d0d0d';
+const SLATE = '#6b7280';
+const MIST = '#f2f2f3';
+const BORDER = '#cdcdcd';
+const BLUES = ['#dbe8fb', '#a9c8f2', '#5f96e3', '#2670d1', ACCENT, ACCENT_DEEP];
+
+function tooltip() {
+  let el = document.querySelector('.viz-tooltip');
+  if (!el) {
+    el = document.createElement('div');
+    el.className = 'viz-tooltip';
+    document.body.appendChild(el);
+  }
+  return {
+    show(html, event) {
+      el.innerHTML = html;
+      el.style.opacity = 1;
+      this.move(event);
+    },
+    move(event) {
+      const pad = 14;
+      let x = event.clientX + pad, y = event.clientY + pad;
+      const rect = el.getBoundingClientRect();
+      if (x + rect.width > window.innerWidth) x = event.clientX - rect.width - pad;
+      if (y + rect.height > window.innerHeight) y = event.clientY - rect.height - pad;
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+    },
+    hide() { el.style.opacity = 0; }
+  };
+}
+const tip = tooltip();
+
+/* ---------- shared: text measurement + single-line truncation ---------- */
+let _measureSvg = null;
+const FONT_STACK = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Inter, system-ui, sans-serif';
+
+function measureText(text, fontSize = 14, fontFamily = FONT_STACK) {
+  if (!_measureSvg) {
+    _measureSvg = d3.select(document.body).append('svg')
+      .attr('width', 0).attr('height', 0)
+      .style('position', 'absolute').style('visibility', 'hidden').style('pointer-events', 'none');
+  }
+  const t = _measureSvg.append('text').attr('font-size', fontSize).attr('font-family', fontFamily).text(text);
+  const w = t.node().getComputedTextLength();
+  t.remove();
+  return w;
+}
+
+// Truncates `label` with an ellipsis so it fits within `maxWidth` px at the
+// given font size — prevents axis labels from ever overflowing their column,
+// regardless of how long the source string is. Full text still reaches the
+// tooltip on hover, so nothing is actually lost, just not force-fit on-screen.
+function truncateToWidth(label, maxWidth, fontSize = 14, fontFamily = FONT_STACK) {
+  if (measureText(label, fontSize, fontFamily) <= maxWidth) return label;
+  let lo = 0, hi = label.length;
+  while (lo < hi) {
+    const mid = Math.ceil((lo + hi) / 2);
+    const candidate = label.slice(0, mid) + '…';
+    if (measureText(candidate, fontSize, fontFamily) <= maxWidth) lo = mid; else hi = mid - 1;
+  }
+  return label.slice(0, lo) + '…';
+}
+
+// Computes a left margin sized to the longest label in `labels`, clamped to
+// [minPx, maxPx] — labels longer than the clamp are truncated (see above)
+// rather than allowed to overflow the chart's own box.
+function leftMarginFor(labels, opts = {}) {
+  const { minPx = 110, maxPx = 250, fontSize = 14, pad = 24 } = opts;
+  const widest = d3.max(labels, l => measureText(String(l), fontSize)) || 0;
+  return { margin: Math.min(maxPx, Math.max(minPx, widest + pad)), maxLabelWidth: maxPx - pad, fontSize };
+}
+
+function svgIn(sel, width, height, opts = {}) {
+  const { maxWidthPx = width } = opts;
+  const el = d3.select(sel);
+  el.selectAll('*').remove();
+  return el.append('svg')
+    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('width', '100%')
+    .style('height', 'auto')
+    .style('max-width', maxWidthPx + 'px')
+    .style('display', 'block')
+    .style('margin', '0 auto')
+    .style('overflow', 'visible')
+    .style('font-family', FONT_STACK);
+}
+
+/* ---------- 1. Respondent gauge (hero) ----------
+   A dashboard-gauge arrangement — concentric arcs sweeping like a
+   speedometer cluster — rather than a plain grid, since Drive Wise is
+   literally a vehicle-dashboard product. One dot per respondent,
+   colored by their confidence rating. */
+function drawRespondentGrid(sel, confidenceDist, N) {
+  const values = [];
+  confidenceDist.forEach(d => { for (let i = 0; i < d.value; i++) values.push(+d.label); });
+  while (values.length < N) values.push(3);
+  values.sort((a,b) => a-b); // low confidence at the outer-left sweep, high at outer-right
+
+  const perRing = 12;
+  const rings = Math.ceil(values.length / perRing);
+  const angleStart = 185, angleEnd = -5; // degrees — a near-semicircle speedometer sweep
+  const width = 740, height = 320;
+  const cx = 370, cy = 254;
+  const rOuter = 230, rInner = 90, ringGap = (rOuter - rInner) / (rings - 1 || 1);
+
+  const svg = svgIn(sel, width, height, { maxWidthPx: width * 2 });
+  const color = d3.scaleOrdinal().domain([1,2,3,4,5]).range(['#dbe8fb','#a9c8f2','#5f96e3','#2670d1',ACCENT_DEEP]);
+  const toRad = deg => deg * Math.PI / 180;
+
+  // faint track arcs, evoking gauge rings
+  for (let ring = 0; ring < rings; ring++) {
+    const r = rInner + ring * ringGap;
+    const arc = d3.arc()({ innerRadius: r, outerRadius: r, startAngle: toRad(90 - angleStart), endAngle: toRad(90 - angleEnd) });
+    svg.append('path').attr('d', arc).attr('transform', `translate(${cx},${cy})`)
+      .attr('stroke', MIST).attr('stroke-width', 1).attr('fill', 'none');
+  }
+
+  let i = 0;
+  for (let ring = 0; ring < rings; ring++) {
+    const r = rInner + ring * ringGap;
+    const countThisRing = Math.min(perRing, values.length - ring * perRing);
+    for (let j = 0; j < countThisRing; j++) {
+      const t = countThisRing === 1 ? 0.5 : j / (countThisRing - 1);
+      const angle = angleStart + t * (angleEnd - angleStart);
+      const rad = toRad(angle);
+      const x = cx + r * Math.cos(rad);
+      const y = cy - r * Math.sin(rad);
+      const d = values[i]; i++;
+      svg.append('circle')
+        .attr('cx', x).attr('cy', y).attr('r', 8)
+        .attr('fill', color(d))
+        .style('cursor', 'pointer')
+        .on('mouseenter', function(event) {
+          d3.select(this).attr('stroke', INK).attr('stroke-width', 1.5).attr('r', 10);
+          tip.show(`Confidence rating: <b>${d}</b> / 5`, event);
+        })
+        .on('mousemove', event => tip.move(event))
+        .on('mouseleave', function() { d3.select(this).attr('stroke', 'none').attr('r', 8); tip.hide(); });
+    }
+  }
+
+  // gauge needle-style ticks at the extremes, labeled like a real dial
+  [['Low confidence', angleStart], ['High confidence', angleEnd]].forEach(([label, deg]) => {
+    const rad = toRad(deg);
+    const x = cx + (rOuter + 26) * Math.cos(rad);
+    const y = cy - (rOuter + 26) * Math.sin(rad);
+    svg.append('text').attr('x', x).attr('y', y).attr('dy', '0.35em')
+      .attr('text-anchor', deg > 90 ? 'start' : 'end')
+      .attr('font-size', 13).attr('fill', SLATE).text(label);
+  });
+}
+
+/* ---------- 2. Horizontal bar chart ---------- */
+function drawHBar(sel, data, opts = {}) {
+  const { valueFmt = d => d + '%', height = data.length * 48 + 20, color = () => ACCENT } = opts;
+  const labels = data.map(d => d.label);
+  const { margin: leftM, maxLabelWidth } = leftMarginFor(labels, { minPx: 120, maxPx: 240 });
+  const margin = { top: 8, right: 64, bottom: 8, left: leftM };
+  const width = 600;
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+
+  const svg = svgIn(sel, width, height);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleLinear().domain([0, d3.max(data, d => d.value) * 1.18]).range([0, innerW]);
+  const y = d3.scaleBand().domain(data.map(d => d.label)).range([0, innerH]).padding(0.32);
+
+  g.selectAll('.bar-label').data(data).join('text')
+    .attr('class', 'bar-label')
+    .attr('x', -12).attr('y', d => y(d.label) + y.bandwidth()/2)
+    .attr('dy', '0.35em').attr('text-anchor', 'end')
+    .attr('font-size', 14).attr('fill', SLATE)
+    .text(d => truncateToWidth(d.label, maxLabelWidth, 14))
+    .append('title').text(d => d.label);
+
+  const bars = g.selectAll('.bar').data(data).join('rect')
+    .attr('class', 'bar')
+    .attr('x', 0).attr('y', d => y(d.label))
+    .attr('height', y.bandwidth()).attr('rx', 5)
+    .attr('fill', d => color(d))
+    .attr('width', 0);
+
+  bars.transition().duration(700).ease(d3.easeCubicOut)
+    .attr('width', d => x(d.value));
+
+  bars.on('mouseenter', function(event, d) {
+      d3.select(this).attr('fill', ACCENT_DEEP);
+      tip.show(`<b>${d.label}</b><br>${d.value} respondents (${d.pct ?? d.value}%)`, event);
+    })
+    .on('mousemove', event => tip.move(event))
+    .on('mouseleave', function(event, d) { d3.select(this).attr('fill', color(d)); tip.hide(); });
+
+  // Value labels: placed outside the bar when there's room in the right
+  // margin; placed inside (in white) when the bar runs close to the max,
+  // so the label is never clipped and never floats off unattached.
+  g.selectAll('.val-label').data(data).join('text')
+    .attr('class', 'val-label')
+    .attr('y', d => y(d.label) + y.bandwidth()/2)
+    .attr('dy', '0.35em').attr('font-size', 13)
+    .each(function(d) {
+      const barEnd = x(d.value);
+      const txt = valueFmt(d.pct ?? d.value);
+      const labelW = measureText(txt, 13);
+      const fitsOutside = barEnd + 8 + labelW <= innerW + margin.right - 6;
+      const el = d3.select(this).text(txt);
+      if (fitsOutside) {
+        el.attr('x', barEnd + 8).attr('text-anchor', 'start').attr('fill', SLATE);
+      } else {
+        el.attr('x', Math.max(barEnd - 8, 8)).attr('text-anchor', 'end').attr('fill', '#ffffff');
+      }
+    });
+}
+
+/* ---------- 3. Grouped bar chart ---------- */
+function drawGroupedBar(sel, data, groupKeys, groupField) {
+  const labels = data.map(d => d[groupField]);
+  const { margin: leftM, maxLabelWidth } = leftMarginFor(labels, { minPx: 100, maxPx: 200 });
+  const legendH = 40;
+  const chartH = data.length * 76 + 40;
+  const width = 640, height = chartH + legendH;
+  const margin = { top: 10, right: 20, bottom: 10, left: leftM };
+  const innerW = width - margin.left - margin.right;
+  const innerH = chartH - margin.top - margin.bottom;
+
+  const svg = svgIn(sel, width, height);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const y0 = d3.scaleBand().domain(data.map(d => d[groupField])).range([0, innerH]).paddingInner(0.35);
+  const y1 = d3.scaleBand().domain(groupKeys).range([0, y0.bandwidth()]).padding(0.12);
+  const x = d3.scaleLinear().domain([0, d3.max(data, d => Math.max(...groupKeys.map(k => d[k])))]).range([0, innerW]);
+  const color = d3.scaleOrdinal().domain(groupKeys).range(['#cfd8e3', '#5f96e3', ACCENT_DEEP]);
+
+  const rowG = g.selectAll('.row').data(data).join('g')
+    .attr('transform', d => `translate(0,${y0(d[groupField])})`);
+
+  rowG.append('text').attr('x', -12).attr('y', y0.bandwidth()/2).attr('dy', '0.3em')
+    .attr('text-anchor', 'end').attr('font-size', 14).attr('fill', SLATE)
+    .text(d => truncateToWidth(d[groupField], maxLabelWidth, 14))
+    .append('title').text(d => d[groupField]);
+
+  groupKeys.forEach(k => {
+    rowG.append('rect')
+      .attr('y', d => y1(k)).attr('height', y1.bandwidth())
+      .attr('x', 0).attr('rx', 4)
+      .attr('fill', color(k))
+      .attr('width', 0)
+      .on('mouseenter', function(event, d) {
+        tip.show(`<b>${d[groupField]}</b><br>${k}: ${d[k]} respondents`, event);
+      })
+      .on('mousemove', event => tip.move(event))
+      .on('mouseleave', () => tip.hide())
+      .transition().duration(700).delay((d,i)=>i*30).ease(d3.easeCubicOut)
+      .attr('width', d => x(d[k]));
+  });
+
+  // legend — reserved band beneath the chart, never overlapping the last row
+  const legend = svg.append('g').attr('transform', `translate(${margin.left},${chartH + 22})`);
+  let lx = 0;
+  groupKeys.forEach(k => {
+    legend.append('rect').attr('x', lx).attr('y', -12).attr('width', 12).attr('height', 12).attr('rx', 3).attr('fill', color(k));
+    legend.append('text').attr('x', lx+18).attr('y', -2).attr('font-size', 13).attr('fill', SLATE).text(k);
+    lx += measureText(k, 13) + 34;
+  });
+}
+
+/* ---------- 4. Heatmap ---------- */
+function drawHeatmap(sel, cells, rowOrder, colOrder, rowKey, colKey, valKey, nKey, opts = {}) {
+  const { fmt = d => d + '%', maxVal = 100, labelThresholdFrac = 0.55 } = opts;
+  const { margin: leftM, maxLabelWidth } = leftMarginFor(rowOrder, { minPx: 110, maxPx: 210, fontSize: 13 });
+  const cellW = 150, cellH = 60;
+  const margin = { top: 10, right: 10, bottom: 10, left: leftM };
+  const width = margin.left + colOrder.length * cellW + margin.right;
+  const height = margin.top + rowOrder.length * cellH + 34;
+
+  const svg = svgIn(sel, width, height);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top + 24})`);
+
+  const color = d3.scaleLinear().domain([0, maxVal*0.5, maxVal]).range(['#f2f6fc', '#7fa8e3', ACCENT_DEEP]);
+  const labelThreshold = maxVal * labelThresholdFrac;
+
+  // column headers
+  g.selectAll('.colhead').data(colOrder).join('text')
+    .attr('x', (d,i) => i*cellW + cellW/2).attr('y', -8)
+    .attr('text-anchor', 'middle').attr('font-size', 13).attr('fill', SLATE)
+    .text(d => d);
+
+  rowOrder.forEach((r,ri) => {
+    g.append('text').attr('x', -12).attr('y', ri*cellH + cellH/2).attr('dy', '0.35em')
+      .attr('text-anchor', 'end').attr('font-size', 13).attr('fill', SLATE)
+      .text(truncateToWidth(r, maxLabelWidth, 13))
+      .append('title').text(r);
+  });
+
+  const rects = g.selectAll('.cell').data(cells).join('rect')
+    .attr('x', d => colOrder.indexOf(d[colKey]) * cellW + 2)
+    .attr('y', d => rowOrder.indexOf(d[rowKey]) * cellH + 2)
+    .attr('width', cellW-4).attr('height', cellH-4).attr('rx', 8)
+    .attr('fill', d => color(d[valKey]))
+    .on('mouseenter', function(event, d) {
+      d3.select(this).attr('stroke', INK).attr('stroke-width', 1.5);
+      tip.show(`<b>${d[rowKey]}</b> × <b>${d[colKey]}</b><br>${fmt(d[valKey])} (n=${d[nKey]})`, event);
+    })
+    .on('mousemove', event => tip.move(event))
+    .on('mouseleave', function() { d3.select(this).attr('stroke', 'none'); tip.hide(); });
+
+  g.selectAll('.celltext').data(cells).join('text')
+    .attr('x', d => colOrder.indexOf(d[colKey]) * cellW + cellW/2)
+    .attr('y', d => rowOrder.indexOf(d[rowKey]) * cellH + cellH/2)
+    .attr('dy', '0.35em').attr('text-anchor', 'middle')
+    .attr('font-size', 15).attr('font-weight', 500)
+    .attr('fill', d => d[valKey] > labelThreshold ? '#fff' : INK)
+    .style('pointer-events', 'none')
+    .text(d => fmt(d[valKey]));
+}
+
+/* ---------- 5. Line chart ---------- */
+function drawLine(sel, data, xKey, yKey, yLabel) {
+  const width = 620, height = 280;
+  const margin = { top: 20, right: 30, bottom: 40, left: 46 };
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+
+  const svg = svgIn(sel, width, height);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scalePoint().domain(data.map(d => d[xKey])).range([0, innerW]).padding(0.5);
+  const y = d3.scaleLinear().domain([0, d3.max(data, d => d[yKey]) * 1.25]).range([innerH, 0]);
+
+  g.append('g').attr('class', 'gridline')
+    .call(d3.axisLeft(y).ticks(4).tickSize(-innerW).tickFormat(''));
+  g.append('g').attr('class', 'axis').attr('transform', `translate(0,${innerH})`)
+    .call(d3.axisBottom(x).tickSize(0)).selectAll('text').attr('dy', '1.2em');
+  g.append('g').attr('class', 'axis').call(d3.axisLeft(y).ticks(4));
+  g.selectAll('.domain').attr('stroke', BORDER);
+
+  const line = d3.line().x(d => x(d[xKey])).y(d => y(d[yKey])).curve(d3.curveMonotoneX);
+  const path = g.append('path').datum(data).attr('fill', 'none').attr('stroke', ACCENT).attr('stroke-width', 3).attr('d', line);
+  const len = path.node().getTotalLength();
+  path.attr('stroke-dasharray', `${len} ${len}`).attr('stroke-dashoffset', len)
+    .transition().duration(900).ease(d3.easeCubicOut).attr('stroke-dashoffset', 0);
+
+  g.selectAll('.dot').data(data).join('circle')
+    .attr('cx', d => x(d[xKey])).attr('cy', d => y(d[yKey])).attr('r', 6)
+    .attr('fill', ACCENT_DEEP).attr('stroke', '#fff').attr('stroke-width', 2)
+    .on('mouseenter', function(event, d) {
+      tip.show(`<b>${d[xKey]}</b><br>${yLabel}: ${d[yKey]}`, event);
+    })
+    .on('mousemove', event => tip.move(event))
+    .on('mouseleave', () => tip.hide());
+}
+
+/* ---------- 6. Coefficient / dot plot ---------- */
+function drawCoefficientPlot(sel, rows) {
+  // rows: [{label, coef, p}]
+  const labels = rows.map(d => d.label);
+  const { margin: leftM, maxLabelWidth } = leftMarginFor(labels, { minPx: 120, maxPx: 220 });
+  const width = 600, height = rows.length * 46 + 40;
+  const margin = { top: 10, right: 40, bottom: 30, left: leftM };
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+
+  const svg = svgIn(sel, width, height);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const extent = d3.max(rows, d => Math.abs(d.coef)) * 1.3 || 1;
+  const x = d3.scaleLinear().domain([-extent, extent]).range([0, innerW]);
+  const y = d3.scaleBand().domain(rows.map(d => d.label)).range([0, innerH]).padding(0.4);
+
+  g.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', 0).attr('y2', innerH)
+    .attr('stroke', BORDER).attr('stroke-dasharray', '3,3');
+
+  g.append('g').attr('class', 'axis').attr('transform', `translate(0,${innerH})`)
+    .call(d3.axisBottom(x).ticks(5));
+
+  g.selectAll('.lbl').data(rows).join('text')
+    .attr('x', -12).attr('y', d => y(d.label) + y.bandwidth()/2).attr('dy', '0.35em')
+    .attr('text-anchor', 'end').attr('font-size', 14).attr('fill', SLATE)
+    .text(d => truncateToWidth(d.label, maxLabelWidth, 14))
+    .append('title').text(d => d.label);
+
+  g.selectAll('.stem').data(rows).join('line')
+    .attr('x1', x(0)).attr('x2', x(0))
+    .attr('y1', d => y(d.label)+y.bandwidth()/2).attr('y2', d => y(d.label)+y.bandwidth()/2)
+    .attr('stroke', d => d.p < 0.05 ? ACCENT_DEEP : '#c9ccd1')
+    .attr('stroke-width', 3)
+    .transition().duration(700)
+    .attr('x2', d => x(d.coef));
+
+  g.selectAll('.pt').data(rows).join('circle')
+    .attr('cy', d => y(d.label)+y.bandwidth()/2).attr('r', 7)
+    .attr('fill', d => d.p < 0.05 ? ACCENT_DEEP : '#c9ccd1')
+    .attr('cx', x(0))
+    .on('mouseenter', function(event, d) {
+      tip.show(`<b>${d.label}</b><br>coef = ${d.coef.toFixed(3)}<br>p = ${d.p.toFixed(3)} ${d.p<0.05 ? '(significant)' : '(n.s.)'}`, event);
+    })
+    .on('mousemove', event => tip.move(event))
+    .on('mouseleave', () => tip.hide())
+    .transition().duration(700)
+    .attr('cx', d => x(d.coef));
+}
+
+/* ---------- 7. Scatter (MCA) ---------- */
+function drawScatter(sel, points) {
+  const width = 640, height = 480;
+  const margin = { top: 20, right: 20, bottom: 40, left: 46 };
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+
+  const svg = svgIn(sel, width, height);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const ext = d3.max(points, d => Math.max(Math.abs(d.x), Math.abs(d.y))) * 1.15;
+  const x = d3.scaleLinear().domain([-ext, ext]).range([0, innerW]);
+  const y = d3.scaleLinear().domain([-ext, ext]).range([innerH, 0]);
+
+  g.append('line').attr('x1',0).attr('x2',innerW).attr('y1',y(0)).attr('y2',y(0)).attr('stroke', MIST).attr('stroke-width',2);
+  g.append('line').attr('x1',x(0)).attr('x2',x(0)).attr('y1',0).attr('y2',innerH).attr('stroke', MIST).attr('stroke-width',2);
+  g.append('g').attr('class','axis').attr('transform',`translate(0,${innerH})`).call(d3.axisBottom(x).ticks(5));
+  g.append('g').attr('class','axis').call(d3.axisLeft(y).ticks(5));
+  g.selectAll('.domain').attr('stroke', BORDER);
+
+  const varColor = d3.scaleOrdinal()
+    .domain(['vehicle','record','warning','overcharged','willingness','delayed','trusted','diagnosis'])
+    .range(['#8b8d93','#2670d1','#e07a3f','#c0392b','#0a56c3','#6b7280','#16a34a','#073a87']);
+
+  g.selectAll('.pt').data(points).join('circle')
+    .attr('cx', d => x(d.x)).attr('cy', d => y(d.y)).attr('r', 7)
+    .attr('fill', d => varColor(d.varr)).attr('opacity', 0.85)
+    .attr('stroke', '#fff').attr('stroke-width', 1)
+    .on('mouseenter', function(event, d) {
+      d3.select(this).attr('r', 10);
+      tip.show(`<b>${d.label}</b>`, event);
+    })
+    .on('mousemove', event => tip.move(event))
+    .on('mouseleave', function() { d3.select(this).attr('r', 7); tip.hide(); });
+}
+
+/* ---------- 8. Segment comparison grouped bar (normalized 0-1 scale) ---------- */
+function drawSegmentCompare(sel, segData, metricKeys, metricLabels) {
+  const { margin: leftM, maxLabelWidth } = leftMarginFor(metricLabels, { minPx: 120, maxPx: 220, fontSize: 13 });
+  const legendH = 40;
+  const chartH = metricKeys.length * 70 + 30;
+  const width = 640, height = chartH + legendH;
+  const margin = { top: 10, right: 20, bottom: 10, left: leftM };
+  const innerW = width - margin.left - margin.right;
+  const innerH = chartH - margin.top - margin.bottom;
+
+  const svg = svgIn(sel, width, height);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const y0 = d3.scaleBand().domain(metricLabels).range([0, innerH]).paddingInner(0.4);
+  const y1 = d3.scaleBand().domain(segData.map(d=>d.name)).range([0, y0.bandwidth()]).padding(0.15);
+  const color = d3.scaleOrdinal().domain(segData.map(d=>d.name)).range(['#5f96e3', ACCENT, ACCENT_DEEP]);
+
+  metricKeys.forEach((mk, mi) => {
+    const label = metricLabels[mi];
+    const maxV = d3.max(segData, d => d[mk]);
+    const x = d3.scaleLinear().domain([0, maxV*1.15]).range([0, innerW]);
+    const rowG = g.append('g').attr('transform', `translate(0,${y0(label)})`);
+    rowG.append('text').attr('x', -12).attr('y', y0.bandwidth()/2).attr('dy','0.3em')
+      .attr('text-anchor','end').attr('font-size', 13).attr('fill', SLATE)
+      .text(truncateToWidth(label, maxLabelWidth, 13))
+      .append('title').text(label);
+    rowG.selectAll('rect').data(segData).join('rect')
+      .attr('y', d => y1(d.name)).attr('height', y1.bandwidth())
+      .attr('x',0).attr('rx',4).attr('fill', d => color(d.name))
+      .attr('width', 0)
+      .on('mouseenter', function(event,d){ tip.show(`<b>${d.name}</b><br>${label}: ${d[mk]}`, event); })
+      .on('mousemove', event => tip.move(event))
+      .on('mouseleave', () => tip.hide())
+      .transition().duration(700).delay((d,i)=>i*60)
+      .attr('width', d => x(d[mk]));
+  });
+
+  const legend = svg.append('g').attr('transform', `translate(${margin.left},${chartH + 22})`);
+  let lx=0;
+  segData.forEach(d => {
+    legend.append('rect').attr('x',lx).attr('y',-12).attr('width',12).attr('height',12).attr('rx',3).attr('fill',color(d.name));
+    legend.append('text').attr('x',lx+18).attr('y',-2).attr('font-size',12.5).attr('fill',SLATE).text(d.name);
+    lx += measureText(d.name, 12.5) + 34;
+  });
+}
+
+</script>
+<script>
+/* ============================================================
+   Drive Wise — render script: wires DATA into every chart,
+   table and card on the page.
+   ============================================================ */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ---- In-page navigation: handled entirely in JS (scrollIntoView),
+     never a native href jump — avoids the anchor click being caught by
+     an outer app shell and treated as an external navigation. ---- */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = a.getAttribute('href').slice(1);
+      if (id === 'top') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+      const target = document.getElementById(id);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  /* ---- scroll progress bar ---- */
+  const fill = document.getElementById('progressFill');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    fill.style.width = pct + '%';
+  });
+
+  /* ---- Hero respondent grid ---- */
+  drawRespondentGrid('#respondent-grid', DATA.confidence, DATA.N);
+
+  /* ---- Respondents ---- */
+  drawHBar('#chart-vehicle-type', DATA.vehicle_type);
+  drawHBar('#chart-vehicle-age', DATA.vehicle_age);
+  drawHBar('#chart-weekly-usage', DATA.weekly_usage);
+
+  /* ---- Behavior ---- */
+  drawGroupedBar('#chart-check-freq', DATA.check_frequency, ['Never','Only during service','Regularly'], 'component');
+  drawHBar('#chart-record-keeping', DATA.record_keeping.map(d => ({...d, label: d.label.replace("Yes, I keep all bills/logs.","Keeps own logs").replace("No, I rely on the service center's records.","Relies on centre records").replace("No, I don't keep track.","No tracking")})));
+  drawLine('#chart-age-oil', DATA.age_oil_trend, 'age', 'mean_score', 'Oil-check score (0-2)');
+
+  /* ---- Trust gap ---- */
+  drawHBar('#chart-warning-reaction', DATA.warning_reaction.map(d=>({...d, label: d.label.replace('Take it to a mechanic immediately.','Immediate mechanic visit').replace('I know what the light means, then take it to the mechanic.','Knows the light, then acts').replace('Search on YouTube or Google.','Searches online').replace('Ignore it if the vehicle feels fine to drive.','Ignores if fine').replace('Call a friend or family member for advice.','Calls a friend')})));
+  drawHBar('#chart-trusted-source', DATA.trusted_source.map(d=>({...d, label: d.label.replace("A specific 'local' mechanic I've known for years","Local mechanic").replace('Authorized Brand Service Centre (OEM)','OEM service centre').replace('Online forums / YouTube / Google','Online forums').replace('Knowledgeable friends or colleagues','Friends / colleagues')})));
+  drawHBar('#chart-overcharged', DATA.overcharged.map(d=>({...d, label:d.label.replace('.','')})));
+  drawHBar('#chart-diagnosis-time', DATA.diagnosis_time.map(d=>({...d, label:d.label.replace('A few days of observation','A few days').replace('Less than 30 minutes','<30 minutes')})));
+  drawHBar('#chart-warning-check', DATA.warning_check.map(d=>({...d, label: d.label.replace('Take it to a mechanic immediately.','Immediate mechanic visit').replace('I know what the light means, then take it to the mechanic.','Knows the light, then acts').replace('Search on YouTube or Google.','Searches online').replace('Ignore it if the vehicle feels fine to drive.','Ignores if fine').replace('Call a friend or family member for advice.','Calls a friend')})), {valueFmt: d => d + ' / 8'});
+
+  const diagWtp = DATA.diag_wtp_heatmap.cells.map(c => ({diag: c.diag.replace('A few days of observation','A few days').replace('Less than 30 minutes','<30 minutes'), wtp: c.wtp.replace('Depends on the cost difference','Depends'), pct: c.pct, n: c.n}));
+  drawHeatmap('#chart-heat-diag-wtp', diagWtp,
+    ['<30 minutes','1-2 hours','A few days'], ['No','Depends','Yes'],
+    'diag','wtp','pct','n', {fmt: d => d + '%', maxVal: 100});
+
+  const ovWtp = DATA.overcharged_wtp_heatmap.cells.map(c => ({ov: c.ov.replace('Rarely / Never.','Rarely').replace('Sometimes.','Sometimes').replace('Yes, frequently.','Frequently'), wtp: c.wtp.replace('Depends on the cost difference','Depends'), pct: c.pct, n: c.n}));
+  drawHeatmap('#chart-heat-overcharged-wtp', ovWtp,
+    ['Rarely','Sometimes','Frequently'], ['No','Depends','Yes'],
+    'ov','wtp','pct','n', {fmt: d => d + '%', maxVal: 100});
+
+  /* ---- Frustrations ---- */
+  drawHBar('#chart-frustrations', DATA.frustrations);
+  drawHeatmap('#chart-frus-cooccur',
+    (() => {
+      const labels = DATA.frustration_cooccurrence.labels;
+      const m = DATA.frustration_cooccurrence.matrix;
+      const cells = [];
+      labels.forEach((r,ri) => labels.forEach((c,ci) => {
+        cells.push({row: r, col: c, val: m[ri][ci], n: m[ri][ci]});
+      }));
+      return cells;
+    })(),
+    DATA.frustration_cooccurrence.labels, DATA.frustration_cooccurrence.labels,
+    'row','col','val','n',
+    {fmt: d => d, maxVal: 36, labelThresholdFrac: 0.6}
+  );
+
+  /* ---- Hypothesis table ---- */
+  const table = document.getElementById('hyp-table-target');
+  const thead = `<thead><tr><th>ID</th><th>Hypothesis</th><th>Test</th><th>Statistic</th><th>p (raw)</th><th>p (corr.)</th><th>Verdict</th></tr></thead>`;
+  const rows = DATA.hypotheses.map(h => `<tr>
+      <td><b>${h.id}</b></td>
+      <td>${h.hypothesis}</td>
+      <td>${h.test}</td>
+      <td class="mono-stat">${h.stat}</td>
+      <td class="mono-stat">${h.p_raw.toFixed(4)}</td>
+      <td class="mono-stat">${h.p_corr.toFixed(4)}</td>
+      <td><span class="verdict ${h.verdict.includes('Sig') ? 'sig' : 'ns'}">${h.verdict}</span></td>
+    </tr>`).join('');
+  table.innerHTML = thead + '<tbody>' + rows + '</tbody>';
+
+  /* ---- Models ---- */
+  drawCoefficientPlot('#chart-model1', [
+    {label: 'Confidence', coef: DATA.model1['confidence'], p: DATA.model1_pvalues['confidence']},
+    {label: 'Vehicle age', coef: DATA.model1['age_c'], p: DATA.model1_pvalues['age_c']},
+    {label: 'Weekly usage', coef: DATA.model1['usage_c'], p: DATA.model1_pvalues['usage_c']},
+    {label: 'Check-diligence', coef: DATA.model1['check_composite'], p: DATA.model1_pvalues['check_composite']},
+  ]);
+  drawCoefficientPlot('#chart-model2', [
+    {label: 'Diagnosis time', coef: DATA.model2['diag_c'], p: DATA.model2_pvalues['diag_c']},
+    {label: 'Feels overcharged', coef: DATA.model2['overcharged_c'], p: DATA.model2_pvalues['overcharged_c']},
+    {label: 'Frustration count', coef: DATA.model2['frustration_count'], p: DATA.model2_pvalues['frustration_count']},
+    {label: 'Confidence', coef: DATA.model2['confidence'], p: DATA.model2_pvalues['confidence']},
+  ]);
+
+  /* ---- MCA ---- */
+  drawScatter('#chart-mca', MCA.points);
+
+  /* ---- Archetypes ---- */
+  const archCards = document.getElementById('archetype-cards');
+  const archOrder = ['0','1','2'];
+  archCards.innerHTML = archOrder.map(k => {
+    const a = DATA.archetypes[k];
+    const pct = Math.round(a.n/DATA.N*100);
+    return `<div class="archetype-card">
+      <div class="segn">Segment · n=${a.n}</div>
+      <h3>${a.name}</h3>
+      <div class="segment-pct">${pct}%</div>
+      <ul>${a.traits.map(t => `<li>${t}</li>`).join('')}</ul>
+    </div>`;
+  }).join('');
+
+  drawSegmentCompare('#chart-segments', SEGMENTS,
+    ['confidence','frustration_count','check_composite','wtp_yes_pct'],
+    ['Confidence (1-5)','Frustration count (0-5)','Check-diligence (0-8)','Willing to pay (%)']
+  );
+
+  /* ---- Design Directions ---- */
+  const dds = [
+    {
+      id: 'DD-01', source: 'Source: Model 2 regression — overcharged β=+0.94 p=.040, frustration count β=−0.58 p=.033',
+      title: 'Design for the overcharged, not the frustrated',
+      body: 'Feeling specifically overcharged converts into willingness to pay; a rising frustration count does not — it fatigues instead.',
+      items: ['Lead onboarding with "verify you\'re not being overcharged," not a list of pain points', 'Cap how many frustration acknowledgments appear before the pitch', 'Surface the Failure Probability Index as proof, not sympathy']
+    },
+    {
+      id: 'DD-02', source: 'Source: Archetype 3 (Overcharged Pragmatists) — 100% willing to pay, smallest segment (21%)',
+      title: 'Recruit the beachhead from the most distrustful',
+      body: 'The smallest segment converts unanimously. They already act fast and already distrust the status quo — the easiest possible first users.',
+      items: ['Pilot recruitment messaging: "stop guessing if you\'re being overcharged"', 'Measure success as trust restored, not just time saved', 'This segment needs proof, not convenience — lead with data']
+    },
+    {
+      id: 'DD-03', source: 'Source: Archetype 1 (Local-Mechanic Loyalists) — 47% of respondents, lowest pay-intent (38%)',
+      title: 'Meet loyalists where their trust already lives',
+      body: 'Nearly half of owners trust a specific mechanic by name. A pure app-replaces-mechanic pitch will lose this segment.',
+      items: ['Add a "share with my mechanic" report view, not a DIY-only flow', 'Position Drive Wise as leverage in that relationship, not a replacement for it', 'This segment already keeps logs (56%) — meet that habit, don\'t override it']
+    },
+    {
+      id: 'DD-04', source: 'Source: MCA map — "Ignores warning lights" sits as a remote outlier near "Pay: No"',
+      title: 'The disengaged aren\'t a v1 target',
+      body: 'One small cluster shows no felt need for any solution: rarely overcharged, ignores warning lights, won\'t pay.',
+      items: ['Don\'t spend early positioning trying to convert this group', 'If addressed at all, target them last, via social proof from converted segments']
+    },
+    {
+      id: 'DD-05', source: 'Source: Model 1 — check-diligence trends toward reducing delay (p=.094, n.s.)',
+      title: 'Lower the friction of checking, don\'t just remind',
+      body: 'Regular component-checking is the one predictor that trends toward reducing delayed service — confidence and age don\'t.',
+      items: ['A guided, camera-assisted check flow may do more than push notifications', 'Tie each check directly into the Vehicle Health Score, so the habit has visible payoff']
+    },
+    {
+      id: 'DD-06', source: 'Source: H8 — warning-light savviness correlates with check-diligence (p_raw=.022)',
+      title: 'Meet the panic moment with the Failure Probability Index',
+      body: 'Less-savvy warning-light responders are exactly the moment the original case study\'s diagnostic screens were built for.',
+      items: ['Surface Failure Probability at the instant an unfamiliar light appears, not buried in a menu', 'Turn a reactive panic-tap into an informed decision in one screen']
+    },
+    {
+      id: 'DD-07', source: 'Source: Trusted-source × willingness-to-pay (H5, p_raw=.016) — OEM/forum trusters convert most',
+      title: 'Segment the pitch by who they already trust',
+      body: 'OEM-centre and online-forum trusters show the highest pay-intent; local-mechanic trusters the lowest.',
+      items: ['For OEM/forum trusters: lead directly with the data and verification angle', 'For local-mechanic trusters: lead with "helps you ask your mechanic the right questions"']
+    },
+  ];
+  document.getElementById('dd-cards').innerHTML = dds.map(d => `
+    <div class="dd-card">
+      <div class="dd-id">${d.id}</div>
+      <div class="dd-source">${d.source}</div>
+      <h3>${d.title}</h3>
+      <p style="color:var(--color-slate-gray); font-size:15px; margin-bottom:0;">${d.body}</p>
+      <ul>${d.items.map(i => `<li>${i}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+
+});
+
+</script>
+</body>
+</html>

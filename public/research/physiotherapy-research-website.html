@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Physiotherapy for Kids — Body Region Analysis</title>
+<meta name="description" content="Body-region analysis for Reality Remix: which region (Arm, Back, Leg, Neck) is most affected in severe pediatric trauma / RTA-related orthopedic injury in India. TITCO-I, Delhi and South India datasets, hypothesis testing, practitioner interviews, and design directions.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap">
+<link rel="stylesheet" href="https://fonts.cdnfonts.com/css/birds-of-paradise-personal-use">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<style>
+  :root{
+    --white:#FFFFFF;
+    --black:#000000;
+    --blue:#5EC1E4;
+    --green:#2CE38A;
+    --line:#E6E8E9;
+    --muted:#5B5F63;
+    --card:#FAFBFB;
+    --card-border:#ECEEEF;
+    --amber:#B8860B;
+    --font-primary:'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-secondary:-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    --font-tertiary:'Birds of Paradise Personal use', cursive;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--white);
+    color:var(--black);
+    font-family:var(--font-secondary);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+  .bg-wash{
+    position:fixed; inset:0; z-index:-2; pointer-events:none;
+    background:
+      radial-gradient(ellipse 70% 50% at 8% 96%, var(--blue) 0%, transparent 62%),
+      radial-gradient(ellipse 65% 55% at 92% 100%, var(--green) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 50% 0%, var(--blue) 0%, transparent 55%);
+    opacity:0.10;
+  }
+  /* localized, slightly stronger gradient accents in select sections only */
+  .grad-blob{position:absolute; inset:0; z-index:-1; pointer-events:none; overflow:hidden;}
+  .grad-blob::before{content:''; position:absolute; inset:0;}
+  .grad-blob--hero::before{background:radial-gradient(ellipse 60% 70% at 88% -10%, var(--green) 0%, transparent 58%), radial-gradient(ellipse 55% 60% at -5% 40%, var(--blue) 0%, transparent 55%); opacity:0.16;}
+  .grad-blob--region::before{background:radial-gradient(ellipse 55% 65% at 100% 10%, var(--blue) 0%, transparent 60%); opacity:0.14;}
+  .grad-blob--design::before{background:radial-gradient(ellipse 60% 70% at 0% 90%, var(--green) 0%, transparent 58%), radial-gradient(ellipse 50% 50% at 100% 100%, var(--blue) 0%, transparent 55%); opacity:0.14;}
+
+  h1,h2,h3,h4{font-family:var(--font-primary); font-weight:600; letter-spacing:-0.01em; color:var(--black);}
+  .accent{font-family:var(--font-tertiary); font-weight:400; font-style:normal; font-size:1.15em; line-height:1; display:inline-block; padding:0 0.02em;}
+  a{color:var(--black);}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 28px; position:relative; z-index:1;}
+  section{padding:96px 0; border-bottom:1px solid var(--line); position:relative;}
+  section:last-of-type{border-bottom:none;}
+
+  /* NAV */
+  .topnav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.86); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  .topnav .wrap{display:flex; align-items:center; justify-content:space-between; padding-top:14px; padding-bottom:14px; gap:24px;}
+  .brand{font-family:var(--font-primary); font-weight:700; font-size:14px; letter-spacing:0.02em; white-space:nowrap;}
+  .navlinks{display:flex; gap:18px; overflow-x:auto; scrollbar-width:none; font-size:12.5px;}
+  .navlinks::-webkit-scrollbar{display:none;}
+  .navlinks a{white-space:nowrap; color:var(--muted); text-decoration:none; padding:6px 0; border-bottom:2px solid transparent; transition:color .15s, border-color .15s;}
+  .navlinks a.active, .navlinks a:hover{color:var(--black); border-color:var(--green);}
+  .navnum{color:var(--blue); font-weight:600; margin-right:3px;}
+  .navprogress{font-size:11px; color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums;}
+
+  /* HERO */
+  #hero{padding-top:64px; padding-bottom:72px;}
+  .eyebrow{font-size:12.5px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:600; margin-bottom:18px;}
+  .hero-title{font-size:clamp(34px,5.2vw,58px); line-height:1.06; max-width:820px; margin-bottom:22px;}
+  .hero-sub{font-size:17px; color:var(--muted); max-width:640px; margin-bottom:36px;}
+  .hero-meta{font-size:13px; color:var(--muted); margin-bottom:40px;}
+  .hero-meta b{color:var(--black); font-weight:600;}
+  .stat-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-bottom:36px;}
+  .stat-cell{background:var(--white); padding:20px 18px;}
+  .stat-num{font-family:var(--font-primary); font-size:26px; font-weight:700;}
+  .stat-label{font-size:11.5px; color:var(--muted); margin-top:4px;}
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{font-family:var(--font-primary); font-size:13.5px; font-weight:600; padding:11px 20px; border-radius:100px; text-decoration:none; display:inline-block; border:1px solid var(--black);}
+  .btn-solid{background:var(--black); color:var(--white);}
+  .btn-outline{color:var(--black); background:transparent;}
+
+  /* SECTION HEADERS */
+  .sec-kicker{font-size:12.5px; color:var(--blue); font-weight:700; letter-spacing:0.06em; margin-bottom:10px; text-transform:uppercase;}
+  .sec-title{font-size:clamp(24px,3vw,34px); margin-bottom:14px; max-width:760px;}
+  .sec-desc{font-size:15.5px; color:var(--muted); max-width:680px; margin-bottom:36px;}
+
+  .plain-english{background:var(--card); border:1px solid var(--card-border); border-left:3px solid var(--blue); border-radius:10px; padding:18px 22px; margin:24px 0; font-size:14.5px; color:#26292b;}
+  .plain-english strong{font-family:var(--font-primary); font-size:11.5px; text-transform:uppercase; letter-spacing:0.06em; display:block; margin-bottom:6px; color:var(--black);}
+
+  .key-finding{background:linear-gradient(135deg, rgba(94,193,228,0.09), rgba(44,227,138,0.09)); border:1px solid var(--card-border); border-radius:10px; padding:20px 22px; margin-top:28px; font-size:14.5px;}
+  .key-finding strong{font-family:var(--font-primary); font-size:11.5px; text-transform:uppercase; letter-spacing:0.06em; display:block; margin-bottom:6px; color:var(--black);}
+
+  .pending{background:#FFFBF2; border:1px solid #F0E3C4; border-radius:10px; padding:18px 22px; font-size:14px; color:#6b5a2a; margin-top:16px;}
+  .pending strong{font-family:var(--font-primary); color:#8a6d1c; display:block; margin-bottom:4px; font-size:12.5px; text-transform:uppercase; letter-spacing:0.05em;}
+
+  /* CHART CARD */
+  .chart-card{background:var(--white); border:1px solid var(--card-border); border-radius:16px; padding:26px 26px 18px; margin-top:8px;}
+  .chart-caption{font-size:12.5px; color:var(--muted); margin-top:14px; padding-top:14px; border-top:1px solid var(--card-border);}
+  .chart-caption b{color:var(--black);}
+  .d3-tooltip{position:absolute; background:#111; color:#fff; padding:7px 11px; border-radius:6px; font-size:12px; font-family:var(--font-secondary); pointer-events:none; opacity:0; z-index:999; max-width:260px; line-height:1.4;}
+
+  /* TABLE */
+  table.hyp{width:100%; border-collapse:collapse; font-size:13.5px; margin-top:8px;}
+  table.hyp th{font-family:var(--font-primary); text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); padding:10px 12px; border-bottom:1px solid var(--black);}
+  table.hyp td{padding:12px; border-bottom:1px solid var(--card-border); vertical-align:top;}
+  .verdict-pending{display:inline-block; font-size:11px; font-weight:600; padding:3px 10px; border-radius:100px; background:#FFF6E0; color:#8a6d1c; white-space:nowrap;}
+  .verdict-real{display:inline-block; font-size:11px; font-weight:600; padding:3px 10px; border-radius:100px; background:#E7FBF1; color:#0F8A50; white-space:nowrap;}
+
+  /* GRID / CARDS */
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media(max-width:820px){.grid-2, .grid-3{grid-template-columns:1fr;}}
+
+  .voice-card{background:var(--card); border:1px solid var(--card-border); border-radius:14px; padding:24px; font-size:14.5px;}
+  .voice-quote{font-style:italic; color:#26292b; margin-bottom:14px;}
+  .voice-who{font-family:var(--font-primary); font-weight:600; font-size:13px;}
+  .voice-role{font-size:12px; color:var(--muted); margin-top:2px;}
+  .voice-note{font-size:11.5px; color:var(--muted); margin-top:10px; padding-top:10px; border-top:1px solid var(--card-border);}
+
+  .dd-card{background:var(--white); border:1px solid var(--card-border); border-radius:14px; padding:24px; margin-bottom:16px;}
+  .dd-id{font-family:var(--font-primary); font-size:11.5px; font-weight:700; color:var(--blue); text-transform:uppercase; letter-spacing:0.04em;}
+  .dd-title{font-family:var(--font-primary); font-size:18px; font-weight:600; margin:8px 0 6px;}
+  .dd-source{font-size:12px; color:var(--muted); margin-bottom:12px;}
+  .dd-source b{color:var(--black); font-weight:600;}
+  .dd-body{font-size:14px; color:#26292b; margin-bottom:10px;}
+  .dd-list{padding-left:18px; font-size:13.5px; color:#26292b;}
+  .dd-list li{margin-bottom:5px;}
+
+  ul.limits{padding-left:20px; font-size:14.5px;}
+  ul.limits li{margin-bottom:12px; color:#26292b;}
+  ul.limits b{color:var(--black);}
+
+  .bib-group{margin-bottom:28px;}
+  .bib-group h4{font-family:var(--font-primary); font-size:13px; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); margin-bottom:10px;}
+  .bib-group ol{padding-left:20px; font-size:13.5px;}
+  .bib-group li{margin-bottom:7px;}
+  .bib-group a{color:var(--black); text-decoration-color:var(--card-border);}
+
+  footer{padding:56px 0 60px; text-align:center;}
+  footer .fmeta{font-size:12.5px; color:var(--muted); margin-top:10px; line-height:1.8;}
+  footer .fcredit{font-family:var(--font-primary); font-weight:600; font-size:14px; margin-top:18px;}
+  footer a.back{display:inline-block; margin-top:22px; font-size:12.5px; color:var(--muted); text-decoration:none;}
+</style>
+</head>
+<body>
+
+<div class="bg-wash"></div>
+
+<header class="topnav">
+  <div class="wrap">
+    <div class="brand">Reality&nbsp;Remix</div>
+    <nav class="navlinks" id="navlinks">
+      <a href="#overview"><span class="navnum">01</span>Overview</a>
+      <a href="#methodology"><span class="navnum">02</span>Methodology</a>
+      <a href="#body-region"><span class="navnum">03</span>Body Region</a>
+      <a href="#hypotheses"><span class="navnum">04</span>Hypotheses</a>
+      <a href="#age"><span class="navnum">05</span>Age Breakdown</a>
+      <a href="#voices"><span class="navnum">06</span>Practitioner Voices</a>
+      <a href="#design"><span class="navnum">07</span>Design Directions</a>
+      <a href="#limitations"><span class="navnum">08</span>Limitations</a>
+      <a href="#bibliography"><span class="navnum">09</span>Bibliography</a>
+    </nav>
+    <div class="navprogress" id="navprogress">0 / 9</div>
+  </div>
+</header>
+
+<main>
+
+<section id="hero">
+  <div class="grad-blob grad-blob--hero"></div>
+  <div class="wrap">
+    <div class="eyebrow">Phygital Product Design · Reality Remix · Healthcare · 2026</div>
+    <h1 class="hero-title">Which body region needs a <span class="accent">Reality&nbsp;Remix</span> most?</h1>
+    <p class="hero-sub">A body-region analysis for an interactive physiotherapy product for children aged 5–10 in India. Three datasets, a keyword-derived TITCO-I extraction pipeline, two formal hypotheses, and four practitioner interviews — brought together into one evidence trail for design decisions.</p>
+    <div class="hero-meta">Dhirubhai Ambani University · Semester 03 · <b>3</b> datasets · <b>3</b> interactive charts · <b>2</b> formal hypotheses · <b>7</b> design directions · <b>4</b> practitioner interviews</div>
+    <div class="stat-row">
+      <div class="stat-cell"><div class="stat-num">53%</div><div class="stat-label">Delhi cohort — upper limb share of all-cause pediatric MSK injury (n=100)</div></div>
+      <div class="stat-cell"><div class="stat-num">22.8%</div><div class="stat-label">South India cohort — upper limb share, single largest category (n=438)</div></div>
+      <div class="stat-cell"><div class="stat-num">5–8 wks</div><div class="stat-label">Typical physiotherapy recovery window, per two practitioner interviews</div></div>
+      <div class="stat-cell"><div class="stat-num">4 / 4</div><div class="stat-label">Physiotherapists who independently endorsed automated progress tracking</div></div>
+    </div>
+    <div class="cta-row">
+      <a href="#hypotheses" class="btn btn-solid">See hypothesis results →</a>
+      <a href="#design" class="btn btn-outline">Design directions →</a>
+    </div>
+  </div>
+</section>
+
+<section id="overview">
+  <div class="wrap">
+    <div class="sec-kicker">01 · Overview</div>
+    <h2 class="sec-title">Why severe pediatric trauma / RTA-related orthopedic injury</h2>
+    <p class="sec-desc">Of nine long-term pediatric physiotherapy conditions researched for this project, trauma is the only one with consistently strong, hospital-level Indian evidence — everything else (JIA, Perthes disease, DMD, pediatric spinal cord injury, osteosarcoma-related rehab) is data-sparse or has an outright reporting gap.</p>
+    <div class="plain-english"><strong>In plain English</strong>Road accidents and falls put more Indian children in physiotherapy, with better documentation, than any other long-term condition considered — so it's the safest, best-evidenced starting point for a product aimed at a broad population rather than a rare condition.</div>
+    <p style="font-size:14.5px; color:#26292b; margin-top:20px;">India accounts for roughly 6% of global vehicular accidents despite having only about 1% of the world's motor vehicles. In one Delhi hospital study, road traffic accidents caused 59.47% of male pediatric trauma cases, and ages 11–15 were the most affected group; of all pediatric trauma patients at that hospital, 26.48% were polytrauma (2+ body regions involved). With the condition chosen, the open question this analysis answers is: <b>of the four body regions relevant to a physiotherapy movement taxonomy — Arm, Back, Leg, Neck — which is most affected?</b></p>
+  </div>
+</section>
+
+<section id="methodology">
+  <div class="wrap">
+    <div class="sec-kicker">02 · Methodology</div>
+    <h2 class="sec-title">Three datasets, one keyword-extraction pipeline, two hypotheses</h2>
+    <div class="plain-english"><strong>In plain English</strong>One dataset is raw patient-level trauma registry data we can filter and test directly. The other two are already-published, aggregated tables from independent hospital studies — used as baselines to sanity-check whatever the raw data shows.</div>
+    <div class="grid-3" style="margin-top:28px;">
+      <div class="chart-card">
+        <div class="dd-title" style="font-size:15px;">TITCO-I</div>
+        <p style="font-size:13.5px; color:var(--muted);">16,000-row anonymized Indian trauma registry (AIIMS Delhi, KEM Mumbai, LTMGH Mumbai, SSKM Kolkata; 2013–2015; CC-BY-4.0). Patient-level; filtered to age ≤17 and mechanism-of-injury = road traffic, then body region extracted via regex keyword matching across 47 free-text injury columns.</p>
+      </div>
+      <div class="chart-card">
+        <div class="dd-title" style="font-size:15px;">Delhi (all-cause)</div>
+        <p style="font-size:13.5px; color:var(--muted);">Published table, n=100 children (6 months–12 years), Sural &amp; Verma 2015. All injury mechanisms combined (falls 79%, RTA 8%, other 13%) — a baseline, not RTA-specific.</p>
+      </div>
+      <div class="chart-card">
+        <div class="dd-title" style="font-size:15px;">South India (all-cause)</div>
+        <p style="font-size:13.5px; color:var(--muted);">Published table, n=438 patients / 732 injuries, Elangovan &amp; Munnuswamy 2025. All mechanisms combined, with two-wheeler RTA as the single largest at 29.5% — closer to RTA-dominant than Delhi, still not RTA-isolated.</p>
+      </div>
+    </div>
+    <p style="font-size:14.5px; color:#26292b; margin-top:28px;"><b>Pipeline:</b> load &amp; verify → filter pediatric RTA → keyword-extract body region (Arm/Leg/Neck/Back, polytrauma-aware) → Wilson 95% CI per region → chi-square goodness-of-fit test (H1) → cross-dataset chi-square validation against Delhi and South India (H2) → visualization → design-direction synthesis. Full statistical notebook: <code>interactive_physiotherapy_for_kids_analysis_02.py</code>.</p>
+  </div>
+</section>
+
+<section id="body-region">
+  <div class="grad-blob grad-blob--region"></div>
+  <div class="wrap">
+    <div class="sec-kicker">03 · Body Region Signal</div>
+    <h2 class="sec-title">What the two confirmed baselines already show</h2>
+    <p class="sec-desc">Both independently published, all-cause Indian pediatric trauma cohorts agree on one thing before any TITCO-specific test is even run: the upper limb (arm) is the single most affected region.</p>
+    <div class="chart-card">
+      <div id="chart-bodyregion" style="width:100%; min-height:420px;"></div>
+      <div class="chart-caption"><b>Fig 3.1</b> — Arm vs. Leg share of all-cause pediatric musculoskeletal injury, Delhi (n=100) and South India (n=438). Neck and Back are excluded from this comparison: Delhi only reports a combined "Head &amp; Neck" category, and neither study isolates Back the way this project's keyword extraction does for TITCO — a real category-mapping limitation, not an oversight.</div>
+    </div>
+    <div class="key-finding"><strong>Key finding</strong>Arm leads in both independent cohorts — 53% vs. 33% (Delhi) and 22.8% vs. 20.8% (South India) — despite the two studies having different mechanism mixes, different sample sizes, and different regions of India. That consistency is a real signal — though see Section 04 for how the RTA-specific TITCO test nuances this picture once it's isolated to road-traffic cases specifically.</div>
+  </div>
+</section>
+
+<section id="hypotheses">
+  <div class="wrap">
+    <div class="sec-kicker">04 · Hypothesis Testing</div>
+    <h2 class="sec-title">Two formal hypotheses, tested against the real TITCO-I data</h2>
+    <p class="sec-desc">Run against the real TITCO-I limited sample (1,000 patients — a random subsample of the full 16,000-row registry), filtered to pediatric (≤17) road-traffic-injury cases, n=60.</p>
+    <div class="key-finding"><strong>Headline result — more nuanced than the baselines alone suggested</strong>The RTA-specific distribution is significantly non-uniform (p=0.040) — something real is going on. But within TITCO's own RTA subset, <b>Leg edges narrowly ahead of Arm</b> (16.7% vs 15.0%, n=60) — not the clean Arm-leads confirmation DD-01 was written expecting. The two regions' 95% confidence intervals overlap heavily (Arm: 8.1–26.1%; Leg: 9.3–28.0%), so this specific gap isn't statistically decisive on its own. Cross-validated against both baselines, TITCO's Arm/Leg balance is statistically <i>consistent with</i> — not different from — the Arm-leading pattern in Delhi and South India. Honest read: real evidence of a skew toward the limbs over neck/back, without a statistically clean answer on whether Arm or Leg leads specifically in RTA cases at this sample size.</div>
+    <table class="hyp" style="margin-top:20px;">
+      <thead><tr><th>ID</th><th>Hypothesis</th><th>Test</th><th>Statistic / p</th><th>Effect size</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>H1</td>
+          <td>In TITCO pediatric-RTA cases, Arm / Leg / Neck / Back are equally likely to be affected (uniform distribution)</td>
+          <td>Chi-square goodness-of-fit</td>
+          <td>χ²=8.33, dof=3, p=0.0396</td>
+          <td>Cohen's w=0.59 (large)</td>
+          <td><span class="verdict-real">H0 rejected</span></td>
+        </tr>
+        <tr>
+          <td>H2a</td>
+          <td>TITCO's RTA-specific Arm/Leg split matches the Delhi all-cause baseline</td>
+          <td>Chi-square test of independence (2×2)</td>
+          <td>χ²=0.79, dof=1, p=0.3755</td>
+          <td>Cramér's V=0.09 (small)</td>
+          <td><span class="verdict-real">Consistent</span></td>
+        </tr>
+        <tr>
+          <td>H2b</td>
+          <td>TITCO's RTA-specific Arm/Leg split matches the South India all-cause baseline</td>
+          <td>Chi-square test of independence (2×2)</td>
+          <td>χ²=0.03, dof=1, p=0.8524</td>
+          <td>Cramér's V=0.01 (negligible)</td>
+          <td><span class="verdict-real">Consistent</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="chart-card" style="margin-top:24px;">
+      <div id="chart-titco-ci" style="width:100%; min-height:340px;"></div>
+      <div class="chart-caption"><b>Fig 4.1</b> — TITCO-I pediatric-RTA body region breakdown with 95% Wilson CI, n=60 (1,000-row limited sample). Note the overlapping Arm/Leg error bars — visually, this is why the gap between them isn't statistically decisive at this sample size.</div>
+    </div>
+    <p style="font-size:13.5px; color:var(--muted); margin-top:18px;"><b>Sample composition, for transparency:</b> of 210 pediatric (≤17) cases in this 1,000-row sample, mechanism breakdown was Fall (100), RTA-unspecified (43), Burn (28), Assault (9), RTA-motorcyclist (8), Other (7), RTA-pedestrian (7), Railway (6), RTA-passenger (2) — RTA sub-categories combine to the n=60 tested above. Falls dominating over RTA matches the Delhi baseline's own mechanism mix (falls 79%, RTA 8%) — a small internal consistency check that this sample behaves as expected. 3 of the 60 RTA patients (5%) matched more than one body region (polytrauma).</p>
+  </div>
+</section>
+
+<section id="age">
+  <div class="wrap">
+    <div class="sec-kicker">05 · Age Breakdown</div>
+    <h2 class="sec-title">South India cohort — injury site by age band</h2>
+    <p class="sec-desc">This part of the South India baseline is fully real and already usable: it shows how injury-site distribution shifts across the 0–3, 4–6, 7–9, and 10–18 age bands within an all-cause pediatric trauma sample.</p>
+    <div class="chart-card">
+      <div id="chart-age" style="width:100%; min-height:440px;"></div>
+      <div class="chart-caption"><b>Fig 5.1</b> — Site of injury × age group, South India cohort (n=438 patients, 732 injuries). The 10–18 band dominates raw counts in every category — expected, since it spans the widest age range of the four bands.</div>
+    </div>
+  </div>
+</section>
+
+<section id="voices">
+  <div class="wrap">
+    <div class="sec-kicker">06 · Practitioner Voices</div>
+    <h2 class="sec-title">Four physiotherapist interviews, triangulating the data</h2>
+    <p class="sec-desc">Numbers say what the published cohorts show; practitioners explain what actually happens in a session. All four interviews were conducted by call. Two (Hency Parmar, Dr. Rakesh) are reconstructed from a solo recap rather than a direct recording, with inaudible sections flagged rather than guessed at in the source transcripts; Dr. Pranav's is a direct transcript of the actual call — the most reliable source of the four.</p>
+    <div class="grid-2" style="margin-top:28px;">
+      <div class="voice-card">
+        <div class="voice-quote">"Mostly kids with fractures sustained while playing… the most fracture/injury-prone area in this age group is the elbow and forearm… the tendon that attaches the forearm to the elbow joint is usually where the actual problem sits."</div>
+        <div class="voice-who">Dr. Vishaka Pawar</div>
+        <div class="voice-role">Physiotherapist, 6–7 years' experience</div>
+        <div class="voice-note">Also endorsed automated progress-tracking ("Definitely yes") and named pain tolerance / resistance as the core adherence barrier — distraction helps, but "the kid still has to use the equipment."</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-quote">"That can be great! That can be absolutely great… Especially for the pediatric population, we need to track every small growth and development of the child. Every month there is either progress or some kind of problem that arises."</div>
+        <div class="voice-who">Dr. Pranav</div>
+        <div class="voice-role">Physiotherapist <span style="color:var(--amber);">(experience listed as both 3–4 and 6–7 years across source materials — flagged, not resolved)</span></div>
+        <div class="voice-note">Only interview that's a direct call transcript, not a solo-recap reconstruction. Named wrist, knee, and ankle fractures as the most common cases; said range of motion is the "absolute first priority" before strength training, since "movement must be initiated" first. Leans toward clinical/outpatient setup for visibility and specialty growth, but confirmed pediatric home setups need minimal equipment. Session pricing: ~₹2,000 (suburban), ~₹700–800 (lower-income), ~₹300–500 (government).</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-quote">"Repetition, specifically… if a product could let the kid do the exercise on their own and track that progress automatically, it would cut out a lot of that repeated manual work."</div>
+        <div class="voice-who">Hency Parmar</div>
+        <div class="voice-role">Physiotherapist, 3–4 years' experience, government hospital background</div>
+        <div class="voice-note">Reconstructed from solo recap, not a direct recording. Home vs. clinical setup described as roughly equally common, split mainly by affordability.</div>
+      </div>
+      <div class="voice-card">
+        <div class="voice-quote">"[Largely inaudible — legible fragments:] 'track, progress… help… patient… track progress' — gist: agreement that patient-side tracking would help."</div>
+        <div class="voice-who">Dr. Rakesh</div>
+        <div class="voice-role">Physiotherapist, 10–15 years' experience, private clinic</div>
+        <div class="voice-note">Source recording was heavily garbled; most of this interview is only partially legible and is flagged as such rather than filled in. Confirmed: YouTube videos are the default home-exercise guide today.</div>
+      </div>
+    </div>
+    <div class="key-finding" style="margin-top:8px;"><strong>Convergent finding</strong>All four physiotherapists — independently, in separate calls — endorsed a device that tracks how a child interacts with it and syncs that data back periodically, specifically to reduce how often they need to manually check in. Dr. Pranav went furthest, tying it directly to pediatric care itself: "we need to track every small growth and development of the child." This is validated demand, not a hypothesis to be tested.</div>
+  </div>
+</section>
+
+<section id="design">
+  <div class="grad-blob grad-blob--design"></div>
+  <div class="wrap">
+    <div class="sec-kicker">07 · Design Directions</div>
+    <h2 class="sec-title">From evidence to design direction</h2>
+    <p class="sec-desc">Seven directions, each traceable to a specific dataset or interview. If the underlying evidence changes — most notably once the TITCO-specific hypothesis results come in — the direction it supports should be revisited.</p>
+
+    <div class="dd-card">
+      <div class="dd-id">DD-01 · Baseline data + Practitioner interviews + TITCO-I (revisited)</div>
+      <div class="dd-title">Prioritize Arm — specifically elbow/forearm</div>
+      <div class="dd-source">Source: <b>Delhi (n=100) &amp; South India (n=438)</b> baselines, both showing Upper limb as the largest category; corroborated firsthand by <b>Dr. Vishaka Pawar</b> naming elbow/forearm fractures from falls-while-playing as the most common presenting case in exactly this age band, and by <b>Dr. Pranav</b> independently naming wrist fractures among the most common post-surgical cases in this age group.</div>
+      <ul class="dd-list">
+        <li>Two independent published cohorts and two practitioner interviews converge on Arm before any TITCO-specific test is run — four independent sources.</li>
+        <li><b>Revisited now that the real TITCO-I RTA-specific test is in (Section 04), per this document's own rule that directions get revisited when their evidence changes:</b> the result is more nuanced than expected. TITCO's own RTA subset (n=60) has Leg narrowly ahead of Arm (16.7% vs 15.0%), though the two are statistically indistinguishable at this sample size (overlapping 95% CIs), and TITCO's Arm/Leg balance is statistically consistent with — not different from — both baselines' Arm-leading pattern.</li>
+        <li><b>Net call: Arm stays the prioritized region</b>, on weight of evidence (2 baselines + 2 interviews vs. one small, statistically-inconclusive RTA subsample) — but this is now a judgment call on balance of evidence, not a clean statistical sweep. Worth re-running against the full 16,000-row TITCO-I file (this used the 1,000-row limited sample) before treating it as fully settled.</li>
+      </ul>
+    </div>
+
+    <div class="dd-card">
+      <div class="dd-id">DD-02 · Practitioner interviews</div>
+      <div class="dd-title">Target elbow flexion-extension and forearm pronation-supination — range of motion before strength</div>
+      <div class="dd-source">Source: <b>Dr. Vishaka Pawar</b> — tendon at the forearm-elbow junction named as the typical problem site. Sequencing refined by <b>Dr. Pranav</b>: for upper-limb post-trauma cases, range of motion is the "absolute first priority… movement must be initiated" before strength training begins.</div>
+      <ul class="dd-list">
+        <li>Gives the product's primary sensing axis a specific anatomical target, not a generic "arm movement" brief.</li>
+        <li>Matches the clinical assessment process described in both interviews: checking strength, range of motion, and balance of the affected joint.</li>
+        <li>Session/loop structure should sequence ROM-building movement before strength-loaded resistance, not treat both as interchangeable from session one.</li>
+      </ul>
+    </div>
+
+    <div class="dd-card">
+      <div class="dd-id">DD-03 · All four practitioner interviews</div>
+      <div class="dd-title">Automated progress tracking is validated demand</div>
+      <div class="dd-source">Source: <b>Hency Parmar, Dr. Rakesh, Dr. Vishaka Pawar, Dr. Pranav</b> — independently, all four endorsed a device that tracks usage data and reports back periodically. Dr. Pranav's reaction was the most emphatic ("That can be absolutely great") and tied it specifically to pediatric care, where monthly growth/development needs consistent tracking.</div>
+      <ul class="dd-list">
+        <li>Reduces repeated manual check-ins, the single most-cited workload driver across interviews.</li>
+        <li>Reporting cadence should match existing practice — weekly to monthly, not real-time clinical supervision (see DD-07).</li>
+        <li>Now a 4-for-4 convergent finding across every practitioner interviewed, not a majority — the strongest-evidenced direction in this set.</li>
+      </ul>
+    </div>
+
+    <div class="dd-card">
+      <div class="dd-id">DD-04 · Practitioner interviews</div>
+      <div class="dd-title">Gamification as a secondary layer, not a replacement</div>
+      <div class="dd-source">Source: <b>Dr. Vishaka Pawar</b> — kids' lower pain tolerance drives resistance and disengagement, but "the kid still has to use the equipment." Corroborated by <b>Dr. Pranav</b>: children are genuinely "scared at the beginning" and early sessions are difficult, but even low-tech centers already manage this with soft toys, storybooks, and coloring books rather than avoiding the exercise itself.</div>
+      <ul class="dd-list">
+        <li>Distraction/gamification should support adherence, not obscure or replace the core therapeutic mechanism.</li>
+        <li>Design the reward/game loop around session completion, not around masking that the exercise is happening.</li>
+        <li>This device's story-on-completion mechanic is a direct digital analogue of the storybook/toy distraction already used in practice today.</li>
+      </ul>
+    </div>
+
+    <div class="dd-card">
+      <div class="dd-id">DD-05 · Practitioner interviews</div>
+      <div class="dd-title">Anchor sensing to clinically trusted tools</div>
+      <div class="dd-source">Source: <b>Dr. Vishaka Pawar</b> naming goniometers, resistance bands, and pressure balls as the real-world equipment baseline for elbow/forearm cases. <b>Dr. Pranav</b> independently named pressure/strength-measuring devices with built-in resistance, distinguishing them from a plain dynamometer ("a dynamometer just measures strength; it does not provide resistance").</div>
+      <ul class="dd-list">
+        <li>Goniometer-class angle sensing and resistance-band-style loading are the components to digitize, not reinvent.</li>
+        <li>Keeps the product legible to a practitioner reviewing session data — it should read as an instrumented version of tools they already trust.</li>
+        <li><b>Worth flagging:</b> Dr. Pranav's ideal device both measures force and provides resistance. This project's current hardware decision provides resistance mechanically (graduated-force spring plungers) without electronic force measurement, after an earlier force-sensor approach was removed for reliability/complexity reasons — a real, acknowledged trade-off against this direction, not an oversight.</li>
+      </ul>
+    </div>
+
+    <div class="dd-card">
+      <div class="dd-id">DD-06 · Practitioner interviews</div>
+      <div class="dd-title">Design for a 5–8 week engagement arc</div>
+      <div class="dd-source">Source: <b>Dr. Vishaka Pawar</b> — critical-condition physiotherapy recovery typically runs 6–8 weeks. Corroborated by <b>Dr. Pranav</b> — baseline rehabilitation takes "around five to six weeks," after which training/conditioning continues.</div>
+      <ul class="dd-list">
+        <li>Adherence and motivation mechanics need to sustain interest across weeks, not just a single session.</li>
+        <li>Progression/difficulty curves should be paced against this real clinical window.</li>
+        <li>Two independent practitioners give overlapping ranges (5–6 and 6–8 weeks) — a 5–8 week arc covers both.</li>
+      </ul>
+    </div>
+
+    <div class="dd-card">
+      <div class="dd-id">DD-07 · Practitioner interviews</div>
+      <div class="dd-title">Support home and clinical deployment equally</div>
+      <div class="dd-source">Source: <b>Dr. Vishaka Pawar &amp; Hency Parmar</b> — setup choice is financially, not clinically, determined; progress reporting already happens on a periodic (weekly to monthly) cadence. <b>Dr. Pranav</b> adds nuance and pricing: he personally leans toward clinical/outpatient setups for visibility and specialty growth, but confirms pediatric home setups are genuinely viable ("don't need a lot of heavy equipment — just certain mats and therapy balls"), with concrete session pricing that explains the financial split — roughly ₹2,000/session (suburban, well-off families), ₹700–800 (lower-income families), ₹300–500 (government setups).</div>
+      <ul class="dd-list">
+        <li>No functional compromise should be needed between home and clinic use.</li>
+        <li>Data-sync model should match the existing periodic reporting rhythm rather than assume constant supervision.</li>
+        <li>Pricing spread (₹300–2,000/session) confirms affordability, not clinical necessity, is the real driver of home vs. clinic choice — reinforces designing one product that works equally well in both settings rather than two variants.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="limitations">
+  <div class="wrap">
+    <div class="sec-kicker">08 · Limitations &amp; Data Gaps</div>
+    <h2 class="sec-title">What this analysis can't yet claim</h2>
+    <ul class="limits">
+      <li><b>TITCO-I results used the 1,000-row limited sample, not the full 16,000-row file.</b> The limited file is itself a random subsample of the full registry (per its own documentation) — real data, correctly analyzed, but a smaller and slightly less representative base than the full file would give. The pediatric-RTA subset actually tested was n=60.</li>
+      <li><b>TITCO's RTA-specific Arm-vs-Leg ordering is not statistically decisive.</b> Leg (16.7%) narrowly edges Arm (15.0%) in raw counts, but their 95% confidence intervals overlap substantially — this sample size can't cleanly distinguish the two. DD-01 has been revisited to reflect this honestly rather than overstating the TITCO result as a clean confirmation.</li>
+      <li><b>Delhi and South India are all-cause, not RTA-isolated baselines.</b> RTA was only 8% of the Delhi cohort's mechanism mix (vs. 29.5% for two-wheeler RTA alone in South India) — both are directional context, not a substitute for the RTA-specific TITCO result.</li>
+      <li><b>Small, single-site published samples.</b> Delhi (n=100, one hospital) and South India (n=438, one district) each represent a single site — real, peer-reviewed data, but not nationally representative on their own.</li>
+      <li><b>Interview methodology is mixed across the four transcripts.</b> Hency Parmar and Dr. Rakesh are rebuilt from a solo spoken recap (transcribed afterward) rather than a recording of the actual call, with inaudible sections flagged rather than filled in. Dr. Pranav's is a direct transcript of the actual call — the most reliable source of the four.</li>
+      <li><b>Dr. Pranav's stated experience level is inconsistent across source materials</b> (3–4 years in one place, 6–7 years in another) — flagged rather than silently resolved; doesn't affect the substance of what he said, only his seniority framing.</li>
+      <li><b>Four interviews is still a small, non-random sample of practitioners.</b> Even where two practitioners now corroborate a direction (DD-01, DD-02, DD-04, DD-05, DD-06, DD-07), this reflects convergence across a handful of individual clinicians' experience, not a surveyed consensus.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="bibliography">
+  <div class="wrap">
+    <div class="sec-kicker">09 · Bibliography</div>
+    <h2 class="sec-title">Sources</h2>
+    <div class="bib-group">
+      <h4>Primary datasets</h4>
+      <ol>
+        <li>TITCO-I Trauma Registry, India. <a href="https://github.com/titco/titco-I" target="_blank">github.com/titco/titco-I</a> · Zenodo DOI: <a href="https://doi.org/10.5281/zenodo.7832819" target="_blank">10.5281/zenodo.7832819</a>. CC-BY-4.0. Analysis in Section 04 uses <a href="https://github.com/titco/titco-I/raw/refs/heads/master/titco-I-limited-dataset-v1.csv" target="_blank">titco-I-limited-dataset-v1.csv</a> (1,000-row random subsample of the full 16,000-row registry).</li>
+        <li>Sural S, Verma A. "The clinical profile of musculoskeletal injuries in children attending a major hospital in Delhi, India." <i>J Clin Orthop Trauma</i> 2015;6(1):12–18. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4551149" target="_blank">PMC4551149</a>.</li>
+        <li>Elangovan H, Munnuswamy P. Pediatric trauma site-of-injury study. <i>Cureus</i> 2025;17(10):e95732. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12664769" target="_blank">PMC12664769</a>.</li>
+      </ol>
+    </div>
+    <div class="bib-group">
+      <h4>Primary research (this project)</h4>
+      <ol>
+        <li>Interview — Hency Parmar, Physiotherapist (3–4 yrs experience), conducted by Sukh.</li>
+        <li>Interview — Dr. Rakesh, Physiotherapist (10–15 yrs experience), conducted by Sukh.</li>
+        <li>Interview — Dr. Vishaka Pawar, Physiotherapist (6–7 yrs experience), conducted by Sukh.</li>
+        <li>Interview — Dr. Pranav, Physiotherapist (experience listed as 3–4 yrs and 6–7 yrs across source materials — discrepancy flagged, not resolved), conducted by Sukh. 4th physiotherapist interview; the only one that's a direct call transcript rather than a reconstructed recap.</li>
+      </ol>
+    </div>
+    <div class="bib-group">
+      <h4>Tools &amp; typefaces</h4>
+      <ol>
+        <li>D3.js v7 — <a href="https://d3js.org/" target="_blank">d3js.org</a></li>
+        <li>General Sans, Indian Type Foundry — via <a href="https://www.fontshare.com/fonts/general-sans" target="_blank">Fontshare</a></li>
+        <li>Birds of Paradise (Personal Use), Herofonts, 2014 — a revival of a 1975 Al Elliot design.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="font-family:var(--font-primary); font-weight:700; font-size:16px;">Interactive Physiotherapy for Kids</div>
+    <div class="fmeta">Body-region evidence for Reality Remix · Dhirubhai Ambani University · Semester 03 · 2026</div>
+    <div class="fmeta">Data: TITCO-I (Zenodo, CC-BY-4.0) · Sural &amp; Verma 2015 · Elangovan &amp; Munnuswamy 2025 · Analysis: Python 3 (Google Colab), pandas, SciPy, statsmodels · Visualization: D3.js v7</div>
+    <div class="fcredit">Sukhmanpreet Singh (Sukh)</div>
+    <a href="#hero" class="back">Back to top ↑</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // ---------- Nav scroll-spy ----------
+  const sections = document.querySelectorAll('main section[id]');
+  const navlinks = document.querySelectorAll('#navlinks a');
+  const progressEl = document.getElementById('navprogress');
+  const total = sections.length;
+  function onScroll(){
+    let idx = 0;
+    sections.forEach((sec,i)=>{
+      const r = sec.getBoundingClientRect();
+      if(r.top < window.innerHeight*0.4){ idx = i+1; }
+    });
+    progressEl.textContent = Math.min(idx,total) + ' / ' + total;
+    navlinks.forEach(a=>a.classList.remove('active'));
+    if(idx>0 && idx<=navlinks.length){ navlinks[idx-1].classList.add('active'); }
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  const tooltip = d3.select('body').append('div').attr('class','d3-tooltip');
+  function showTip(html, event){
+    tooltip.style('opacity',1).html(html)
+      .style('left',(event.pageX+12)+'px').style('top',(event.pageY-24)+'px');
+  }
+  function moveTip(event){
+    tooltip.style('left',(event.pageX+12)+'px').style('top',(event.pageY-24)+'px');
+  }
+  function hideTip(){ tooltip.style('opacity',0); }
+
+  function chartWidth(sel){ return document.querySelector(sel).clientWidth || 700; }
+
+  // ================= Chart 1: Body region comparison (REAL — Delhi & South India) =================
+  const bodyRegionData = [
+    {dataset:'Delhi (all-cause, n=100)', region:'Arm', pct:53.0},
+    {dataset:'South India (all-cause, n=438)', region:'Arm', pct:22.81},
+    {dataset:'Delhi (all-cause, n=100)', region:'Leg', pct:33.0},
+    {dataset:'South India (all-cause, n=438)', region:'Leg', pct:20.77}
+  ];
+  (function(){
+    const width = chartWidth('#chart-bodyregion'), height = 420;
+    const margin = {top:30,right:24,bottom:50,left:50};
+    const datasets = [...new Set(bodyRegionData.map(d=>d.dataset))];
+    const regions = [...new Set(bodyRegionData.map(d=>d.region))];
+    const x0 = d3.scaleBand().domain(regions).range([margin.left,width-margin.right]).paddingInner(0.3);
+    const x1 = d3.scaleBand().domain(datasets).range([0,x0.bandwidth()]).padding(0.08);
+    const y = d3.scaleLinear().domain([0, d3.max(bodyRegionData,d=>d.pct)*1.2]).nice().range([height-margin.bottom,margin.top]);
+    const color = d3.scaleOrdinal().domain(datasets).range(['#5EC1E4','#2CE38A']);
+    const svg = d3.select('#chart-bodyregion').html('').append('svg').attr('viewBox',[0,0,width,height]).attr('width','100%').attr('height',height);
+    const groups = svg.append('g').selectAll('g').data(regions).join('g').attr('transform',r=>'translate('+x0(r)+',0)');
+    groups.selectAll('rect').data(r=>datasets.map(ds=>{
+      const rec = bodyRegionData.find(d=>d.region===r && d.dataset===ds);
+      return {dataset:ds, region:r, pct: rec? rec.pct:0};
+    })).join('rect')
+      .attr('x', d=>x1(d.dataset)).attr('y', d=>y(d.pct)).attr('width', x1.bandwidth()).attr('height', d=>y(0)-y(d.pct))
+      .attr('fill', d=>color(d.dataset)).attr('rx',3)
+      .on('mouseover',(e,d)=>showTip(d.dataset+'<br>'+d.region+': '+d.pct.toFixed(1)+'%',e))
+      .on('mousemove',moveTip).on('mouseout',hideTip);
+    svg.append('g').attr('transform','translate(0,'+(height-margin.bottom)+')').call(d3.axisBottom(x0)).call(g=>g.select('.domain').attr('stroke','#000'));
+    svg.append('g').attr('transform','translate('+margin.left+',0)').call(d3.axisLeft(y).tickFormat(d=>d+'%')).call(g=>g.select('.domain').remove());
+    const legend = svg.append('g').attr('transform','translate('+(width-margin.right-220)+','+(margin.top-14)+')');
+    datasets.forEach((ds,i)=>{
+      const g = legend.append('g').attr('transform','translate('+(i*230)+',0)');
+      g.append('rect').attr('width',11).attr('height',11).attr('fill',color(ds)).attr('rx',2);
+      g.append('text').attr('x',16).attr('y',10).attr('font-size',11).text(ds);
+    });
+  })();
+
+  // ================= Chart 2: South India age breakdown (REAL) =================
+  const ageData = [];
+  const ageRows = {
+    'Head':[20,22,19,99],'Face':[21,27,15,81],'Back':[4,1,2,5],'Chest':[6,4,6,26],
+    'Upper limb':[15,14,16,122],'Abdomen':[3,2,3,10],'Pelvis':[2,1,5,23],'Lower limb':[8,19,10,115],'Polytrauma':[1,1,1,3]
+  };
+  const ageGroups = ['0-3','4-6','7-9','10-18'];
+  Object.keys(ageRows).forEach(site=>{
+    ageRows[site].forEach((count,i)=> ageData.push({age_group:ageGroups[i], site:site, count:count}));
+  });
+  (function(){
+    const width = chartWidth('#chart-age'), height = 440;
+    const margin = {top:30,right:170,bottom:50,left:50};
+    const sites = Object.keys(ageRows);
+    const stackData = ageGroups.map(ag=>{
+      const row = {age_group:ag};
+      sites.forEach(s=> row[s] = ageData.find(d=>d.age_group===ag && d.site===s).count );
+      return row;
+    });
+    const stack = d3.stack().keys(sites)(stackData);
+    const x = d3.scaleBand().domain(ageGroups).range([margin.left,width-margin.right]).padding(0.32);
+    const y = d3.scaleLinear().domain([0, d3.max(stack[stack.length-1],d=>d[1])*1.08]).nice().range([height-margin.bottom,margin.top]);
+    const color = d3.scaleOrdinal().domain(sites).range(d3.schemeTableau10.concat(d3.schemeSet2));
+    const svg = d3.select('#chart-age').html('').append('svg').attr('viewBox',[0,0,width,height]).attr('width','100%').attr('height',height);
+    svg.append('g').selectAll('g').data(stack).join('g').attr('fill',d=>color(d.key))
+      .selectAll('rect').data(d=>d.map(v=>({y0:v[0],y1:v[1],age_group:v.data.age_group,key:d.key,count:v.data[d.key]})))
+      .join('rect')
+      .attr('x', d=>x(d.age_group)).attr('y', d=>y(d.y1)).attr('height', d=>y(d.y0)-y(d.y1)).attr('width', x.bandwidth())
+      .on('mouseover',(e,d)=>showTip(d.key+', age '+d.age_group+': '+d.count,e)).on('mousemove',moveTip).on('mouseout',hideTip);
+    svg.append('g').attr('transform','translate(0,'+(height-margin.bottom)+')').call(d3.axisBottom(x)).call(g=>g.select('.domain').attr('stroke','#000'));
+    svg.append('g').attr('transform','translate('+margin.left+',0)').call(d3.axisLeft(y)).call(g=>g.select('.domain').remove());
+    const legend = svg.append('g').attr('transform','translate('+(width-margin.right+16)+','+margin.top+')');
+    sites.forEach((s,i)=>{
+      const g = legend.append('g').attr('transform','translate(0,'+(i*20)+')');
+      g.append('rect').attr('width',11).attr('height',11).attr('fill',color(s)).attr('rx',2);
+      g.append('text').attr('x',16).attr('y',10).attr('font-size',11).text(s);
+    });
+  })();
+
+  // ================= Chart 3: TITCO pediatric-RTA body region + 95% Wilson CI (REAL) =================
+  const titcoCIData = [
+    {region:'Leg', percentage:16.67, lower_ci:9.31, upper_ci:28.03, count:10},
+    {region:'Arm', percentage:15.00, lower_ci:8.10, upper_ci:26.11, count:9},
+    {region:'Neck', percentage:5.00, lower_ci:1.71, upper_ci:13.70, count:3},
+    {region:'Back', percentage:3.33, lower_ci:0.92, upper_ci:11.36, count:2}
+  ];
+  (function(){
+    const width = chartWidth('#chart-titco-ci'), height = 340;
+    const margin = {top:20,right:24,bottom:44,left:50};
+    const x = d3.scaleBand().domain(titcoCIData.map(d=>d.region)).range([margin.left,width-margin.right]).padding(0.4);
+    const y = d3.scaleLinear().domain([0, d3.max(titcoCIData,d=>d.upper_ci)*1.15]).nice().range([height-margin.bottom,margin.top]);
+    const svg = d3.select('#chart-titco-ci').html('').append('svg').attr('viewBox',[0,0,width,height]).attr('width','100%').attr('height',height);
+    svg.selectAll('rect').data(titcoCIData).join('rect')
+      .attr('x', d=>x(d.region)).attr('y', d=>y(d.percentage)).attr('width', x.bandwidth()).attr('height', d=>y(0)-y(d.percentage))
+      .attr('fill','#5EC1E4').attr('rx',3)
+      .on('mouseover',(e,d)=>showTip(d.region+': '+d.percentage.toFixed(1)+'% (95% CI '+d.lower_ci.toFixed(1)+'-'+d.upper_ci.toFixed(1)+'%), n='+d.count, e))
+      .on('mousemove',moveTip).on('mouseout',hideTip);
+    const cx = d=>x(d.region)+x.bandwidth()/2;
+    svg.selectAll('line.ci').data(titcoCIData).join('line')
+      .attr('x1',cx).attr('x2',cx).attr('y1',d=>y(d.lower_ci)).attr('y2',d=>y(d.upper_ci)).attr('stroke','#111').attr('stroke-width',1.5);
+    svg.selectAll('line.cap-top').data(titcoCIData).join('line')
+      .attr('x1',d=>cx(d)-7).attr('x2',d=>cx(d)+7).attr('y1',d=>y(d.upper_ci)).attr('y2',d=>y(d.upper_ci)).attr('stroke','#111').attr('stroke-width',1.5);
+    svg.selectAll('line.cap-bot').data(titcoCIData).join('line')
+      .attr('x1',d=>cx(d)-7).attr('x2',d=>cx(d)+7).attr('y1',d=>y(d.lower_ci)).attr('y2',d=>y(d.lower_ci)).attr('stroke','#111').attr('stroke-width',1.5);
+    svg.append('g').attr('transform','translate(0,'+(height-margin.bottom)+')').call(d3.axisBottom(x)).call(g=>g.select('.domain').attr('stroke','#000'));
+    svg.append('g').attr('transform','translate('+margin.left+',0)').call(d3.axisLeft(y).tickFormat(d=>d+'%')).call(g=>g.select('.domain').remove());
+  })();
+
+})();
+</script>
+
+</body>
+</html>
