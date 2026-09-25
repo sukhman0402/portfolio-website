@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Chevron from "./Chevron";
 import OpeningLine from "./OpeningLine";
-
+ 
 // A single Research row (design.md §3, Section 3.0) — extracted 2026-09-03
 // from ResearchSection.js so it can be shared between the homepage's
 // featured-4 list and the new /research "All" listing page, mirroring how
@@ -30,7 +30,7 @@ import OpeningLine from "./OpeningLine";
 export default function ResearchRow({ item }) {
   const rowClassName =
     "grid w-full grid-cols-[56px_minmax(0,1fr)_auto] items-start border-b-2 border-black pt-[10px] pb-[10px] md:grid-cols-[350px_minmax(0,1fr)_auto]";
-
+ 
   const content = (
     <>
       <span className="font-medium uppercase leading-[18px] tracking-normal">
@@ -40,14 +40,20 @@ export default function ResearchRow({ item }) {
         <span className="font-semibold leading-[18px] tracking-[-0.5px]">
           {item.title}
         </span>
-        {/* Same one-liner rule as ProjectRow.js (2026-09-25): the opening
-            line + "..", capped at 2 lines on narrow screens (see
-            OpeningLine.js), default line height so it matches the Projects
-            rows directly above. */}
+        {/* Research list description (Sukhman, 2026-09-25):
+            - Desktop (768px+): the item's `summary`, a complete one-line
+              sentence, shown in full with no "..". Written to fit one line
+              at 1280px and wider; narrower desktop windows wrap it rather
+              than cut it.
+            - Phones: the same `summary`, with the usual 2-line rule
+              (filled to the right edge, ".." if it doesn't fit), via
+              OpeningLine.js. */}
+        <span className="hidden font-normal tracking-[-0.5px] md:block">
+          {item.summary}
+        </span>
         <OpeningLine
-          className="font-normal tracking-[-0.5px] break-words"
-          lead={item.description}
-          more={item.descriptionMore}
+          className="font-normal tracking-[-0.5px] break-words md:hidden"
+          lead={item.summary}
         />
         <span className="mt-[15px] font-normal tracking-[-0.5px] text-muted">
           {item.comingSoon ? "Coming Soon" : item.tag}
@@ -56,7 +62,7 @@ export default function ResearchRow({ item }) {
       <Chevron className="ml-4 mt-1 h-3 w-3 shrink-0 md:ml-6" />
     </>
   );
-
+ 
   if (item.externalUrl) {
     return (
       <a
@@ -69,7 +75,7 @@ export default function ResearchRow({ item }) {
       </a>
     );
   }
-
+ 
   if (item.comingSoon) {
     return (
       <div className={`${rowClassName} cursor-default text-black/40`}>
@@ -77,7 +83,7 @@ export default function ResearchRow({ item }) {
       </div>
     );
   }
-
+ 
   return (
     <Link
       href={`/research/${item.slug}`}
@@ -87,3 +93,4 @@ export default function ResearchRow({ item }) {
     </Link>
   );
 }
+ 
