@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Chevron from "./Chevron";
+import OpeningLine from "./OpeningLine";
  
 // A single Projects row (design.md §3 Section 2.0 + §3a Section 2.1–2.4,
 // and reused always-expanded on /projects per §4).
@@ -42,6 +43,8 @@ import Chevron from "./Chevron";
 //     inert text, not a link — avoids shipping a dead/misleading link for
 //     content that isn't ready yet (see data.js TODOs).
 //   - neither set -> unchanged original behavior, links to ${basePath}/${slug}.
+// Description text: see OpeningLine.js (2-line cap when collapsed, no
+// movement on expand, locked line breaks).
 export default function ProjectRow({ project, expandable = true, basePath = "/projects" }) {
   const [open, setOpen] = useState(!expandable);
  
@@ -72,7 +75,7 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
       <button
         type="button"
         onClick={() => expandable && setOpen((v) => !v)}
-        className={`grid w-full grid-cols-[56px_1fr_auto] items-start text-left md:grid-cols-[350px_1fr_auto] ${
+        className={`grid w-full grid-cols-[56px_minmax(0,1fr)_auto] items-start text-left md:grid-cols-[350px_minmax(0,1fr)_auto] ${
           expandable ? "cursor-pointer" : "cursor-default"
         }`}
         aria-expanded={open}
@@ -85,31 +88,27 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
           <span className="font-semibold leading-[18px] tracking-[-0.5px]">
             {project.title}
           </span>
-          {/* Flagged 2026-09-02, direct instruction: the collapsed one-liner
-              keeps the tight leading-[18px] (still correct — matches the
-              Figma row height for a single clamped line, same fixed-height
-              row convention as ResearchSection's rows). But once expanded,
-              this renders project.fullDescription — several lines of real
-              paragraph copy, not a row caption — and using that same
-              18px/15px (1.2) line-height there read as visibly cramped next
-              to the site's paragraph text (Hero/Footer quotes, About Me,
-              case study body copy), which all use the browser/Tailwind
-              default 1.5 line-height (22.5px on this site's 15px base) with
-              no leading- override at all. So: drop the leading-[18px]
-              override entirely when open, falling back to that same
-              no-override default — deliberately NOT leading-[22.5px] or
-              similar, to match the exact mechanism the rest of the site's
-              paragraph text already relies on, not just its resulting
-              pixel value. expandable=false routes (the /projects listing,
-              where every row renders pre-opened) get this fix automatically
-              too, since it's the same shared component. */}
-          <span
-            className={`font-normal tracking-[-0.5px] ${
-              open ? "" : "leading-[18px] line-clamp-1"
-            }`}
-          >
-            {open ? project.fullDescription : project.description}
-          </span>
+          {/* Description = one sentence in two parts (2026-09-25, Sukhman's
+              rule), both from data.js:
+                - project.description     = the opening, written to fit one
+                  line on a desktop screen.
+                - project.descriptionMore = the continuation.
+              Collapsed: opening + "..". Expanded: opening + continuation,
+              so the expanded text starts with exactly the same words.
+              No line clamp: on narrow screens the opening wraps instead of
+              being cut, so it always ends in ".." (never a browser "…").
+              Same line height (the site's default 1.5) in BOTH states, so
+              every line sits in the same place before and after expanding.
+              This replaces the old split (18px collapsed / 22.5px expanded),
+              which moved the text ~2px on expand.
+              See OpeningLine.js for the 2-line cap and how the line
+              breaks are kept identical too. */}
+          <OpeningLine
+            className="font-normal tracking-[-0.5px] break-words"
+            lead={project.description}
+            more={project.descriptionMore}
+            open={open}
+          />
         </span>
  
         {expandable && (

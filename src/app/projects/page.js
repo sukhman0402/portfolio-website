@@ -4,7 +4,7 @@ import ProjectRow from "@/components/ProjectRow";
 import { projects } from "@/lib/data";
  
 export const metadata = {
-  title: "Projects — Sukhman",
+  title: "Projects | Sukhman",
 };
  
 // Projects — All page (design.md §4). Same expanded-card row pattern as

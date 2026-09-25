@@ -15,9 +15,9 @@ const manrope = Manrope({
 });
 
 export const metadata = {
-  title: "Sukhman — UX / Product Designer",
+  title: "Sukhman | UX / Product Designer",
   description:
-    "Portfolio of Sukhmanpreet Singh Saini — UX & Product Designer. Through structure, strategy and design thinking, crafting interaction and experience designs that connect human behaviour with digital systems.",
+    "Portfolio of Sukhmanpreet Singh Saini, UX & Product Designer. Through structure, strategy and design thinking, crafting interaction and experience designs that connect human behaviour with digital systems.",
 };
 
 export default function RootLayout({ children }) {

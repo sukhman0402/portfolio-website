@@ -4,7 +4,7 @@ import ProjectRow from "@/components/ProjectRow";
 import { research } from "@/lib/data";
  
 export const metadata = {
-  title: "Research — Sukhman",
+  title: "Research | Sukhman",
 };
  
 // Research — All page (design.md §4, extended 2026-09-03). Mirrors

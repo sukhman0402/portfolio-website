@@ -11,7 +11,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
-  return { title: project ? `${project.title} — Sukhman` : "Project — Sukhman" };
+  return { title: project ? `${project.title} | Sukhman` : "Project | Sukhman" };
 }
 
 // REDESIGN 2026-09-01 — full rebuild against Figma node 179:3614 "Project

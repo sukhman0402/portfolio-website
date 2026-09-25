@@ -9,6 +9,16 @@
 // on the hidden internal pages, which are out of scope for this submission.
 // Swap them for real case-study content whenever those pages actually ship.
 //
+// DESCRIPTION RULES (2026-09-25, Sukhman):
+//   - description     = the opening of the sentence. Must fit ONE line on a
+//                       desktop screen. The site adds ".." after it when the
+//                       row is collapsed, so don't end it with punctuation.
+//   - descriptionMore = the continuation, shown only when expanded (and on
+//                       the /projects and /research listing pages). It picks
+//                       up exactly where description stops, so start it with
+//                       ", " / ". " / ": " / " " as the sentence needs.
+//   - No em dashes anywhere in site copy (use a comma, colon or full stop).
+//
 // featured: true marks the 4 projects shown on the homepage's "Projects"
 // section (ProjectsSection.js does `projects.filter(p => p.featured).slice(0,4)`).
 // Bike Dashboard and UN SDGs are part of the 6 reviewed projects but sit on
@@ -19,9 +29,9 @@ export const projects = [
     index: "01",
     title: "Drive Wise",
     description:
-      "A predictive, proactive vehicle-health platform that gives owners real-time visibility into their vehicle's condition and forecasts issues before they happen.",
-    fullDescription:
-      "A predictive, proactive vehicle-health platform that gives owners real-time visibility into their vehicle's condition and forecasts issues before they happen — so they only pay for genuinely necessary maintenance. Grounded in a 72-respondent survey and a Signal → Need → Opportunity → Feature synthesis mapping real user behaviour to a conceptual predictive-logic model for forecasting component wear.",
+      "A predictive, proactive vehicle-health platform that gives owners real-time visibility into their vehicle's condition and forecasts issues before they happen",
+    descriptionMore:
+      ", so they only pay for genuinely necessary maintenance. Grounded in a 72-respondent survey and a Signal → Need → Opportunity → Feature synthesis mapping real user behaviour to a conceptual predictive-logic model for forecasting component wear.",
     tag: "Automotive · Predictive Data Product",
     ctaLabel: "View Project",
     externalUrl:
@@ -39,9 +49,9 @@ export const projects = [
     index: "02",
     title: "Intelligent Waste Disposal System",
     description:
-      "A sensor-based autonomous waste bin combining perception, decision logic, and interactive feedback to encourage responsible disposal — installed and used in a real classroom.",
-    fullDescription:
-      "A sensor-based autonomous system combining perception, decision logic, and interactive feedback to influence human behaviour around waste disposal in real-world scenarios. Built on real hardware (ultrasonic sensors, OLED displays, voice/audio feedback) with corrective, non-aggressive Hindi voice responses — the working prototype has been installed and used in an actual classroom, not just simulated.",
+      "A sensor-based autonomous waste bin that combines perception, decision logic and interactive feedback to encourage responsible disposal",
+    descriptionMore:
+      ". Built on real hardware (ultrasonic sensors, OLED displays, voice/audio feedback) with corrective, non-aggressive Hindi voice responses. The working prototype has been installed and used in an actual classroom, not just simulated.",
     tag: "Physical Computing · Embedded AI",
     ctaLabel: "View Project",
     externalUrl:
@@ -55,9 +65,9 @@ export const projects = [
     index: "03",
     title: "MyJio Customer Assistance",
     description:
-      "An AI customer-assistance chatbot concept for Jio's app, built around a controlled keyword vocabulary distilled from real customer queries.",
-    fullDescription:
-      "An AI customer-assistance chatbot concept for Jio's app, designed around a controlled keyword vocabulary — the \"Keyword Rulebook,\" an NLP-style taxonomy (Issue/Condition/Action/Emotion/Frustration/Anger/Sarcasm) built from real Hindi/Hinglish customer phrases, paired with a live emotion slider in the chat UI.",
+      "An AI customer-assistance chatbot concept for Jio's app, designed around a controlled keyword vocabulary",
+    descriptionMore:
+      ": the \"Keyword Rulebook,\" an NLP-style taxonomy (Issue, Condition, Action, Emotion, Frustration, Anger, Sarcasm) built from real Hindi/Hinglish customer phrases, paired with a live emotion slider in the chat UI.",
     tag: "Conversational AI",
     ctaLabel: "View Project",
     externalUrl:
@@ -71,9 +81,9 @@ export const projects = [
     index: "04",
     title: "Interactive Playkit for Kids",
     description:
-      "A physical + digital play kit for children, combining tactile pieces with story-driven digital interaction. (Published on Behance as \"Play Trail — Interactive Game Design.\")",
-    fullDescription:
-      "A physical + digital play kit for children, combining tactile pieces with story-driven digital interaction — bridging the gap between physical and digital play. Co-designed for the \"Human Factors in Interaction Design\" module. Published on Behance as \"Play Trail — Interactive Game Design.\"",
+      "A physical + digital play kit for children, combining tactile pieces with story-driven digital interaction",
+    descriptionMore:
+      " to bridge the gap between physical and digital play. Co-designed for the \"Human Factors in Interaction Design\" module. Published on Behance as \"Play Trail - Interactive Game Design.\"",
     tag: "Children's Phygital Play",
     ctaLabel: "View Project",
     externalUrl:
@@ -91,9 +101,9 @@ export const projects = [
     index: "05",
     title: "Bike Dashboard Design",
     description:
-      "A redesigned motorcycle instrument-cluster UI focused on rider readability and cognitive load, grounded in ISO display-readability standards and a real Ducati brand guide.",
-    fullDescription:
-      "A redesigned motorcycle instrument-cluster UI focused on rider readability and cognitive load in-motion. Backed by a 194-respondent survey and industry standards — ISO 15008 (display readability) and ISO 6727 (automotive iconography) — plus a real Ducati brand style guide as a competitive benchmark.",
+      "A redesigned motorcycle instrument-cluster UI focused on rider readability and cognitive load in motion",
+    descriptionMore:
+      ". Backed by a 194-respondent survey and industry standards (ISO 15008 for display readability, ISO 6727 for automotive iconography), plus a real Ducati brand style guide as a competitive benchmark.",
     tag: "Automotive HMI",
     ctaLabel: "View Project",
     externalUrl:
@@ -107,9 +117,9 @@ export const projects = [
     index: "06",
     title: "UN Sustainable Development Goals",
     description:
-      "A data-visualization series on progress across the UN Sustainable Development Goals, including a country-by-country drill-down explorer.",
-    fullDescription:
-      "An infographic series visualizing progress across the UN Sustainable Development Goals, built as an interactive Figma prototype — including a \"See where your country stands\" drill-down explorer (currently wired for India; other countries are visual-only for now).",
+      "An infographic series visualizing progress across the UN Sustainable Development Goals",
+    descriptionMore:
+      ", built as an interactive Figma prototype with a \"See where your country stands\" drill-down explorer (currently wired for India; other countries are visual-only for now).",
     tag: "Data Visualization · Civic",
     ctaLabel: "View Project",
     externalUrl:
@@ -130,9 +140,9 @@ export const research = [
     index: "01",
     title: "Billboards as Interactive Communication Systems",
     description:
-      "A smart, interactive billboard system reimagining passive urban advertising as two-way public communication.",
-    fullDescription:
-      "A smart, interactive billboard system reimagining passive urban advertising as two-way public communication — grounded in the portfolio's most rigorous primary field research (50+ surveys, 15+ interviews conducted in Hindi/Hinglish across Ahmedabad/Gandhinagar).",
+      "A smart, interactive billboard system reimagining passive urban advertising as two-way public communication",
+    descriptionMore:
+      ", grounded in primary field research: 50+ surveys and 15+ interviews conducted in Hindi/Hinglish across Ahmedabad and Gandhinagar.",
     tag: "Service · Urban Design",
     ctaLabel: "View Project",
     externalUrl:
@@ -146,9 +156,9 @@ export const research = [
     index: "02",
     title: "Canteen Queue Management",
     description:
-      "A crowd-analysis study of canteen queueing behavior — team project.",
-    fullDescription:
-      "A crowd-analysis study of canteen queueing behavior, built with a teammate (zaletic) and hosted live.",
+      "A crowd-analysis study of lunch-hour queues across five campus canteens, based on a survey of 204 students",
+    descriptionMore:
+      " at Dhirubhai Ambani University: how long they wait, how it feels, what it costs them, and whether a queue management system could fix it. A team project, with 14 interactive charts, 9 tested hypotheses and 9 design directions.",
     tag: "Service Design",
     ctaLabel: "View Project",
     externalUrl: "https://zaletic.github.io/Canteen-Crowd-Analysis/",
@@ -159,11 +169,11 @@ export const research = [
   {
     slug: "drive-wise-research",
     index: "03",
-    title: "Drive Wise — Research Analysis",
+    title: "Drive Wise: Research Analysis",
     description:
-      "The primary-research site behind Drive Wise: survey data, empathy mapping, and the Signal → Need → Opportunity → Feature synthesis.",
-    fullDescription:
-      "The research-analysis site behind Drive Wise — the 72-respondent survey, empathy mapping, and the Signal → Need → Opportunity → Feature synthesis table that shaped the platform's predictive-logic model.",
+      "The research-analysis site behind Drive Wise, built on a 72-respondent survey of vehicle owners",
+    descriptionMore:
+      ", empathy mapping, and the Signal → Need → Opportunity → Feature synthesis table that shaped the platform's predictive-logic model.",
     tag: "Automotive · UX Research",
     ctaLabel: "View Project",
     // Not hosted elsewhere yet — served directly from this site as a
@@ -179,9 +189,9 @@ export const research = [
     index: "04",
     title: "Physiotherapy Research Website",
     description:
-      "Which body region needs a physiotherapy-kit design intervention most, for severe pediatric trauma / RTA-related orthopedic injury in India.",
-    fullDescription:
-      "Body-region analysis for pediatric physiotherapy: which region (Arm, Back, Leg, Neck) is most affected in severe pediatric trauma / RTA-related orthopedic injury in India — TITCO-I and South India cohort data, formal hypothesis testing, and 4 physiotherapist interviews feeding real design directions.",
+      "A body-region analysis for a pediatric physiotherapy product, finding which region needs design intervention most",
+    descriptionMore:
+      " in severe pediatric trauma and RTA-related orthopedic injury in India. Built on TITCO-I and South India cohort data, formal hypothesis testing, and 4 physiotherapist interviews feeding real design directions.",
     tag: "Health-Tech · UX Research",
     ctaLabel: "View Project",
     // Hosted directly on this site as a static file

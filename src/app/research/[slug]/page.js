@@ -11,7 +11,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const item = getResearchBySlug(slug);
-  return { title: item ? `${item.title} — Sukhman` : "Research — Sukhman" };
+  return { title: item ? `${item.title} | Sukhman` : "Research | Sukhman" };
 }
 
 // REDESIGN 2026-09-03 — swapped the old PageTopFramework + CaseStudySections

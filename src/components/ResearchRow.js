@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Chevron from "./Chevron";
+import OpeningLine from "./OpeningLine";
 
 // A single Research row (design.md §3, Section 3.0) — extracted 2026-09-03
 // from ResearchSection.js so it can be shared between the homepage's
@@ -28,7 +29,7 @@ import Chevron from "./Chevron";
 //     /research/${slug}.
 export default function ResearchRow({ item }) {
   const rowClassName =
-    "grid w-full grid-cols-[56px_1fr_auto] items-start border-b-2 border-black pt-[10px] pb-[10px] md:grid-cols-[350px_1fr_auto]";
+    "grid w-full grid-cols-[56px_minmax(0,1fr)_auto] items-start border-b-2 border-black pt-[10px] pb-[10px] md:grid-cols-[350px_minmax(0,1fr)_auto]";
 
   const content = (
     <>
@@ -39,9 +40,15 @@ export default function ResearchRow({ item }) {
         <span className="font-semibold leading-[18px] tracking-[-0.5px]">
           {item.title}
         </span>
-        <span className="font-normal leading-[18px] tracking-[-0.5px] line-clamp-1">
-          {item.description}
-        </span>
+        {/* Same one-liner rule as ProjectRow.js (2026-09-25): the opening
+            line + "..", capped at 2 lines on narrow screens (see
+            OpeningLine.js), default line height so it matches the Projects
+            rows directly above. */}
+        <OpeningLine
+          className="font-normal tracking-[-0.5px] break-words"
+          lead={item.description}
+          more={item.descriptionMore}
+        />
         <span className="mt-[15px] font-normal tracking-[-0.5px] text-muted">
           {item.comingSoon ? "Coming Soon" : item.tag}
         </span>
