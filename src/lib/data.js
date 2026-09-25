@@ -18,6 +18,13 @@
 //                       up exactly where description stops, so start it with
 //                       ", " / ". " / ": " / " " as the sentence needs.
 //   - No em dashes anywhere in site copy (use a comma, colon or full stop).
+//   - Descriptions are about the product only: no Behance, no live/hosted
+//     status. Expanded (description + descriptionMore) fits 2 lines on a
+//     laptop/desktop screen.
+//   - Research items also have `summary`: ONE complete sentence that fits
+//     one line on desktop, shown in the homepage Research list (no ".."
+//     there on desktop). No participant counts in research copy; those
+//     belong on the research's own page.
 //
 // featured: true marks the 4 projects shown on the homepage's "Projects"
 // section (ProjectsSection.js does `projects.filter(p => p.featured).slice(0,4)`).
@@ -139,10 +146,14 @@ export const research = [
     slug: "billboards-interactive-communication-systems",
     index: "01",
     title: "Billboards as Interactive Communication Systems",
+    // summary = the homepage Research list's one-liner (complete, no ".." on
+    // desktop, so it must fit one line at 1280px+). See ResearchRow.js.
+    summary:
+      "A smart, interactive billboard system that turns passive urban advertising into two-way public communication.",
     description:
       "A smart, interactive billboard system reimagining passive urban advertising as two-way public communication",
     descriptionMore:
-      ", grounded in 50+ surveys and 15+ Hindi/Hinglish interviews across Ahmedabad and Gandhinagar.",
+      ", grounded in public surveys and Hindi/Hinglish field interviews across Ahmedabad and Gandhinagar.",
     tag: "Service · Urban Design",
     ctaLabel: "View Project",
     externalUrl:
@@ -155,10 +166,14 @@ export const research = [
     slug: "canteen-queue-management",
     index: "02",
     title: "Canteen Queue Management",
+    // summary = the homepage Research list's one-liner (complete, no ".." on
+    // desktop, so it must fit one line at 1280px+). See ResearchRow.js.
+    summary:
+      "A team study of lunch-hour queues across five campus canteens, and whether a queue system could fix them.",
     description:
-      "A team crowd-analysis study of lunch-hour queues across five campus canteens, surveying 204 students",
+      "A team crowd-analysis study of lunch-hour queues across five campus canteens",
     descriptionMore:
-      " on how long they wait, how it feels, what it costs them and whether a queue system could fix it.",
+      ", measuring how long students wait, how it feels, what it costs them and whether a queue system could fix it.",
     tag: "Service Design",
     ctaLabel: "View Project",
     externalUrl: "https://zaletic.github.io/Canteen-Crowd-Analysis/",
@@ -170,10 +185,14 @@ export const research = [
     slug: "drive-wise-research",
     index: "03",
     title: "Drive Wise: Research Analysis",
+    // summary = the homepage Research list's one-liner (complete, no ".." on
+    // desktop, so it must fit one line at 1280px+). See ResearchRow.js.
+    summary:
+      "The primary research behind Drive Wise, from owner surveys and empathy mapping to its predictive-logic model.",
     description:
-      "The primary research behind Drive Wise: a 72-respondent survey of vehicle owners",
+      "The primary research behind Drive Wise: a survey of vehicle owners, empathy mapping",
     descriptionMore:
-      ", empathy mapping, and a Signal → Need → Opportunity → Feature synthesis that shaped the platform's predictive-logic model.",
+      ", and a Signal → Need → Opportunity → Feature synthesis that shaped the platform's predictive-logic model.",
     tag: "Automotive · UX Research",
     ctaLabel: "View Project",
     // Not hosted elsewhere yet — served directly from this site as a
@@ -188,10 +207,14 @@ export const research = [
     slug: "physiotherapy-research-website",
     index: "04",
     title: "Physiotherapy Research Website",
+    // summary = the homepage Research list's one-liner (complete, no ".." on
+    // desktop, so it must fit one line at 1280px+). See ResearchRow.js.
+    summary:
+      "A body-region analysis of pediatric trauma in India, to decide where a physiotherapy product should focus.",
     description:
       "A body-region analysis for a pediatric physiotherapy product, finding which region needs design intervention most",
     descriptionMore:
-      " in severe pediatric trauma in India, using TITCO-I and South India cohort data and 4 physiotherapist interviews.",
+      " in severe pediatric trauma in India, using TITCO-I and South India cohort data and physiotherapist interviews.",
     tag: "Health-Tech · UX Research",
     ctaLabel: "View Project",
     // Hosted directly on this site as a static file
@@ -322,4 +345,5 @@ export const timelineClusters = [
   { year: "202X", x: 757 },
   { year: "202X", x: 1072 },
 ];
+ 
  
