@@ -29,9 +29,9 @@ export const projects = [
     index: "01",
     title: "Drive Wise",
     description:
-      "A predictive, proactive vehicle-health platform that gives owners real-time visibility into their vehicle's condition and forecasts issues before they happen",
+      "A predictive vehicle-health platform that shows owners their vehicle's real-time condition and forecasts issues before they happen",
     descriptionMore:
-      ", so they only pay for genuinely necessary maintenance. Grounded in a 72-respondent survey and a Signal → Need → Opportunity → Feature synthesis mapping real user behaviour to a conceptual predictive-logic model for forecasting component wear.",
+      ", so they only pay for necessary maintenance. Backed by a 72-respondent survey and a predictive model of component wear.",
     tag: "Automotive · Predictive Data Product",
     ctaLabel: "View Project",
     externalUrl:
@@ -51,7 +51,7 @@ export const projects = [
     description:
       "A sensor-based autonomous waste bin that combines perception, decision logic and interactive feedback to encourage responsible disposal",
     descriptionMore:
-      ". Built on real hardware (ultrasonic sensors, OLED displays, voice/audio feedback) with corrective, non-aggressive Hindi voice responses. The working prototype has been installed and used in an actual classroom, not just simulated.",
+      ", with corrective, non-aggressive Hindi voice responses. Built and tested as a working prototype in a real classroom.",
     tag: "Physical Computing · Embedded AI",
     ctaLabel: "View Project",
     externalUrl:
@@ -65,9 +65,9 @@ export const projects = [
     index: "03",
     title: "MyJio Customer Assistance",
     description:
-      "An AI customer-assistance chatbot concept for Jio's app, designed around a controlled keyword vocabulary",
+      "An AI customer-assistance chatbot concept for Jio's app, built on a \"Keyword Rulebook\"",
     descriptionMore:
-      ": the \"Keyword Rulebook,\" an NLP-style taxonomy (Issue, Condition, Action, Emotion, Frustration, Anger, Sarcasm) built from real Hindi/Hinglish customer phrases, paired with a live emotion slider in the chat UI.",
+      ": a taxonomy of real Hindi/Hinglish customer phrases by issue, action and emotion, paired with a live emotion slider in the chat.",
     tag: "Conversational AI",
     ctaLabel: "View Project",
     externalUrl:
@@ -81,9 +81,9 @@ export const projects = [
     index: "04",
     title: "Interactive Playkit for Kids",
     description:
-      "A physical + digital play kit for children, combining tactile pieces with story-driven digital interaction",
+      "A physical + digital play kit for children that combines tactile pieces with story-driven digital interaction",
     descriptionMore:
-      " to bridge the gap between physical and digital play. Co-designed for the \"Human Factors in Interaction Design\" module. Published on Behance as \"Play Trail - Interactive Game Design.\"",
+      ", bridging physical and digital play. Co-designed for the \"Human Factors in Interaction Design\" module.",
     tag: "Children's Phygital Play",
     ctaLabel: "View Project",
     externalUrl:
@@ -103,7 +103,7 @@ export const projects = [
     description:
       "A redesigned motorcycle instrument-cluster UI focused on rider readability and cognitive load in motion",
     descriptionMore:
-      ". Backed by a 194-respondent survey and industry standards (ISO 15008 for display readability, ISO 6727 for automotive iconography), plus a real Ducati brand style guide as a competitive benchmark.",
+      ", backed by a 194-respondent survey, the ISO 15008 and ISO 6727 standards, and a Ducati brand style guide benchmark.",
     tag: "Automotive HMI",
     ctaLabel: "View Project",
     externalUrl:
@@ -117,9 +117,9 @@ export const projects = [
     index: "06",
     title: "UN Sustainable Development Goals",
     description:
-      "An infographic series visualizing progress across the UN Sustainable Development Goals",
+      "An interactive infographic series visualizing progress across the UN Sustainable Development Goals",
     descriptionMore:
-      ", built as an interactive Figma prototype with a \"See where your country stands\" drill-down explorer (currently wired for India; other countries are visual-only for now).",
+      ", designed in Figma with a \"See where your country stands\" drill-down explorer.",
     tag: "Data Visualization · Civic",
     ctaLabel: "View Project",
     externalUrl:
@@ -129,7 +129,7 @@ export const projects = [
     ...buildDetailFields(3),
   },
 ];
-
+ 
 // research items — see ProjectRow.js for how comingSoon items render (no
 // clickable CTA, "Coming Soon" tag) vs. items with a real externalUrl.
 // 2 of these are still pending real content/links from Sukhman as of
@@ -142,7 +142,7 @@ export const research = [
     description:
       "A smart, interactive billboard system reimagining passive urban advertising as two-way public communication",
     descriptionMore:
-      ", grounded in primary field research: 50+ surveys and 15+ interviews conducted in Hindi/Hinglish across Ahmedabad and Gandhinagar.",
+      ", grounded in 50+ surveys and 15+ Hindi/Hinglish interviews across Ahmedabad and Gandhinagar.",
     tag: "Service · Urban Design",
     ctaLabel: "View Project",
     externalUrl:
@@ -156,9 +156,9 @@ export const research = [
     index: "02",
     title: "Canteen Queue Management",
     description:
-      "A crowd-analysis study of lunch-hour queues across five campus canteens, based on a survey of 204 students",
+      "A team crowd-analysis study of lunch-hour queues across five campus canteens, surveying 204 students",
     descriptionMore:
-      " at Dhirubhai Ambani University: how long they wait, how it feels, what it costs them, and whether a queue management system could fix it. A team project, with 14 interactive charts, 9 tested hypotheses and 9 design directions.",
+      " on how long they wait, how it feels, what it costs them and whether a queue system could fix it.",
     tag: "Service Design",
     ctaLabel: "View Project",
     externalUrl: "https://zaletic.github.io/Canteen-Crowd-Analysis/",
@@ -171,9 +171,9 @@ export const research = [
     index: "03",
     title: "Drive Wise: Research Analysis",
     description:
-      "The research-analysis site behind Drive Wise, built on a 72-respondent survey of vehicle owners",
+      "The primary research behind Drive Wise: a 72-respondent survey of vehicle owners",
     descriptionMore:
-      ", empathy mapping, and the Signal → Need → Opportunity → Feature synthesis table that shaped the platform's predictive-logic model.",
+      ", empathy mapping, and a Signal → Need → Opportunity → Feature synthesis that shaped the platform's predictive-logic model.",
     tag: "Automotive · UX Research",
     ctaLabel: "View Project",
     // Not hosted elsewhere yet — served directly from this site as a
@@ -191,7 +191,7 @@ export const research = [
     description:
       "A body-region analysis for a pediatric physiotherapy product, finding which region needs design intervention most",
     descriptionMore:
-      " in severe pediatric trauma and RTA-related orthopedic injury in India. Built on TITCO-I and South India cohort data, formal hypothesis testing, and 4 physiotherapist interviews feeding real design directions.",
+      " in severe pediatric trauma in India, using TITCO-I and South India cohort data and 4 physiotherapist interviews.",
     tag: "Health-Tech · UX Research",
     ctaLabel: "View Project",
     // Hosted directly on this site as a static file
@@ -203,7 +203,7 @@ export const research = [
     ...buildDetailFields(3),
   },
 ];
-
+ 
 // Shared placeholder builder for the detail-page fields (intro/infoFields/
 // brief/sections) — used by BOTH projects and research above. Kept as a
 // function so section COUNT and body LENGTH can vary item-to-item. These
@@ -245,15 +245,15 @@ function buildDetailFields(sectionCount, { closingBodyIndex } = {}) {
     }),
   };
 }
-
+ 
 export function getProjectBySlug(slug) {
   return projects.find((p) => p.slug === slug);
 }
-
+ 
 export function getResearchBySlug(slug) {
   return research.find((r) => r.slug === slug);
 }
-
+ 
 // Timeline (Landing Page Section 4.0) — pixel-exact point positions pulled
 // directly from Figma nodes 360:1550 (default), 364:1649 (hover),
 // 376:9343 (after-click), fileKey 2yjcklO1oFjK8rICoeBD67. Unchanged from
@@ -312,7 +312,7 @@ export const timelinePoints = [
   metaTop: "Lorem ipsum",
   metaBottom: "Lorem ipsum",
 }));
-
+ 
 export const timelineClusters = [
   { year: "202X", x: 7 },
   { year: "202X", x: 122 },
@@ -322,3 +322,4 @@ export const timelineClusters = [
   { year: "202X", x: 757 },
   { year: "202X", x: 1072 },
 ];
+ 
