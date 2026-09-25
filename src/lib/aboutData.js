@@ -13,7 +13,7 @@
 export const aboutMeColumns = [
   "I am someone who plans before building, bringing structure and clarity to every project I take on.",
   "My journey began in architecture, where I learned that good design starts with a sound plan. I then co-founded Lumen Consultancy, leading its design across branding, strategy and operations, and saw how design shapes a business. Today, my Master's in design lets me apply that structured approach to people and products.",
-  "I am looking for an environment where I keep learning, take on complex problems, and help shape new systems from the ground up, alongside people who push me to think further.",
+  "I look for environments where I keep learning, take on complex problems, and help shape new systems from the ground up, alongside people who push me to think further.",
 ];
  
 // principles I go by professionally — 2 rows x 3 columns = 6 cards
