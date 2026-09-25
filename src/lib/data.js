@@ -26,6 +26,11 @@ export const projects = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/249663175/Drive-Wise-Know-your-vehicle-before-it-fails",
+    // Cover art (added 2026-09-16, "what should we do about the image
+    // placeholders" fix): cropped screenshot of the item's own externalUrl
+    // destination (Behance cover / Figma proto splash / the live site's own
+    // hero) — see public/images/covers/ and ProjectRow.js's <img> rendering.
+    coverImage: "/images/covers/drive-wise.jpg",
     featured: true,
     ...buildDetailFields(5, { closingBodyIndex: 2 }),
   },
@@ -41,6 +46,7 @@ export const projects = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/249605447/Intelligent-Waste-Disposal-System",
+    coverImage: "/images/covers/intelligent-waste-disposal-system.jpg",
     featured: true,
     ...buildDetailFields(3),
   },
@@ -56,6 +62,7 @@ export const projects = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/249662667/MyJio-Customer-Assistance",
+    coverImage: "/images/covers/myjio-customer-assistance.jpg",
     featured: true,
     ...buildDetailFields(4),
   },
@@ -71,6 +78,11 @@ export const projects = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/255115915/Play-Trail-Interactive-Game-Design",
+    // Behance's own cover for this project is mostly whitespace around a
+    // small centered title (verified via screenshot 2026-09-16) — this is
+    // an accurate crop of the real cover, not a placeholder; flagged to
+    // Sukhman as a candidate for a richer cover image later.
+    coverImage: "/images/covers/interactive-playkit-for-kids.jpg",
     featured: true,
     ...buildDetailFields(6),
   },
@@ -86,6 +98,7 @@ export const projects = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/249666485/Bike-Dashboard-Design",
+    coverImage: "/images/covers/bike-dashboard-design.jpg",
     featured: false,
     ...buildDetailFields(4),
   },
@@ -101,6 +114,7 @@ export const projects = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.figma.com/proto/EMzU51XyZk78B0dwyoTE0z/M.DES--Semester-02---Intelligent-Design-Decisions?node-id=1-28352&viewport=494%2C11%2C0.03&t=X4ZtPedOC7ffy0FY-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=49%3A8231&page-id=0%3A1",
+    coverImage: "/images/covers/un-sdgs.jpg",
     featured: false,
     ...buildDetailFields(3),
   },
@@ -123,6 +137,7 @@ export const research = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/249665017/Billboards-as-Interactive-Communication-Systems",
+    coverImage: "/images/covers/billboards-interactive-communication-systems.jpg",
     comingSoon: false,
     ...buildDetailFields(4, { closingBodyIndex: 1 }),
   },
@@ -137,6 +152,7 @@ export const research = [
     tag: "Service Design",
     ctaLabel: "View Project",
     externalUrl: "https://zaletic.github.io/Canteen-Crowd-Analysis/",
+    coverImage: "/images/covers/canteen-queue-management.jpg",
     comingSoon: false,
     ...buildDetailFields(3),
   },
@@ -154,6 +170,7 @@ export const research = [
     // static file (public/research/drive-wise-research-site.html), copied
     // from Sukhman's local drive-wise-research-site_2.html (2026-09-16).
     externalUrl: "/research/drive-wise-research-site.html",
+    coverImage: "/images/covers/drive-wise-research.jpg",
     comingSoon: false,
     ...buildDetailFields(3),
   },
@@ -171,6 +188,7 @@ export const research = [
     // (public/research/physiotherapy-research-website.html), copied from
     // Sukhman's local reality-remix-analysis.html (2026-09-16).
     externalUrl: "/research/physiotherapy-research-website.html",
+    coverImage: "/images/covers/physiotherapy-research-website.jpg",
     comingSoon: false,
     ...buildDetailFields(3),
   },

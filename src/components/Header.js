@@ -5,9 +5,13 @@ import Link from "next/link";
 // homepage passes base="" (in-page anchors like "#projects"),
 // every other page passes base="/" (cross-page anchors like "/#projects").
 export default function Header({ base = "/" }) {
+  // Projects/RESEARCH (flagged 2026-09-16) now go straight to the full
+  // listing pages (/projects — all 6, /research — all 4) instead of
+  // anchor-scrolling to the homepage's teaser sections. About/CONTACT stay
+  // as in-page anchors — only these two were flagged.
   const navItems = [
-    { label: "Projects", href: `${base}#projects` },
-    { label: "RESEARCH", href: `${base}#research` },
+    { label: "Projects", href: "/projects" },
+    { label: "RESEARCH", href: "/research" },
     { label: "About", href: `${base}#about` },
     { label: "CONTACT", href: `${base}#contact` },
   ];

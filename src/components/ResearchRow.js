@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Chevron from "./Chevron";
- 
+
 // A single Research row (design.md §3, Section 3.0) — extracted 2026-09-03
 // from ResearchSection.js so it can be shared between the homepage's
 // featured-4 list and the new /research "All" listing page, mirroring how
@@ -14,12 +14,24 @@ import Chevron from "./Chevron";
 // column, 18px title→description, 15px description→tag, flat 10px row
 // padding above/below the divider — matches ProjectRow.js exactly since
 // both come from the same Figma row pattern.
+//
+// externalUrl / comingSoon (added 2026-09-16, matching ProjectRow.js) —
+// flagged directly: homepage Research rows were still hardcoded to
+// `/research/${slug}`, so clicking one skipped past the external
+// Behance/hosted-site link entirely and landed on the (unlinked, dummy-
+// content) individual research page instead. Same three-way behavior as
+// ProjectRow's CTA now applies to the whole row here:
+//   - item.externalUrl set  -> row is a real <a>, opens in a new tab.
+//   - item.comingSoon true (no externalUrl yet) -> row renders inert,
+//     dimmed, not clickable.
+//   - neither set -> unchanged original behavior, links to
+//     /research/${slug}.
 export default function ResearchRow({ item }) {
-  return (
-    <Link
-      href={`/research/${item.slug}`}
-      className="grid w-full grid-cols-[56px_1fr_auto] items-start border-b-2 border-black pt-[10px] pb-[10px] hover:opacity-70 transition-opacity md:grid-cols-[350px_1fr_auto]"
-    >
+  const rowClassName =
+    "grid w-full grid-cols-[56px_1fr_auto] items-start border-b-2 border-black pt-[10px] pb-[10px] md:grid-cols-[350px_1fr_auto]";
+
+  const content = (
+    <>
       <span className="font-medium uppercase leading-[18px] tracking-normal">
         {item.index}
       </span>
@@ -31,11 +43,40 @@ export default function ResearchRow({ item }) {
           {item.description}
         </span>
         <span className="mt-[15px] font-normal tracking-[-0.5px] text-muted">
-          {item.tag}
+          {item.comingSoon ? "Coming Soon" : item.tag}
         </span>
       </span>
       <Chevron className="ml-4 mt-1 h-3 w-3 shrink-0 md:ml-6" />
+    </>
+  );
+
+  if (item.externalUrl) {
+    return (
+      <a
+        href={item.externalUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${rowClassName} hover:opacity-70 transition-opacity`}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  if (item.comingSoon) {
+    return (
+      <div className={`${rowClassName} cursor-default text-black/40`}>
+        {content}
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      href={`/research/${item.slug}`}
+      className={`${rowClassName} hover:opacity-70 transition-opacity`}
+    >
+      {content}
     </Link>
   );
 }
- 

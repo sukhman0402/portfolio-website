@@ -70,15 +70,26 @@ import Chevron from "./Chevron";
 //     after it (label row bottom -> +10 -> divider -> +10 -> heading
 //     row) — changed from 12px/10px, see the redesign note above.
 //
-// Literal Figma placeholder text (node 321:1393, get_design_context) —
-// not curated copy. Kept as-is per instruction to match the redesign
-// exactly, same reasoning as this file's earlier rounds (see git history)
-// for the old card copy.
-const HERO_QUOTE_TOP_LABEL_LEFT = "Lorem ipsum";
-const HERO_QUOTE_TOP_LABEL_RIGHT = "Lorem ipsum";
-const HERO_QUOTE_HEADING = "Lorem ipsum";
+// Final copy (2026-09-25, chosen by Sukhman, replaces the Figma Lorem
+// ipsum). DESKTOP: the four texts are two column pairs, each a secondary
+// label (top, regular) over a primary line (below the divider, semibold):
+//   - Pair A (left column)  = "Spaces" over "Systems" — the shift.
+//   - Pair B (right column) = the personal quote: architecture -> UX.
+// Pair A (secondary)
+const HERO_QUOTE_TOP_LABEL_LEFT = "Spaces";
+// Pair B (secondary)
+const HERO_QUOTE_TOP_LABEL_RIGHT = "From buildings to interfaces";
+// Pair A (primary)
+const HERO_QUOTE_HEADING = "Systems";
+// Pair B (primary)
 const HERO_QUOTE_TEXT =
-  "Lorem ipsum dolor sit amet, consectetuer lorem, adipiscing elit. Aenean commodo ligula.  ipsum dolor sit amet, consectetuer lorem, adipiscing elit. Aenean commodo ligula.";
+  "Architecture taught me to observe how user interacts with a space, then decide. I bring that habit to every experience I design. Observe, then build.";
+
+// MOBILE has its own secondary line (regular weight, same style as the
+// desktop labels) above the divider; its primary line below the divider
+// is the same quote as desktop's Pair B primary.
+const HERO_MOBILE_SECONDARY = "Spaces to Systems";
+const HERO_MOBILE_PRIMARY = HERO_QUOTE_TEXT;
  
 // Header and ScrollIndicator remain untouched components, per the
 // original brief — only their usage/positioning here changed.
@@ -138,12 +149,15 @@ export default function Hero() {
             never enters the box-model/layout calculation at all — same
             as transform.) */}
         <div className="relative -top-[100px]">
-          <p className="font-semibold tracking-[-0.375px] text-black">
-            {HERO_QUOTE_HEADING}
+          {/* Secondary: regular weight (2026-09-25), matching the desktop
+              labels' secondary style — was semibold when this slot held
+              the heading. */}
+          <p className="font-normal tracking-[-0.375px] text-black">
+            {HERO_MOBILE_SECONDARY}
           </p>
           <div className="mt-[10px] border-t-2 border-black" />
           <p className="mt-[10px] whitespace-pre-wrap font-semibold tracking-[-0.5px] text-black">
-            {HERO_QUOTE_TEXT}
+            {HERO_MOBILE_PRIMARY}
           </p>
         </div>
       </div>

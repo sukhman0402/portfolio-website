@@ -1,6 +1,7 @@
 "use client";
- 
+
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Chevron from "./Chevron";
  
@@ -165,25 +166,33 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
  
           {open && (
             <>
-              {/* ⚠️ design.md §3a: Figma reserves an empty ~400px region here,
-                  inferred to be the cover image — not confirmed. Rendered as
-                  a placeholder block so the gap is visible and easy to swap
-                  for a real image once confirmed. Label reworded from
-                  "Project image placeholder" to "Content image placeholder"
-                  (2026-09-03) now that this component is also used by the
-                  /research listing — matches the generic wording
-                  ProjectTopics.js already uses for the same reason.
- 
-                  The caption span that used to follow this (project.caption)
-                  was removed 2026-09-03, flagged directly: "remove the grey
-                  text... instead we will extend the placeholder image [to
-                  meet] the horizontal line" — this placeholder is now the
-                  last element in the open card, its bottom edge flush
-                  against the row's own closing divider (see the pb-0
-                  on the row wrapper above, when open). */}
-              <div className="mt-2 flex h-48 w-full items-center justify-center rounded-sm bg-tile text-xs text-black/40 md:h-72">
-                Content image placeholder — position unconfirmed (design.md §8.1)
-              </div>
+              {/* Real cover image (added 2026-09-16, "what should we do
+                  about the image placeholders" fix) — replaces the former
+                  gray placeholder block that occupied this same ~400px
+                  region (design.md §3a). Source: a cropped screenshot of
+                  each item's own externalUrl destination (Behance cover /
+                  Figma proto splash / the live site's own hero) — see
+                  public/images/covers/ and src/lib/data.js's coverImage
+                  field. object-cover fills the same fixed-height box the
+                  placeholder used, so layout/spacing (including the pb-0
+                  flush-against-divider rule above) is unchanged.
+                  Falls back to the old placeholder text if an item somehow
+                  has no coverImage yet, so nothing silently disappears. */}
+              {project.coverImage ? (
+                <div className="relative mt-2 h-48 w-full overflow-hidden rounded-sm bg-tile md:h-72">
+                  <Image
+                    src={project.coverImage}
+                    alt={`${project.title} cover`}
+                    fill
+                    sizes="(min-width: 768px) 900px, 100vw"
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="mt-2 flex h-48 w-full items-center justify-center rounded-sm bg-tile text-xs text-black/40 md:h-72">
+                  Content image placeholder — position unconfirmed (design.md §8.1)
+                </div>
+              )}
             </>
           )}
         </div>
