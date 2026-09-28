@@ -285,41 +285,31 @@ export default function AboutSection() {
           </div>
         </div>
  
-        {/* Along the Journey — every entry (including the first) sits below
-            its own border-line in Figma, unlike the earlier version of this
-            file which only bordered entries after the first. Title→detail
-            is a bare 0px gap; detail→tag is 10px; tag→next entry's border
-            is 12px, produced by the column wrapper's own gap-[12px] (not
-            the entry's own border+pt, which only supplies the 10px after
-            the line). No trailing pb here — Footer's own pt provides the
-            gap to the next section.
-            Each column also gets a CLOSING border line after its last entry
-            (Line 22/23/24 in Figma, at x=380/730/1080, y=1401) — previously
-            missing entirely, since only inter-entry borders were rendered.
-            It reuses the same gap-[12px] rhythm as every other tag→divider
-            gap on this site, so no extra spacing value is needed for it.
+        {/* Along the Journey: 6 entries (3 columns x 2), each below its own
+            border-line, plus a CLOSING line under each column (Figma Lines
+            22/23/24). Spacing, all unchanged from the Figma-calibrated
+            version: line -> text 10px; title -> detail 0px; detail -> tag
+            10px on desktop, 15px on phones (site-wide description -> tag
+            exemption, ProjectRow.js); tag -> next line 12px on desktop,
+            10px on phones.
  
-            Row-2 alignment fix 2026-08-23: in Figma (node 252:1420), points
-            5 & 6 (row 2, columns 2 & 3 — "Lorem ipsum dolor", single-line
-            title, node 252:1481/1483) have their tag pinned to the SAME
-            absolute y as point 4's tag (y=1371 for all three columns,
-            confirmed in the metadata), even though their own title is one
-            line shorter than point 4's two-line title. The closing border
-            line below (also a fixed shared y=1401 across all three columns)
-            then falls into place on its own via this column's existing
-            gap-[12px] rhythm — it only needs the tag above it positioned
-            correctly. Title and detail text are untouched — only the tag's
-            own top margin changes.
-            First pass used +18px (Figma's flat 18px-per-line text bounding
-            box) and landed close but not exact — a follow-up pixel diff
-            against the live production screenshot (both closing lines
-            measured directly, col1 vs col2/3, at the site's actual 2x
-            rendered scale) showed a residual ~4-5px gap, i.e. the browser's
-            real line-height for this text runs a little taller than
-            Figma's tight bounding box. +33px is calibrated against that
-            live measurement, not the Figma box alone — verify against a
-            fresh screenshot after this deploys, since it was tuned to one
-            data point. */}
+            Rebuilt 2026-09-28 when the real copy went in. The old layout
+            stacked each column separately, so entries in different columns
+            had no shared row height, and row 2's tags were lined up by a
+            hand-tuned +33px nudge that only worked for the Lorem ipsum line
+            counts (2-line title in column 1, 1-line titles in columns 2/3).
+            Real titles wrap differently, so that nudge would misalign.
+            Now all 9 pieces (6 entries + 3 closing lines) sit in ONE grid:
+            on desktop it has 3 rows (entry, entry, closing line) and fills
+            column by column (grid-flow-col), so entries in the same row
+            share one height. Each entry is a flex column whose tag is pushed
+            to the bottom (mt-auto), so every tag in a row lands on the same
+            y whatever the title length, which is exactly the Figma
+            behaviour (row 2 tags share y=1371 in node 252:1420). pt-[10px]
+            on the tag keeps the 10px minimum under the longest entry.
+            On phones the grid is one column in the same order; the closing
+            lines of columns 1 and 2 stay hidden (they would sit directly on
+            the next column's first line, reading as a double line). */}
         {/* pt-[164px] (mobile only) — flagged 2026-09-02: same
             100px-beyond-pt-16 increase as the two gaps above
             (64 + 100 = 164px), applied to mobile only.
@@ -336,75 +326,39 @@ export default function AboutSection() {
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             Along the Journey
           </h2>
-          {/* gap-y-[10px] (was gap-y-8/32px, mobile only) — flagged
-              2026-09-02: on mobile the 3 columns stack (grid-cols-1), so
-              each column's own closing border-t (below) landed directly
-              above the NEXT column's first entry border-t — two lines
-              with a bare 32px gap and no content between them, reading as
-              a duplicate/double line. Fixed alongside hiding the
-              redundant closing lines below; this gap is now the sole
-              "content -> next line" boundary between columns, so it gets
-              the standard 10px like everywhere else. Desktop unaffected —
-              columns sit side by side there, this row-gap isn't used. */}
-          <div className="grid grid-cols-1 gap-x-10 gap-y-[10px] md:grid-cols-3 md:gap-x-[20px]">
-            {journeyEntries.map((column, colIdx) => (
-              // gap-[10px] (was gap-6/24px, mobile only, md:gap-[12px]
-              // unchanged) — flagged 2026-09-02: grey tag -> next line
-              // (or the column's closing border) was more than 10px on
-              // mobile; standardized to match the site-wide rule. Desktop's
-              // 12px is a separate, already-calibrated "tag -> divider"
-              // rhythm reused site-wide (see the file-top note) — left as-is.
-              <div key={colIdx} className="flex flex-col gap-[10px] md:gap-[12px]">
-                {column.map((entry, i) => {
-                  const isShortRow2 = colIdx !== 0 && i === 1;
-                  // Entry: pt-[10px] (mobile only, md:pt-[10px] unchanged) —
-                  // same site-wide "line, then text" fix as How I
-                  // Function/My Workflow above (was pt-3/12px on mobile).
-                  return (
-                    <div key={i} className="border-t-2 border-black pt-[10px]">
-                      <p className="font-semibold tracking-[-0.5px]">
-                        {entry.title}
-                      </p>
-                      <p className="font-normal tracking-[-0.5px]">
-                        {entry.detail}
-                      </p>
-                      {/* mt-[15px] (was mt-1/4px, mobile only) — flagged
-                          2026-09-02: detail -> tag rule, matching the
-                          site-wide description->tag exemption (ProjectRow.js,
-                          15px). md: values untouched — md:mt-[33px] is a
-                          separate, unrelated row-2 cross-column alignment
-                          calibration (see the file-top note), not a plain
-                          detail->tag spacing value. */}
-                      <p
-                        className={`mt-[15px] font-normal tracking-[-0.5px] text-muted ${
-                          isShortRow2 ? "md:mt-[33px]" : "md:mt-[10px]"
-                        }`}
-                      >
-                        {entry.tag}
-                      </p>
-                    </div>
-                  );
-                })}
-                {/* Closing line: hidden on mobile for every column except
-                    the last (hidden md:block), flagged 2026-09-02 — this is
-                    the redundant line that caused the "double line" issue
-                    fixed above. Desktop keeps it on all 3 columns, unchanged
-                    (they sit side by side there, so it's never adjacent to
-                    another column's opening line). */}
+          <div className="grid grid-cols-1 gap-y-[10px] md:grid-flow-col md:grid-cols-3 md:grid-rows-[auto_auto_auto] md:gap-x-[20px] md:gap-y-[12px]">
+            {journeyEntries.map((column, colIdx) => [
+              ...column.map((entry, i) => (
                 <div
-                  className={`border-t-2 border-black ${
-                    colIdx !== journeyEntries.length - 1 ? "hidden md:block" : ""
-                  }`}
-                  aria-hidden="true"
-                />
-              </div>
-            ))}
+                  key={`${colIdx}-${i}`}
+                  className="flex flex-col border-t-2 border-black pt-[10px]"
+                >
+                  <p className="font-semibold tracking-[-0.5px]">
+                    {entry.title}
+                  </p>
+                  <p className="font-normal tracking-[-0.5px]">
+                    {entry.detail}
+                  </p>
+                  <p className="mt-[15px] font-normal tracking-[-0.5px] text-muted md:mt-auto md:pt-[10px]">
+                    {entry.tag}
+                  </p>
+                </div>
+              )),
+              <div
+                key={`close-${colIdx}`}
+                className={`border-t-2 border-black ${
+                  colIdx !== journeyEntries.length - 1 ? "hidden md:block" : ""
+                }`}
+                aria-hidden="true"
+              />,
+            ])}
           </div>
         </div>
       </div>
     </section>
   );
 }
+ 
  
  
  
