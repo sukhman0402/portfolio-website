@@ -30,7 +30,11 @@ export const principles = [
   { title: "Viability", description: "A design must serve the business as well as the people who use it." },
 ];
  
-// My Workflow: tools per category, final lists (Sukhman, 2026-09-28).
+// My Workflow: tools per category, final lists (Sukhman, 2026-09-28; cut
+// to the tools he wants to stand behind the same day: 15/14/18 -> 7/8/10,
+// removed ProtoPie, Spline, Rive, Webflow, Maze, Sketch, AutoCAD, SketchUp,
+// v0, Lovable, Meshy, Midjourney, Runway, Relume, Next.js, React, Tailwind,
+// ESP32, Raspberry Pi, TouchDesigner, Hugging Face, Supabase).
 // Rules: max 18 per category (3 rows of 6 at the 330px column width, 50px
 // tiles, 6px gap). Order = reading order of the tiles: row 1 left to
 // right, then row 2, then row 3. Strongest current tools first, tools used
@@ -38,26 +42,20 @@ export const principles = [
 export const workflowCategories = [
   {
     label: "Design",
-    tools: [
-      "figma", "framer", "figjam", "protopie", "blender", "miro",
-      "spline", "rive", "webflow", "maze", "notion", "sketch",
-      "adobe", "autocad", "sketchup",
-    ],
+    tools: ["figma", "framer", "figjam", "blender", "miro", "notion", "adobe"],
   },
   {
     label: "AI Assistance",
     tools: [
       "claudecode", "figmamake", "perplexity", "notebooklm", "stitch", "cursor",
-      "v0", "lovable", "meshy", "flora", "flow", "midjourney",
-      "runway", "relume",
+      "flora", "flow",
     ],
   },
   {
     label: "Currently Exploring",
     tools: [
-      "github", "vercel", "colab", "arduino", "nextjs", "react",
-      "tailwind", "python", "kaggle", "d3", "esp32", "raspberrypi",
-      "lensstudio", "p5", "unity", "touchdesigner", "huggingface", "supabase",
+      "github", "vercel", "colab", "arduino", "python", "kaggle",
+      "d3", "lensstudio", "p5", "unity",
     ],
   },
 ];
@@ -85,7 +83,4 @@ export const journeyEntries = [
     { title: "Digital Cheque System", detail: "For India, independent exploration", tag: "Ongoing" },
   ],
 ];
- 
- 
- 
  
