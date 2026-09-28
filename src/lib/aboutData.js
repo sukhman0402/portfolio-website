@@ -62,21 +62,30 @@ export const workflowCategories = [
   },
 ];
  
-// supports both past achievements and "currently working on" — 2 rows x 3 columns
+// Along the Journey: 6 entries, draft v2 (Sukhman's picks + order, 2026-09-28).
+// Each entry = title (what), detail (who / where), tag (status: Finalist,
+// Participant, Certified, Ongoing). Array = 3 columns x 2 entries, so on
+// desktop row 1 = each column's first entry, row 2 = each column's second.
+// Order (direct instruction): row 1 = STI Forum, ETSIF, IAMS (the events);
+// row 2 = AI Certifications, Multi-Agent AI System, Digital Cheque System.
+// Rules: titles are short Title Case names that stay on ONE line (checked
+// at 1440, 1280, 393 and 360px), detail 1 line, no em dashes, no years
+// (not confirmed for every event).
 export const journeyEntries = [
   [
-    { title: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean", detail: "Lorem ipsum dolor sit amet, consectetuer", tag: "Lorem ipsum" },
-    { title: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean", detail: "Lorem ipsum dolor sit amet, consectetuer", tag: "Lorem ipsum" },
+    { title: "India Japan STI Forum", detail: "Bharat Nōgyō, IISc x Keio University", tag: "Finalist" },
+    { title: "AI Certifications", detail: "LaunchEd Global x Skill India, Be10x", tag: "Certified" },
   ],
   [
-    { title: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean", detail: "Lorem ipsum dolor sit amet, consectetuer", tag: "Lorem ipsum" },
-    { title: "Lorem ipsum dolor", detail: "Lorem ipsum dolor sit amet, consectetuer", tag: "Lorem ipsum" },
+    { title: "Emerging Tech (ETSIF)", detail: "Dhirubhai Ambani University", tag: "Participant" },
+    { title: "Multi-Agent AI System", detail: "OpenClaw as orchestrator, personal project", tag: "Ongoing" },
   ],
   [
-    { title: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean", detail: "Lorem ipsum dolor sit amet, consectetuer", tag: "Lorem ipsum" },
-    { title: "Lorem ipsum dolor", detail: "Lorem ipsum dolor sit amet, consectetuer", tag: "Lorem ipsum" },
+    { title: "Indian Academic Makerspaces Summit", detail: "IIT Gandhinagar", tag: "Participant" },
+    { title: "Digital Cheque System", detail: "For India, independent exploration", tag: "Ongoing" },
   ],
 ];
+ 
  
  
  
