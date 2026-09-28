@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+ 
 // Shared global header/nav (design.md §2.1).
 // `base` lets pages outside the homepage route section-links back through "/":
 // homepage passes base="" (in-page anchors like "#projects"),
@@ -15,7 +15,7 @@ export default function Header({ base = "/" }) {
     { label: "About", href: `${base}#about` },
     { label: "CONTACT", href: `${base}#contact` },
   ];
-
+ 
   return (
     // sticky + bg-white so the nav stays pinned on scroll (flagged
     // 2026-08-20 — basic UI practice, not a literal Figma frame detail
@@ -29,7 +29,7 @@ export default function Header({ base = "/" }) {
         >
           SUKHMAN.
         </Link>
-
+ 
         <nav
           className="hidden items-center gap-8 md:flex lg:gap-12"
           aria-label="Primary"
@@ -43,10 +43,14 @@ export default function Header({ base = "/" }) {
               {item.label}
             </Link>
           ))}
-          {/* RESUME. — opens the resume PDF in a new tab.
-              TODO: replace /resume.pdf once the resume file is added to /public. */}
+          {/* RESUME. — opens the resume PDF in a new tab (2026-09-28). The
+              file lives at public > Sukhmanpreet-Singh-Saini-Resume.pdf;
+              anything in /public is served from the site root, so the link
+              is just "/<file name>". The name carries his name so a
+              recruiter's saved copy isn't a generic "resume.pdf". To update
+              the resume later, upload the new PDF under the same name. */}
           <a
-            href="/resume.pdf"
+            href="/Sukhmanpreet-Singh-Saini-Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold uppercase tracking-normal hover:opacity-60 transition-opacity"
@@ -54,7 +58,7 @@ export default function Header({ base = "/" }) {
             RESUME.
           </a>
         </nav>
-
+ 
         {/* Mobile: condensed nav (mobile treatment inferred — only the Figma
             hero frame has a mobile layout; rest of the site is a first-pass
             responsive adaptation per design.md §7.2). */}
@@ -74,8 +78,20 @@ export default function Header({ base = "/" }) {
           >
             Contact
           </Link>
+          {/* Resume on phones too (2026-09-28): the condensed nav had no way
+              to reach the resume. Same file and new-tab behaviour as the
+              desktop RESUME. link above. */}
+          <a
+            href="/Sukhmanpreet-Singh-Saini-Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold uppercase tracking-normal text-[13px]"
+          >
+            Resume
+          </a>
         </nav>
       </div>
     </header>
   );
 }
+ 
