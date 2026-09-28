@@ -75,25 +75,41 @@
 //     to the footer band. Contact itself wasn't touched by this redesign
 //     round at all, only the quote block above it.
  
-// Literal Figma placeholder text (node 321:1405, get_design_context) —
-// not curated copy. Kept as-is per instruction to match the redesign
-// exactly. Currently identical to Hero's own placeholder strings (both
-// point at the same unfinished Figma text), but declared as this file's
-// own constants rather than imported/shared — see the note above.
-const QUOTE_TOP_LABEL_LEFT = "Lorem ipsum";
-const QUOTE_TOP_LABEL_RIGHT = "Lorem ipsum";
-const QUOTE_HEADING = "Lorem ipsum";
+// Final copy (2026-09-28, chosen by Sukhman, replaces the Figma Lorem
+// ipsum). Same two-pair structure as the Hero (see Hero.js): each column
+// pair is a secondary label (top, regular) over a primary line (below the
+// divider, semibold). Kept as this file's own constants, not shared with
+// Hero (see the NOTE ON DUPLICATION above).
+//   - Pair A (left column)  = "Observe" over "Build": closes the Hero's
+//     "Observe, then build." line.
+//   - Pair B (right column) = "What stays with me" over the conclusion
+//     line, which is final copy from the Figma file (design.md 2.2).
+// Pair A (secondary)
+const QUOTE_TOP_LABEL_LEFT = "Observe";
+// Pair B (secondary)
+const QUOTE_TOP_LABEL_RIGHT = "What stays with me";
+// Pair A (primary)
+const QUOTE_HEADING = "Build";
+// Pair B (primary)
 const QUOTE_TEXT =
-  "Lorem ipsum dolor sit amet, consectetuer lorem, adipiscing elit. Aenean commodo ligula.  ipsum dolor sit amet, consectetuer lorem, adipiscing elit. Aenean commodo ligula.";
+  "Behind every interaction is a decision, a behaviour and an opportunity to create a better experience.";
  
+// MOBILE: one secondary line (regular weight) above the divider, the
+// conclusion line below it, same pattern as the Hero's mobile
+// "Spaces to Systems".
+const QUOTE_MOBILE_SECONDARY = "Observe to Build";
+const QUOTE_MOBILE_PRIMARY = QUOTE_TEXT;
+ 
+// A row with href: null is kept here but not rendered, so a row can be
+// switched off by emptying its link. LinkedIn added 2026-09-28: it shows
+// his name, not the URL, because the full profile URL is 49 characters and
+// broke mid-word across 2 lines on phones (the link itself is the full URL).
 const CONTACT_ROWS = [
   { label: "E-mail", value: "sukhmanpreet0402@gmail.com", href: "mailto:sukhmanpreet0402@gmail.com" },
   { label: "Phone", value: "+91  93027 63747", href: "tel:+919302763747" },
-  // TODO: still placeholder Latin text in Figma — replace with the real LinkedIn URL.
-  { label: "Linkedin", value: "Aenean vulputate eleifend tellus", href: "#" },
-  // TODO: replace with the real Behance URL (see note above).
-  { label: "Behance", value: "Add your Behance URL", href: "#" },
-];
+  { label: "Linkedin", value: "Sukhmanpreet Singh Saini", href: "https://www.linkedin.com/in/sukhmanpreet-singh-saini-417103265/" },
+  { label: "Behance", value: "behance.net/sukhmansaini", href: "https://www.behance.net/sukhmansaini" },
+].filter((row) => row.href);
  
 // Row rhythm below "Contact" (unchanged by this or any prior redesign
 // round): the dl has NO top border in Figma — only 3 divider lines for 4
@@ -133,12 +149,14 @@ export default function Footer() {
             right below it, and there's no scroll-icon element here to
             begin with. Flag if a fuller replication was intended instead. */}
         <div className="md:hidden">
-          <p className="font-semibold tracking-[-0.375px] text-black">
-            {QUOTE_HEADING}
+          {/* Secondary line in regular weight, matching the Hero's mobile
+              secondary (2026-09-28, with the final copy). */}
+          <p className="font-normal tracking-[-0.375px] text-black">
+            {QUOTE_MOBILE_SECONDARY}
           </p>
           <div className="mt-[10px] border-t-2 border-black" />
           <p className="mt-[10px] whitespace-pre-wrap font-semibold tracking-[-0.5px] text-black">
-            {QUOTE_TEXT}
+            {QUOTE_MOBILE_PRIMARY}
           </p>
         </div>
  
@@ -221,7 +239,13 @@ export default function Footer() {
                   {row.label}
                 </dt>
                 <dd className="font-semibold uppercase tracking-[-0.5px] text-right">
-                  <a href={row.href} className="hover:opacity-60 transition-opacity break-all">
+                  <a
+                    href={row.href}
+                    {...(row.href.startsWith("http")
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    className="hover:opacity-60 transition-opacity break-all"
+                  >
                     {row.value}
                   </a>
                 </dd>
@@ -234,15 +258,20 @@ export default function Footer() {
       {/* Footer band — "SUKHMAN." removed and the copyright line centered,
           flagged 2026-09-02, direct instruction. Same markup on both
           breakpoints (no md: split here previously), so this applies to
-          mobile and desktop alike. */}
+          mobile and desktop alike.
+          Copyright text (2026-09-28, Sukhman's pick): "© <year> Sukhmanpreet
+          Singh Saini", replacing "© All rights reserved- ...". The year is
+          read from the clock when the page is built, so it rolls over on
+          the first deploy of a new year instead of going stale. */}
       <div className="w-full bg-footer-band">
         <div className="mx-auto flex max-w-[1440px] items-center justify-center px-5 py-4 sm:px-[30px]">
           <span className="text-center text-muted font-normal tracking-[-0.5px]">
-            © All rights reserved- Sukhmanpreet Singh Saini
+            © {new Date().getFullYear()} Sukhmanpreet Singh Saini
           </span>
         </div>
       </div>
     </footer>
   );
 }
+ 
  
