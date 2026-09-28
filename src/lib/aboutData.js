@@ -16,14 +16,18 @@ export const aboutMeColumns = [
   "I look for environments where I keep learning, take on complex problems, and help shape new systems from the ground up, alongside people who push me to think further.",
 ];
  
-// principles I go by professionally — 2 rows x 3 columns = 6 cards
+// How I Function: 6 principle cards, final copy (Sukhman, 2026-09-28).
+// Rules: one-word noun headings; each description stays inside the Figma
+// dummy budget (about 12 words / 85 characters) so it sits on exactly
+// 2 lines at 1440px, 1280px and on phones. No em dashes.
+// Grid order: row 1 = how I think, row 2 = what the work delivers.
 export const principles = [
-  { title: "Lorem ipsum dolor", description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget." },
-  { title: "Lorem ipsum dolor", description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget." },
-  { title: "Lorem ipsum dolor", description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget." },
-  { title: "Lorem ipsum dolor", description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget." },
-  { title: "Lorem ipsum dolor", description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget." },
-  { title: "Lorem ipsum dolor", description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget." },
+  { title: "Evidence", description: "Surveys, field visits and real data guide my decisions, not my first instinct." },
+  { title: "Systems", description: "I map how every part connects before I design a single screen." },
+  { title: "Exploration", description: "I chase new tools and ideas, then test which ones truly improve my work." },
+  { title: "Simplicity", description: "I strip away what people don't need, until each screen feels calm and clear." },
+  { title: "Precision", description: "Small choices in spacing, wording and timing decide how the whole thing feels." },
+  { title: "Viability", description: "A design must serve the business as well as the people who use it." },
 ];
  
 // tools I use, grouped — tile counts are placeholder, not meaningful yet.
@@ -52,4 +56,5 @@ export const journeyEntries = [
     { title: "Lorem ipsum dolor", detail: "Lorem ipsum dolor sit amet, consectetuer", tag: "Lorem ipsum" },
   ],
 ];
+ 
  
