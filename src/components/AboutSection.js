@@ -4,6 +4,7 @@ import {
   workflowCategories,
   journeyEntries,
 } from "@/lib/aboutData";
+import PrincipleIllustration from "@/components/PrincipleIllustration";
  
 // Landing Page Section 5.0 — About Me / How I Function / My Workflow /
 // Along the Journey (design.md §3, Section 5.0).
@@ -139,11 +140,18 @@ export default function AboutSection() {
                 <p className="font-normal tracking-[-0.5px] text-muted">
                   {p.description}
                 </p>
-                <div
-                  className="mt-4 h-40 w-full bg-tile md:mt-0 md:h-[191px]"
-                  aria-hidden="true"
-                  title="Illustration placeholder — exact reserved space per Figma node 252:1420, no image asset in source yet"
-                />
+                {/* Illustration tile (2026-09-28): same reserved 330x191
+                    space (160px tall on mobile) that used to hold the grey
+                    placeholder, now white per direct instruction, holding
+                    the card's animated illustration. The illustration is
+                    picked by the card title in lower case ("Evidence" ->
+                    "evidence", see src/lib/principleIllustrations.js), so a
+                    renamed card shows an empty white tile until its name is
+                    added there. overflow-hidden keeps fading circles that
+                    drift outward inside the tile. */}
+                <div className="mt-4 flex h-40 w-full items-center justify-center overflow-hidden bg-background md:mt-0 md:h-[191px]">
+                  <PrincipleIllustration name={p.title.toLowerCase()} />
+                </div>
               </div>
             ))}
           </div>
@@ -297,4 +305,5 @@ export default function AboutSection() {
     </section>
   );
 }
+ 
  
