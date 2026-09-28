@@ -312,12 +312,19 @@ export default function AboutSection() {
             live measurement, not the Figma box alone — verify against a
             fresh screenshot after this deploys, since it was tuned to one
             data point. */}
-        {/* pt-[164px] (mobile only, md:pt-[70px] unchanged) — flagged
-            2026-09-02: same 100px-beyond-pt-16 increase as the two gaps
-            above (64 + 100 = 164px), applied to mobile only. */}
+        {/* pt-[164px] (mobile only) — flagged 2026-09-02: same
+            100px-beyond-pt-16 increase as the two gaps above
+            (64 + 100 = 164px), applied to mobile only.
+            md:pt-[14px] (was md:pt-[70px]) — flagged 2026-09-28: last row
+            of My Workflow icons -> Along the Journey line was 70px, far
+            off the site's image -> line spacing once the tool rows grew to
+            3. Figma node 498:701 ("My Workflow reference"): last icon
+            cell ends at y=1179, Along the Journey line at y=1193 = 14px.
+            The visible icon body sits 5px inside its cell, so the eye
+            reads 19px, same as Figma's app-icon image. */}
         {/* gap-[10px] (was gap-6/24px) — flagged 2026-09-02: same
             title -> line fix as How I Function/My Workflow above. */}
-        <div className="grid grid-cols-1 gap-[10px] pt-[164px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[70px]">
+        <div className="grid grid-cols-1 gap-[10px] pt-[164px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[14px]">
           <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
             Along the Journey
           </h2>
@@ -390,6 +397,7 @@ export default function AboutSection() {
     </section>
   );
 }
+ 
  
  
  
