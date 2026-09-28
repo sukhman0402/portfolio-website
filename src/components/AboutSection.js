@@ -177,7 +177,15 @@ export default function AboutSection() {
           {/* Each card: pt-[10px] (mobile only, md:pt-[10px] unchanged) —
               same site-wide "line, then text" fix as How I Function above
               (was pt-3/12px on mobile). */}
-          <div className="grid grid-cols-1 gap-x-10 gap-y-10 md:grid-cols-3 md:gap-x-[20px]">
+          {/* gap-y-[14px] (was gap-y-10/40px, mobile only; desktop columns
+              sit side by side so this row-gap isn't used there) — flagged
+              2026-09-28: on phones the 3 categories stack, so this gap IS
+              the "last icon row -> next category's line" junction, and 40px
+              broke the site's image -> line rule. 14px = the same Figma
+              value as the desktop Along the Journey gap (node 498:701: icon
+              cell ends y=1179, line y=1193); the icon body sits 5px inside
+              its cell, so the eye reads 19px. */}
+          <div className="grid grid-cols-1 gap-x-10 gap-y-[14px] md:grid-cols-3 md:gap-x-[20px]">
             {workflowCategories.map((cat) => (
               <div key={cat.label} className="border-t-2 border-black pt-[10px]">
                 <p className="font-semibold uppercase tracking-[-0.5px]">
@@ -397,6 +405,7 @@ export default function AboutSection() {
     </section>
   );
 }
+ 
  
  
  
