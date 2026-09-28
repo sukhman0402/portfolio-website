@@ -30,15 +30,36 @@ export const principles = [
   { title: "Viability", description: "A design must serve the business as well as the people who use it." },
 ];
  
-// tools I use, grouped — tile counts are placeholder, not meaningful yet.
-// Corrected 2026-08-20 against the exact Rectangle node coordinates in
-// Figma node 241:462 (Design=5 single row; AI Assistance=9, wraps to a
-// second row at exactly 6 tiles/row given the 330px column width and 6px
-// gap; Currently Exploring=4 single row).
+// My Workflow: tools per category, final lists (Sukhman, 2026-09-28).
+// Rules: max 18 per category (3 rows of 6 at the 330px column width, 50px
+// tiles, 6px gap). Order = reading order of the tiles: row 1 left to
+// right, then row 2, then row 3. Strongest current tools first, tools used
+// earlier last. Each id must exist in src/lib/workflowIcons.js.
 export const workflowCategories = [
-  { label: "Design", tileCount: 5 },
-  { label: "AI Assistance", tileCount: 9 },
-  { label: "Currently Exploring", tileCount: 4 },
+  {
+    label: "Design",
+    tools: [
+      "figma", "framer", "figjam", "protopie", "blender", "miro",
+      "spline", "rive", "webflow", "maze", "notion", "sketch",
+      "adobe", "autocad", "sketchup",
+    ],
+  },
+  {
+    label: "AI Assistance",
+    tools: [
+      "claudecode", "figmamake", "perplexity", "notebooklm", "stitch", "cursor",
+      "v0", "lovable", "meshy", "flora", "flow", "midjourney",
+      "runway", "relume",
+    ],
+  },
+  {
+    label: "Currently Exploring",
+    tools: [
+      "github", "vercel", "colab", "arduino", "nextjs", "react",
+      "tailwind", "python", "kaggle", "d3", "esp32", "raspberrypi",
+      "lensstudio", "p5", "unity", "touchdesigner", "huggingface", "supabase",
+    ],
+  },
 ];
  
 // supports both past achievements and "currently working on" — 2 rows x 3 columns
@@ -56,5 +77,6 @@ export const journeyEntries = [
     { title: "Lorem ipsum dolor", detail: "Lorem ipsum dolor sit amet, consectetuer", tag: "Lorem ipsum" },
   ],
 ];
+ 
  
  
