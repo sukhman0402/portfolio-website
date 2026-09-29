@@ -46,6 +46,13 @@ body {
   color: var(--foreground);
   font-family: var(--font-system);
   font-size: 15px;
+  /* 1.2 = 18px lines at 15px, matching Figma's "Auto" line height for SF
+     Pro at 15px (text boxes there are 18px per line: 36px for 2 lines, 54px
+     for 3). Set 2026-09-29, direct instruction, site-wide fix: without it,
+     Tailwind's base style gives every line 1.5x = 22.5px, so text blocks
+     were 4.5px taller per line than the design. Any element with its own
+     leading-[...] class still overrides this. */
+  line-height: 1.2;
 }
  
 /* Hero.js mobile card-swap crossfade (Section 1.0, 2026-08-23) — referenced
@@ -110,4 +117,5 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome/Safari/new Edge */
 }
+ 
  
