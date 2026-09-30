@@ -163,40 +163,30 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
             </span>
           )}
  
-          {open && (
-            <>
-              {/* Real cover image (added 2026-09-16, "what should we do
-                  about the image placeholders" fix) — replaces the former
-                  gray placeholder block that occupied this same ~400px
-                  region (design.md §3a). Source: a cropped screenshot of
-                  each item's own externalUrl destination (Behance cover /
-                  Figma proto splash / the live site's own hero) — see
-                  public/images/covers/ and src/lib/data.js's coverImage
-                  field. object-cover fills the same fixed-height box the
-                  placeholder used, so layout/spacing (including the pb-0
-                  flush-against-divider rule above) is unchanged.
-                  Falls back to the old placeholder text if an item somehow
-                  has no coverImage yet, so nothing silently disappears. */}
-              {project.coverImage ? (
-                <div className="relative mt-2 h-48 w-full overflow-hidden rounded-sm bg-tile md:h-72">
-                  <Image
-                    src={project.coverImage}
-                    alt={`${project.title} cover`}
-                    fill
-                    sizes="(min-width: 768px) 900px, 100vw"
-                    className="object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="mt-2 flex h-48 w-full items-center justify-center rounded-sm bg-tile text-xs text-black/40 md:h-72">
-                  Content image placeholder — position unconfirmed (design.md §8.1)
-                </div>
-              )}
-            </>
-          )}
         </div>
       </div>
+
+      {/* Cover image (2026-09-29, direct instruction: Sukhman's own designed
+          images from Figma node 519:992). Full content width (1380px on
+          desktop, spanning both the label and content columns), in the
+          Figma frame's own 1380 x 700 proportions, so the whole designed
+          image shows at every screen width (nothing is cropped).
+          Figma (Projects page, node 176:3291): tag row ends at y=367, image
+          starts at y=367 (0px), image ends 2px above the row's closing line
+          (md:mb-[2px], same near-flush 2px as the project page hero).
+          Homepage dropdown (expandable) uses coverHome, the /projects and
+          /research listings use coverList. */}
+      {open && (project.coverHome || project.coverList) && (
+        <div className="relative aspect-[1380/700] w-full overflow-hidden md:mb-[2px]">
+          <Image
+            src={expandable ? project.coverHome : project.coverList}
+            alt={`${project.title} cover`}
+            fill
+            sizes="(min-width: 1440px) 1380px, calc(100vw - 40px)"
+            className="object-cover"
+          />
+        </div>
+      )}
     </div>
   );
 }
- 
