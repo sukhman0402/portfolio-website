@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Header from "./Header";
 
 // Individual Project page — top-of-page furniture, Figma node 179:3614
@@ -51,12 +52,32 @@ export default function ProjectHeroTop({ project }) {
     <>
       <Header base="/" />
       <div className="mx-auto max-w-[1440px] px-5 sm:px-[30px]">
-        {/* Hero image — placeholder tile, real asset pending */}
-        <div
-          className="mt-8 h-64 w-full bg-tile sm:h-80 md:mt-[20px] md:h-[480px]"
-          aria-hidden="true"
-          title="Hero image placeholder — no asset in source yet"
-        />
+        {/* Hero image (2026-09-29, direct instruction): Sukhman's own
+            designed image for this page from Figma (node 519:992, the
+            1380 x 480 "Individual Project page" frames), stored as
+            coverPage (see src > lib > data.js). Shown in the frame's own
+            1380 x 480 proportions at every screen width, so nothing is
+            cropped: 480px tall at 1440px, proportionally shorter on
+            smaller screens. Falls back to the grey tile if an item has no
+            image yet. priority = it is the first thing on the page, so the
+            browser loads it straight away. */}
+        {project.coverPage ? (
+          <div className="relative mt-8 aspect-[1380/480] w-full overflow-hidden md:mt-[20px]">
+            <Image
+              src={project.coverPage}
+              alt={`${project.title} cover`}
+              fill
+              priority
+              sizes="(min-width: 1440px) 1380px, calc(100vw - 40px)"
+              className="object-cover"
+            />
+          </div>
+        ) : (
+          <div
+            className="mt-8 h-64 w-full bg-tile sm:h-80 md:mt-[20px] md:h-[480px]"
+            aria-hidden="true"
+          />
+        )}
 
         {/* mt-0 (mobile only, md:mt-[2px] unchanged) — flagged 2026-09-02:
             site-wide "placeholder image, then line" rule — was mt-2 (8px)
