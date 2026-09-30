@@ -1,13 +1,18 @@
-// Real content for the Paytm shortcut submission (added 2026-09-16).
-// Per the plan: individual /projects/[slug] and /research/[slug] pages stay
-// unlinked/hidden for now — every card's CTA below points straight to an
-// external destination (externalUrl) instead of the internal route. See
-// ProjectRow.js for how externalUrl / comingSoon are consumed.
+// Projects and research shown on the site.
+//
+// Links (decision 2026-09-29, Sukhman): the internal /projects/<slug> and
+// /research/<slug> pages stay UNLINKED until their case-study content is
+// written. Every card's CTA (and every homepage Research row) still goes to
+// `externalUrl`: the Behance case study, live prototype or full research
+// website. To switch an item's page on later, delete its `externalUrl`
+// line; ProjectRow.js / ResearchRow.js then link to the internal page.
+//
+// Cover images (coverSet, below) show on all pages already, including the
+// unlinked internal pages, so they are ready when those pages go live.
 //
 // The detail-page fields (intro/infoFields/brief/sections, via
-// buildDetailFields below) are UNCHANGED dummy content — those only render
-// on the hidden internal pages, which are out of scope for this submission.
-// Swap them for real case-study content whenever those pages actually ship.
+// buildDetailFields below) are still DUMMY Lorem ipsum. Replace them with
+// real case-study content before switching the pages on.
 //
 // DESCRIPTION RULES (2026-09-25, Sukhman):
 //   - description     = the opening of the sentence. Must fit ONE line on a
@@ -43,11 +48,8 @@ export const projects = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/249663175/Drive-Wise-Know-your-vehicle-before-it-fails",
-    // Cover art (added 2026-09-16, "what should we do about the image
-    // placeholders" fix): cropped screenshot of the item's own externalUrl
-    // destination (Behance cover / Figma proto splash / the live site's own
-    // hero) — see public/images/covers/ and ProjectRow.js's <img> rendering.
-    coverImage: "/images/covers/drive-wise.jpg",
+    // Cover images: see coverSet() below (3 designed images per item).
+    ...coverSet("drive-wise"),
     featured: true,
     ...buildDetailFields(5, { closingBodyIndex: 2 }),
   },
@@ -63,7 +65,7 @@ export const projects = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/249605447/Intelligent-Waste-Disposal-System",
-    coverImage: "/images/covers/intelligent-waste-disposal-system.jpg",
+    ...coverSet("intelligent-waste-disposal-system"),
     featured: true,
     ...buildDetailFields(3),
   },
@@ -79,7 +81,7 @@ export const projects = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/249662667/MyJio-Customer-Assistance",
-    coverImage: "/images/covers/myjio-customer-assistance.jpg",
+    ...coverSet("myjio-customer-assistance"),
     featured: true,
     ...buildDetailFields(4),
   },
@@ -95,11 +97,7 @@ export const projects = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/255115915/Play-Trail-Interactive-Game-Design",
-    // Behance's own cover for this project is mostly whitespace around a
-    // small centered title (verified via screenshot 2026-09-16) — this is
-    // an accurate crop of the real cover, not a placeholder; flagged to
-    // Sukhman as a candidate for a richer cover image later.
-    coverImage: "/images/covers/interactive-playkit-for-kids.jpg",
+    ...coverSet("interactive-playkit-for-kids"),
     featured: true,
     ...buildDetailFields(6),
   },
@@ -115,7 +113,7 @@ export const projects = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/249666485/Bike-Dashboard-Design",
-    coverImage: "/images/covers/bike-dashboard-design.jpg",
+    ...coverSet("bike-dashboard-design"),
     featured: false,
     ...buildDetailFields(4),
   },
@@ -131,7 +129,7 @@ export const projects = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.figma.com/proto/EMzU51XyZk78B0dwyoTE0z/M.DES--Semester-02---Intelligent-Design-Decisions?node-id=1-28352&viewport=494%2C11%2C0.03&t=X4ZtPedOC7ffy0FY-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=49%3A8231&page-id=0%3A1",
-    coverImage: "/images/covers/un-sdgs.jpg",
+    ...coverSet("un-sdgs"),
     featured: false,
     ...buildDetailFields(3),
   },
@@ -158,7 +156,7 @@ export const research = [
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/249665017/Billboards-as-Interactive-Communication-Systems",
-    coverImage: "/images/covers/billboards-interactive-communication-systems.jpg",
+    ...coverSet("billboards-interactive-communication-systems"),
     comingSoon: false,
     ...buildDetailFields(4, { closingBodyIndex: 1 }),
   },
@@ -177,7 +175,7 @@ export const research = [
     tag: "Service Design",
     ctaLabel: "View Project",
     externalUrl: "https://zaletic.github.io/Canteen-Crowd-Analysis/",
-    coverImage: "/images/covers/canteen-queue-management.jpg",
+    ...coverSet("canteen-queue-management"),
     comingSoon: false,
     ...buildDetailFields(3),
   },
@@ -199,7 +197,7 @@ export const research = [
     // static file (public/research/drive-wise-research-site.html), copied
     // from Sukhman's local drive-wise-research-site_2.html (2026-09-16).
     externalUrl: "/research/drive-wise-research-site.html",
-    coverImage: "/images/covers/drive-wise-research.jpg",
+    ...coverSet("drive-wise-research"),
     comingSoon: false,
     ...buildDetailFields(3),
   },
@@ -221,12 +219,32 @@ export const research = [
     // (public/research/physiotherapy-research-website.html), copied from
     // Sukhman's local reality-remix-analysis.html (2026-09-16).
     externalUrl: "/research/physiotherapy-research-website.html",
-    coverImage: "/images/covers/physiotherapy-research-website.jpg",
+    ...coverSet("physiotherapy-research-website"),
     comingSoon: false,
     ...buildDetailFields(3),
   },
 ];
  
+// Cover images (2026-09-29, direct instruction): each project / research
+// item has THREE images Sukhman designed in Figma (section "for Claude",
+// node 519:992), one per place the item appears:
+//   - coverHome: the homepage dropdown (1380 x 700 frame)
+//   - coverList: the /projects or /research listing page (1380 x 700)
+//   - coverPage: the top of the item's own page (1380 x 480)
+// Exported from Figma at 2x (2760px wide) as JPEG, stored in
+// public > images > projects > <slug> > home.jpg / list.jpg / page.jpg.
+// next/image serves smaller, resized copies to each screen automatically.
+// To swap an image later: export the Figma frame at 2x and upload it with
+// the same file name.
+function coverSet(slug) {
+  const base = `/images/covers/projects/${slug}`;
+  return {
+    coverHome: `${base}/home.jpg`,
+    coverList: `${base}/list.jpg`,
+    coverPage: `${base}/page.jpg`,
+  };
+}
+
 // Shared placeholder builder for the detail-page fields (intro/infoFields/
 // brief/sections) — used by BOTH projects and research above. Kept as a
 // function so section COUNT and body LENGTH can vary item-to-item. These
