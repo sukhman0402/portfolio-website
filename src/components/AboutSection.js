@@ -191,34 +191,30 @@ export default function AboutSection() {
                 <p className="font-semibold uppercase tracking-[-0.5px]">
                   {cat.label}
                 </p>
-                {/* Tool icons (2026-09-28, Figma node 498:701 "My Workflow
-                    reference"): each 50px grid cell holds an app-icon
-                    style tile, sized from the Figma app icon in that
-                    frame: a 40px body with 9px corners, inset 5px inside
-                    the cell, brand mark centred at 24px. Each tile uses
-                    the brand's own colours, not one shared dark theme
-                    (Framer blue, Miro yellow, ...; direct instruction,
-                    2026-09-28), from workflowIcons.js: bg = tile colour,
-                    border = hairline ring for white tiles so they read on
-                    the white page, full = the icon is already a square
-                    app icon (Miro) and fills the whole 40px body.
+                {/* Tool icons. Box updated 2026-10-02 to Figma node
+                    527:1011 "Frame: My Workflow" (direct instruction):
+                    each tool sits in a plain SQUARE 50px box (no rounded
+                    corners, no fill) with a 1.5px #d9d9d9 outline (the
+                    --tile token), and its line icon is centred at 24px.
+                    The outline is an inset box-shadow, not a CSS border:
+                    Chrome rounds borders down to whole pixels, so a 1.5px
+                    border would render as 1px there. The shadow is drawn
+                    inside the 50px box (like Figma's inside stroke) and
+                    keeps the exact 1.5px everywhere.
+                    The icons' own stroke is 1.5px too (workflowIcons.js),
+                    so the box and the icon share one line weight. This
+                    replaces the 2026-09-28 app-icon tile (40px rounded body
+                    inside the cell with a hairline ring).
                     Reading order = array order in aboutData.js: row 1
                     left to right, then row 2, then row 3 (flex-wrap does
                     the wrapping). The tool name is the accessible label.
-                    Hover label (2026-09-28, direct instruction: "while
-                    hovering on each icon, it should state the name of the
-                    respective application"): a small label (fill #EEEEEE,
-                    text #BBBBBB = the text-muted token, 2026-09-28) with the
-                    tool name appears above the tile on hover, and on
-                    keyboard focus or a tap on phones (each tile is
-                    focusable, and phones have no hover). It replaces the
-                    browser's own title tooltip, which only appeared after
-                    a delay and in the OS style. The first tile in each
-                    row of 6 anchors its label to the left edge and the
-                    last to the right edge, so long names ("Adobe Creative
-                    Cloud") never run off the column or the phone screen.
-                    A tool whose official icon is not supplied yet
-                    (svg: null) shows its initials. */}
+                    Hover label (2026-09-28): a small label (fill #EEEEEE,
+                    text #BBBBBB) with the tool name appears above the box
+                    on hover, keyboard focus or a tap on phones. The first
+                    box in each row of 6 anchors its label to the left edge
+                    and the last to the right edge, so long names never run
+                    off the column or the phone screen. A tool without an
+                    icon yet (svg: null) shows its initials. */}
                 <div className="mt-4 flex flex-wrap gap-2 md:mt-[30px] md:gap-[6px]">
                   {cat.tools.map((id, i) => {
                     const tool = workflowIcons[id];
@@ -232,7 +228,7 @@ export default function AboutSection() {
                       <div
                         key={id}
                         tabIndex={0}
-                        className="group relative h-[50px] w-[50px] rounded-[11px] outline-none focus-visible:ring-2 focus-visible:ring-black"
+                        className="group relative flex h-[50px] w-[50px] items-center justify-center shadow-[inset_0_0_0_1.5px_var(--tile)] outline-none focus-visible:ring-2 focus-visible:ring-black"
                       >
                         <span
                           aria-hidden="true"
@@ -243,15 +239,12 @@ export default function AboutSection() {
                         <span
                           role="img"
                           aria-label={tool.name}
-                          className="absolute inset-[5px] flex items-center justify-center overflow-hidden rounded-[9px]"
-                          style={{ backgroundColor: tool.bg }}
+                          className="flex h-6 w-6 items-center justify-center"
                         >
                           {tool.svg ? (
                             <span
                               aria-hidden="true"
-                              className={`block [&>svg]:h-full [&>svg]:w-full ${
-                                tool.full ? "h-full w-full" : "h-6 w-6"
-                              }`}
+                              className="block h-6 w-6 [&>svg]:h-full [&>svg]:w-full"
                               dangerouslySetInnerHTML={{ __html: tool.svg }}
                             />
                           ) : (
@@ -265,15 +258,6 @@ export default function AboutSection() {
                                 .join("")
                                 .slice(0, 2)}
                             </span>
-                          )}
-                          {/* Hairline ring for white tiles, drawn on top so
-                              edge-to-edge icons (ProtoPie, Kaggle,
-                              TouchDesigner) don't cover it. */}
-                          {tool.border && (
-                            <span
-                              aria-hidden="true"
-                              className="pointer-events-none absolute inset-0 rounded-[9px] ring-1 ring-inset ring-[#E5E5E5]"
-                            />
                           )}
                         </span>
                       </div>
@@ -358,6 +342,7 @@ export default function AboutSection() {
     </section>
   );
 }
+ 
  
  
  
