@@ -258,11 +258,14 @@ function buildDetailFields(sectionCount, { closingBodyIndex } = {}) {
     introLabel: "Title",
     intro:
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+    // Info row order (Sukhman, 2026-10-02): Discipline, Role, Tools, Timeline.
+    //   Discipline = the ONE industry the project relates to most (e.g. Automotive).
+    //   Role       = the design role that fits the work (e.g. UX Design).
     infoFields: [
       { label: "Discipline", value: "Lorem ipsum" },
-      { label: "Timeline", value: "Lorem ipsum" },
       { label: "Role", value: "Lorem ipsum" },
       { label: "Tools Used", value: "Lorem ipsum" },
+      { label: "Timeline", value: "Lorem ipsum" },
     ],
     briefLabel: "Brief",
     brief:
@@ -513,4 +516,5 @@ export const timelineClusters = [
   { year: "2025", x: 557 },
   { year: "2026", x: 872 },
 ];
+ 
  
