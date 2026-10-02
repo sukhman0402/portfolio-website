@@ -273,29 +273,34 @@ export default function TimelineSection() {
  
             <div className="mt-[10px] grid grid-cols-[50px_260px_680px_1fr] items-start gap-x-5">
               <div className="h-[50px] w-[50px] bg-tile" />
-              <p className="font-semibold tracking-[-0.5px] text-black">
+              {/* FIXED-SHAPE PANEL (direct instruction, 2026-10-02: "the
+                  layout should not waver in different topics"). Every slot
+                  has a fixed size, so switching between any of the 44 points
+                  never moves a line or a divider:
+                    title       -> exactly 1 line (truncate)
+                    description -> exactly 2 lines (18px line-height x 2)
+                    software    -> exactly 1 line, reserved even if empty
+                    domain/link -> exactly 1 line each
+                  Content rule that pairs with this: every description is
+                  147 to 165 characters (see data.js), which fills the 2
+                  lines without being cut. line-clamp is only a safety net. */}
+              <p className="truncate font-semibold tracking-[-0.5px] text-black">
                 {selectedPoint.title}
               </p>
-              <p className="font-normal tracking-[-0.5px] text-black">
+              <p className="line-clamp-2 min-h-[36px] font-normal tracking-[-0.5px] text-black">
                 {selectedPoint.description}
               </p>
-              {/* Empty software = slot hidden (rule, 2026-10-02). The grid
-                  cell itself stays so the columns never shift. */}
-              {selectedPoint.software ? (
-                <p className="text-right font-normal tracking-[-0.5px] text-black">
-                  {selectedPoint.software}
-                </p>
-              ) : (
-                <span aria-hidden="true" />
-              )}
+              <p className="min-h-[18px] truncate text-right font-normal tracking-[-0.5px] text-black">
+                {selectedPoint.software}
+              </p>
             </div>
             <div className="grid grid-cols-[50px_260px_680px_1fr] items-start gap-x-5">
               <span aria-hidden="true" />
               <span aria-hidden="true" />
-              <p className="font-normal tracking-[-0.5px] text-muted">
+              <p className="min-h-[18px] truncate font-normal tracking-[-0.5px] text-muted">
                 {selectedPoint.tag}
               </p>
-              <div className="text-right">
+              <div className="min-h-[18px] truncate text-right">
                 <TimelineLink link={selectedPoint.link} />
               </div>
             </div>
@@ -441,7 +446,8 @@ function TimelineMobileTrack({ selectedId, onSelect }) {
 // after the site it points to, never the raw URL, and opens in a new tab
 // (same hover:opacity-60 treatment as every other link on the site). Any
 // other text is a status word ("In Progress..", "Completed", "Coming
-// Soon") shown as plain grey text. Empty = nothing rendered.
+// Soon") shown as plain grey text. Every point has one (rule, 2026-10-02);
+// the slot keeps its line height even if a value were ever missing.
 function linkLabel(url) {
   const host = (() => {
     try {
@@ -491,32 +497,36 @@ function TimelineInfoPanelMobile({ point }) {
       <div className="mt-[10px] flex gap-4">
         <div className="h-12 w-12 shrink-0 bg-tile" />
         <div className="flex flex-1 flex-col">
-          <p className="font-semibold tracking-[-0.5px] text-black">
+          {/* Same fixed-shape rule as desktop (2026-10-02). The
+              description box is sized to the longest any entry reaches at
+              that phone width (measured on all 44): 5 lines below 390px
+              wide (e.g. 360/375px phones), 4 lines from 390px up (e.g.
+              iPhone 16 at 393px, 402px, 430px). Every other slot is exactly
+              one line and always present, so nothing shifts between
+              points. */}
+          <p className="truncate font-semibold tracking-[-0.5px] text-black">
             {point.title}
           </p>
-          <p className="font-normal tracking-[-0.5px] text-black">
+          <p className="line-clamp-5 min-h-[90px] font-normal tracking-[-0.5px] text-black min-[390px]:line-clamp-4 min-[390px]:min-h-[72px]">
             {point.description}
           </p>
-          <p className="mt-[15px] font-normal tracking-[-0.5px] text-muted">
+          <p className="mt-[15px] min-h-[18px] truncate font-normal tracking-[-0.5px] text-muted">
             {point.tag}
           </p>
-          {/* Software + link/status pair; whichever is empty is hidden,
-              and the 15px gap only appears when at least one shows. */}
-          {(point.software || point.link) && (
-            <div className="mt-[15px]">
-              {point.software && (
-                <p className="font-normal tracking-[-0.5px] text-black">
-                  {point.software}
-                </p>
-              )}
+          <div className="mt-[15px]">
+            <p className="min-h-[18px] truncate font-normal tracking-[-0.5px] text-black">
+              {point.software}
+            </p>
+            <div className="min-h-[18px] truncate">
               <TimelineLink link={point.link} />
             </div>
-          )}
+          </div>
         </div>
       </div>
       <div className="mt-[10px] border-t-2 border-black" />
     </>
   );
 }
+ 
  
  
