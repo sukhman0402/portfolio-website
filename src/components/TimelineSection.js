@@ -208,7 +208,7 @@ export default function TimelineSection() {
                         key={point.id}
                         type="button"
                         aria-pressed={isSelected}
-                        aria-label={`${group.year} timeline point ${point.id}`}
+                        aria-label={`${group.year}: ${point.title}`}
                         onMouseEnter={() => setHoveredId(point.id)}
                         onMouseLeave={() =>
                           setHoveredId((v) => (v === point.id ? null : v))
@@ -279,9 +279,15 @@ export default function TimelineSection() {
               <p className="font-normal tracking-[-0.5px] text-black">
                 {selectedPoint.description}
               </p>
-              <p className="text-right font-normal tracking-[-0.5px] text-black">
-                {selectedPoint.metaTop}
-              </p>
+              {/* Empty software = slot hidden (rule, 2026-10-02). The grid
+                  cell itself stays so the columns never shift. */}
+              {selectedPoint.software ? (
+                <p className="text-right font-normal tracking-[-0.5px] text-black">
+                  {selectedPoint.software}
+                </p>
+              ) : (
+                <span aria-hidden="true" />
+              )}
             </div>
             <div className="grid grid-cols-[50px_260px_680px_1fr] items-start gap-x-5">
               <span aria-hidden="true" />
@@ -289,9 +295,9 @@ export default function TimelineSection() {
               <p className="font-normal tracking-[-0.5px] text-muted">
                 {selectedPoint.tag}
               </p>
-              <p className="text-right font-normal tracking-[-0.5px] text-muted">
-                {selectedPoint.metaBottom}
-              </p>
+              <div className="text-right">
+                <TimelineLink link={selectedPoint.link} />
+              </div>
             </div>
  
             <div className="mt-[10px] border-t-2 border-black" />
@@ -397,7 +403,7 @@ function TimelineMobileTrack({ selectedId, onSelect }) {
               key={point.id}
               type="button"
               aria-pressed={point.id === selectedId}
-              aria-label={`${timelineClusters[point.cluster].year} timeline point ${point.id}`}
+              aria-label={`${timelineClusters[point.cluster].year}: ${point.title}`}
               onClick={() => handlePointClick(index, point.id)}
               className="flex h-[40px] shrink-0 snap-center items-center justify-center"
               style={{ width: MOBILE_ITEM_WIDTH }}
@@ -431,6 +437,48 @@ function TimelineMobileTrack({ selectedId, onSelect }) {
   );
 }
  
+// LINK slot (rule, 2026-10-02): a URL is shown as a short label named
+// after the site it points to, never the raw URL, and opens in a new tab
+// (same hover:opacity-60 treatment as every other link on the site). Any
+// other text is a status word ("In Progress..", "Completed", "Coming
+// Soon") shown as plain grey text. Empty = nothing rendered.
+function linkLabel(url) {
+  const host = (() => {
+    try {
+      return new URL(url).hostname;
+    } catch {
+      return "";
+    }
+  })();
+  if (host.includes("behance.net")) return "Behance";
+  if (host.includes("figma.com")) return "Figma";
+  // github.io = a published website (e.g. the canteen research site), so
+  // it reads as "Live site"; only github.com itself is labelled GitHub.
+  if (host === "github.com") return "GitHub";
+  if (host.includes("chromewebstore") || host.includes("chrome.google.com"))
+    return "Chrome Web Store";
+  if (host.includes("meta.com") || host.includes("oculus.com"))
+    return "Meta Quest";
+  return "Live site";
+}
+ 
+function TimelineLink({ link }) {
+  if (!link) return null;
+  if (/^https?:\/\//.test(link)) {
+    return (
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-normal tracking-[-0.5px] text-muted transition-opacity hover:opacity-60"
+      >
+        {linkLabel(link)} ↗
+      </a>
+    );
+  }
+  return <p className="font-normal tracking-[-0.5px] text-muted">{link}</p>;
+}
+ 
 // Mobile info panel — rebuilt per your reference screenshot: thumbnail +
 // title share a row, description runs full-width beneath, then tag,
 // then a stacked meta pair set off with a 15px gap above it. Still the
@@ -452,16 +500,23 @@ function TimelineInfoPanelMobile({ point }) {
           <p className="mt-[15px] font-normal tracking-[-0.5px] text-muted">
             {point.tag}
           </p>
-          <p className="mt-[15px] font-normal tracking-[-0.5px] text-black">
-            {point.metaTop}
-          </p>
-          <p className="font-normal tracking-[-0.5px] text-muted">
-            {point.metaBottom}
-          </p>
+          {/* Software + link/status pair; whichever is empty is hidden,
+              and the 15px gap only appears when at least one shows. */}
+          {(point.software || point.link) && (
+            <div className="mt-[15px]">
+              {point.software && (
+                <p className="font-normal tracking-[-0.5px] text-black">
+                  {point.software}
+                </p>
+              )}
+              <TimelineLink link={point.link} />
+            </div>
+          )}
         </div>
       </div>
       <div className="mt-[10px] border-t-2 border-black" />
     </>
   );
 }
+ 
  
