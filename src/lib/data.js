@@ -267,6 +267,12 @@ function buildDetailFields(sectionCount, { closingBodyIndex } = {}) {
       { label: "Tools Used", value: "Lorem ipsum" },
       { label: "Timeline", value: "Lorem ipsum" },
     ],
+    // "The Problem" band below Brief (restored 2026-10-02). Keep it the
+    // general, pre-research problem; the evidence-backed problem
+    // statement belongs in the Define section further down.
+    problemLabel: "The Problem",
+    problem:
+      "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
     briefLabel: "Brief",
     brief:
       "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.\n\nDonec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.",
@@ -516,5 +522,6 @@ export const timelineClusters = [
   { year: "2025", x: 557 },
   { year: "2026", x: 872 },
 ];
+ 
  
  
