@@ -13,6 +13,8 @@
 // The detail-page fields (intro/infoFields/brief/sections, via
 // buildDetailFields below) are still DUMMY Lorem ipsum. Replace them with
 // real case-study content before switching the pages on.
+// Drive Wise is the first real one (2026-10-04): its content lives in
+// src > lib > driveWiseCaseStudy.js.
 //
 // DESCRIPTION RULES (2026-09-25, Sukhman):
 //   - description     = the opening of the sentence. Must fit ONE line on a
@@ -35,6 +37,8 @@
 // section (ProjectsSection.js does `projects.filter(p => p.featured).slice(0,4)`).
 // Bike Dashboard and UN SDGs are part of the 6 reviewed projects but sit on
 // the /projects listing page only, not the homepage.
+import { driveWiseCaseStudy } from "./driveWiseCaseStudy";
+
 export const projects = [
   {
     slug: "drive-wise",
@@ -51,7 +55,9 @@ export const projects = [
     // Cover images: see coverSet() below (3 designed images per item).
     ...coverSet("drive-wise"),
     featured: true,
-    ...buildDetailFields(5, { closingBodyIndex: 2 }),
+    // Case-study page content (final, 2026-10-04): every field below the
+    // hero image lives in src > lib > driveWiseCaseStudy.js.
+    ...driveWiseCaseStudy,
   },
   {
     slug: "intelligent-waste-disposal-system",
