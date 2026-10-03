@@ -1,6 +1,8 @@
 "use client";
  
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import Chevron from "./Chevron";
  
 // Individual Project page — repeatable content sections + sticky left-hand
 // Contents nav, Figma node 179:3614 "Project 01 (D)- Section 1.0"
@@ -157,27 +159,16 @@ export default function ProjectTopics({ sections }) {
             <section
               key={section.id}
               id={section.id}
-              className={`scroll-mt-24 pt-[10px] ${
+              className={`scroll-mt-24 ${
                 i !== 0 ? "border-t-2 border-black" : ""
-              } ${section.closingBody ? "pb-[10px]" : ""}`}
+              } ${section.blocks ? "" : "pt-[10px]"} ${
+                !section.blocks && section.closingBody ? "pb-[10px]" : ""
+              }`}
             >
-              <h2 className="font-bold uppercase tracking-[-1px]">
-                {section.heading}
-              </h2>
-              <p className="max-w-[1030px] whitespace-pre-wrap font-normal tracking-[-0.5px] text-black/80">
-                {section.body}
-              </p>
-              {section.image && (
-                <div
-                  className="mt-4 h-64 w-full max-w-[1030px] bg-tile sm:h-80 md:mt-[5px] md:h-[480px]"
-                  aria-hidden="true"
-                  title="Content image placeholder — no asset in source yet"
-                />
-              )}
-              {section.closingBody && (
-                <p className="mt-4 max-w-[1030px] whitespace-pre-wrap font-normal tracking-[-0.5px] text-black/80 md:mt-[20px]">
-                  {section.closingBody}
-                </p>
+              {section.blocks ? (
+                <StageBlocks section={section} />
+              ) : (
+                <LegacySection section={section} />
               )}
             </section>
           ))}
@@ -187,3 +178,233 @@ export default function ProjectTopics({ sections }) {
   );
 }
  
+
+// ---------------------------------------------------------------------------
+// OLD single-topic section (heading, body, grey image placeholder, optional
+// closingBody). Still used by every project whose case study is not written
+// yet (their Lorem ipsum from buildDetailFields in data.js). Unchanged.
+function LegacySection({ section }) {
+  return (
+    <>
+      <h2 className="font-bold uppercase tracking-[-1px]">{section.heading}</h2>
+      <p className="max-w-[1030px] whitespace-pre-wrap font-normal tracking-[-0.5px] text-black/80">
+        {section.body}
+      </p>
+      {section.image && (
+        <div
+          className="mt-4 h-64 w-full max-w-[1030px] bg-tile sm:h-80 md:mt-[5px] md:h-[480px]"
+          aria-hidden="true"
+          title="Content image placeholder (no asset in source yet)"
+        />
+      )}
+      {section.closingBody && (
+        <p className="mt-4 max-w-[1030px] whitespace-pre-wrap font-normal tracking-[-0.5px] text-black/80 md:mt-[20px]">
+          {section.closingBody}
+        </p>
+      )}
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// CASE-STUDY LAYOUT (Sukhman, 2026-10-03; built 2026-10-04 for Drive Wise).
+// Used when a section has `blocks` (see src > lib > driveWiseCaseStudy.js
+// for the data shape). Three heading levels:
+//   1. stage     = the Contents label on the left (and a hidden h2 here,
+//                  for screen readers)
+//   2. topic     = bold uppercase heading + text + image(s)
+//   3. sub-topic = semibold heading inside a topic, with its own text and
+//                  image (Research > Interviews, Design > Screens > ...)
+//
+// Spacing follows the site rules (portfolio-site-layout-rules.md §4):
+//   - every topic block sits under a 2px divider and starts 10px below it
+//     (the first block of a stage uses the stage's own divider)
+//   - text -> image: 5px desktop, 16px phones (same as the old image slot)
+//   - image -> next divider: flush
+//   - text -> next divider: 10px (blocks that end in text, e.g. Limitations)
+// New patterns (no earlier rule existed, flagged 2026-10-04):
+//   - topic text -> first sub-topic heading, and sub-topic -> sub-topic: 20px
+//     (the same 20px the old closingBody used after an image)
+//   - two images in one block (Define > Personas): 10px apart
+//   - bulleted points (Limitations, Learnings): 10px below the text, 5px
+//     between points
+//   - images are real files at their natural height, never cropped:
+//     `width`/`height` are the file's pixel size (2x), so the space is
+//     reserved before the image loads and nothing jumps.
+function StageBlocks({ section }) {
+  return (
+    <>
+      <h2 className="sr-only">{section.tocLabel}</h2>
+      {section.blocks.map((block, b) => (
+        <div
+          key={block.heading}
+          className={`pt-[10px] ${b !== 0 ? "border-t-2 border-black" : ""} ${
+            endsInText(block) ? "pb-[10px]" : ""
+          }`}
+        >
+          <h3 className="font-bold uppercase tracking-[-1px]">{block.heading}</h3>
+          <BlockBody item={block} />
+
+          {block.subtopics?.map((sub) => (
+            <div key={sub.heading} className="mt-[20px]">
+              <h4 className="font-semibold tracking-[-0.5px]">{sub.heading}</h4>
+              <BlockBody item={sub} />
+            </div>
+          ))}
+
+          {block.video && <WalkthroughPanel video={block.video} prototype={block.prototype} />}
+        </div>
+      ))}
+    </>
+  );
+}
+
+// A block "ends in text" when nothing image-like closes it: then it needs
+// the 10px text -> line gap before the next divider.
+function endsInText(block) {
+  if (block.video) return false;
+  if (block.subtopics?.length) return !block.subtopics.at(-1).images?.length;
+  return !block.images?.length;
+}
+
+// Text, optional bullet points, optional link, then the image(s). Shared by
+// topics and sub-topics.
+function BlockBody({ item }) {
+  return (
+    <>
+      {item.text && (
+        <p className="max-w-[1030px] whitespace-pre-wrap font-normal tracking-[-0.5px] text-black/80">
+          {item.text}
+        </p>
+      )}
+
+      {item.points?.length > 0 && (
+        <ul className="mt-[10px] max-w-[1030px] list-disc space-y-[5px] pl-[18px] tracking-[-0.5px] text-black/80 marker:text-black/80">
+          {item.points.map((point, k) => (
+            <li key={k}>
+              {point.title && <span className="font-semibold text-black">{point.title} </span>}
+              {point.text}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* Same CTA style as the site's "View Project" links (ProjectRow.js):
+          semibold + chevron. Opens in a new tab. Sits under the text, so the
+          image still closes the block flush against the next divider. */}
+      {item.link && (
+        <a
+          href={item.link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-[5px] flex w-fit items-center gap-1 font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
+        >
+          {item.link.label}
+          <Chevron className="h-2.5 w-2.5" />
+        </a>
+      )}
+
+      {item.images?.map((image, k) => (
+        <Image
+          key={image.src}
+          src={image.src}
+          alt={image.alt}
+          width={image.width}
+          height={image.height}
+          sizes="(min-width: 1440px) 1030px, (min-width: 768px) calc(100vw - 410px), calc(100vw - 40px)"
+          className={`block h-auto w-full max-w-[1030px] ${
+            k === 0 ? "mt-4 md:mt-[5px]" : "mt-[10px]"
+          }`}
+        />
+      ))}
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Outcome > Final Solution: silent looping walkthrough video in a phone
+// frame on the case study's light grey ground (#F6F6F6), with a "Try the
+// prototype" button that swaps the video for the live Figma prototype.
+// The Figma embed only loads on click, so the page stays fast. The
+// fallback link opens the prototype in Figma in a new tab (best on phones,
+// where the embed is heavy).
+// Reduced motion: if the visitor has asked their device for less motion,
+// the video does not autoplay; it shows its poster frame with play controls.
+function WalkthroughPanel({ video, prototype }) {
+  const videoRef = useRef(null);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [showPrototype, setShowPrototype] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => {
+      setReducedMotion(query.matches);
+      const el = videoRef.current;
+      if (!el) return;
+      if (query.matches) el.pause();
+      else el.play().catch(() => {});
+    };
+    apply();
+    query.addEventListener("change", apply);
+    return () => query.removeEventListener("change", apply);
+  }, [showPrototype]);
+
+  return (
+    <div className="mt-4 flex w-full max-w-[1030px] flex-col items-center bg-[#F6F6F6] px-5 pb-[20px] pt-[40px] md:px-[32px] md:mt-[5px]">
+      {showPrototype && prototype ? (
+        <iframe
+          src={prototype.embedSrc}
+          title="Drive Wise prototype (Figma)"
+          className="block h-[640px] w-full max-w-[340px] border-0 md:h-[760px] md:max-w-[400px]"
+          allowFullScreen
+        />
+      ) : (
+        <video
+          ref={videoRef}
+          className="block h-auto w-[260px] md:w-[360px]"
+          width={video.width}
+          height={video.height}
+          poster={video.poster}
+          aria-label={video.label}
+          autoPlay={!reducedMotion}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          controls={reducedMotion}
+        >
+          <source src={video.webm} type="video/webm" />
+          <source src={video.mp4} type="video/mp4" />
+        </video>
+      )}
+
+      {prototype && (
+        <div className="mt-[20px] flex flex-wrap items-center justify-center gap-x-[30px] gap-y-[10px]">
+          <button
+            type="button"
+            onClick={() => setShowPrototype((v) => !v)}
+            className="flex items-center gap-1 font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
+          >
+            {showPrototype ? "Back to the walkthrough" : prototype.buttonLabel}
+            <Chevron className="h-2.5 w-2.5" />
+          </button>
+          <a
+            href={prototype.openHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
+          >
+            {prototype.openLabel}
+            <Chevron className="h-2.5 w-2.5" />
+          </a>
+        </div>
+      )}
+
+      {video.credit && (
+        <p className="mt-[20px] self-start text-[12px] leading-[15px] tracking-[-0.3px] text-black/50">
+          {video.credit}
+        </p>
+      )}
+    </div>
+  );
+}
