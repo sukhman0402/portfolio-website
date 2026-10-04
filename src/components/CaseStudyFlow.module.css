@@ -1,0 +1,315 @@
+/* Case study as ONE continuous flow (Sukhman, 2026-10-04), after the
+   GeoTab Behance reference: full-width modules stacked with no gaps, a blue
+   opener per stage, and every visual tagged with its stage and topic.
+   Colours = Drive Wise palette; type = the site font (SF Pro on Apple
+   devices). Sizes are set on the 1030 px right column and scale down on
+   phones. Design source: flow/build.py + flow/flow.css (Placement Drive). */
+
+/* palette, set on every top-level flow element (the flow has no wrapper:
+   its modules sit directly in ProjectTopics' right column) */
+.module,
+.imgModule,
+.opener {
+  --bg: #f6f6f6;
+  --card: #ffffff;
+  --ink: #0d0d0d;
+  --line: #cdcdcd;
+  --blue: #0a56c3;
+  max-width: 1030px;
+  color: var(--ink);
+}
+
+/* every module shares the same ground, so the stack reads as one piece */
+.module {
+  background: var(--bg);
+  padding: 28px 32px 36px;
+}
+.imgModule {
+  background: var(--bg);
+  padding-top: 28px;
+}
+.imgModule .eyebrow {
+  margin: 0 32px;
+}
+.visual {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* stage row: "// 01  Research ■  Primary research ............ [1.1 Interviews]" */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  line-height: 1;
+}
+.eyebrowLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.muted {
+  color: #6b6b6b;
+}
+.square {
+  width: 5px;
+  height: 5px;
+  background: var(--blue);
+  display: inline-block;
+  flex: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  line-height: 1;
+  padding: 6px 9px;
+  color: #fff;
+  background: var(--blue);
+  white-space: nowrap;
+  font-weight: 500;
+}
+.chip::before {
+  content: "";
+  width: 3px;
+  height: 3px;
+  background: currentColor;
+}
+
+.linkRow {
+  padding: 0 32px 32px;
+}
+.linkChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 12px;
+  padding: 8px 12px;
+  font-weight: 500;
+  transition: opacity 0.15s;
+}
+.linkChip:hover {
+  opacity: 0.8;
+}
+
+/* stage opener: the clearest marker in the flow */
+.opener {
+  background: var(--blue);
+  color: #fff;
+  padding: 28px 32px 36px;
+  scroll-margin-top: 6rem;
+}
+.openerTop {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+}
+.openerTitle {
+  font-weight: 300;
+  font-size: 88px;
+  line-height: 1;
+  letter-spacing: -3px;
+  margin: 44px 0 40px;
+}
+.openerBody {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.openerText + .openerText {
+  margin-top: 20px;
+}
+.openerText p {
+  font-size: 15px;
+  line-height: 1.4;
+  max-width: 430px;
+}
+.openerLabel {
+  font-size: 11px !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 6px;
+}
+.index {
+  list-style: none;
+  font-size: 15px;
+  line-height: 1.3;
+}
+.index li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+}
+.index li:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+}
+.indexNum {
+  color: rgba(255, 255, 255, 0.7);
+  min-width: 30px;
+  font-variant-numeric: tabular-nums;
+}
+.indexGroup {
+  margin-left: auto;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: right;
+}
+
+/* stage map (top of the flow) */
+.head {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  align-items: end;
+  gap: 28px;
+  margin: 40px 0 44px;
+}
+.headline {
+  font-weight: 400;
+  font-size: 44px;
+  line-height: 1.08;
+  letter-spacing: -0.8px;
+}
+.sel {
+  color: var(--blue);
+}
+.nowrap {
+  white-space: nowrap;
+}
+.caret {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0.92em;
+  vertical-align: -0.1em;
+  margin: 0 3px;
+}
+.caret::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: var(--blue);
+}
+.caret::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: -3px;
+  width: 6px;
+  height: 6px;
+  background: var(--blue);
+}
+.side {
+  font-size: 12px;
+  line-height: 1.4;
+}
+.side b {
+  font-weight: 600;
+}
+.map {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-top: 1px solid var(--ink);
+}
+.mapCell {
+  display: block;
+  background: var(--card);
+  padding: 16px 16px 20px;
+  box-shadow: inset -1px -1px 0 var(--line);
+  min-height: 250px;
+  transition: background 0.15s;
+}
+.mapCell:hover {
+  background: #eef3fb;
+}
+.ghost {
+  font-weight: 300;
+  font-size: 30px;
+  color: #a8a8a8;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+.mapName {
+  font-size: 17px;
+  font-weight: 500;
+  margin: 14px 0 10px;
+  letter-spacing: -0.2px;
+}
+.mapList {
+  list-style: none;
+  font-size: 11.5px;
+  line-height: 1.35;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.mapList li {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+}
+.mapNum {
+  color: #6b6b6b;
+  font-variant-numeric: tabular-nums;
+}
+
+/* phones and small tablets */
+@media (max-width: 767px) {
+  .module,
+  .opener {
+    padding: 20px 16px 28px;
+  }
+  .imgModule {
+    padding-top: 20px;
+  }
+  .imgModule .eyebrow {
+    margin: 0 16px;
+  }
+  .linkRow {
+    padding: 0 16px 20px;
+  }
+  .eyebrowLeft .group {
+    display: none;
+  }
+  .openerTitle {
+    font-size: 52px;
+    letter-spacing: -1.6px;
+    margin: 28px 0 24px;
+  }
+  .openerBody {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .head {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 28px 0 28px;
+  }
+  .headline {
+    font-size: 30px;
+    letter-spacing: -0.5px;
+  }
+  .map {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .mapCell {
+    min-height: 0;
+  }
+}
