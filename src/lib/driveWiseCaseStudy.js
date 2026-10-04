@@ -64,6 +64,10 @@ export const driveWiseCaseStudy = {
     {
       id: "research",
       tocLabel: "Research",
+      // flow: true = shown as the continuous GeoTab-style flow
+      // (src > components > CaseStudyFlow.js). Stages are switched over one
+      // at a time, Research first (Sukhman, 2026-10-04).
+      flow: true,
       blocks: [
         {
           heading: "Primary Research",
