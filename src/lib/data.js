@@ -469,7 +469,7 @@ export const timelinePoints = [
   { id: 32, x: 1073, cluster: 6, defaultSelected: true,
     title: "Drive Wise",
     description: "A predictive vehicle-health platform that forecasts component wear before it fails, so owners only pay for repairs they need. Backed by a 72-owner survey.",
-    tag: "Automotive", software: "Figma, Google Forms, Google Sheets", link: "https://www.behance.net/gallery/249663175/Drive-Wise-Know-your-vehicle-before-it-fails" },
+    tag: "Automotive", software: "Figma, FigJam, Google Forms, Sheets, Colab", link: "/projects/drive-wise" },
   { id: 33, x: 1098, cluster: 6,
     title: "StoryLoop",
     description: "A screen-free physiotherapy toy where children move a figurine through a resistance loop to unlock an audio story. Shaped by interviews with physiotherapists.",
