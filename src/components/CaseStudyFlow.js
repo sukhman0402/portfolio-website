@@ -72,15 +72,15 @@ export function StageMap({ sections, onJump }) {
   return (
     <section className={s.module} aria-labelledby="flow-map-title">
       <Eyebrow num="00" stage="Overview" chip="How it runs" />
-      <div className={s.head}>
-        <h2 id="flow-map-title" className={s.headline}>
-          <Selection before="Ten stages, " phrase="one flow" after=", from research to learnings." />
-        </h2>
-        <p className={s.side}>
-          Every visual below carries its <b>stage number and topic</b> in its top row, so you always know
-          where you are.
-        </p>
-      </div>
+      {/* No headline here (Sukhman, 2026-10-04): the map speaks for itself.
+          The heading below is for screen readers only. */}
+      <h2 id="flow-map-title" className={s.srOnly}>
+        Stages of the case study
+      </h2>
+      <p className={`${s.side} ${s.mapNote}`}>
+        Every visual below carries its <b>stage number and topic</b> in its top row, so you always know
+        where you are.
+      </p>
       <div className={s.map}>
         {sections.map((section, i) => (
           <a
