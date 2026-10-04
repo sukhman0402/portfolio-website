@@ -124,6 +124,7 @@ export const driveWiseCaseStudy = {
     {
       id: "insights",
       tocLabel: "Insights",
+      flow: true,
       blocks: [
         {
           heading: "Empathy Map",
@@ -161,6 +162,7 @@ export const driveWiseCaseStudy = {
     {
       id: "define",
       tocLabel: "Define",
+      flow: true,
       blocks: [
         {
           heading: "Personas",
@@ -191,6 +193,7 @@ export const driveWiseCaseStudy = {
     {
       id: "ideation",
       tocLabel: "Ideation",
+      flow: true,
       blocks: [
         {
           heading: "How Might We",
@@ -248,6 +251,7 @@ export const driveWiseCaseStudy = {
     {
       id: "design",
       tocLabel: "Design",
+      flow: true,
       blocks: [
         {
           heading: "Screens",
@@ -293,6 +297,12 @@ export const driveWiseCaseStudy = {
         {
           heading: "Standards Check",
           text: "The two standards reviewed in research were not used while designing; the finished screens were checked against them afterwards, and the results are reported in Testing.",
+          // flow panel: the two standards, one plain line each
+          standards: [
+            { name: "ISO 15008", text: "In-vehicle visual displays: legibility of text and symbols" },
+            { name: "ISO 26262", text: "Road vehicles: functional safety of electrical and electronic systems" },
+          ],
+          standardsNote: "Neither covers a phone app directly. See 6.1 Heuristic Evaluation.",
         },
         {
           heading: "Design System",
@@ -308,6 +318,7 @@ export const driveWiseCaseStudy = {
     {
       id: "testing",
       tocLabel: "Testing",
+      flow: true,
       blocks: [
         {
           heading: "Heuristic Evaluation",
@@ -337,9 +348,20 @@ export const driveWiseCaseStudy = {
     {
       id: "outcome",
       tocLabel: "Outcome",
+      flow: true,
       blocks: [
         {
           heading: "Final Solution",
+          // flow panel: headline (approved 10-outcome 2.1) + the five
+          // screens the walkthrough shows
+          flowHeadline: { before: "Know what the vehicle needs, ", phrase: "before the workshop." },
+          screens: [
+            { name: "Home", text: "\"Your vehicle needs attention\"" },
+            { name: "Status", text: "Six scores in plain words" },
+            { name: "Breakdown Risk", text: "Likely cause and what to do" },
+            { name: "Service Detail", text: "Every job and its price" },
+            { name: "Track Servicing", text: "Each step with a time" },
+          ],
           text: "Drive Wise brings the vehicle's condition, the reason behind each warning, and a priced, trackable service into one phone app for any two-wheeler or car, with no extra hardware.",
           video: {
             mp4: "/videos/drive-wise-walkthrough.mp4",
@@ -385,6 +407,7 @@ export const driveWiseCaseStudy = {
     {
       id: "future-scope",
       tocLabel: "Future Scope",
+      flow: true,
       blocks: [
         {
           heading: "From Answers to Vehicle Data",
@@ -435,6 +458,13 @@ export const driveWiseCaseStudy = {
     {
       id: "limitations",
       tocLabel: "Limitations",
+      flow: true,
+      // flow: the four blocks show as ONE 2 x 2 panel
+      flowPanel: {
+        chip: "Four limits",
+        headline: { before: "What this project ", phrase: "can and cannot claim", after: "." },
+        skins: ["white", "white", "black", "blue"],
+      },
       blocks: [
         {
           heading: "Research",
@@ -489,6 +519,20 @@ export const driveWiseCaseStudy = {
     {
       id: "learnings",
       tocLabel: "Learnings",
+      flow: true,
+      flowPanel: {
+        chip: "In my words",
+        headline: { before: "What this project ", phrase: "taught me", after: "." },
+        skins: ["white", "white", "blue", "black"],
+      },
+      // closing band at the very end of the case study
+      closing: {
+        title: "Thank you.",
+        links: [
+          { label: "Try the prototype", href: `https://www.figma.com/proto/${FIGMA_PROTO_PATH}` },
+          { label: "View the research website", href: RESEARCH_SITE },
+        ],
+      },
       blocks: [
         {
           heading: "On Research",

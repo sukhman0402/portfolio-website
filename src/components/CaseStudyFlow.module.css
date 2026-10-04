@@ -9,7 +9,8 @@
    its modules sit directly in ProjectTopics' right column) */
 .module,
 .imgModule,
-.opener {
+.opener,
+.closing {
   --bg: #f6f6f6;
   --card: #ffffff;
   --ink: #0d0d0d;
@@ -17,6 +18,9 @@
   --blue: #0a56c3;
   max-width: 1030px;
   color: var(--ink);
+  /* each module adapts to the width it actually gets (the right column
+     narrows on laptop-size windows), not only to the screen width */
+  container-type: inline-size;
 }
 
 /* every module shares the same ground, so the stack reads as one piece */
@@ -270,6 +274,244 @@
   font-variant-numeric: tabular-nums;
 }
 
+
+/* buttons share the link-chip look */
+button.linkChip {
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+.linkChipLight {
+  background: #fff;
+  color: var(--ink);
+}
+.textLink {
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.textLink:hover {
+  color: var(--blue);
+}
+.note {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #555;
+  margin-top: 10px;
+}
+
+/* standards check */
+.std {
+  display: grid;
+  grid-template-columns: 1fr 330px;
+  gap: 40px;
+  margin-top: 40px;
+  align-items: end;
+}
+.say {
+  font-size: 28px;
+  line-height: 1.22;
+  font-weight: 300;
+  letter-spacing: -0.4px;
+}
+.stdCells {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.stdCell {
+  background: var(--card);
+  padding: 18px 20px;
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  box-shadow: inset -1px 0 0 var(--line);
+  font-size: 12.5px;
+  line-height: 1.38;
+}
+
+/* final solution */
+.final {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.finalStage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.video {
+  display: block;
+  width: 330px;
+  max-width: 100%;
+  height: auto;
+}
+.proto {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  height: 760px;
+  border: 0;
+}
+.finalList {
+  background: var(--card);
+  padding: 20px 22px 24px;
+  display: flex;
+  flex-direction: column;
+}
+.finalRow {
+  display: grid;
+  grid-template-columns: 62px 1fr;
+  align-items: baseline;
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+.finalRow:first-child {
+  border-top: none;
+}
+.finalName {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+}
+.finalText {
+  font-size: 13px;
+  margin-top: 3px;
+  color: #444;
+}
+.finalActions {
+  margin-top: auto;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* limitations + learnings: one 2 x 2 panel */
+.panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.cell {
+  padding: 20px 22px 26px;
+}
+.white {
+  background: var(--card);
+}
+.black {
+  background: var(--ink);
+  color: #fff;
+}
+.blue {
+  background: var(--blue);
+  color: #fff;
+}
+.black .ghost {
+  color: #5a5a5a;
+}
+.blue .ghost {
+  color: rgba(255, 255, 255, 0.5);
+}
+.cellTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.chipLight {
+  background: #fff;
+  color: var(--ink);
+}
+.cellLead {
+  font-size: 21px;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+  margin: 26px 0 18px;
+  max-width: 420px;
+}
+.points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-size: 12.5px;
+  line-height: 1.42;
+}
+.points li {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  align-items: baseline;
+}
+.points li:has(.pointNum) {
+  grid-template-columns: 38px 1fr;
+}
+.points b {
+  font-weight: 600;
+}
+.pointMark {
+  width: 5px;
+  height: 5px;
+  background: var(--blue);
+  display: inline-block;
+  transform: translateY(-2px);
+}
+.black .pointMark,
+.blue .pointMark {
+  background: #fff;
+}
+.pointNum {
+  font-weight: 300;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+/* closing band */
+.closing {
+  background: var(--ink);
+  color: #fff;
+  padding: 28px 32px 44px;
+}
+.closing .openerTop {
+  border-bottom-color: #3a3a3a;
+}
+.closingLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* narrow right column (laptop windows, small tablets): stack the opener and
+   headline, three map columns */
+@container (max-width: 860px) {
+  .openerBody,
+  .head {
+    grid-template-columns: 1fr;
+  }
+  .openerBody {
+    gap: 28px;
+  }
+  .head {
+    gap: 12px;
+  }
+  .map {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .std,
+  .final,
+  .panel {
+    grid-template-columns: 1fr;
+  }
+  .std {
+    gap: 24px;
+  }
+}
+
 /* phones and small tablets */
 @media (max-width: 767px) {
   .module,
@@ -311,5 +553,14 @@
   }
   .mapCell {
     min-height: 0;
+  }
+  .closing {
+    padding: 20px 16px 32px;
+  }
+  .say {
+    font-size: 21px;
+  }
+  .proto {
+    height: 640px;
   }
 }
