@@ -1,5 +1,6 @@
 "use client";
  
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { timelineClusters, timelinePoints } from "@/lib/data";
  
@@ -470,6 +471,19 @@ function linkLabel(url) {
  
 function TimelineLink({ link }) {
   if (!link) return null;
+  // A path on this site (starts with "/", e.g. "/projects/drive-wise",
+  // added 2026-10-04): the project's own case-study page, opened in the
+  // same tab and labelled "Case study".
+  if (link.startsWith("/")) {
+    return (
+      <Link
+        href={link}
+        className="font-normal tracking-[-0.5px] text-muted transition-opacity hover:opacity-60"
+      >
+        Case study →
+      </Link>
+    );
+  }
   if (/^https?:\/\//.test(link)) {
     return (
       <a
