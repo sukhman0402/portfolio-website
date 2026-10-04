@@ -38,7 +38,7 @@
 // Bike Dashboard and UN SDGs are part of the 6 reviewed projects but sit on
 // the /projects listing page only, not the homepage.
 import { driveWiseCaseStudy } from "./driveWiseCaseStudy";
-
+ 
 export const projects = [
   {
     slug: "drive-wise",
@@ -50,8 +50,9 @@ export const projects = [
       ", so they only pay for necessary maintenance. Backed by a 72-respondent survey and a predictive model of component wear.",
     tag: "Automotive · Predictive Data Product",
     ctaLabel: "View Project",
-    externalUrl:
-      "https://www.behance.net/gallery/249663175/Drive-Wise-Know-your-vehicle-before-it-fails",
+    // externalUrl removed 2026-10-04 (Sukhman): the case study is live, so
+    // "View Project" now opens /projects/drive-wise instead of Behance.
+    // Behance: https://www.behance.net/gallery/249663175/Drive-Wise-Know-your-vehicle-before-it-fails
     // Cover images: see coverSet() below (3 designed images per item).
     ...coverSet("drive-wise"),
     featured: true,
@@ -528,6 +529,7 @@ export const timelineClusters = [
   { year: "2025", x: 557 },
   { year: "2026", x: 872 },
 ];
+ 
  
  
  
