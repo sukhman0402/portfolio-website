@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Chevron from "./Chevron";
-import { StageMap, FlowStage } from "./CaseStudyFlow";
+import { FlowStage } from "./CaseStudyFlow";
  
 // Individual Project page — repeatable content sections + sticky left-hand
 // Contents nav, Figma node 179:3614 "Project 01 (D)- Section 1.0"
@@ -146,9 +146,9 @@ export default function ProjectTopics({ sections }) {
  
         {/* Content sections */}
         <div>
-          {/* Continuous-flow case studies (2026-10-04): the stage map sits
-              first, right under ProjectHeroTop's closing divider. */}
-          {sections.some((sec) => sec.flow) && <StageMap sections={sections} onJump={handleJump} />}
+          {/* Continuous-flow case studies (2026-10-04): no stage map; the
+              first stage's blue opener sits right under ProjectHeroTop's
+              closing divider (Sukhman). */}
           {sections.map((section, i) => (
             // pt-[10px] (was pt-8/32px, mobile only) — flagged 2026-09-02:
             // heading -> line above it (its own border-t, or for the first

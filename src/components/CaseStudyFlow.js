@@ -22,7 +22,9 @@ import s from "./CaseStudyFlow.module.css";
 //   3. a stage with `flowPanel` (Limitations, Learnings) shows all its
 //      topics as ONE 2 x 2 panel instead of one module each
 //   4. a stage with `closing` ends the case study with a black band.
-// StageMap (top of the flow) lists every stage with its numbered topics.
+// (A stage map at the top was tried and removed, Sukhman 2026-10-04: the
+// flow starts with the first stage's opener; the Contents list on the
+// left does the wayfinding on desktop.)
 
 // A stage's topics, numbered 1.1, 1.2 ...: a block's sub-topics when it
 // has them (the block becomes their group), otherwise the block itself.
@@ -65,44 +67,6 @@ function Eyebrow({ num, stage, group, chip }) {
       </div>
       <span className={s.chip}>{chip}</span>
     </div>
-  );
-}
-
-export function StageMap({ sections, onJump }) {
-  return (
-    <section className={s.module} aria-labelledby="flow-map-title">
-      <Eyebrow num="00" stage="Overview" chip="How it runs" />
-      {/* No headline here (Sukhman, 2026-10-04): the map speaks for itself.
-          The heading below is for screen readers only. */}
-      <h2 id="flow-map-title" className={s.srOnly}>
-        Stages of the case study
-      </h2>
-      <p className={`${s.side} ${s.mapNote}`}>
-        Every visual below carries its <b>stage number and topic</b> in its top row, so you always know
-        where you are.
-      </p>
-      <div className={s.map}>
-        {sections.map((section, i) => (
-          <a
-            key={section.id}
-            href={`#${section.id}`}
-            onClick={(e) => onJump?.(e, section.id)}
-            className={s.mapCell}
-          >
-            <span className={s.ghost}>{pad(i + 1)}</span>
-            <p className={s.mapName}>{section.tocLabel}</p>
-            <ul className={s.mapList}>
-              {stageTopics(section, i + 1).map((t) => (
-                <li key={t.number}>
-                  <span className={s.mapNum}>{t.number}</span>
-                  <span>{t.heading}</span>
-                </li>
-              ))}
-            </ul>
-          </a>
-        ))}
-      </div>
-    </section>
   );
 }
 
