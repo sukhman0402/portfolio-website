@@ -2,9 +2,11 @@
  
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Chevron from "./Chevron";
 import { FlowStage } from "./CaseStudyFlow";
 import { BinaStage } from "./BinaFlow";
+import ImageZoom from "./ImageZoom";
  
 // Individual Project page — repeatable content sections + sticky left-hand
 // Contents nav, Figma node 179:3614 "Project 01 (D)- Section 1.0"
@@ -66,7 +68,7 @@ import { BinaStage } from "./BinaFlow";
 //   - active:   font-semibold, text-black
 //   - inactive: font-normal,   text-[#bbb]
 //   both at tracking-[-1px]; number uppercase, label capitalize.
-export default function ProjectTopics({ sections }) {
+export default function ProjectTopics({ sections, endLinks }) {
   const [activeId, setActiveId] = useState(sections?.[0]?.id ?? null);
  
   useEffect(() => {
@@ -182,6 +184,40 @@ export default function ProjectTopics({ sections }) {
               )}
             </section>
           ))}
+
+          {/* Short case studies (Sukhman, 2026-10-05): links at the end of
+              the page, the full case study first (same tab), then e.g. the
+              research website (new tab). Same CTA style as "View Project"
+              (ProjectRow.js): semibold + chevron. Text ending, so 10px above
+              the footer's line; the last board above ends flush on the 2px
+              divider. */}
+          {endLinks?.length > 0 && (
+            <div className="flex flex-wrap gap-x-[30px] gap-y-[5px] border-t-2 border-black pb-[10px] pt-[10px]">
+              {endLinks.map((link) =>
+                link.external ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex w-fit items-center gap-1 font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
+                  >
+                    {link.label}
+                    <Chevron className="h-2.5 w-2.5" />
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="flex w-fit items-center gap-1 font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
+                  >
+                    {link.label}
+                    <Chevron className="h-2.5 w-2.5" />
+                  </Link>
+                ),
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -314,19 +350,30 @@ function BlockBody({ item }) {
         </a>
       )}
 
-      {item.images?.map((image, k) => (
-        <Image
-          key={image.src}
-          src={image.src}
-          alt={image.alt}
-          width={image.width}
-          height={image.height}
-          sizes="(min-width: 1440px) 1030px, (min-width: 768px) calc(100vw - 410px), calc(100vw - 40px)"
-          className={`block h-auto w-full max-w-[1030px] ${
-            k === 0 ? "mt-4 md:mt-[5px]" : "mt-[10px]"
-          }`}
-        />
-      ))}
+      {item.images?.map((image, k) => {
+        const gap = k === 0 ? "mt-4 md:mt-[5px]" : "mt-[10px]";
+        const picture = (
+          <Image
+            key={image.src}
+            src={image.src}
+            alt={image.alt}
+            width={image.width}
+            height={image.height}
+            sizes="(min-width: 1440px) 1030px, (min-width: 768px) calc(100vw - 410px), calc(100vw - 40px)"
+            className={`block h-auto w-full max-w-[1030px] ${image.zoom ? "" : gap}`}
+          />
+        );
+        // `zoom: true` (short case-study boards): tap to open at full size.
+        return image.zoom ? (
+          <div key={image.src} className={gap}>
+            <ImageZoom src={image.src} alt={image.alt} width={image.width}>
+              {picture}
+            </ImageZoom>
+          </div>
+        ) : (
+          picture
+        );
+      })}
     </>
   );
 }

@@ -40,7 +40,9 @@ export default async function ProjectPage({ params }) {
     <>
       <main className="flex-1">
         <ProjectHeroTop project={project} />
-        <ProjectTopics sections={project.sections} />
+        {/* endLinks: short case studies end with "View the full case study"
+            (/projects/<slug>/full) and similar links (2026-10-05). */}
+        <ProjectTopics sections={project.sections} endLinks={project.endLinks} />
       </main>
       <Footer />
     </>

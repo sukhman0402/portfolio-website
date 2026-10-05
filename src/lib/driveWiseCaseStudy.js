@@ -1,5 +1,8 @@
-// Drive Wise case study: everything on /projects/drive-wise below the hero
-// image. Final copy approved by Sukhman stage by stage (2026-10-04); the
+// Drive Wise FULL case study (13 stages): everything on
+// /projects/drive-wise/full below the hero image. The short 5-step version
+// on /projects/drive-wise lives in src > lib > driveWiseShortCaseStudy.js
+// (Sukhman, 2026-10-05); both pages share the top block below.
+// Final copy approved by Sukhman stage by stage (2026-10-04); the
 // working docs live in the Placement Drive project (claude/drive-wise/
 // 01-overview.md to 13-learnings.md). Edit the copy here, not in data.js.
 //
@@ -34,13 +37,33 @@ const img = (file, width, height, alt) => ({
   alt,
 });
 
-const RESEARCH_SITE = "/research/drive-wise-research-site.html";
+export const RESEARCH_SITE = "/research/drive-wise-research-site.html";
 
 // Figma prototype (file XnFEDRfYZhONOXCfCEvygR, start frame 4143:8055,
 // "00. Home Screen- 1"). The prototype's share setting must allow "anyone
 // with the link" to view, or the embed shows a sign-in wall.
 const FIGMA_PROTO_PATH =
   "XnFEDRfYZhONOXCfCEvygR/M.DES--Semester-02---User-Interface-Design?node-id=4143-8055&starting-point-node-id=4143%3A8055&page-id=2555%3A830&scaling=scale-down&content-scaling=fixed&hotspot-hints=1";
+
+// Walkthrough video + prototype (Outcome > Final Solution). Exported because
+// the short case study (src > lib > driveWiseShortCaseStudy.js) shows the
+// same video in its Design step.
+export const WALKTHROUGH_VIDEO = {
+  mp4: "/videos/drive-wise-walkthrough.mp4",
+  webm: "/videos/drive-wise-walkthrough.webm",
+  poster: "/videos/drive-wise-walkthrough-poster.jpg",
+  width: 600,
+  height: 1000,
+  label: "Walkthrough of the Drive Wise prototype, from the phone home screen to tracking a booked service.",
+  credit: "Vehicle images: Hyundai Motor India, used for concept illustration.",
+};
+
+export const PROTOTYPE = {
+  embedSrc: `https://embed.figma.com/proto/${FIGMA_PROTO_PATH}&embed-host=sukhman-portfolio`,
+  openHref: `https://www.figma.com/proto/${FIGMA_PROTO_PATH}`,
+  buttonLabel: "Try the prototype",
+  openLabel: "Open the prototype in Figma",
+};
 
 export const driveWiseCaseStudy = {
   introLabel: "Drive Wise",
@@ -363,21 +386,8 @@ export const driveWiseCaseStudy = {
             { name: "Track Servicing", text: "Each step with a time" },
           ],
           text: "Drive Wise brings the vehicle's condition, the reason behind each warning, and a priced, trackable service into one phone app for any two-wheeler or car, with no extra hardware.",
-          video: {
-            mp4: "/videos/drive-wise-walkthrough.mp4",
-            webm: "/videos/drive-wise-walkthrough.webm",
-            poster: "/videos/drive-wise-walkthrough-poster.jpg",
-            width: 600,
-            height: 1000,
-            label: "Walkthrough of the Drive Wise prototype, from the phone home screen to tracking a booked service.",
-            credit: "Vehicle images: Hyundai Motor India, used for concept illustration.",
-          },
-          prototype: {
-            embedSrc: `https://embed.figma.com/proto/${FIGMA_PROTO_PATH}&embed-host=sukhman-portfolio`,
-            openHref: `https://www.figma.com/proto/${FIGMA_PROTO_PATH}`,
-            buttonLabel: "Try the prototype",
-            openLabel: "Open the prototype in Figma",
-          },
+          video: WALKTHROUGH_VIDEO,
+          prototype: PROTOTYPE,
         },
         {
           heading: "Concept Validation",
