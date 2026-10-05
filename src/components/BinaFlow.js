@@ -1,25 +1,20 @@
-"use client";
-
-import { useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import localFont from "next/font/local";
 import s from "./BinaFlow.module.css";
+import BinaZoom from "./BinaZoom";
 
-// BINA case study flow (Sukhman, 2026-10-05), after the ISA ESG Behance
-// reference: its own identity, deliberately NOT the Drive Wise flow.
+// BINA case study flow, v2 (Sukhman, 2026-10-05). Open, editorial layout
+// after the Snabbit Kavach case study: no bordered cards, no capsule tags.
 // Rendered by ProjectTopics.js for every section with `flow: "bina"`
-// (data: src > lib > binaCaseStudy.js; rules: claude/bina/14-layout.md).
+// (data: src > lib > binaCaseStudy.js, block types listed at its top).
 //
-//   - white page, Mulish, text green #026D00 only for key phrases and labels
-//   - lines and soft fills use the Figma Documentation gradient
-//     white -> #3FAE5A; straight rounded cards, no slanted shapes
-//   - one left margin: page-code text starts where the text inside the
-//     images starts (40 px of a 1030 px image = 3.88% of the column)
-//
-// Per stage: a light OPENER ("Stage 01 of 10", stage name, group texts or
-// the stage intro, the topic list), then one MODULE per topic (grey topic
-// label + the approved image), a PANEL for Limitations and Learnings, and
-// a CLOSING panel after the last stage.
+//   - per stage: grey uppercase label, two-tone heading (black + #026D00),
+//     a short intro in a narrow column
+//   - numbered steps ("1. Title" + text), each followed by its visual
+//   - visuals: the team's Figma slides, centred in a full-width #F6F9F7 frame
+//   - lists are open text separated by hairlines; tinted tiles only once
+//     (Outcome stats); one statement band per stage at most
 
 const mulish = localFont({
   src: "../fonts/mulish-latin-wght-normal.woff2",
@@ -30,230 +25,255 @@ const mulish = localFont({
 const pad = (n) => String(n).padStart(2, "0");
 const SIZES = "(min-width: 1440px) 1030px, (min-width: 768px) calc(100vw - 410px), calc(100vw - 40px)";
 
-function Visual({ image, priority = false }) {
+function Two({ lead, accent }) {
   return (
+    <>
+      {lead}
+      <em>{accent}</em>
+    </>
+  );
+}
+
+function Picture({ b, priority }) {
+  const maxw = b.maxw || (b.narrow ? 520 : undefined);
+  const pic = (
     <Image
-      src={image.src}
-      alt={image.alt}
-      width={image.width}
-      height={image.height}
+      src={b.src}
+      alt={b.alt}
+      width={b.width}
+      height={b.height}
       sizes={SIZES}
-      className={s.visual}
       priority={priority}
+      className={s.pic}
+      style={maxw ? { maxWidth: `${maxw}px` } : undefined}
     />
   );
-}
-
-// Define > Personas: the overview stays visible; the detailed persona
-// pages swipe sideways underneath (scroll-snap, with buttons for mouse and
-// keyboard users).
-function Carousel({ carousel }) {
-  const track = useRef(null);
-  const [page, setPage] = useState(0);
-  const count = carousel.images.length;
-
-  const go = (i) => {
-    const el = track.current;
-    if (!el) return;
-    const next = Math.max(0, Math.min(count - 1, i));
-    el.scrollTo({ left: next * el.clientWidth, behavior: "smooth" });
-    setPage(next);
-  };
-
-  const onScroll = () => {
-    const el = track.current;
-    if (el) setPage(Math.round(el.scrollLeft / el.clientWidth));
-  };
-
   return (
-    <div className={s.carousel}>
-      <div className={s.carouselBar}>
-        <p className={s.caps}>
-          <i className={s.dot} />
-          {carousel.label}
-        </p>
-        <div className={s.carouselNav}>
-          <span className={s.count}>{`${page + 1} / ${count}`}</span>
-          <button type="button" className={s.navBtn} onClick={() => go(page - 1)} disabled={page === 0} aria-label="Previous page">
-            ←
-          </button>
-          <button type="button" className={s.navBtn} onClick={() => go(page + 1)} disabled={page === count - 1} aria-label="Next page">
-            →
-          </button>
-        </div>
-      </div>
-      <div ref={track} className={s.track} onScroll={onScroll} tabIndex={0} aria-label={carousel.label}>
-        {carousel.images.map((im) => (
-          <div key={im.src} className={s.slide}>
-            <Visual image={im} />
-          </div>
-        ))}
-      </div>
-    </div>
+    <figure className={`${s.figure} ${b.framed ? s.framed : s.bare}`}>
+      {b.framed ? (
+        <BinaZoom src={b.src} alt={b.alt} width={b.width}>
+          {pic}
+        </BinaZoom>
+      ) : (
+        pic
+      )}
+      {b.caption && <figcaption className={s.caption}>{b.caption}</figcaption>}
+    </figure>
   );
 }
 
-// Outcome > The Working Prototype: page code, because each card holds a
-// live link to its demo video.
-function VideoCards({ videos }) {
+function List({ b }) {
   return (
-    <div className={s.vid}>
-      <h3 className={s.statement}>
-        {videos.headline.lead}
-        <em>{videos.headline.accent}</em>
-      </h3>
-      <p className={s.side}>
-        <b>{videos.side.strong}</b>
-        {videos.side.rest}
-      </p>
-      <div className={s.vidGrid}>
-        {videos.cards.map((c) => (
-          <div key={c.title} className={`${s.card} ${c.on ? s.cardOn : ""}`}>
-            <p className={s.caps}>
-              <i className={s.dot} />
-              {c.label}
-            </p>
-            <h4 className={s.cardTitle}>{c.title}</h4>
-            <ol className={s.steps}>
-              {c.steps.map((st, k) => (
-                <li key={st} className={k === c.steps.length - 1 ? s.stepLast : ""}>
-                  <span>{pad(k + 1)}</span>
-                  {st}
-                </li>
-              ))}
-            </ol>
-            <a className={s.btn} href={c.cta.href} target="_blank" rel="noopener noreferrer">
-              {c.cta.label} ↗
-            </a>
+    <ol className={`${s.list} ${s[`c${b.cols || 1}`]} ${b.big ? s.listBig : ""} ${b.compact ? s.listCompact : ""}`}>
+      {b.items.map((it, k) => (
+        <li key={it.title} className={s.item}>
+          {b.numbered && <span className={s.itemNum}>{pad(k + 1)}</span>}
+          <div>
+            <p className={s.itemTitle}>{it.title}</p>
+            {it.text && <p className={s.itemText}>{it.text}</p>}
+            {it.meta && <p className={s.itemMeta}>{it.meta}</p>}
           </div>
-        ))}
-      </div>
-      <a className={`${s.btn} ${s.btnGhost}`} href={videos.code.href} target="_blank" rel="noopener noreferrer">
-        {videos.code.label} ↗
-      </a>
-    </div>
-  );
-}
-
-function Topic({ t, first }) {
-  return (
-    <section className={s.module} aria-label={`${t.number} ${t.heading}`}>
-      <p className={s.topicLabel}>
-        <span className={s.topicNum}>{t.number}</span>
-        {t.heading}
-        {t.group && <span className={s.topicGroup}>{t.group}</span>}
-      </p>
-      {t.videos && <VideoCards videos={t.videos} />}
-      {t.images?.map((im, k) => (
-        <Visual key={im.src} image={im} priority={first && k === 0} />
+        </li>
       ))}
-      {t.carousel && <Carousel carousel={t.carousel} />}
-    </section>
+    </ol>
   );
 }
 
-function Panel({ panel }) {
-  const { label, statement, cells } = panel;
+function Groups({ b }) {
   return (
-    <section className={s.panel} aria-label={label}>
-      <p className={s.label}>{label}</p>
-      <h3 className={s.statement}>
-        {statement.soft && <span className={s.soft}>{statement.soft}</span>}
-        {statement.plain}
-        <em>{statement.accent}</em>
-      </h3>
-      <div className={s.quad}>
-        {cells.map((c, k) => (
-          <div key={c.title} className={s.q}>
-            <p className={s.caps}>
-              <i className={s.dot} />
-              {`${pad(k + 1)} ${c.title}`}
-            </p>
-            <h4 className={s.qLead}>{c.intro}</h4>
+    <div className={`${s.list} ${s[`c${b.cols || 3}`]}`}>
+      {b.items.map((g) => (
+        <div key={g.title} className={s.item}>
+          <div>
+            <p className={s.itemTitle}>{g.title}</p>
             <ul className={s.points}>
-              {c.points.map((p) => (
-                <li key={p.title}>
-                  <b>{p.title}</b> {p.text}
-                </li>
+              {g.points.map((p) => (
+                <li key={p}>{p}</li>
               ))}
             </ul>
           </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function Closing({ closing }) {
-  return (
-    <div className={s.closing}>
-      <div className={s.topRow}>
-        <span>End of case study</span>
-        <span>{closing.name}</span>
-      </div>
-      <p className={s.closingTitle}>{closing.title}</p>
-      <div className={s.closingLinks}>
-        {closing.links.map((l) => (
-          <a key={l.href} className={s.btn} href={l.href} target="_blank" rel="noopener noreferrer">
-            {l.label} ↗
-          </a>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
 
-export function BinaStage({ section, index, total }) {
-  const num = index + 1;
-  const topics = (section.topics || []).map((t, i) => ({ ...t, number: `${num}.${i + 1}` }));
-
+function Spec({ b }) {
   return (
-    <div className={`${mulish.className} ${s.root}`}>
-      <div className={s.opener}>
-        <div className={s.topRow}>
-          <span>
-            <i className={s.dot} />
-            {`Stage ${pad(num)} of ${pad(total)}`}
-          </span>
-          <span>{section.tocLabel}</span>
+    <dl className={s.spec}>
+      {b.rows.map(([k, v]) => (
+        <div key={k} className={s.specRow}>
+          <dt>{k}</dt>
+          <dd>{v}</dd>
         </div>
-        <h2 className={s.stageName}>{section.tocLabel}</h2>
+      ))}
+    </dl>
+  );
+}
 
-        {section.groups?.length ? (
-          <div className={s.cols}>
-            {section.groups.map((g) => (
-              <div key={g.heading} className={s.col}>
-                <p className={s.caps}>
-                  <i className={s.dot} />
-                  {g.heading}
-                </p>
-                <p className={s.colText}>{g.text}</p>
-              </div>
-            ))}
+function People({ b }) {
+  return (
+    <>
+      <div className={s.people}>
+        {b.items.map((p) => (
+          <div key={p.name} className={s.person}>
+            <Image src={p.photo} alt={`${p.name}, AI-generated portrait`} width={160} height={160} className={s.face} />
+            <p className={s.personName}>{p.name}</p>
+            <p className={s.personRole}>{p.role}</p>
+            <p className={s.moment}>{p.moment}</p>
+            <dl className={s.personRows}>
+              {p.rows.map(([k, v]) => (
+                <div key={k}>
+                  <dt>{k}</dt>
+                  <dd>{v}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
-        ) : (
-          section.intro && <p className={s.intro}>{section.intro}</p>
-        )}
-
-        {topics.length > 0 && (
-          <div className={s.meta}>
-            <p className={s.label}>In this stage</p>
-            {topics.map((t) => (
-              <div key={t.number} className={s.metaRow}>
-                <span className={s.metaNum}>{t.number}</span>
-                <span>{t.heading}</span>
-                {t.group && <span className={s.metaGroup}>{t.group}</span>}
-              </div>
-            ))}
-          </div>
-        )}
+        ))}
       </div>
+      {b.note && <p className={s.note}>{b.note}</p>}
+    </>
+  );
+}
 
-      {topics.map((t, i) => (
-        <Topic key={t.number} t={t} first={index === 0 && i === 0} />
+function Btn({ l }) {
+  const cls = `${s.btn} ${l.ghost ? s.btnGhost : ""}`;
+  if (l.internal) {
+    return (
+      <Link className={cls} href={l.href}>
+        {l.label} →
+      </Link>
+    );
+  }
+  return (
+    <a className={cls} href={l.href} target="_blank" rel="noopener noreferrer">
+      {l.label} ↗
+    </a>
+  );
+}
+
+function Block({ b, priority }) {
+  switch (b.type) {
+    case "step":
+      return (
+        <div className={s.step}>
+          <h3 className={s.stepTitle}>{`${b.num}. ${b.title}`}</h3>
+          {b.text && <p className={s.text}>{b.text}</p>}
+        </div>
+      );
+    case "image":
+      return <Picture b={b} priority={priority} />;
+    case "list":
+      return <List b={b} />;
+    case "groups":
+      return <Groups b={b} />;
+    case "spec":
+      return <Spec b={b} />;
+    case "people":
+      return <People b={b} />;
+    case "quote":
+      return (
+        <blockquote className={s.quote}>
+          <Two lead={b.lead} accent={b.accent} />
+        </blockquote>
+      );
+    case "stats":
+      return (
+        <div className={s.stats}>
+          {b.items.map((it) => (
+            <div key={it.label} className={s.stat}>
+              <p className={s.statValue}>{it.value}</p>
+              <p className={s.statLabel}>{it.label}</p>
+            </div>
+          ))}
+        </div>
+      );
+    case "photos":
+      return (
+        <figure className={s.photoWrap}>
+          <div className={s.photos}>
+            {b.images.map((im) => (
+              <Image key={im.src} src={im.src} alt={im.alt} width={400} height={500} className={s.photo} sizes="(min-width: 768px) 330px, 50vw" />
+            ))}
+          </div>
+          {b.caption && <figcaption className={s.caption}>{b.caption}</figcaption>}
+        </figure>
+      );
+    case "links":
+      return (
+        <div className={s.links}>
+          {b.items.map((l) => (
+            <Btn key={l.href} l={l} />
+          ))}
+        </div>
+      );
+    case "goals":
+      return (
+        <div className={s.goals}>
+          {b.items.map((g) => (
+            <div key={g.title} className={s.goal}>
+              <Image src={g.icon} alt={g.title} width={88} height={88} className={s.goalIcon} />
+              <div>
+                <p className={s.itemTitle}>{g.title}</p>
+                <p className={s.itemMeta}>{g.target}</p>
+                <p className={s.itemText}>{g.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    case "note":
+      return <p className={s.note}>{b.text}</p>;
+    default:
+      return null;
+  }
+}
+
+function Panel({ panel }) {
+  return (
+    <div className={s.quad}>
+      {panel.cells.map((c, k) => (
+        <div key={c.title} className={s.cell}>
+          <p className={s.cellLabel}>{`${pad(k + 1)}  ${c.title}`}</p>
+          <p className={s.cellLead}>{c.intro}</p>
+          <ul className={s.cellPoints}>
+            {c.points.map((p) => (
+              <li key={p.title}>
+                <b>{p.title}</b> {p.text}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function BinaStage({ section, index }) {
+  return (
+    <div className={`${mulish.className} ${s.root} ${index === 0 ? s.first : ""}`}>
+      <p className={s.label}>{`${pad(index + 1)}  ·  ${section.tocLabel}`}</p>
+      <h2 className={s.heading}>
+        <Two {...section.heading} />
+      </h2>
+      {section.intro && <p className={s.intro}>{section.intro}</p>}
+
+      {section.blocks?.map((b, k) => (
+        <Block key={k} b={b} priority={index === 0 && k < 2} />
       ))}
       {section.panel && <Panel panel={section.panel} />}
-      {section.closing && <Closing closing={section.closing} />}
+
+      {section.closing && (
+        <div className={s.closing}>
+          <p className={s.closingTitle}>{section.closing.title}</p>
+          <div className={s.links}>
+            {section.closing.links.map((l) => (
+              <Btn key={l.href} l={l} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

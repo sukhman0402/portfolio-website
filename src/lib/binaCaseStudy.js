@@ -1,42 +1,46 @@
 // BINA (Intelligent Waste Disposal System) case study: everything on
 // /projects/intelligent-waste-disposal-system below the hero image.
-// Final copy approved by Sukhman stage by stage (2026-10-05); the working
-// docs live in the Placement Drive project (claude/bina/01-overview.md to
-// 13-learnings.md). Edit the copy here, not in data.js.
 //
-// BINA has its OWN look (ISA reference, claude/bina/14-layout.md): it must
-// not resemble Drive Wise. Every section has `flow: "bina"`, which makes
-// ProjectTopics.js render it with src > components > BinaFlow.js instead of
-// the Drive Wise flow.
+// v2 LAYOUT (Sukhman, 2026-10-05): an open, editorial flow after the
+// Snabbit Kavach case study (adikrz.netlify.app/snabbit-kavach), replacing
+// the boxed v1. Per stage: a small grey label, a large two-tone heading, a
+// short intro, then numbered steps ("1. Title" + text) with the team's own
+// slides (the ones marked green in the Figma Documentation) as visuals.
+// Lists are open text with hairlines, not cards or capsule tags.
+//
+// Copy comes from the FINAL stage docs (Placement Drive project,
+// claude/bina/01-overview.md to 13-learnings.md). Behaviour values follow
+// the code that ran (main.ino), not the slides, where the two differ.
+// No em dashes anywhere (site rule).
 //
 // SHAPE (read by ProjectHeroTop.js and BinaFlow.js):
-//   top block   introLabel, intro, infoFields, briefLabel, brief,
-//               problemLabel, problem
-//   sections[]  one per Contents label (the stage):
-//     { id, tocLabel, flow: "bina", intro?, groups?, topics?, panel?, closing? }
-//     intro    one sentence shown on the stage opener (stages without groups)
-//     groups   [{ heading, text }] shown as numbered columns on the opener
-//     topics   [{ heading, group?, images?, carousel?, videos? }]
-//       images    [{ src, width, height, alt }] full width, natural height
-//       carousel  { label, images: [...] } pages that swipe sideways under
-//                 the first image (Define > Personas)
-//       videos    { cards: [...], code } page-code cards with live links
-//                 (Outcome > The Working Prototype)
-//     panel    Limitations / Learnings: { label, statement, cells: [...] }
-//     closing  { title, links: [{ label, href }] } ends the case study
+//   sections[] { id, tocLabel, flow: "bina", heading: { lead, accent },
+//                intro, blocks: [block], panel?, closing? }
+//   block types (BinaFlow.js renders each):
+//     step    { num, title, text }            numbered sub-heading + text
+//     image   { src, width, height, alt, framed?, caption? }
+//     list    { items: [{ title, text, meta? }], cols?, numbered? }
+//     groups  { items: [{ title, points: [] }], cols? }
+//     quote   { lead, accent }                large statement band
+//     stats   { items: [{ value, label }] }
+//     photos  { images: [...] }
+//     people  { items: [{ photo, name, role, moment, rows: [[k, v]] }], note }
+//     spec    { rows: [[label, value]] }
+//     links   { items: [{ label, href, ghost? }] }
+//     goals   { items: [{ icon, title, target, text }] }
+//     note    { text }                        small grey line
 //
-// IMAGES: public > images > projects > intelligent-waste-disposal-system,
-// exported at 2x (2060 px wide) for a 1030 px column; width/height are the
-// real pixel sizes, so the browser reserves the space before each loads.
-// No em dashes in any copy here (site rule).
+// IMAGES: public > images > projects > intelligent-waste-disposal-system >
+// v2 > *. Slide visuals were cropped from the Figma Documentation (team
+// work) with the white page tinted to the frame colour.
 
-const IMG = "/images/projects/intelligent-waste-disposal-system";
-const img = (file, width, height, alt) => ({ src: `${IMG}/${file}.png`, width, height, alt });
+const IMG = "/images/projects/intelligent-waste-disposal-system/v2";
+const img = (file, width, height, alt, extra = {}) => ({ type: "image", src: `${IMG}/${file}`, width, height, alt, ...extra });
+const slide = (n, width, height, alt, extra = {}) => img(`slide-${n}.png`, width, height, alt, { framed: true, ...extra });
+const step = (num, title, text) => ({ type: "step", num, title, text });
+const note = (text) => ({ type: "note", text });
 
-const CODE = {
-  label: "View the code",
-  href: "https://github.com/AnujR17/Intelligent-Waste-Disposal-Systems",
-};
+const CODE = { label: "View the code", href: "https://github.com/AnujR17/Intelligent-Waste-Disposal-Systems" };
 
 export const binaCaseStudy = {
   introLabel: "BINA",
@@ -61,32 +65,70 @@ export const binaCaseStudy = {
       id: "research",
       tocLabel: "Research",
       flow: "bina",
-      groups: [
+      heading: { lead: "The bin was there. ", accent: "Nothing about it responded." },
+      intro:
+        "Before designing, the team looked closely at the campus bins they used every day, then read what is already known about smart bins and about why people litter.",
+      blocks: [
+        step(1, "Campus bin audit", "An informal audit of the bins the team used every day, recorded here from memory: no photos, counts or recordings were taken."),
         {
-          heading: "Primary Research",
-          text: "Campus bins were looked at informally before designing: how people throw waste, what the bin does when a throw misses, and how the area around it changes through the day.",
+          type: "list",
+          numbered: true,
+          cols: 2,
+          items: [
+            { title: "No response.", text: "A throw that misses goes unnoticed; nothing signals it." },
+            { title: "Awkward placement.", text: "Bins sit where people do not naturally pass." },
+            { title: "Lids people avoid touching.", text: "People throw from a distance instead of opening the lid." },
+            { title: "Overflow.", text: "Full bins are not emptied in time." },
+            { title: "Throwing in a hurry.", text: "People throw while walking and do not check that it went in." },
+          ],
         },
+        note("Through the day: clean in the morning, waste lying around by afternoon, the most by night; over time, leaving it becomes normal. Pattern recalled, not measured."),
+        step(2, "Context of waste behaviour", "A model of what shapes disposal behaviour, built from observation, reasoning and reading. Each point says where its support comes from."),
         {
-          heading: "Secondary Research",
-          text: "Published studies were reviewed in two directions: what smart bins already do, and what is known about why people litter and what changes it at the moment of disposal.",
+          type: "groups",
+          cols: 3,
+          items: [
+            {
+              title: "Environmental conditions",
+              points: [
+                "Existing litter makes more littering likely. Study: Cialdini 1990; Schultz 2013",
+                "Lighting affects how visible the bin area is. Team view",
+                "Crowding reduces attention to responsibility. Observed on campus",
+              ],
+            },
+            {
+              title: "Situational cues",
+              points: [
+                "Others nearby change behaviour. Study: Bateson 2015",
+                "Hurry makes careless throws more likely. Observed",
+                "Feedback at the moment can change the action. Study: de Kort 2008; counterpoint Ackerman 2026",
+              ],
+            },
+            {
+              title: "Surrounding infrastructure",
+              points: [
+                "Distance to a bin changes whether waste goes in. Study: Schultz 2013; Robinson 2023",
+                "How visible a bin is affects its use. Study, partial: Linder 2023",
+                "A bin that cannot respond gives no reason to correct a miss. Team view",
+              ],
+            },
+          ],
         },
-      ],
-      topics: [
+        note("Crowding was observed on campus; studies in other settings found people litter less when others are around, so this point is local, not general."),
+        step(3, "Literature review", "Smart-bin research and behaviour research were read side by side. Sources were checked at abstract level; \"for BINA\" is the team's implication, not the authors' claim."),
         {
-          heading: "Campus Bin Audit",
-          group: "Primary Research",
-          images: [img("research-1-1-campus-bin-audit", 2060, 1978, "The bin was there. Nothing about it responded. Five things noticed at campus bins, from memory, and how litter builds through the day.")],
+          type: "list",
+          cols: 2,
+          items: [
+            { title: "Smart bins report fill levels.", text: "Sensors tell collection crews how full a bin is; the user is not part of the loop.", meta: "Neema & Gor 2022; Ahmed et al. 2024" },
+            { title: "Litter signals that littering is normal.", text: "Disorder spreads once it is visible.", meta: "Cialdini et al. 1990; Keizer et al. 2008" },
+            { title: "A prompting bin cut litter by about half.", text: "In a field study, a bin that prompted people, by words or by design, halved litter.", meta: "de Kort et al. 2008" },
+            { title: "Watching eyes reduced littering.", text: "Images of eyes roughly halved littering in a university cafeteria.", meta: "Ernest-Jones et al. 2011" },
+            { title: "Voice alone may not be enough.", text: "A motion-triggered voice prompt at bins had no significant effect; bin design did.", meta: "Ackerman et al. 2026" },
+            { title: "On-bin AI can sort waste.", text: "The most \"intelligent\" direction so far, and still about the waste, not the person.", meta: "Sallang et al. 2021" },
+          ],
         },
-        {
-          heading: "Context of Waste Behaviour",
-          group: "Secondary Research",
-          images: [img("research-1-2-context-of-waste-behaviour", 2060, 1548, "How people throw waste depends on the place, not just the person: environmental conditions, situational cues and surrounding infrastructure, each point tagged by its source.")],
-        },
-        {
-          heading: "Literature Review",
-          group: "Secondary Research",
-          images: [img("research-1-3-literature-review", 2060, 1890, "Smart bins are smart about collection, not about the people using them: seven peer-reviewed findings and what they mean for BINA.")],
-        },
+        { type: "quote", lead: "The gap: a bin that responds to the person, ", accent: "at the moment of the throw." },
       ],
     },
 
@@ -95,13 +137,33 @@ export const binaCaseStudy = {
       id: "insights",
       tocLabel: "Insights",
       flow: "bina",
-      intro:
-        "What the audit, the field phrases and the studies add up to: why a miss goes uncorrected, and what a bin would need to do about it.",
-      topics: [
-        { heading: "Empathy Map", images: [img("insights-2-1-empathy-map", 2060, 1598, "Most misses aren't careless, they're unnoticed: what a person disposing waste thinks, feels, sees, says and does.")] },
-        { heading: "Affinity Diagram", images: [img("insights-2-2-affinity-diagram", 2060, 1550, "Four themes behind one uncorrected miss.")] },
-        { heading: "Mental Model", images: [img("insights-2-3-mental-model", 2060, 1278, "In the person's mind, the job ends the moment the waste leaves their hand.")] },
-        { heading: "Key Insights", images: [img("insights-2-4-key-insights", 2060, 1532, "Three insights that shaped what BINA does, each traced from observation to pattern to insight.")] },
+      heading: { lead: "Most misses aren't careless. ", accent: "They're unnoticed." },
+      intro: "What the audit, the field phrases and the studies add up to: why a miss goes uncorrected, and what a bin would need to do about it.",
+      blocks: [
+        step(1, "Empathy map", "What a person disposing waste on campus thinks, feels, sees, says and does, from phrases the team heard informally and paraphrased."),
+        {
+          type: "groups",
+          cols: 3,
+          items: [
+            { title: "Thinks", points: ["\"Someone will clean it.\"", "\"It doesn't matter if it's slightly outside.\"", "\"I'm in a hurry.\""] },
+            { title: "Feels", points: ["Indifferent", "Not accountable", "Rushed or distracted"] },
+            { title: "Sees", points: ["A bin that does not respond", "Litter already around it", "No one monitoring"] },
+            { title: "Says", points: ["\"Ho jaayega.\" (It'll be fine.)", "\"Chalta hai.\" (It's okay.)", "Often, nothing"] },
+            { title: "Does", points: ["Throws quickly", "Does not check if it went in", "Walks away without correcting"] },
+            { title: "Pain points", points: ["No feedback at the moment", "No reinforcement for doing it right", "No reminder of the shared space"] },
+          ],
+        },
+        step(2, "Key insights", "Each insight traces back to what was observed and the pattern behind it."),
+        {
+          type: "list",
+          numbered: true,
+          big: true,
+          items: [
+            { title: "People cannot correct what they do not notice.", text: "Feedback has to come at the moment of the throw, from the bin itself.", meta: "Waste lands outside and nothing happens; people do not check." },
+            { title: "The first miss matters most.", text: "Getting it picked up keeps the area, and the norm, clean.", meta: "Litter builds from afternoon to night; existing litter invites more (Cialdini 1990; Keizer 2008)." },
+            { title: "The correction must be quick, specific and polite.", text: "Then thank the person; a scolding bin would be ignored or resented.", meta: "Bins with explicit anti-litter messages collected less than plain bins in a street trial (Linder et al. 2023)." },
+          ],
+        },
       ],
     },
 
@@ -110,22 +172,66 @@ export const binaCaseStudy = {
       id: "define",
       tocLabel: "Define",
       flow: "bina",
+      heading: { lead: "One bin, ", accent: "three people with a stake in it." },
       intro: "Who BINA is for, what it has to get right, and the problem it answers.",
-      topics: [
+      blocks: [
+        step(1, "Personas", "Three people meet the same bin in different ways: the one who throws, the one who teaches in the room, and the one who cleans up after both."),
         {
-          heading: "Personas",
-          images: [img("define-3-1-personas", 2060, 1580, "One bin, three people with a stake in it: Kabir, a student; Ritu, a faculty member; Ramesh, housekeeping staff. Assumed personas.")],
-          carousel: {
-            label: "One page per persona",
-            images: [
-              img("define-3-1a-persona-kabir", 2060, 2576, "Persona 1, Kabir, student: he doesn't see the miss, BINA has to see it for him."),
-              img("define-3-1b-persona-ritu", 2060, 2294, "Persona 2, Ritu, faculty member: she wants a clean room without being the one who nags."),
-              img("define-3-1c-persona-ramesh", 2060, 2332, "Persona 3, Ramesh, housekeeping staff: he picks up every miss that nobody else noticed."),
-            ],
-          },
+          type: "people",
+          items: [
+            {
+              photo: `${IMG}/kabir.png`,
+              name: "Kabir",
+              role: "Student",
+              moment: "Throws a wrapper while walking to class.",
+              rows: [
+                ["Wants", "Get to class on time; not be singled out."],
+                ["Struggles", "Does not see that the throw missed; \"someone will clean it\"."],
+                ["Needs from BINA", "A quick, polite signal at the moment, and a thank-you."],
+              ],
+            },
+            {
+              photo: `${IMG}/ritu.png`,
+              name: "Ritu",
+              role: "Faculty member",
+              moment: "Teaches in the room where the bin stands.",
+              rows: [
+                ["Wants", "A clean room without having to police students."],
+                ["Struggles", "Reminding students feels like nagging; litter builds anyway."],
+                ["Needs from BINA", "The bin does the reminding, without scolding."],
+              ],
+            },
+            {
+              photo: `${IMG}/ramesh.png`,
+              name: "Ramesh",
+              role: "Housekeeping staff",
+              moment: "Cleans around bins, most of it late in the day.",
+              rows: [
+                ["Wants", "Less waste on the floor; bins that are easy to empty."],
+                ["Struggles", "Litter grows from afternoon to night; overflowing bins."],
+                ["Needs from BINA", "Fewer misses to pick up; a bin that does not add work."],
+              ],
+            },
+          ],
+          note: "Assumed personas built from the audit, field phrases and literature; names are fictional. AI-generated portraits, not real people.",
         },
-        { heading: "Context & Success Criteria", images: [img("define-3-2-context-success-criteria", 2060, 1210, "Four things BINA had to get right, next to the assumed setting.")] },
-        { heading: "Problem Statement", images: [img("define-3-3-problem-statement", 2060, 1062, "Improper waste disposal persists because traditional bins lack real-time detection and corrective feedback.")] },
+        step(2, "Success criteria", "Four things BINA had to get right. Testing and Outcome report against each one."),
+        {
+          type: "list",
+          numbered: true,
+          cols: 2,
+          items: [
+            { title: "Waste lands inside.", text: "Fewer throws miss the bin." },
+            { title: "A miss gets picked up.", text: "The prompt leads the person to correct it." },
+            { title: "No false triggers.", text: "The lid and voice react only to real people and real misses." },
+            { title: "Friendly, not scolding.", text: "People respond well to the tone and the eyes." },
+          ],
+        },
+        note("Assumed setting: an indoor classroom or corridor, one person at a time, waste dropped from about arm's length, battery-powered with no network."),
+        step(3, "Problem statement", "Improper waste disposal persists because traditional bins lack real-time detection and corrective feedback, resulting in unmonitored and irresponsible environmental behaviour."),
+        slide("11", 1278, 296, "Behavioral Negligence, with four tags: passive infrastructure, interactive intervention, environmental responsibility, autonomous monitoring."),
+        step(4, "Design opportunity", "The gap between intention and action pointed to one place to intervene: the dustbin itself, turned from a static container into a system that perceives, decides and gives feedback."),
+        slide("15", 1524, 1014, "Outline drawing of a swing-lid dustbin, the chosen intervention point.", { maxw: 560 }),
       ],
     },
 
@@ -134,14 +240,42 @@ export const binaCaseStudy = {
       id: "ideation",
       tocLabel: "Ideation",
       flow: "bina",
-      intro:
-        "From the insights to a behaviour: what BINA should be like, how it should speak, and what happens at every step of a throw.",
-      topics: [
-        { heading: "Alternatives Considered", images: [img("ideation-4-1-alternatives-considered", 2060, 1314, "Three ideas were dropped, each for a reason, and the direction that was chosen.")] },
-        { heading: "Personality Framework", images: [img("ideation-4-2-personality-framework", 2060, 1192, "Firm in correction, soft in appreciation: BINA as Caregiver plus Guide, with seven traits.")] },
-        { heading: "Interaction Strategy", images: [img("ideation-4-3-interaction-strategy", 2060, 1304, "Speak once, at the right moment, then stay quiet: six interaction rules.")] },
-        { heading: "System Concept", images: [img("ideation-4-4-system-concept", 2060, 1260, "Six layers, one loop from notice to response.")] },
-        { heading: "Scenarios & User Flow", images: [img("ideation-4-5-scenarios-user-flow", 2060, 2058, "Every throw ends in a thank-you or a second chance: the flow from the code, with three endings.")] },
+      heading: { lead: "Firm in correction, ", accent: "soft in appreciation." },
+      intro: "From the insights to a behaviour: what BINA should be like, how it should speak, and what happens at every step of a throw.",
+      blocks: [
+        step(1, "Alternatives considered", "Three other directions were discussed informally and set aside, each for a reason."),
+        {
+          type: "list",
+          cols: 3,
+          items: [
+            { title: "Lights or a buzzer only.", text: "Easy to ignore: a beep does not say what to do." },
+            { title: "An English voice.", text: "Hindi felt more relatable for the people using these bins." },
+            { title: "A waste-sorting bin.", text: "The wrong problem: waste was missing the bin, not landing mixed inside it." },
+          ],
+        },
+        note("Chosen: sensors to notice the miss, a lid that opens for the person, eyes that react, and a short Hindi line that asks, then thanks."),
+        step(2, "Personality framework", "Defined before the build, so the voice and eyes would correct people without scolding them."),
+        {
+          type: "spec",
+          rows: [
+            ["Brand archetype", "Caregiver + Guide: supports users while gently correcting their actions."],
+            ["Behavioural role", "A silent supervisor that steps in only when needed."],
+            ["Interaction tone", "Polite, direct, never aggressive."],
+            ["Voice", "Clear Hindi prompts, short sentences, neutral to friendly."],
+            ["Trust and authority", "Moderate: firm in correction, soft in appreciation."],
+            ["Humanisation", "Animated eyes and spoken language suggest awareness."],
+            ["Perception goal", "Seen as helpful, not as authority or punishment."],
+            ["Experience promise", "Throwing waste becomes a short, guided exchange."],
+          ],
+        },
+        step(3, "System concept", "Six layers, one loop from noticing a person to reinforcing what they did."),
+        slide("17", 1275, 809, "System concept: user detection, decision logic, actuation, feedback interface, audio interaction and behaviour reinforcement layers."),
+        step(4, "Interaction strategy", "Six rules turn the personality into behaviour. \"Once per event\" is confirmed in the code: each line plays once per state change, never on a loop."),
+        slide("21", 927, 675, "Interaction strategy: proactive engagement, immediate feedback, behavioural reinforcement, corrective prompting, conversational nudging, state-based logic control."),
+        step(5, "Scenarios and user flow", "Two scenarios, a clean throw and a miss, were mapped step by step and acted out informally before the logic was built."),
+        slide("18", 1166, 496, "Scenario 01, Successful Disposal; Scenario 02, Incorrect Disposal.", { maxw: 620 }),
+        slide("19", 1200, 789, "User flow for both scenarios, from approach to reset."),
+        note("The code that ran adds a third ending: if the waste is still outside after the 5-second re-check, the eyes turn angry and BINA stays silent."),
       ],
     },
 
@@ -150,19 +284,66 @@ export const binaCaseStudy = {
       id: "design",
       tocLabel: "Design",
       flow: "bina",
-      groups: [
-        { heading: "System", text: "The hardware and logic underneath: how BINA senses, decides, powers itself and responds." },
-        { heading: "Experience", text: "What a person meets at the bin: the eyes, the voice, the service around it, the form and the brand." },
-      ],
-      topics: [
-        { heading: "System Architecture", group: "System", images: [img("design-5-1-system-architecture", 2060, 1512, "Six blocks, one microcontroller in the middle: sensors, Arduino, servo, OLED eyes, audio and a regulated battery supply.")] },
-        { heading: "Hardware & Circuit", group: "System", images: [img("design-5-2-hardware-circuit", 2060, 1544, "Built from eleven off-the-shelf parts: pin map read from the code, and the bill of materials.")] },
-        { heading: "Power Management", group: "System", images: [img("design-5-3-power-management", 2060, 1326, "The servo needs the most power, so the supply was built around it: two 18650 cells, an LM2596 regulator, and the load of each module.")] },
-        { heading: "Sensor Placement", group: "System", images: [img("design-5-4-sensor-placement", 2060, 1522, "One sensor watches the person, two watch the floor: detection zones from the top and mounting height from the front.")] },
-        { heading: "Eyes & Voice", group: "Experience", images: [img("design-5-5-eyes-voice", 2060, 2156, "The eyes show the state, the voice says what to do: six states with their eyes and Hindi lines.")] },
-        { heading: "Service Blueprint", group: "Experience", images: [img("design-5-6-service-blueprint", 2060, 1350, "Behind a few seconds at the bin, a whole service: person, front stage, back stage and support across four steps.")] },
-        { heading: "Physical Form & Specification", group: "Experience", images: [img("design-5-7-physical-form", 2060, 1782, "A plastic bin, a cardboard head and everything inside it: three build photos and the specification.")] },
-        { heading: "Brand Identity", group: "Experience", images: [img("design-5-8-brand-identity", 2060, 1266, "BIN plus A, the bin is in the name: logo, palette, type and the Hindi slogan.")] },
+      heading: { lead: "Six blocks, ", accent: "one microcontroller in the middle." },
+      intro: "The hardware and logic underneath, then what a person meets at the bin: the eyes, the voice and the brand.",
+      blocks: [
+        step(1, "Information architecture", "How inputs, states and outputs are organised, from the person entering range to the reset."),
+        slide("23", 1018, 1367, "Information architecture: start, user enters range, distance data, lid opens, active eyes, is waste inside; yes and no branches to reset.", { maxw: 640 }),
+        step(2, "System block diagram", "Six blocks placed on the bin: input, processing, actuation, visual and audio feedback, and power."),
+        slide("24", 1270, 845, "Block diagram drawn on the bin, numbered 1 to 6.", { maxw: 640 }),
+        step(3, "Components", "Off-the-shelf parts, wired on a breadboard so each could be tested alone before integration."),
+        slide("26", 1159, 755, "Components with photos: ultrasonic sensors, Arduino Uno R3, SG90 servo, OLED displays, MP3 module, LM2596 regulator, speaker, breadboard, 18650 batteries, jumper wires."),
+        step(4, "Circuit diagram", "How power and signal reach every module, with the LM2596 giving a steady 5 V."),
+        slide("27", 1058, 770, "Circuit diagram: three HC-SR04 sensors, Arduino Uno, DY-SV5W MP3 module, speaker, servo, two OLEDs and the LM2596 regulator."),
+        step(5, "Power management", "Running six modules from batteries meant regulating the supply, because the servo's current spikes could reset the Arduino."),
+        {
+          type: "spec",
+          rows: [
+            ["Source", "2 × 18650 Li-ion, 3.7 V each, 7.4 V nominal, 8.4 V full, 2200 mAh per cell"],
+            ["Regulation", "LM2596 step-down: up to 40 V in, steady 5 V out, up to 3 A"],
+            ["Biggest load", "SG90 servo, 200 to 700 mA while moving"],
+            ["Without it", "Voltage drops, servo jitter, random resets, distorted audio"],
+          ],
+        },
+        note("Currents are typical ratings from the team's power plan, not measured."),
+        step(6, "Sensor placement", "Three sensors sit low on the front: the centre one watches for the person, the two angled ones watch the floor for a miss."),
+        {
+          type: "spec",
+          rows: [
+            ["Centre sensor", "Straight ahead. Person detected at 20 to 40 cm; waste in front under 20 cm"],
+            ["Side sensors", "Angled 30° left and right. Waste on the floor under 30 cm"],
+            ["Height", "2 inches above the floor, on the front face of a ~45 cm bin"],
+            ["Gap", "Drops behind the bin are not covered"],
+          ],
+        },
+        note("Ranges from the code that ran."),
+        step(7, "Emotion board", "Each state of the logic has a face and, where it helps, a short Hindi line. The eyes also look toward the miss: left or right for a side sensor, down for the centre."),
+        slide("20", 1118, 653, "Emotion board: happy, dissatisfied, neutral and sympathetic eyes with trigger, visual, audio and purpose."),
+        step(8, "Voice", "Lines generated with ElevenLabs text to speech, played once per event."),
+        {
+          type: "spec",
+          rows: [
+            ["Clean throw", "\"Dhanyavaad.\" (Thank you.)"],
+            ["Miss", "\"Arey! Arey! Arey! Lagta hai aapse kachra bahar gir gya hai. Kripya isse uthaaye aur andar daale.\" (Oh! Looks like your waste fell outside. Please pick it up and put it in.)"],
+            ["Picked up", "\"Dhanyavaad! Safai ko zimmedari nahi, aadat banaiye.\" (Thank you! Make cleanliness a habit, not a duty.)"],
+            ["Still outside", "Angry eyes, no voice"],
+          ],
+        },
+        step(9, "Brand identity", "The name hides the object inside it: BIN, with the A drawn as a bin."),
+        slide("43", 1270, 400, "BINA logo: BIN in black, the A drawn as a bin in a green gradient."),
+        slide("44", 1258, 690, "Palette: #026D00, #3FAE5A, #000000, #9A9A9A.", { maxw: 620 }),
+        slide("04", 1169, 195, "Slogan in Hindi: safai ko zimmedari nahi, aadat banao. Make cleanliness a habit, not a duty."),
+        step(10, "Product specification", "What the built prototype is, in one place."),
+        {
+          type: "spec",
+          rows: [
+            ["Size", "About 45 cm tall, sensors 2 inches above the floor"],
+            ["Body", "Plastic dustbin with a cardboard head for the eyes and speaker"],
+            ["Power", "2 × 18650 cells, regulated to 5 V; recharged periodically"],
+            ["Network", "Standalone, none"],
+            ["Prototype cost", "₹2,898"],
+          ],
+        },
       ],
     },
 
@@ -171,12 +352,67 @@ export const binaCaseStudy = {
       id: "testing",
       tocLabel: "Testing",
       flow: "bina",
+      heading: { lead: "Four parts tested alone, ", accent: "then joined into one program." },
       intro: "How BINA was tested: each part on its own, then together, then drop after drop until the loop held.",
-      topics: [
-        { heading: "Component Tests", images: [img("testing-6-1-component-tests", 2060, 1220, "Four parts tested alone, then joined into one program.")] },
-        { heading: "Problems & Fixes", images: [img("testing-6-2-problems-fixes", 2060, 1482, "Five problems surfaced, each one changed the build.")] },
-        { heading: "Critical Incident: The Lid", images: [img("testing-6-3-critical-incident-lid", 2060, 956, "The lid nearly got cut, the right angle saved it.")] },
-        { heading: "Simulated Drops", images: [img("testing-6-4-simulated-drops", 2060, 1378, "Every branch of the loop, tested by hand, and the honest status of each success criterion.")] },
+      blocks: [
+        step(1, "Component tests", "Each part had its own small program before the parts were combined. All five files are public on GitHub."),
+        {
+          type: "list",
+          numbered: true,
+          cols: 2,
+          items: [
+            { title: "Ultrasonic sensors.", text: "Read all three in turn and print the distances, spaced so they don't pick up each other's echo." },
+            { title: "Servo motor.", text: "Sweep between 0° and 180° to check the full range of the lid." },
+            { title: "OLED eyes.", text: "Cycle every expression on command, drawn in a low-memory mode so two screens fit on one Uno." },
+            { title: "MP3 module and speaker.", text: "Play the three voice files one after another." },
+          ],
+        },
+        slide("35", 1294, 998, "The integrated program, main.ino, open on GitHub.", { framed: false }),
+        step(2, "Building it", "The team's assembly sequence, from preparing the bin body to final system testing."),
+        {
+          type: "list",
+          numbered: true,
+          cols: 2,
+          compact: true,
+          items: [
+            { title: "Dustbin body preparation" },
+            { title: "Servo motor installation" },
+            { title: "Ultrasonic sensor mounting" },
+            { title: "OLED display installation" },
+            { title: "Audio system integration" },
+            { title: "Microcontroller setup" },
+            { title: "Power system installation" },
+            { title: "Breadboard and wiring" },
+            { title: "Software upload and calibration" },
+            { title: "Final system testing" },
+          ],
+        },
+        {
+          type: "photos",
+          images: [
+            { src: `${IMG}/bts-1-eyes.jpg`, alt: "The cardboard head with both OLED eyes lit, during wiring." },
+            { src: `${IMG}/bts-2-wiring.jpg`, alt: "Sensors, Arduino and breadboard wired on a desk." },
+            { src: `${IMG}/bts-3-power.jpg`, alt: "Checking the regulated supply with a multimeter." },
+            { src: `${IMG}/bts-4-servo.jpg`, alt: "Fitting the servo to the lid of the bin." },
+            { src: `${IMG}/bts-5-head.jpg`, alt: "The head mounted on the bin with the lid in place." },
+            { src: `${IMG}/bts-6-inside.jpg`, alt: "Inside the bin: Arduino and wiring." },
+          ],
+          caption: "Behind the scenes: wiring trials, power checks and fitting the lid.",
+        },
+        step(3, "Problems and fixes", "Joining the parts surfaced five problems; each changed the build. Tuning values were not recorded."),
+        {
+          type: "list",
+          cols: 1,
+          items: [
+            { title: "Power drops and resets.", text: "Two 18650 cells through a step-down regulator to a steady 5 V, sized for the servo's peaks." },
+            { title: "Missed drops at the sides.", text: "Side sensors angled 30° outward, covering the floor in front of the bin." },
+            { title: "Audio playing at the wrong time.", text: "Trigger pins held off at start-up, a pause while the module boots, each line played once per event." },
+            { title: "Lid motor out of line.", text: "Servo angle and lid attachment reworked. The team nearly dropped the automatic lid, but kept it: the opening lid is BINA's first signal that it has noticed the person." },
+            { title: "Sensor placement and accuracy.", text: "Sensors set 2 inches above the floor; readings spaced so the three don't interfere." },
+          ],
+        },
+        note("Trade-off: the final code shortened the gap between sensor readings from 50 ms to 5 ms (README) so the eyes animate smoothly, giving up some accuracy for a livelier face."),
+        step(4, "Simulated drops", "Clean throws and misses were simulated again and again to check every branch of the loop: clean throw, miss, corrected miss and lid reset. Classmates also tried it. Neither the drops nor their reactions were counted."),
       ],
     },
 
@@ -185,34 +421,32 @@ export const binaCaseStudy = {
       id: "outcome",
       tocLabel: "Outcome",
       flow: "bina",
+      heading: { lead: "A working bin, ", accent: "in a real classroom." },
       intro: "What came out of eleven days: a working bin, about ten days in a classroom, and a seminar presentation.",
-      topics: [
+      blocks: [
+        step(1, "The working prototype", "BINA was built and run end to end: it notices a person, opens its lid, checks where the waste lands and responds. The two demo videos show both paths."),
+        img("slide-41.png", 1294, 998, "The built BINA prototype: a green plastic bin with a white cardboard head, two OLED eyes and sensors at the base."),
         {
-          heading: "The Working Prototype",
-          videos: {
-            headline: { lead: "Both paths, ", accent: "working on a real bin." },
-            side: { strong: "Demo videos recorded by the team during the project.", rest: " Each opens on Google Drive." },
-            cards: [
-              {
-                label: "Video · Scenario 01",
-                title: "Clean throw",
-                steps: ["Person walks up; the lid opens", "Waste goes in", 'Happy eyes + "Dhanyavaad."'],
-                cta: { label: "Watch Scenario 01", href: "https://drive.google.com/file/d/1POXU-sRi890xy3vhEFz6msuPgay7ICIU/view?usp=sharing" },
-              },
-              {
-                label: "Video · Scenario 02",
-                title: "A miss, then a second chance",
-                steps: ["Waste lands outside the bin", "BINA asks, in Hindi, to pick it up", "The person picks it up and puts it in", "Happy eyes + the habit line"],
-                cta: { label: "Watch Scenario 02", href: "https://drive.google.com/file/d/1ZH1XbvYx0g8k8Is_SVQKNplau_fcEKek/view?usp=sharing" },
-                on: true,
-              },
-            ],
-            code: CODE,
-          },
+          type: "links",
+          items: [
+            { label: "Watch Scenario 01: clean throw", href: "https://drive.google.com/file/d/1POXU-sRi890xy3vhEFz6msuPgay7ICIU/view?usp=sharing" },
+            { label: "Watch Scenario 02: a miss, then a second chance", href: "https://drive.google.com/file/d/1ZH1XbvYx0g8k8Is_SVQKNplau_fcEKek/view?usp=sharing" },
+            { ...CODE, ghost: true },
+          ],
         },
-        { heading: "In the Classroom", images: [img("outcome-10-2-in-the-classroom", 2060, 948, "About ten days in a real classroom: misses were picked up after the prompt, and people responded well to the eyes and voice. Observed, not counted.")] },
-        { heading: "Seminar Presentation", images: [img("outcome-10-3-seminar-presentation", 2060, 1840, "Presented at a seminar on emerging technologies: the team's poster, with names and contact details hidden.")] },
-        { heading: "What BINA Shows", images: [img("outcome-10-4-what-bina-shows", 2060, 1084, "What BINA achieved, against the four success criteria.")] },
+        step(2, "In the classroom", "After the build, BINA stood in a classroom for about ten days. The team saw people pick up their misses after the prompt and respond well to the eyes and voice."),
+        {
+          type: "stats",
+          items: [
+            { value: "~10", label: "days in daily classroom use" },
+            { value: "2 of 4", label: "success criteria seen in use, none measured" },
+            { value: "₹2,898", label: "prototype cost, off-the-shelf parts" },
+          ],
+        },
+        note("Observed, not counted. How often, and whether it lasts, is for a proper study to show (Future Scope)."),
+        step(3, "Seminar presentation", "The team presented BINA in person at a one-day university seminar on emerging technologies, under the sub-theme Climate Change Technologies."),
+        img("seminar-poster.png", 715, 1010, "The team's seminar poster, with names and contact details hidden.", { narrow: true }),
+        { type: "quote", lead: "From passive infrastructure to a bin that ", accent: "notices, asks and thanks." },
       ],
     },
 
@@ -221,12 +455,44 @@ export const binaCaseStudy = {
       id: "future-scope",
       tocLabel: "Future Scope",
       flow: "bina",
+      heading: { lead: "Seen working. ", accent: "Next, count it." },
       intro: "What comes next: proving the effect, fixing what the prototype cannot do, and where a finished BINA could go.",
-      topics: [
-        { heading: "Measure the Effect", images: [img("future-8-1-measure-the-effect", 2060, 1420, "Seen working, next count it: a proposed baseline, BINA and follow-up study, one measure per success criterion.")] },
-        { heading: "The Next Version", images: [img("future-8-2-next-version", 2060, 1452, "Every gap in the prototype is the next feature.")] },
-        { heading: "Where BINA Could Go", images: [img("future-8-3-where-bina-could-go", 2060, 1170, "Classrooms and offices now, airports next, crowded places later.")] },
-        { heading: "SDG Alignment", images: [img("future-8-4-sdg-alignment", 2060, 1226, "Three UN Sustainable Development Goals it points toward: 11, 12 and 13.")] },
+      blocks: [
+        step(1, "Measure the effect", "A simple study, not yet carried out: one week with a plain bin, two weeks with BINA, then one week with the plain bin again to see if the habit stays."),
+        {
+          type: "spec",
+          rows: [
+            ["Waste lands inside", "Misses per day around the bin, counted at a fixed time"],
+            ["A miss gets picked up", "Share of prompts followed by a pick-up, from BINA's own event log"],
+            ["No false triggers", "Times the lid or voice fires with no person or no miss"],
+            ["Friendly, not scolding", "A short, anonymous three-question card"],
+          ],
+        },
+        note("The event log records only events and times: no camera, no audio, no names."),
+        step(2, "The next version", "Each limitation of the prototype points to an upgrade."),
+        {
+          type: "list",
+          cols: 2,
+          items: [
+            { title: "Front-only coverage.", text: "Sensors or a floor mat that cover every side, including drops behind the bin." },
+            { title: "One person at a time.", text: "Telling two people apart, so the right person is thanked or asked." },
+            { title: "Battery dependency.", text: "A low-battery warning on the eyes, and a mains option where a socket is near." },
+            { title: "Fixed thresholds.", text: "Ranges set on site during installation, since rooms and floors differ." },
+            { title: "No data logging.", text: "The event log above, also useful to housekeeping." },
+            { title: "Later: waste sorting.", text: "A camera-based model for dry, wet and recyclable waste; the camera should see the waste, not the people." },
+          ],
+        },
+        step(3, "Where BINA could go", "Built for one person at a time, so it goes where people come one by one: classrooms and offices now; airports next, with louder audio and languages beyond Hindi; crowded places like railway stations later, once it can tell people apart."),
+        step(4, "SDG alignment", "Three UN Sustainable Development Goals it points toward. This is alignment with their aims, not a measured contribution."),
+        {
+          type: "goals",
+          items: [
+            { icon: `${IMG}/sdg-11.png`, title: "Sustainable Cities and Communities", target: "Target 11.6", text: "Cleaner shared spaces through better disposal at the bin." },
+            { icon: `${IMG}/sdg-12.png`, title: "Responsible Consumption and Production", target: "Targets 12.8, 12.5", text: "A habit built at the moment of disposal; recycling with the sorting upgrade." },
+            { icon: `${IMG}/sdg-13.png`, title: "Climate Action", target: "Target 13.3", text: "Everyday awareness of waste; the weakest of the three links." },
+          ],
+        },
+        note("SDG icons and colours: United Nations, used for information only; no endorsement implied."),
       ],
     },
 
@@ -235,9 +501,9 @@ export const binaCaseStudy = {
       id: "limitations",
       tocLabel: "Limitations",
       flow: "bina",
+      heading: { lead: "Tested until it worked, observed in use, ", accent: "not yet measured." },
+      blocks: [],
       panel: {
-        label: "What it can claim",
-        statement: { soft: "Tested until it worked, ", plain: "observed in use, ", accent: "not yet measured." },
         cells: [
           {
             title: "The system",
@@ -265,7 +531,6 @@ export const binaCaseStudy = {
               { title: "Informal observation.", text: "Campus bins and how people used them were observed informally and described from memory; no photos, counts or notes." },
               { title: "No interviews.", text: "Phrases in the empathy map were heard informally and paraphrased." },
               { title: "Assumed personas.", text: "Kabir, Ritu and Ramesh are archetypes, not people who were studied." },
-              { title: "Built afterwards.", text: "The affinity diagram, mental model and service blueprint were synthesised for this case study from the existing material." },
               { title: "Informal ideation.", text: "Alternatives were discussed, not scored; role-play of the scenarios was not recorded." },
             ],
           },
@@ -275,8 +540,7 @@ export const binaCaseStudy = {
             points: [
               { title: "Drops not counted.", text: "Clean throws and misses were simulated many times, with no hit rate or false-trigger rate." },
               { title: "No structured test with people.", text: "Classmates used it during testing, but their reactions were not noted." },
-              { title: "Observed, not measured.", text: "In about ten days of classroom use, people were seen picking up misses and responding well, but nothing was counted, so the size of the effect is unknown." },
-              { title: "Success criteria unmeasured.", text: "Two of the four criteria (Define) were observed in use; none has a measured result. A study is proposed in Future Scope." },
+              { title: "Observed, not measured.", text: "In about ten days of classroom use, people were seen picking up misses and responding well, but nothing was counted." },
               { title: "Tuning values not recorded.", text: "Changes made while fixing problems were not logged with before-and-after values." },
             ],
           },
@@ -289,9 +553,9 @@ export const binaCaseStudy = {
       id: "learnings",
       tocLabel: "Learnings",
       flow: "bina",
+      heading: { lead: "A bin taught me ", accent: "where behaviour actually happens." },
+      blocks: [],
       panel: {
-        label: "What I took away",
-        statement: { plain: "A bin taught me ", accent: "where behaviour actually happens." },
         cells: [
           {
             title: "On behaviour",
@@ -307,7 +571,7 @@ export const binaCaseStudy = {
             points: [
               { title: "The code is the real specification.", text: "Our slides and our code described different ranges and states; what people actually experience is whatever runs." },
               { title: "Hardware limits shape the experience.", text: "Power, memory and sensor timing decided how smooth the eyes looked and when the voice could play." },
-              { title: "Test each part alone first.", text: "Separate test programs for the sensors, lid, eyes and voice made problems far easier to find once everything was joined." },
+              { title: "Test each part alone first.", text: "Separate test programs made problems far easier to find once everything was joined." },
             ],
           },
           {
@@ -330,7 +594,7 @@ export const binaCaseStudy = {
           },
         ],
       },
-      closing: { title: "Thank you.", name: "BINA", links: [CODE] },
+      closing: { title: "Thank you.", links: [CODE, { label: "More projects", href: "/projects", internal: true, ghost: true }] },
     },
   ],
 };
