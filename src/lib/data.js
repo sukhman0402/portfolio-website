@@ -38,6 +38,7 @@
 // Bike Dashboard and UN SDGs are part of the 6 reviewed projects but sit on
 // the /projects listing page only, not the homepage.
 import { driveWiseCaseStudy } from "./driveWiseCaseStudy";
+import { driveWiseShortCaseStudy } from "./driveWiseShortCaseStudy";
 import { binaCaseStudy } from "./binaCaseStudy";
  
 export const projects = [
@@ -60,6 +61,13 @@ export const projects = [
     // Case-study page content (final, 2026-10-04): every field below the
     // hero image lives in src > lib > driveWiseCaseStudy.js.
     ...driveWiseCaseStudy,
+    // Two formats (Sukhman, 2026-10-05): /projects/drive-wise shows the
+    // short 5-step case study (src > lib > driveWiseShortCaseStudy.js) and
+    // ends with a link to the full 13-stage one, now on
+    // /projects/drive-wise/full (src > app > projects > [slug] > full).
+    sections: driveWiseShortCaseStudy.sections,
+    endLinks: driveWiseShortCaseStudy.endLinks,
+    fullSections: driveWiseCaseStudy.sections,
   },
   {
     slug: "intelligent-waste-disposal-system",
@@ -71,13 +79,14 @@ export const projects = [
       ", with corrective, non-aggressive Hindi voice responses. Built and tested as a working prototype in a real classroom.",
     tag: "Physical Computing · Embedded AI",
     ctaLabel: "View Project",
-    externalUrl:
-      "https://www.behance.net/gallery/249605447/Intelligent-Waste-Disposal-System",
+    // externalUrl removed 2026-10-05 (Sukhman): the case study is live, so
+    // "View Project" now opens /projects/intelligent-waste-disposal-system.
+    // Behance: https://www.behance.net/gallery/249605447/Intelligent-Waste-Disposal-System
     ...coverSet("intelligent-waste-disposal-system"),
     featured: true,
     // Case-study page content (final, 2026-10-05): every field below the
-    // hero image lives in src > lib > binaCaseStudy.js. The page is built
-    // but stays unlinked until externalUrl above is deleted (go-live).
+    // hero image lives in src > lib > binaCaseStudy.js. Live (linked)
+    // since 2026-10-05.
     ...binaCaseStudy,
   },
   {
@@ -457,7 +466,7 @@ export const timelinePoints = [
   { id: 28, x: 973, cluster: 6,
     title: "Intelligent Waste Disposal System",
     description: "A sensor-based smart bin that checks every disposal and replies with calm Hindi voice feedback. Built as a working prototype and installed in a real classroom.",
-    tag: "Physical Computing", software: "Arduino, Figma, Gemini", link: "https://www.behance.net/gallery/249605447/Intelligent-Waste-Disposal-System" },
+    tag: "Physical Computing", software: "Arduino IDE, GitHub, Claude Code, ElevenLabs", link: "/projects/intelligent-waste-disposal-system" },
   { id: 29, x: 998, cluster: 6,
     title: "UN Sustainable Development Goals",
     description: "An interactive infographic series on progress across the UN Sustainable Development Goals, with a drill-down explorer showing where any country stands.",
@@ -533,6 +542,7 @@ export const timelineClusters = [
   { year: "2025", x: 557 },
   { year: "2026", x: 872 },
 ];
+ 
  
  
  
