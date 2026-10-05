@@ -84,7 +84,7 @@ export const driveWiseCaseStudy = {
               heading: "Survey",
               text: "Shared through personal networks and public posts, the survey reached 72 vehicle owners with 15 questions across five themes: vehicle profile, maintenance habits, warning signs and confidence, trusted sources, and spending.",
               images: [
-                img("research-1-2-survey", 2060, 3042, "Survey of 72 owners: 72% delayed a service, unsure it was needed; 89% feel overcharged at least sometimes; average confidence 2.7 out of 5; 65% would pay a nominal fee."),
+                img("research-1-2-survey-v2", 2060, 3042, "Survey of 72 owners: 72% delayed a service, unsure it was needed; 89% feel overcharged at least sometimes; average confidence 2.7 out of 5; 65% would pay a nominal fee."),
               ],
               link: { label: "View the research website", href: RESEARCH_SITE },
             },
@@ -137,7 +137,7 @@ export const driveWiseCaseStudy = {
           heading: "Owner Types",
           text: "Clustering the 72 survey responses by answer pattern grouped owners into three types, which differ most in whom they trust and whether they would pay for clarity.",
           images: [
-            img("insights-2-owner-types", 2060, 1616, "Three owner types: Local-Mechanic Loyalists (34), Self-Directed Researchers (23) and Overcharged Pragmatists (15)."),
+            img("insights-2-owner-types-v2", 2060, 1616, "Three owner types: Local-Mechanic Loyalists (34), Self-Directed Researchers (23) and Overcharged Pragmatists (15)."),
           ],
           link: { label: "View the full analysis", href: RESEARCH_SITE },
         },

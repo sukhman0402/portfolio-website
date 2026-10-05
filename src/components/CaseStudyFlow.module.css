@@ -23,14 +23,19 @@
   container-type: inline-size;
 }
 
-/* every module shares the same ground, so the stack reads as one piece */
+/* every module shares the same ground, so the stack reads as one piece.
+   Breathing space between topics (Sukhman, 2026-10-05): 88 px above each
+   topic's stage row (was 28). With the 36 px each visual keeps at its own
+   foot, topics now sit about 124 px apart, about twice the GeoTab
+   reference (its Behance modules stack with 0 px gaps; the space there is
+   only the 28 + 36 px padding inside each image). */
 .module {
   background: var(--bg);
-  padding: 28px 32px 36px;
+  padding: 88px 32px 48px;
 }
 .imgModule {
   background: var(--bg);
-  padding-top: 28px;
+  padding-top: 88px;
 }
 .imgModule .eyebrow {
   margin: 0 32px;
@@ -88,22 +93,28 @@
   background: currentColor;
 }
 
+/* topic link (e.g. "View the full analysis"): one per topic, set below the
+   visual on its own row with room around it (Sukhman, 2026-10-05; the copy
+   that was baked into two images was removed so it shows once) */
 .linkRow {
-  padding: 0 32px 32px;
+  padding: 8px 32px 16px;
 }
 .linkChip {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   background: var(--ink);
   color: #fff;
-  font-size: 12px;
-  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1;
+  padding: 13px 18px;
   font-weight: 500;
-  transition: opacity 0.15s;
+  letter-spacing: -0.1px;
+  transition: background-color 0.15s;
 }
-.linkChip:hover {
-  opacity: 0.8;
+.linkChip:hover,
+.linkChip:focus-visible {
+  background: var(--blue);
 }
 
 /* stage opener: the clearest marker in the flow */
@@ -299,6 +310,10 @@ button.linkChip {
 .linkChipLight {
   background: #fff;
   color: var(--ink);
+}
+.linkChipLight:hover,
+.linkChipLight:focus-visible {
+  color: #fff;
 }
 .textLink {
   font-size: 12px;
@@ -529,18 +544,24 @@ button.linkChip {
 
 /* phones and small tablets */
 @media (max-width: 767px) {
-  .module,
   .opener {
     padding: 20px 16px 28px;
   }
+  .module {
+    padding: 48px 16px 28px;
+  }
   .imgModule {
-    padding-top: 20px;
+    padding-top: 48px;
   }
   .imgModule .eyebrow {
     margin: 0 16px;
   }
   .linkRow {
-    padding: 0 16px 20px;
+    padding: 4px 16px 8px;
+  }
+  .linkChip {
+    font-size: 13px;
+    padding: 11px 14px;
   }
   .eyebrowLeft .group {
     display: none;
