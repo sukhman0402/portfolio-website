@@ -38,6 +38,7 @@
 // Bike Dashboard and UN SDGs are part of the 6 reviewed projects but sit on
 // the /projects listing page only, not the homepage.
 import { driveWiseCaseStudy } from "./driveWiseCaseStudy";
+import { binaCaseStudy } from "./binaCaseStudy";
  
 export const projects = [
   {
@@ -74,7 +75,10 @@ export const projects = [
       "https://www.behance.net/gallery/249605447/Intelligent-Waste-Disposal-System",
     ...coverSet("intelligent-waste-disposal-system"),
     featured: true,
-    ...buildDetailFields(3),
+    // Case-study page content (final, 2026-10-05): every field below the
+    // hero image lives in src > lib > binaCaseStudy.js. The page is built
+    // but stays unlinked until externalUrl above is deleted (go-live).
+    ...binaCaseStudy,
   },
   {
     slug: "myjio-customer-assistance",

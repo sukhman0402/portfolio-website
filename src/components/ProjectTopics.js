@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Chevron from "./Chevron";
 import { FlowStage } from "./CaseStudyFlow";
+import { BinaStage } from "./BinaFlow";
  
 // Individual Project page — repeatable content sections + sticky left-hand
 // Contents nav, Figma node 179:3614 "Project 01 (D)- Section 1.0"
@@ -169,7 +170,10 @@ export default function ProjectTopics({ sections }) {
                 !section.blocks && section.closingBody ? "pb-[10px]" : ""
               }`}
             >
-              {section.flow ? (
+              {section.flow === "bina" ? (
+                // BINA's own look (src > components > BinaFlow.js), 2026-10-05
+                <BinaStage section={section} index={i} total={sections.length} />
+              ) : section.flow ? (
                 <FlowStage section={section} index={i} total={sections.length} />
               ) : section.blocks ? (
                 <StageBlocks section={section} />
