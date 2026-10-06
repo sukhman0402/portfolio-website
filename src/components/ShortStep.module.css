@@ -132,7 +132,10 @@
 .btn:hover, .btn:focus-visible { background: var(--accent); }
 .tlink { display: flex; width: fit-content; align-items: center; gap: 4px; font-size: 15px; font-weight: 600; letter-spacing: -.5px; margin-top: 14px; transition: opacity .15s; }
 .tlink:hover { opacity: .6; }
-.credit { grid-column: 1 / -1; margin-top: 30px; }
+.flush { padding-bottom: 0; }
+.vside { display: flex; flex-direction: column; align-items: flex-start; }
+.vside > .vlist { align-self: stretch; }
+.credit { margin-top: auto; align-self: flex-start; text-align: left; padding: 30px 0 10px; }
 
 /* screens */
 .phone { display: block; width: 240px; height: auto; }

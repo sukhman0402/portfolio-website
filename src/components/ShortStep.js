@@ -47,7 +47,8 @@ export function ShortStep({ section, index }) {
       </div>
       <Statement statement={section.open} />
       {section.parts.map((part) => (
-        <div key={part.heading} className={s.blk}>
+        // The walkthrough video ends flush on the line below (Sukhman, 2026-10-06)
+        <div key={part.heading} className={`${s.blk} ${part.visual?.kind === "walkthrough" ? s.flush : ""}`}>
           <h3 className={s.h}>{part.heading}</h3>
           <Paras list={part.text} />
           {part.visual && (
@@ -464,7 +465,7 @@ function Walkthrough({ v }) {
           </video>
         )}
       </div>
-      <div className={s.span2}>
+      <div className={`${s.span2} ${s.vside}`}>
         <div className={s.vlist}>
           {screens.map((sc, i) => (
             <div key={sc.name} className={s.vrow}>
@@ -487,8 +488,9 @@ function Walkthrough({ v }) {
             </a>
           </>
         )}
+        {/* Image credit: bottom of the column, left-aligned with the links above, 10px above the line */}
+        {video.credit && <p className={`${s.small} ${s.credit}`}>{video.credit}</p>}
       </div>
-      {video.credit && <p className={`${s.small} ${s.credit}`}>{video.credit}</p>}
     </div>
   );
 }
