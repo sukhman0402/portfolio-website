@@ -105,20 +105,15 @@ function Visual({ v }) {
   }
 }
 
+// Five equal columns, so the gaps between all numbers match (Sukhman, 2026-10-06).
 function Stats({ v }) {
   return (
-    <div className={`${s.g3} ${s.stats}`} role="img" aria-label={v.label}>
-      {v.columns.map((col, i) => (
-        <div key={i}>
-          <div className={`${s.vlabel} ${col.accent ? s.accentText : ""}`}>{col.tag}</div>
-          <div className={col.items.length > 1 ? s.trio : ""}>
-            {col.items.map((it) => (
-              <div key={it.l}>
-                <div className={s.num}>{it.n}</div>
-                <div className={s.lab}>{it.l}</div>
-              </div>
-            ))}
-          </div>
+    <div className={s.g5} role="img" aria-label={v.label}>
+      {v.items.map((it) => (
+        <div key={it.l}>
+          <div className={`${s.vlabel} ${it.accent ? s.accentText : ""}`}>{it.tag}</div>
+          <div className={s.num}>{it.n}</div>
+          <div className={s.lab}>{it.l}</div>
         </div>
       ))}
     </div>
@@ -159,17 +154,22 @@ function Who({ who, meta }) {
   );
 }
 
+// One row per owner, all in the same format: the quote in column 1, what it
+// shows in columns 2 and 3 (Sukhman, 2026-10-06). The counts close the visual.
 function Quotes({ v }) {
   return (
     <>
-      <div className={`${s.g3} ${s.stack}`}>
-        {v.quotes.map((q) => (
-          <div key={q.who}>
+      {v.quotes.map((q) => (
+        <div key={q.who} className={`${s.g3} ${s.stack} ${s.qrow}`}>
+          <div>
             <Who who={q.who} meta={q.meta} />
             <q className={s.q}>{q.text}</q>
           </div>
-        ))}
-      </div>
+          <p className={`${s.cp} ${s.span2} ${s.qnote}`}>
+            <b>{q.noteBold}</b> {q.note}
+          </p>
+        </div>
+      ))}
       <div className={`${s.g3} ${s.counts}`}>
         {v.counts.map((c, i) => (
           <div key={i}>
@@ -180,17 +180,6 @@ function Quotes({ v }) {
           </div>
         ))}
       </div>
-      {v.counter && (
-        <div className={`${s.g3} ${s.stack} ${s.row3}`}>
-          <div>
-            <Who who={v.counter.who} meta={v.counter.meta} />
-            <q className={s.q}>{v.counter.text}</q>
-          </div>
-          <p className={`${s.cp} ${s.span2}`}>
-            <b>{v.counter.noteBold}</b> {v.counter.note}
-          </p>
-        </div>
-      )}
     </>
   );
 }
@@ -384,9 +373,11 @@ function Matrix({ v }) {
       </div>
       <div className={`${s.legend} ${s.gap12}`}>
         <span>
-          <b className={s.ink}>Bold</b>&nbsp; {v.legend[0]}
+          <b className={s.legKey}>Bold</b> {v.legend[0]}
         </span>
-        <span className={s.muted}>Grey&nbsp; {v.legend[1]}</span>
+        <span>
+          <b className={s.legKey}>Grey</b> {v.legend[1]}
+        </span>
         <span>{v.legend[2]}</span>
       </div>
     </>
@@ -496,8 +487,8 @@ function Walkthrough({ v }) {
             </a>
           </>
         )}
-        {video.credit && <p className={`${s.small} ${s.credit}`}>{video.credit}</p>}
       </div>
+      {video.credit && <p className={`${s.small} ${s.credit}`}>{video.credit}</p>}
     </div>
   );
 }

@@ -49,17 +49,14 @@ export const driveWiseShortCaseStudy = {
           visual: {
             kind: "stats",
             label: "Methods: 4 interviews and 72 survey owners (primary); 4 data sources, 5 studies and 6 tools compared (secondary).",
-            columns: [
-              { tag: "Primary", accent: true, items: [{ n: "4", l: "Interviews" }] },
-              { tag: "Primary", accent: true, items: [{ n: "72", l: "Survey owners" }] },
-              {
-                tag: "Secondary",
-                items: [
-                  { n: "4", l: "Data sources" },
-                  { n: "5", l: "Studies" },
-                  { n: "6", l: "Tools compared" },
-                ],
-              },
+            // five equal columns (Sukhman, 2026-10-06: same spacing between
+            // the primary and the secondary numbers)
+            items: [
+              { tag: "Primary", accent: true, n: "4", l: "Interviews" },
+              { tag: "Primary", accent: true, n: "72", l: "Survey owners" },
+              { tag: "Secondary", n: "4", l: "Data sources" },
+              { tag: "Secondary", n: "5", l: "Studies" },
+              { tag: "Secondary", n: "6", l: "Tools compared" },
             ],
           },
         },
@@ -85,23 +82,43 @@ export const driveWiseShortCaseStudy = {
           ],
           visual: {
             kind: "quotes",
+            // one row per owner: the quote in column 1, what it shows in
+            // columns 2 and 3 (Sukhman, 2026-10-06), then the counts
             quotes: [
-              { who: "Owner 1", meta: "Two-wheeler + car", text: "The whole vehicle goes in for a service; even parts that are fine get checked." },
-              { who: "Owner 2", meta: "Car + two-wheeler", text: "This is always in my mind: does it really require it?" },
-              { who: "Owner 3", meta: "Two-wheeler + car", text: "Mostly a friend, I guess." },
+              {
+                who: "Owner 1",
+                meta: "Two-wheeler + car",
+                text: "The whole vehicle goes in for a service; even parts that are fine get checked.",
+                noteBold: "Decides by the oil-change light.",
+                note: "One light on the dashboard sends the whole vehicle in, whether every part needs it or not.",
+              },
+              {
+                who: "Owner 2",
+                meta: "Car + two-wheeler",
+                text: "This is always in my mind: does it really require it?",
+                noteBold: "Decides by a light and the company reminder.",
+                note: "Without knowing what the light refers to, the doubt stays: is the work really needed?",
+              },
+              {
+                who: "Owner 3",
+                meta: "Two-wheeler + car",
+                text: "Mostly a friend, I guess.",
+                noteBold: "Decides by the reminder and the check-engine light.",
+                note: "When a warning light comes on, the first step is to ask a friend.",
+              },
+              {
+                who: "Owner 4",
+                meta: "Two-wheeler",
+                text: "If I can basically remember it, then I don't think I need another reminder.",
+                noteBold: "The counterpoint.",
+                note: "He decides by feel and past pattern, and trusts one mechanic he knows, so his trust comes from a relationship, not from information. A tracker would feel like extra load to him.",
+              },
             ],
             counts: [
               { k: "3", small: "of 4", v: "decide on a signal they can't read" },
               { k: "3", small: "of 4", v: "doubt the work was needed" },
               { k: "3", small: "of 4", v: "would use a tracker" },
             ],
-            counter: {
-              who: "Owner 4",
-              meta: "Two-wheeler",
-              text: "If I can basically remember it, then I don't think I need another reminder.",
-              noteBold: "The counterpoint.",
-              note: "Owner 4 trusts one mechanic he knows, so his trust comes from a relationship, not from information. A tracker would feel like extra load to him.",
-            },
           },
         },
         {
@@ -455,7 +472,7 @@ export const driveWiseShortCaseStudy = {
 
   // Links at the end of the page: the first is the main one.
   endLinks: [
-    { label: "View the full case study", href: "/projects/drive-wise/full" },
-    { label: "View the research website", href: RESEARCH_SITE, external: true },
+    { label: "View full case study", href: "/projects/drive-wise/full" },
+    { label: "View research website", href: RESEARCH_SITE, external: true },
   ],
 };

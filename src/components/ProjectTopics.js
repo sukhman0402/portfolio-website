@@ -197,31 +197,34 @@ export default function ProjectTopics({ sections, endLinks }) {
               the footer's line; the last board above ends flush on the 2px
               divider. */}
           {endLinks?.length > 0 && (
-            <div className="flex flex-wrap gap-x-[30px] gap-y-[5px] border-t-2 border-black pb-[10px] pt-[10px]">
-              {endLinks.map((link) =>
-                link.external ? (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex w-fit items-center gap-1 font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
-                  >
-                    {link.label}
-                    <Chevron className="h-2.5 w-2.5" />
-                  </a>
-                ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="flex w-fit items-center gap-1 font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
-                  >
-                    {link.label}
-                    <Chevron className="h-2.5 w-2.5" />
-                  </Link>
-                ),
-              )}
-            </div>
+            // One row per link between black lines, bold label + diagonal
+            // arrow (Sukhman's reference, 2026-10-06). The first row's top
+            // line is the last statement's closing line.
+            <ul className="border-t-2 border-black">
+              {endLinks.map((link) => {
+                const inner = (
+                  <>
+                    <span>{link.label}</span>
+                    <ArrowUpRight />
+                  </>
+                );
+                const cls =
+                  "flex w-fit items-center gap-[22px] py-[28px] font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60";
+                return (
+                  <li key={link.href} className="border-b-2 border-black">
+                    {link.external ? (
+                      <a href={link.href} target="_blank" rel="noopener noreferrer" className={cls}>
+                        {inner}
+                      </a>
+                    ) : (
+                      <Link href={link.href} className={cls}>
+                        {inner}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
           )}
         </div>
       </div>
@@ -468,5 +471,14 @@ function WalkthroughPanel({ video, prototype }) {
         </p>
       )}
     </div>
+  );
+}
+
+// Diagonal arrow for the end links (2px stroke, square caps).
+function ArrowUpRight() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="shrink-0">
+      <path d="M3 13 13 3M5 3h8v8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="square" />
+    </svg>
   );
 }
