@@ -1,5 +1,6 @@
-// Drive Wise LONG case study (13 chapters) on /projects/drive-wise/full.
-// Reached from "View full case study" at the end of the short page.
+// Drive Wise DEEP DIVE (the long case study, 13 chapters) on /projects/drive-wise/full.
+// Reached from "View the Deep Dive" at the end of the Highlights page
+// (the short 5-step case study). Naming: Sukhman, 2026-10-06.
 //
 // FORMAT (FINAL, Sukhman 2026-10-06): rules in the Placement Drive project,
 // claude/case-study-long-format-rules.md. One rule set only: the GeoTab
@@ -11,12 +12,18 @@
 // Honesty: only real numbers; quotes only where someone said the words;
 // targets are labelled as targets. No em dashes in any copy here.
 
-import { WALKTHROUGH_VIDEO, PROTOTYPE, RESEARCH_SITE } from "./driveWiseCaseStudy";
+import { WALKTHROUGH_VIDEO, PROTOTYPE, RESEARCH_SITE, driveWiseCaseStudy } from "./driveWiseCaseStudy";
 
 const SCREENS = "/images/projects/drive-wise/short";
+// Neutral silhouette placeholders for the anonymous owners (no real faces).
+// Swap a file for a real, consented photo later; keep the same name.
+const PEOPLE = "/images/projects/drive-wise/long";
+
+// Role and Tools come from the project page itself, so both versions always match.
+const info = (label) => driveWiseCaseStudy.infoFields.find((f) => f.label === label).value;
 
 export const driveWiseLongCaseStudy = {
-  back: { label: "Back to the short case study", href: "/projects/drive-wise" },
+  back: { label: "Back to Highlights", href: "/projects/drive-wise" },
   endLinks: [{ label: "View research website", href: RESEARCH_SITE, external: true }],
 
   modules: [
@@ -29,11 +36,11 @@ export const driveWiseLongCaseStudy = {
       side: "A predictive vehicle-health app concept for everyday **two-wheeler and car owners.** It turns usage, environment and service history into a clear picture of the vehicle's condition.",
       info: [
         ["Discipline", "Automotive"],
-        ["Role", "UX Designer, solo"],
-        ["Tools", "Figma, FigJam, Google Forms, Sheets, Colab"],
+        ["Role", info("Role")],
+        ["Tools", info("Tools Used")],
         ["Status", "Designed concept, not a working model"],
       ],
-      phone: { src: WALKTHROUGH_VIDEO.poster, width: 600, height: 1000, alt: "Drive Wise home screen: your vehicle needs attention." },
+      video: WALKTHROUGH_VIDEO,
     },
 
     // --------------------------------------------------------------- 02 BRIEF
@@ -52,7 +59,7 @@ export const driveWiseLongCaseStudy = {
         [
           null,
           { tag: "Design", num: "03", text: "Work **towards a solution** from what the research shows." },
-          { tag: "Deadline", num: "04", text: "The design is **frozen by a fixed deadline:** 13 days, solo." },
+          { tag: "Deadline", num: "04", text: "The design is **frozen by a fixed deadline:** 13 days." },
           null,
         ],
       ],
@@ -64,7 +71,7 @@ export const driveWiseLongCaseStudy = {
       id: "problem",
       eyebrow: { n: 3, name: "Problem" },
       quote: ["This is always in my mind: ", "does it really require it?"],
-      person: { initials: "O2", name: "Owner 2", meta: "Car + two-wheeler · interview, translated" },
+      person: { img: `${PEOPLE}/owner-2.svg`, initials: "O2", name: "Owner 2", meta: "Car + two-wheeler · interview, translated" },
       side: "Vehicle maintenance is mostly reactive. Problems start quietly, owners decide they can wait, and by the time something fails the repair is **urgent and expensive.** With no clear view of what the vehicle needs, owners rely on **guesswork and the mechanic's word.**",
     },
 
@@ -107,7 +114,7 @@ export const driveWiseLongCaseStudy = {
       type: "quote",
       quote: ["The whole vehicle goes in for a service; ", "even parts that are fine get checked."],
       small: true,
-      person: { initials: "O1", name: "Owner 1", meta: "Two-wheeler + car · interview, translated" },
+      person: { img: `${PEOPLE}/owner-1.svg`, initials: "O1", name: "Owner 1", meta: "Two-wheeler + car · interview, translated" },
       // Of the 4 interviewed owners
       counts: [
         { n: "3", of: "of 4", text: "**decide on a signal** they can't read" },
@@ -281,7 +288,11 @@ export const driveWiseLongCaseStudy = {
       type: "map",
       title: ["Importance vs difficulty", "what is designed now"],
       side: "**Filled:** designed (9). **Hollow:** not designed yet (3). Difficulty is the designer's estimate.",
-      // x = difficulty (0 easy, 100 hard), y = importance (0 high, 100 low)
+      // x = difficulty (0 easy, 100 hard), y = importance (0 high, 100 low).
+      // The points are drawn in four compartments split at x 60 and y 44
+      // (the old pale-blue area was the top-left one, left unlabelled).
+      split: { x: 60, y: 44 },
+      compartments: ["More important, easier", "More important, harder", "Less important, easier", "Less important, harder"],
       points: [
         ["Decode warnings", 10, 20, true],
         ["Health score", 40, 14, true],
@@ -413,7 +424,7 @@ export const driveWiseLongCaseStudy = {
       type: "quote",
       quote: ["If it would appear as a widget on my home screen, ", "it'd be useful."],
       small: true,
-      person: { initials: "P", name: "Prototype feedback", meta: "1 of 4 people, informal" },
+      person: { img: `${PEOPLE}/prototype-feedback.svg`, initials: "P", name: "Prototype feedback", meta: "1 of 4 people, informal" },
       side: "Four people tried the Figma prototype and shared open feedback: they found it useful and liked the look. **Not a structured usability test**: no tasks, timings or success rates were recorded.",
     },
 
@@ -464,7 +475,7 @@ export const driveWiseLongCaseStudy = {
           "title",
           { tag: "Research", dark: true, list: ["A modest convenience sample of 72, spread not checked", "What people say, not what they do", "Four interviews, some after a described scenario", "No field observation at a workshop", "Sources read at abstract level"], numbered: true },
           { tag: "Analysis", dark: true, list: ["Exploratory, not pre-registered; most results don't survive correction", "Associations, not causes", "Owner types are a grouping, not a typology", "Empathy map and personas are composites", "Some ratings are the designer's judgement"], numbered: true },
-          { tag: "Design", dark: true, list: ["The prediction logic is conceptual; scores are illustrative", "Access to registration data is assumed", "Prices, vehicles and workshops are examples", "Standards were applied after the fact", "Designed solo in 13 days"], numbered: true },
+          { tag: "Design", dark: true, list: ["The prediction logic is conceptual; scores are illustrative", "Access to registration data is assumed", "Prices, vehicles and workshops are examples", "Standards were applied after the fact", "Designed in 13 days"], numbered: true },
         ],
       ],
     },

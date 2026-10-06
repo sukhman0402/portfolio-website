@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="360" viewBox="0 0 300 360">
+  <!-- Neutral placeholder for an anonymous participant (no real face).
+       Replace with a real, consented photo at the same file name. -->
+  <rect width="300" height="360" fill="#E2E2E2"/>
+  <circle cx="150" cy="150" r="58" fill="#CFCFCF"/>
+  <path d="M40 360c0-74 49-128 110-128s110 54 110 128z" fill="#CFCFCF"/>
+</svg>

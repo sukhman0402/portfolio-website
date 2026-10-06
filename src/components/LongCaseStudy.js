@@ -111,6 +111,45 @@ function Shot({ src, alt, small }) {
   return <Image src={src} alt={alt} width={SCREEN.width} height={SCREEN.height} className={cx(s.phone, small && s.phoneS)} sizes={small ? "220px" : "260px"} />;
 }
 
+// Muted looping video of the working prototype. Plays on its own unless the
+// visitor asked for reduced motion; then it waits, with controls.
+function AutoVideo({ video, className }) {
+  const ref = useRef(null);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => {
+      setReducedMotion(query.matches);
+      const el = ref.current;
+      if (!el) return;
+      if (query.matches) el.pause();
+      else el.play().catch(() => {});
+    };
+    apply();
+    query.addEventListener("change", apply);
+    return () => query.removeEventListener("change", apply);
+  }, []);
+  return (
+    <video
+      ref={ref}
+      className={className}
+      width={video.width}
+      height={video.height}
+      poster={video.poster}
+      aria-label={video.label}
+      autoPlay={!reducedMotion}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      controls={reducedMotion}
+    >
+      <source src={video.webm} type="video/webm" />
+      <source src={video.mp4} type="video/mp4" />
+    </video>
+  );
+}
+
 // ---------------------------------------------------------------- modules
 
 function Headline({ m }) {
@@ -134,9 +173,9 @@ function Headline({ m }) {
               </div>
             ))}
           </div>
-          {m.phone && (
+          {m.video && (
             <div className={s.phoneEnd}>
-              <Image src={m.phone.src} alt={m.phone.alt} width={m.phone.width} height={m.phone.height} className={s.phone} sizes="260px" priority />
+              <AutoVideo video={m.video} className={s.heroVideo} />
             </div>
           )}
         </div>
@@ -228,9 +267,15 @@ function Steps({ m }) {
 function Person({ p }) {
   return (
     <div className={s.person}>
-      <div className={s.initials} aria-hidden="true">
-        {p.initials}
-      </div>
+      {p.img ? (
+        // Plain img: a small local SVG placeholder, nothing for next/image to optimise
+        // eslint-disable-next-line @next/next/no-img-element
+        <img className={s.initials} src={p.img} alt="" aria-hidden="true" width={150} height={180} />
+      ) : (
+        <div className={s.initials} aria-hidden="true">
+          {p.initials}
+        </div>
+      )}
       <div className={s.personCap}>
         <b>{p.name}</b>
         <br />
@@ -508,40 +553,56 @@ function Voa({ m }) {
   );
 }
 
+// Importance vs difficulty, redesigned (Sukhman, 2026-10-06: "minimal, but
+// easy compartments"). Four compartments split at m.split; each point keeps
+// its compartment and its order inside it, spread to leave room for names.
+function placePoint(x, y, split) {
+  const right = x >= split.x;
+  const low = y >= split.y;
+  const fx = right ? (x - split.x) / (100 - split.x) : x / split.x;
+  const fy = low ? (y - split.y) / (100 - split.y) : y / split.y;
+  return { q: (low ? 2 : 0) + (right ? 1 : 0), left: (right ? 50 : 0) + 50 * (0.06 + fx * 0.7), top: (low ? 50 : 0) + 50 * (0.2 + fy * 0.72) };
+}
+
 function MapModule({ m }) {
+  const pts = m.points.map(([name, x, y, designed]) => ({ name, designed, ...placePoint(x, y, m.split) }));
   return (
     <>
       <TitleRow m={m} />
+      <div className={s.axLabTop}>More important ↑</div>
       <div className={s.map}>
-        <div className={s.zone} aria-hidden="true" />
-        <div className={s.axX} aria-hidden="true" />
-        <div className={s.axY} aria-hidden="true" />
-        <div className={s.axLab} style={{ left: 0, top: "calc(100% + 12px)" }}>
-          Easy to build
-        </div>
-        <div className={s.axLab} style={{ right: 0, top: "calc(100% + 12px)" }}>
-          Hard
-        </div>
-        <div className={s.axLab} style={{ left: -2, top: -24 }}>
-          High importance ↑
-        </div>
-        {m.points.map(([name, x, y, designed], i) => (
-          <div key={name} className={cx(s.pt, !designed && s.ptNo, x > 60 && s.ptRight)} style={{ left: `${x}%`, top: `${y}%` }}>
+        {m.compartments.map((label, q) => {
+          const inQ = pts.filter((p) => p.q === q);
+          return (
+            <div key={label} className={s.cell}>
+              <div className={s.cellLab}>{label}</div>
+              <div className={s.cellCount}>
+                {inQ.filter((p) => p.designed).length} of {inQ.length} designed
+              </div>
+            </div>
+          );
+        })}
+        {pts.map((p, i) => (
+          <div key={p.name} className={cx(s.pt, !p.designed && s.ptNo)} style={{ left: `${p.left}%`, top: `${p.top}%` }}>
             <i aria-hidden="true" />
-            <span className={s.ptName}>{name}</span>
+            <span className={s.ptName}>{p.name}</span>
             <span className={s.ptNum} aria-hidden="true">
               {i + 1}
             </span>
-            {!designed && <span className="sr-only"> (not designed yet)</span>}
+            {!p.designed && <span className="sr-only"> (not designed yet)</span>}
           </div>
         ))}
       </div>
+      <div className={s.axRow}>
+        <span>Easier to build</span>
+        <span>Harder →</span>
+      </div>
       {/* Phones: the plot is too narrow for 12 names, so points carry numbers and the names sit here */}
       <ol className={s.mapList}>
-        {m.points.map(([name, , , designed], i) => (
-          <li key={name} className={designed ? undefined : s.ptNo}>
+        {pts.map((p, i) => (
+          <li key={p.name} className={p.designed ? undefined : s.ptNo}>
             <span>{i + 1}</span>
-            {name}
+            {p.name}
           </li>
         ))}
       </ol>
@@ -632,23 +693,7 @@ function Tiles({ m }) {
 
 function Walkthrough({ m }) {
   const { video, prototype } = m;
-  const videoRef = useRef(null);
-  const [reducedMotion, setReducedMotion] = useState(false);
   const [showPrototype, setShowPrototype] = useState(false);
-
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const apply = () => {
-      setReducedMotion(query.matches);
-      const el = videoRef.current;
-      if (!el) return;
-      if (query.matches) el.pause();
-      else el.play().catch(() => {});
-    };
-    apply();
-    query.addEventListener("change", apply);
-    return () => query.removeEventListener("change", apply);
-  }, [showPrototype]);
 
   return (
     <div className={cx(s.g2, s.flushCols)}>
@@ -687,27 +732,15 @@ function Walkthrough({ m }) {
         <Tag dark corner>
           {showPrototype ? "Prototype" : "Walkthrough video"}
         </Tag>
-        {showPrototype && prototype ? (
-          <iframe src={prototype.embedSrc} title="Drive Wise prototype (Figma)" className={s.proto} allowFullScreen />
-        ) : (
-          <video
-            ref={videoRef}
-            className={s.video}
-            width={video.width}
-            height={video.height}
-            poster={video.poster}
-            aria-label={video.label}
-            autoPlay={!reducedMotion}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            controls={reducedMotion}
-          >
-            <source src={video.webm} type="video/webm" />
-            <source src={video.mp4} type="video/mp4" />
-          </video>
-        )}
+        {/* A #F6F6F6 mat (the video's own background) inset evenly in the
+            blue panel, so the video reads as a framed picture, not a patch */}
+        <div className={s.mat}>
+          {showPrototype && prototype ? (
+            <iframe src={prototype.embedSrc} title="Drive Wise prototype (Figma)" className={s.proto} allowFullScreen />
+          ) : (
+            <AutoVideo video={video} className={s.video} />
+          )}
+        </div>
       </div>
     </div>
   );

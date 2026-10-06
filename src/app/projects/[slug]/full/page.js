@@ -7,13 +7,15 @@ import LongCaseStudy from "@/components/LongCaseStudy";
 import Footer from "@/components/Footer";
 import { projects, getProjectBySlug } from "@/lib/data";
 
-// FULL case study (13 chapters). /projects/<slug> shows the short 5-step
-// case study and ends with "View full case study", which opens this page.
+// DEEP DIVE (the full case study, 13 chapters). /projects/<slug> shows the
+// HIGHLIGHTS (the short 5-step case study) and ends with "View the Deep
+// Dive", which opens this page. Names: Sukhman, 2026-10-06.
 //
 // LONG format (Sukhman FINAL 2026-10-06): a project with `long` in data.js
 // (Drive Wise) gets the GeoTab Behance style modules (src > components >
-// LongCaseStudy.js). The site header stays; "Back to the short case study"
-// sits under it and again at the end. The header's own links already lead
+// LongCaseStudy.js). The site header stays; "Back to Highlights" sits under
+// it and again at the end, where the links use the Highlights page's own
+// end-link style (rows between 2px black lines, bold label + arrow). The header's own links already lead
 // back to the project list.
 // A project with only `fullSections` keeps the older layout
 // (ProjectHeroTop + ProjectTopics).
@@ -26,8 +28,28 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   return {
-    title: project ? `${project.title}, full case study | Sukhman` : "Project | Sukhman",
+    title: project ? `${project.title}, Deep Dive | Sukhman` : "Project | Sukhman",
   };
+}
+
+// Same end-link row as the Highlights page (src > components > ProjectTopics.js).
+const END_LINK = "flex w-fit items-center gap-[22px] py-[28px] font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60";
+
+function ArrowUpRight() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="shrink-0">
+      <path d="M3 13 13 3M5 3h8v8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="square" />
+    </svg>
+  );
+}
+
+// The same arrow, pointing back (left), drawn with the same stroke.
+function ArrowLeft() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="shrink-0">
+      <path d="M14 8H2.5M7 3.5 2.5 8 7 12.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="square" />
+    </svg>
+  );
 }
 
 function BackLink({ back }) {
@@ -61,25 +83,34 @@ export default async function FullCaseStudyPage({ params }) {
       <Header base="/" />
       <main className="flex-1">
         <div className="mx-auto max-w-[1440px] px-5 sm:px-[30px]">
-          <h1 className="sr-only">{project.title}, full case study</h1>
+          <h1 className="sr-only">{project.title}, Deep Dive</h1>
           <div className="pt-[18px] pb-[26px]">
             <BackLink back={long.back} />
           </div>
           <LongCaseStudy data={long} />
-          <div className="flex flex-wrap gap-x-[30px] gap-y-[6px] pt-[26px] pb-[60px]">
-            <BackLink back={long.back} />
-            {long.endLinks.map((l) =>
-              l.external ? (
-                <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60">
-                  {l.label} ›
-                </a>
-              ) : (
-                <Link key={l.href} href={l.href} className="font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60">
-                  {l.label} ›
-                </Link>
-              )
-            )}
-          </div>
+          <ul className="mt-[10px] border-t-2 border-black">
+            <li className="border-b-2 border-black">
+              <Link href={long.back.href} className={END_LINK}>
+                <ArrowLeft />
+                <span>{long.back.label}</span>
+              </Link>
+            </li>
+            {long.endLinks.map((l) => (
+              <li key={l.href} className="border-b-2 border-black">
+                {l.external ? (
+                  <a href={l.href} target="_blank" rel="noopener noreferrer" className={END_LINK}>
+                    <span>{l.label}</span>
+                    <ArrowUpRight />
+                  </a>
+                ) : (
+                  <Link href={l.href} className={END_LINK}>
+                    <span>{l.label}</span>
+                    <ArrowUpRight />
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       </main>
       <Footer />
