@@ -39,6 +39,7 @@
 // the /projects listing page only, not the homepage.
 import { driveWiseCaseStudy } from "./driveWiseCaseStudy";
 import { driveWiseShortCaseStudy } from "./driveWiseShortCaseStudy";
+import { driveWiseLongCaseStudy } from "./driveWiseLongCaseStudy";
 import { binaCaseStudy } from "./binaCaseStudy";
  
 export const projects = [
@@ -68,6 +69,10 @@ export const projects = [
     sections: driveWiseShortCaseStudy.sections,
     endLinks: driveWiseShortCaseStudy.endLinks,
     fullSections: driveWiseCaseStudy.sections,
+    // LONG format (Sukhman FINAL 2026-10-06): the 13 chapters in the
+    // GeoTab Behance style (src > lib > driveWiseLongCaseStudy.js), shown on
+    // /projects/drive-wise/full in place of fullSections.
+    long: driveWiseLongCaseStudy,
   },
   {
     slug: "intelligent-waste-disposal-system",
