@@ -41,6 +41,8 @@ import { driveWiseCaseStudy } from "./driveWiseCaseStudy";
 import { driveWiseShortCaseStudy } from "./driveWiseShortCaseStudy";
 import { driveWiseLongCaseStudy } from "./driveWiseLongCaseStudy";
 import { binaCaseStudy } from "./binaCaseStudy";
+import { binaLongCaseStudy } from "./binaLongCaseStudy";
+import { binaShortCaseStudy } from "./binaShortCaseStudy";
  
 export const projects = [
   {
@@ -93,6 +95,12 @@ export const projects = [
     // hero image lives in src > lib > binaCaseStudy.js. Live (linked)
     // since 2026-10-05.
     ...binaCaseStudy,
+    // Highlights + Deep Dive (2026-10-07, claude/bina/highlights-deep-dive-plan.md):
+    // this page shows the 5-step Highlights (src > lib > binaShortCaseStudy.js);
+    // /full shows the 13-chapter Deep Dive (src > lib > binaLongCaseStudy.js).
+    sections: binaShortCaseStudy.sections,
+    endLinks: binaShortCaseStudy.endLinks,
+    long: binaLongCaseStudy,
   },
   {
     slug: "myjio-customer-assistance",

@@ -21,10 +21,10 @@ import s from "./ShortStep.module.css";
 
 const pad2 = (n) => String(n).padStart(2, "0");
 
-function Statement({ statement }) {
+function Statement({ statement, style }) {
   if (!statement) return null;
   return (
-    <p className={s.stmt}>
+    <p className={s.stmt} style={style}>
       {statement.text} <em>{statement.accent}</em>
     </p>
   );
@@ -38,17 +38,21 @@ function Paras({ list }) {
   ));
 }
 
+// Per-project accent (2026-10-06, BINA): a step may carry `accent` (e.g.
+// "#026D00"); it overrides the default Drive Wise blue for every block of
+// that step. Highlights stay the same for every project otherwise.
 export function ShortStep({ section, index }) {
+  const style = section.accent ? { "--accent": section.accent } : undefined;
   return (
     <>
-      <div className={`${s.blk} ${index === 0 ? s.first : ""}`}>
+      <div className={`${s.blk} ${index === 0 ? s.first : ""}`} style={style}>
         <h2 className={s.h}>{section.heading}</h2>
         <Paras list={section.intro} />
       </div>
-      <Statement statement={section.open} />
+      <Statement statement={section.open} style={style} />
       {section.parts.map((part) => (
         // The walkthrough video ends flush on the line below (Sukhman, 2026-10-06)
-        <div key={part.heading} className={`${s.blk} ${part.visual?.kind === "walkthrough" ? s.flush : ""}`}>
+        <div key={part.heading} className={`${s.blk} ${part.visual?.kind === "walkthrough" ? s.flush : ""}`} style={style}>
           <h3 className={s.h}>{part.heading}</h3>
           <Paras list={part.text} />
           {part.visual && (
@@ -58,7 +62,7 @@ export function ShortStep({ section, index }) {
           )}
         </div>
       ))}
-      <Statement statement={section.close} />
+      <Statement statement={section.close} style={style} />
     </>
   );
 }
@@ -308,9 +312,14 @@ function Insights({ v }) {
         <div key={r.no} className={s.g3}>
           <div>
             <span className={s.rlab}>{r.no}</span>
-            <div className={`${s.ft} ${s.gap6}`}>{r.title}</div>
+            <div className={`${s.ft} ${s.gap6} ${!r.value && r.accent ? s.accentText : ""}`}>{r.title}</div>
           </div>
-          <div className={`${s.mid} ${s.mid40} ${r.accent ? s.accentText : ""}`}>{r.value}</div>
+          {/* A finding without a number (BINA) shows what it came from instead. */}
+          {r.value ? (
+            <div className={`${s.mid} ${s.mid40} ${r.accent ? s.accentText : ""}`}>{r.value}</div>
+          ) : (
+            <p className={`${s.small} ${s.fromText}`}>{r.from}</p>
+          )}
           <p className={`${s.cap} ${s.cap0}`}>{r.cap}</p>
         </div>
       ))}
@@ -323,6 +332,8 @@ function Personas({ v }) {
     <div className={`${s.g3} ${s.stack}`}>
       {v.people.map((p) => (
         <div key={p.name} className={s.persona}>
+          {/* BINA (2026-10-06): optional portrait, labelled in the note */}
+          {p.photo && <Image src={p.photo} alt={`${p.name}, AI-generated portrait, not a real person`} width={112} height={112} className={s.pphoto} />}
           <div className={s.pnm}>{p.name}</div>
           <div className={s.pty}>{p.type}</div>
           <p className={s.phl}>{p.line}</p>
@@ -333,7 +344,8 @@ function Personas({ v }) {
           </ul>
         </div>
       ))}
-      <p className={`${s.cp} ${s.selfEnd}`}>
+      {/* With three people the note takes its own row (BINA, 2026-10-07) */}
+      <p className={`${s.cp} ${v.people.length > 2 ? s.noteRow : s.selfEnd}`}>
         {v.note.lead} <b>{v.note.bold}</b> {v.note.rest}
       </p>
     </div>
@@ -443,7 +455,10 @@ function Walkthrough({ v }) {
   return (
     <div className={`${s.g3} ${s.vid}`}>
       <div>
-        {showPrototype && prototype ? (
+        {/* BINA (2026-10-06): a photo of the built prototype instead of a video */}
+        {v.image ? (
+          <Image src={v.image.src} alt={v.image.alt} width={v.image.width} height={v.image.height} sizes="330px" className={s.video} />
+        ) : showPrototype && prototype ? (
           <iframe src={prototype.embedSrc} title="Drive Wise prototype (Figma)" className={s.proto} allowFullScreen />
         ) : (
           <video
@@ -477,6 +492,12 @@ function Walkthrough({ v }) {
             </div>
           ))}
         </div>
+        {v.links?.map((l, i) => (
+          <a key={l.href} className={i === 0 ? s.btn : s.tlink} href={l.href} target="_blank" rel="noopener noreferrer">
+            {l.label}
+            {i === 0 ? " ↗" : <Chevron className="h-2.5 w-2.5" />}
+          </a>
+        ))}
         {prototype && (
           <>
             <button type="button" className={s.btn} onClick={() => setShowPrototype((x) => !x)}>
@@ -489,7 +510,7 @@ function Walkthrough({ v }) {
           </>
         )}
         {/* Image credit: bottom of the column, left-aligned with the links above, 10px above the line */}
-        {video.credit && <p className={`${s.small} ${s.credit}`}>{video.credit}</p>}
+        {video?.credit && <p className={`${s.small} ${s.credit}`}>{video.credit}</p>}
       </div>
     </div>
   );
@@ -505,8 +526,8 @@ function Screens({ v }) {
             alt={sc.alt}
             width={sc.width}
             height={sc.height}
-            sizes="240px"
-            className={s.phone}
+            sizes={v.wide ? "330px" : "240px"}
+            className={v.wide ? s.wideShot : s.phone}
           />
           <div className={s.ttl}>{sc.title}</div>
           <p className={s.dsc}>{sc.text}</p>

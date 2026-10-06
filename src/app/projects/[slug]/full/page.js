@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import ProjectHeroTop from "@/components/ProjectHeroTop";
 import ProjectTopics from "@/components/ProjectTopics";
 import LongCaseStudy from "@/components/LongCaseStudy";
+import BinaDeepDive from "@/components/BinaDeepDive";
 import Footer from "@/components/Footer";
 import { projects, getProjectBySlug } from "@/lib/data";
 
@@ -17,6 +18,9 @@ import { projects, getProjectBySlug } from "@/lib/data";
 // it and again at the end, where the links use the Highlights page's own
 // end-link style (rows between 2px black lines, bold label + arrow). The header's own links already lead
 // back to the project list.
+// Each project's Deep Dive has its own reference, so `long.renderer` picks
+// the renderer: "aethera" is BINA's (src > components > BinaDeepDive.js,
+// 2026-10-07); no value means Drive Wise's GeoTab modules.
 // A project with only `fullSections` keeps the older layout
 // (ProjectHeroTop + ProjectTopics).
 
@@ -78,6 +82,7 @@ export default async function FullCaseStudyPage({ params }) {
   }
 
   const { long } = project;
+  const Body = long.renderer === "aethera" ? BinaDeepDive : LongCaseStudy;
   return (
     <>
       <Header base="/" />
@@ -87,7 +92,7 @@ export default async function FullCaseStudyPage({ params }) {
           <div className="pt-[18px] pb-[26px]">
             <BackLink back={long.back} />
           </div>
-          <LongCaseStudy data={long} />
+          <Body data={long} />
           <ul className="mt-[10px] border-t-2 border-black">
             <li className="border-b-2 border-black">
               <Link href={long.back.href} className={END_LINK}>
