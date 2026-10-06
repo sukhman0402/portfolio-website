@@ -6,6 +6,7 @@ import Link from "next/link";
 import Chevron from "./Chevron";
 import { FlowStage } from "./CaseStudyFlow";
 import { BinaStage } from "./BinaFlow";
+import { ShortStep } from "./ShortStep";
 import ImageZoom from "./ImageZoom";
  
 // Individual Project page — repeatable content sections + sticky left-hand
@@ -167,12 +168,16 @@ export default function ProjectTopics({ sections, endLinks }) {
               key={section.id}
               id={section.id}
               className={`scroll-mt-24 ${
-                i !== 0 && !section.flow ? "border-t-2 border-black" : ""
-              } ${section.blocks ? "" : "pt-[10px]"} ${
+                i !== 0 && !section.flow && !section.short ? "border-t-2 border-black" : ""
+              } ${section.blocks || section.short ? "" : "pt-[10px]"} ${
                 !section.blocks && section.closingBody ? "pb-[10px]" : ""
               }`}
             >
-              {section.flow === "bina" ? (
+              {section.short ? (
+                // Short case-study step (Sukhman, FINAL 2026-10-06):
+                // src > components > ShortStep.js
+                <ShortStep section={section} index={i} />
+              ) : section.flow === "bina" ? (
                 // BINA's own look (src > components > BinaFlow.js), 2026-10-05
                 <BinaStage section={section} index={i} total={sections.length} />
               ) : section.flow ? (
