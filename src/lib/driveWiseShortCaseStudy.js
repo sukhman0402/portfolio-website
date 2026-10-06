@@ -208,8 +208,8 @@ export const driveWiseShortCaseStudy = {
           visual: {
             kind: "personas",
             people: [
-              { name: "Meera, 34", type: "Self-Directed Researcher", line: "I own two vehicles and read neither.", points: ["Searches online before the workshop", "Would pay for clarity"] },
-              { name: "Suresh, 58", type: "Local-Mechanic Loyalist", line: "I trust my mechanic, not an app.", points: ["Waits to see if a problem passes", "Unlikely to pay"] },
+              { name: "Meera, 34", type: "Self-Directed Researcher", line: "Owns two vehicles, reads neither.", points: ["Searches online before the workshop", "Would pay for clarity"] },
+              { name: "Suresh, 58", type: "Local-Mechanic Loyalist", line: "Trusts his mechanic, not an app.", points: ["Waits to see if a problem passes", "Unlikely to pay"] },
             ],
             note: { lead: "Two kinds of trust.", bold: "Every design decision has to work for both.", rest: "Both are composites, not real people." },
           },

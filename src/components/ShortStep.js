@@ -335,7 +335,7 @@ function Personas({ v }) {
         <div key={p.name} className={s.persona}>
           <div className={s.pnm}>{p.name}</div>
           <div className={s.pty}>{p.type}</div>
-          <p className={s.phl}>&ldquo;{p.line}&rdquo;</p>
+          <p className={s.phl}>{p.line}</p>
           <ul>
             {p.points.map((pt) => (
               <li key={pt}>{pt}</li>
