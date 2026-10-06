@@ -287,6 +287,73 @@
 .arcList p { font-size: 12px; line-height: 1.4; color: #333; margin-top: 8px; }
 
 /* phones */
+/* ---- restored modules (2026-10-07) ---- */
+/* information architecture: sitemap tree */
+.iaTree { margin-top: 90px; --line: #9a9a9a; }
+.iaRoot { width: 240px; margin: 0 auto; background: var(--ink); color: #fff; text-align: center; padding: 16px 12px; font-size: 15px; font-weight: 500; }
+.iaStem { width: 1px; height: 36px; margin: 0 auto; background: var(--line); }
+.iaCols { list-style: none; display: grid; grid-template-columns: repeat(var(--n, 5), 1fr); column-gap: 16px; position: relative; align-items: start; }
+.iaCols::before { content: ""; position: absolute; top: 0; height: 1px; background: var(--line); left: calc((100% - (var(--n, 5) - 1) * 16px) / var(--n, 5) / 2); right: calc((100% - (var(--n, 5) - 1) * 16px) / var(--n, 5) / 2); }
+.iaCol { position: relative; padding-top: 36px; }
+.iaCol::before { content: ""; position: absolute; top: 0; left: 50%; width: 1px; height: 36px; background: var(--line); }
+.iaSec { background: #fff; padding: 14px 10px; text-align: center; font-size: 15px; font-weight: 500; letter-spacing: -0.3px; }
+.iaSecAccent { background: var(--blue); color: #fff; }
+.iaNum { display: block; font-size: 10px; font-weight: 400; color: var(--grey); margin-bottom: 4px; letter-spacing: 0; }
+.iaSecAccent .iaNum { color: rgba(255, 255, 255, 0.75); }
+.iaKids { list-style: none; padding-left: 22px; position: relative; }
+/* one continuous spine from the section tile to the last screen's middle */
+.iaKids::before { content: ""; position: absolute; left: 10px; top: 0; bottom: 0; width: 1px; background: var(--line); }
+.iaKids > li { position: relative; margin-top: 10px; background: var(--tile); padding: 9px 10px 10px; font-size: 12.5px; color: #333; line-height: 1.35; }
+/* the tick joins each tile at its first line, so tall tiles still read as children */
+.iaKids > li::before { content: ""; position: absolute; left: -12px; top: 17px; width: 12px; height: 1px; background: var(--line); }
+/* hide the spine below the last tick */
+.iaKids > li:last-child::after { content: ""; position: absolute; left: -13px; top: 18px; bottom: -2px; width: 3px; background: var(--ground); }
+.iaScr { font-weight: 500; color: var(--ink); }
+.iaCode { font-size: 10px; font-weight: 400; color: var(--grey); margin-right: 6px; font-variant-numeric: tabular-nums; }
+.iaDetail { margin-top: 3px; color: #555; font-size: 11.5px; }
+.iaSteps { list-style: none; counter-reset: st; margin-top: 6px; }
+.iaSteps li { counter-increment: st; font-size: 11.5px; color: #444; padding: 4px 0 4px 18px; border-top: 1px solid var(--hair); position: relative; }
+.iaSteps li::before { content: counter(st); position: absolute; left: 0; color: var(--grey); font-size: 10px; top: 5px; }
+/* signal to feature table: scrolls sideways, statement pinned */
+.scrollHint { margin-top: 70px; text-align: right; font-size: 11px; color: var(--grey); }
+.trScroll { margin-top: 10px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.trScroll:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
+.trTable { border-collapse: collapse; min-width: 1780px; font-size: 13px; line-height: 1.4; }
+.trTable th { font-size: 11px; font-weight: 500; color: var(--grey); text-align: left; padding: 0 18px 12px 0; white-space: nowrap; }
+.trTable th.accent { color: var(--blue); font-weight: 600; }
+.trTable td { vertical-align: top; padding: 14px 18px 14px 0; border-top: 1px solid var(--hair); color: #333; width: 220px; }
+.trTable tr:last-child td { border-bottom: 1px solid var(--hair); }
+.trPin { position: sticky; left: 0; z-index: 1; background: var(--ground); width: 40px !important; min-width: 40px; }
+.trPin2 { position: sticky; left: 40px; z-index: 1; background: var(--ground); width: 300px !important; min-width: 300px; box-shadow: 1px 0 0 var(--hair); }
+.trN { color: var(--grey); font-size: 11px; font-variant-numeric: tabular-nums; }
+.trStmt { color: var(--ink); font-weight: 500; }
+.trStmt + .small { margin-top: 4px; }
+.trFeat { display: flex; align-items: center; gap: 7px; color: var(--ink); white-space: nowrap; }
+.trFeat + .trFeat { margin-top: 6px; }
+.trFeat .dot { width: 9px; height: 9px; flex: none; }
+/* user flow: flow chart + framed walkthrough video */
+.ufGrid { margin-top: 80px; column-gap: 60px; align-items: start; }
+.ufGrid > div { min-width: 0; } /* lets the chart scroll inside its column instead of widening it */
+.ufSide { position: sticky; top: 90px; }
+.ufSide .mat { min-height: 600px; }
+.ufSide .video { height: 540px; }
+.fcHint { display: none; }
+.fcSvg { display: block; width: 100%; height: auto; font-family: inherit; }
+.fcLine { fill: none; stroke: #9a9a9a; stroke-width: 1; }
+.fcLabel { font-size: 10.5px; fill: var(--grey); }
+.fcStep rect { fill: #fff; }
+.fcStep text, .fcDec text, .fcOff text { font-size: 12.5px; fill: var(--ink); }
+.fcDec polygon { fill: #e2e2e2; }
+.fcTerm rect { fill: var(--ink); }
+.fcTerm text { font-size: 12.5px; fill: #fff; font-weight: 500; }
+.fcAccent rect { fill: var(--blue); }
+.fcAccent text { font-size: 12.5px; fill: #fff; font-weight: 500; }
+.fcOff rect { fill: none; stroke: #9a9a9a; stroke-dasharray: 4 3; }
+.fcOff text { fill: var(--grey); }
+/* standards */
+.stdGrid { margin-top: 90px; column-gap: 40px; }
+.stdName { font-size: 64px; font-weight: 250; letter-spacing: -2.5px; line-height: 1; margin-top: 6px; }
+
 @media (max-width: 767px) {
   .mod { padding: 56px 20px 70px; }
   .hd { font-size: 40px; letter-spacing: -1.2px; }
@@ -347,4 +414,24 @@
   .kpiRow { grid-template-columns: 1fr 80px 80px; }
   .outTile { height: 260px; }
   .arcs { display: none; }
+  /* restored modules */
+  .iaTree { margin-top: 40px; }
+  .iaCols { grid-template-columns: 1fr; row-gap: 28px; }
+  .iaCols::before, .iaCol::before { display: none; }
+  .iaCol { padding-top: 0; }
+  .iaStem { height: 28px; }
+  .scrollHint { margin-top: 40px; }
+  /* too narrow to pin a column: the whole table scrolls */
+  .trPin, .trPin2 { position: static; box-shadow: none; }
+  .trPin2 { width: 220px !important; min-width: 220px; }
+  .trTable { min-width: 1500px; }
+  .ufGrid { margin-top: 40px; row-gap: 40px; }
+  .ufSide { position: static; }
+  .ufSide .mat { min-height: 0; }
+  .ufSide .video { height: auto; width: 72%; }
+  .fcScroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .fcSvg { min-width: 560px; }
+  .fcHint { display: block; margin: 0 0 10px; }
+  .stdGrid { margin-top: 40px; }
+  .stdName { font-size: 44px; }
 }

@@ -284,6 +284,43 @@ export const driveWiseLongCaseStudy = {
         ],
       ],
     },
+    // Restored and merged 2026-10-07 (Sukhman: "make the signal - need -
+    // opportunity - feature into one table ... make it scroll horizontally").
+    // All 21 rows of the sheet "Vehicle Maintenance Medium- Empathy Mapping",
+    // tab "Features Listing (22.04.2026)", wording condensed; statements as in
+    // the empathy-map tab (21.04.2026), so Thinks 01 reads 10,000 km (decision
+    // 05-insights.md). Drive Wise features follow 07-ideation.md 2.2; the
+    // true/false is "designed", matching the importance map below.
+    {
+      type: "trace",
+      title: ["From signal to feature", "21 statements, 12 features"],
+      side: "Every empathy-map statement was traced in four steps: the **signal** it shows, the **need** behind it, the **opportunity** it opens and the **feature** that answers it. The ideas were then merged into **12 Drive Wise features**.",
+      rows: [
+        { pos: "Says 01", statement: "I own a two-wheeler and a four-wheeler.", signal: "Owns a vehicle", need: "To register the vehicle", opportunity: "List the vehicle's details", idea: "Company, model, purchase year", features: [["Registration lookup", true]] },
+        { pos: "Says 03", statement: "On average I drive 70 km a week.", signal: "Drives in the city, neither short nor long distances", need: "Knowing every ride will be comfortable and safe", opportunity: "A heads-up to the owner", idea: "Selective notifications on certain triggers", features: [["Selective reminders", true]] },
+        { pos: "Says 04", statement: "I observe for a few days and then go to the mechanic, if something feels wrong.", signal: "Observes for days, then goes to the mechanic", need: "Not having to carry the vehicle in mind", opportunity: "Updates on what matters, at regular intervals", idea: "Notify when something can go wrong, and when all is well", features: [["Selective reminders", true]] },
+        { pos: "Says 05", statement: "I'd be willing to get a service, at nominal pay, which keeps me updated on my vehicle's condition.", signal: "Willing to pay for a service", need: "Updates on the vehicle's condition; no unnoticed problems", opportunity: "There is time in the day for maintenance", idea: "Carefully planned notifications", features: [["Selective reminders", true]] },
+        { pos: "Says 06", statement: "I call the service centre and get my vehicle picked up from my place.", signal: "Calls for pick-up and scheduling", need: "Someone to pick up the vehicle, saving effort and time", opportunity: "Services through tie-ups; one ecosystem", idea: "Contact with service centres and mechanics; one platform from start to end", features: [["Pick-up and payment", true]] },
+        { pos: "Thinks 01", statement: "Servicing should be done at 10,000 km, 6 months or at a time of excessive noise, whichever happens first.", signal: "Follows a milestone set for every vehicle, not this one", need: "Personal milestones", opportunity: "Personalised parameters", idea: "Individual data input, a personalised outcome for each vehicle", features: [["Short questionnaire", true]] },
+        { pos: "Thinks 02", statement: "Whatever reason the mechanic is giving to replace the part is justified.", signal: "The mechanic holds the owner's decision", need: "An independent, trusted guide", opportunity: "Detailed, specific information backed with sources", idea: "Maintenance factors and current condition, with sources", features: [["Priced booking", true]] },
+        { pos: "Thinks 03", statement: "I'll get the best personalised service from a local mechanic or brand service centre.", signal: "Blind trust in mechanics and service centres", need: "Awareness with trust", opportunity: "Transparency", idea: "The vehicle's real situation; direction to service centres, mechanics or DIY", features: [["Priced booking", true]] },
+        { pos: "Thinks 04", statement: "What if the vehicle breaks down in the middle of a trip?", signal: "Unpredictable situations", need: "Awareness of the vehicle's condition", opportunity: "Nudge the owner's behaviour", idea: "Real-time statistics of the vehicle", features: [["Health score", true]] },
+        { pos: "Thinks 05", statement: "I should be able to easily access the user manual and guide.", signal: "Wants to know the vehicle's features when something unknown happens", need: "Easy access to the manual and guide", opportunity: "Flexible information", idea: "The user manual and guide; blogs for basic knowledge", features: [["Manual and DIY help", false]] },
+        { pos: "Thinks 06", statement: "It'd be helpful if I can check up on multiple vehicles at the same time.", signal: "Operates several vehicles", need: "Every vehicle's condition in one place", opportunity: "Less repetitive work and time", idea: "A section for owners of several vehicles, like businesses and agencies", features: [["More vehicles, sensors", false]] },
+        { pos: "Does 01", statement: "I check the tyre pressure daily.", signal: "Easy, crucial checks are done daily", need: "Knowing the owner's own checks suit the vehicle", opportunity: "Reassurance; honest facts that build trust", idea: "A quick glance at the stats before a trip", features: [["Health score", true]] },
+        { pos: "Does 02", statement: "I check the brake oil only when I go for servicing.", signal: "Important factors are neglected", need: "Not missing what matters for the vehicle", opportunity: "Take care of neglected factors", idea: "Highlight the parameters the owner tends to neglect", features: [["Selective reminders", true]] },
+        { pos: "Does 03", statement: "I keep a record of bills and receipts from the service centre.", signal: "Effort and memory to keep records", need: "Automated, digital records", opportunity: "Automation and digitisation", idea: "Records entered with less effort; future scheduling", features: [["Digital records", false]] },
+        { pos: "Does 04", statement: "I take my vehicle to the mechanic if any unfamiliar warning appears.", signal: "Unfamiliar situations cost time and a trip to the mechanic", need: "Handling unfamiliar situations without physical or mental strain", opportunity: "Predict unfamiliar conditions, and solve them", idea: "Data entry at regular intervals; solutions for problems of every scale", features: [["Short questionnaire", true], ["Decode warnings", true], ["Likely cause", true]] },
+        { pos: "Feels 01", statement: "The vehicle is moving roughly.", signal: "Rough, subjective ways to describe the condition", need: "Objective stats about the vehicle", opportunity: "Photos and sound of the vehicle for more personal results", idea: "AI integration", features: [["Decode warnings", true], ["Likely cause", true], ["More vehicles, sensors", false]] },
+        { pos: "Feels 02", statement: "It's not that serious; my vehicle is going to work fine without getting checked.", signal: "Unaware of what happens when the vehicle is not at its best", need: "Awareness of the consequences", opportunity: "Create awareness", idea: "Information in light, short pieces", features: [["Decode warnings", true]] },
+        { pos: "Feels 03", statement: "I feel frustrated when it takes time at the service centre.", signal: "Time at the service centre is wasted", need: "Productive use of time", opportunity: "Guide the owner through the servicing", idea: "Live status of the servicing; a post-service check-up", features: [["Live tracking", true]] },
+        { pos: "Feels 04", statement: "I don't feel sure if the parts changed were actually required or not.", signal: "Unsure of the service", need: "Reliable information and feedback", opportunity: "Detailed, specific information backed with sources", idea: "Step-by-step service and parts breakdown, estimated price, quality assurance", features: [["Priced booking", true]] },
+        { pos: "Feels 05", statement: "The final cost is more than the initial estimate.", signal: "Unpredictable extra spending", need: "A close estimate of the cost", opportunity: "Assure the owner of the cost", idea: "Pricing from market analysis, cross-checked with local and online data", features: [["Priced booking", true]] },
+        { pos: "Feels 06", statement: "I am being overcharged for the service.", signal: "Lack of trust in the service provider", need: "Trust built on facts and sources", opportunity: "Transparency", idea: "Step-by-step service breakdown with market sources", features: [["Priced booking", true]] },
+      ],
+      foot: "From the sheet \"Vehicle Maintenance Medium- Empathy Mapping\": statements from the empathy map (21.04.2026), steps from the Features Listing (22.04.2026), wording condensed. Five more ideas in the sheet (progressive questionnaire, live-updating health score, servicing feedback, remove a listed vehicle, emergency assistance) joined the same 12 features. Filled dot: designed (9). Hollow: not designed yet (3).",
+    },
+
     {
       type: "map",
       title: ["Importance vs difficulty", "what is designed now"],
@@ -325,6 +362,82 @@ export const driveWiseLongCaseStudy = {
       ],
     },
 
+    // Restored 2026-10-07 (approved in 07-ideation.md 2.6).
+    {
+      type: "sitemap",
+      title: ["Information architecture", "every screen, every step"],
+      side: "A sitemap of all the designed screens, in the order the owner meets them. Numbers are the screen numbers in the Figma file (00 to 17); the order follows the logic model above: **information, intelligence, communication.**",
+      root: "Drive Wise",
+      // Read from the Figma page "Drive Wise" (file XnFEDRfYZhONOXCfCEvygR),
+      // frame names and on-screen text, 2026-10-07. Detail lines use the
+      // screens' own wording where it exists.
+      sections: [
+        {
+          name: "Onboarding",
+          screens: [
+            { code: "00", name: "Phone home screen", detail: "The Drive Wise app icon" },
+            { code: "01", name: "Splash screen", detail: "Animated logo" },
+            { code: "02", name: "Walkthrough", steps: ["Unseen problems", "Unnecessary spending", "Know better", "Drive Wise: Get started"] },
+            { code: "03", name: "Welcome", detail: "Sign in or Create account" },
+            { code: "03", name: "Sign in", detail: "Phone number, password" },
+            { code: "03", name: "Account type", detail: "Individual or Fleet" },
+            { code: "03", name: "Create account", steps: ["Name, phone number, password", "Vehicle registration number"] },
+            { code: "03", name: "Fetching your details" },
+            { code: "04", name: "Confirmation", detail: "\"Yes, this is my vehicle\" or \"Not your vehicle?\"" },
+          ],
+        },
+        {
+          name: "Vehicle profile",
+          screens: [
+            { code: "05", name: "Questionnaire, 6 steps", detail: "A live score after every answer; Custom input or Track activity", steps: ["Usage behaviour: how often, how far, driving style", "Environment: where, and the roads", "Parking", "Maintenance", "Key components", "Risk indicator: accidents, water exposure"] },
+            { code: "05", name: "View status", detail: "Leads to Status" },
+          ],
+        },
+        {
+          name: "Home",
+          screens: [
+            { code: "13", name: "Notification permission", detail: "Allow notifications" },
+            { code: "15", name: "Location permission", detail: "Find services near you" },
+            { code: "16", name: "Daily status", detail: "\"Your vehicle needs attention\", score cards" },
+            { code: "16", name: "Servicing status", detail: "\"Your vehicle is undergoing servicing\", Track service progress" },
+            { code: "14", name: "Notifications" },
+          ],
+        },
+        {
+          name: "Status",
+          screens: [
+            { code: "06", name: "Top issue", detail: "Breakdown Risk, Take action" },
+            { code: "06", name: "Six scores", steps: ["Usage wear", "Road impact", "Service care", "Breakdown risk", "Extra spend", "Vehicle life"] },
+            { code: "06", name: "Helpful resources", steps: ["User manual guide", "General guide", "Explore guide"] },
+          ],
+        },
+        {
+          name: "Breakdown Risk",
+          accent: true,
+          screens: [
+            { code: "17", name: "Decode dashboard warnings", steps: ["Select warning icons", "System analyses the combination", "Get clear solutions"] },
+            { code: "17", name: "Select warning icons", detail: "Icon grid" },
+            { code: "17", name: "Choose the likely issue", detail: "e.g. fuel gauge blockage, air filter replacement" },
+            { code: "07", name: "Breakdown risk report", steps: ["Active symptoms", "Sensor-based anomalies", "Historical risk factors", "Dashboard warning signal"] },
+            { code: "07", name: "Likely cause detected", detail: "Four readings with a percentage each" },
+            { code: "07", name: "Get service", detail: "Leads to Service; or See report, Helpful guidance" },
+          ],
+        },
+        {
+          name: "Service",
+          screens: [
+            { code: "08", name: "Service providers", detail: "Categories; nearby providers with rating, distance, hours" },
+            { code: "08", name: "Service detail", detail: "Every job and its price, contact, location; Book now" },
+            { code: "09", name: "Choose a time", steps: ["Pick-up date", "Pick-up time", "Drop-off estimate"] },
+            { code: "09", name: "Checkout", detail: "Pick-up and drop-off address, price break-up; Confirm pick-up" },
+            { code: "10", name: "Payment" },
+            { code: "11", name: "Booked successfully", detail: "Booking details, Back to home" },
+            { code: "12", name: "Track servicing", steps: ["Driver assigned", "Arrival at pick-up", "Reached service centre", "Service start, each job ticked", "Left for drop-off", "Drop-off completed"] },
+          ],
+        },
+      ],
+      foot: "Breakdown Risk screens are titled \"Failure Probablity Index\" in the current design; Testing renames them. Questionnaire steps 3 to 5 are designed as tabs; steps 1, 2 and 6 in full. The full three-layer IA with every data field is Behance frame 5.1.",
+    },
     // -------------------------------------------------------------- 08 DESIGN
     {
       type: "headline",
@@ -362,19 +475,67 @@ export const driveWiseLongCaseStudy = {
         { tag: "Track servicing", src: `${SCREENS}/screen-tracking.png`, alt: "Tracking each step of the service with a time." },
       ],
     },
+    // User flow + walkthrough, one module (Sukhman, 2026-10-07: "represent
+    // it like a flow chart ... place and direct both these sections like
+    // User Flow and Prototype video together"). The flow chart follows the
+    // designed screens and the Figma user flow (Behance frame 6.2); every
+    // branch is a real choice on a screen. Rows run top to bottom; columns:
+    // l = left branch, c = main path, r = right branch.
     {
-      type: "walkthrough",
-      title: ["Walkthrough", "home to tracking"],
+      type: "userFlow",
+      title: ["User flow", "first launch to drop-off"],
+      side: "One owner, from opening the app to the vehicle coming back. The flow chart shows every decision; the video plays the same journey on the designed screens.",
       video: WALKTHROUGH_VIDEO,
       prototype: PROTOTYPE,
-      screens: [
-        ["Home", "\"Your vehicle needs attention\""],
-        ["Status", "Six scores in plain words"],
-        ["Breakdown Risk", "Likely cause and what to do"],
-        ["Service Detail", "Every job and its price"],
-        ["Track Servicing", "Each step with a time"],
+      nodes: [
+        { id: "start", row: 0, col: "c", kind: "start", text: "Open Drive Wise" },
+        { id: "intro", row: 1, col: "c", text: "Splash, walkthrough (4 slides)" },
+        { id: "acct", row: 2, col: "c", kind: "decision", text: "Have an account?" },
+        { id: "signin", row: 2, col: "r", text: "Sign in" },
+        { id: "type", row: 3, col: "c", kind: "decision", text: "Individual or fleet?" },
+        { id: "fleet", row: 3, col: "l", kind: "off", text: "Fleet set-up\n(not designed)" },
+        { id: "create", row: 4, col: "c", text: "Name, phone, password" },
+        { id: "reg", row: 5, col: "c", text: "Registration number" },
+        { id: "fetch", row: 6, col: "c", text: "Fetching your details" },
+        { id: "mine", row: 7, col: "c", kind: "decision", text: "Is this your vehicle?" },
+        { id: "quiz", row: 8, col: "c", text: "Questionnaire, 6 steps" },
+        { id: "status", row: 9, col: "c", text: "Status: six scores, top issue" },
+        { id: "act", row: 10, col: "c", kind: "decision", text: "Take action?" },
+        { id: "home", row: 10, col: "r", text: "Home: daily status" },
+        { id: "decode", row: 11, col: "r", text: "Decode warnings:\nselect icons" },
+        { id: "cause", row: 11, col: "c", accent: true, text: "Likely cause detected" },
+        { id: "get", row: 12, col: "c", text: "Get service" },
+        { id: "prov", row: 13, col: "c", text: "Providers, service detail" },
+        { id: "pay", row: 14, col: "c", text: "Pick-up time, checkout, payment" },
+        { id: "booked", row: 15, col: "c", text: "Booked successfully" },
+        { id: "track", row: 16, col: "c", text: "Track servicing, step by step" },
+        { id: "end", row: 17, col: "c", kind: "end", text: "Drop-off completed" },
       ],
+      edges: [
+        ["start", "intro"], ["intro", "acct"],
+        ["acct", "type", "No"], ["acct", "signin", "Yes"], ["signin", "home"],
+        ["type", "create", "Individual"], ["type", "fleet", "Fleet"],
+        ["create", "reg"], ["reg", "fetch"], ["fetch", "mine"],
+        ["mine", "quiz", "Yes"], ["mine", "reg", "No", "loopLeft"],
+        ["quiz", "status"], ["status", "act"],
+        ["act", "cause", "Yes"], ["act", "home", "Not now"],
+        ["home", "decode"], ["decode", "cause"],
+        ["cause", "get"], ["get", "prov"], ["prov", "pay"], ["pay", "booked"], ["booked", "track"], ["track", "end"],
+      ],
+      foot: "Drawn from the designed screens and the Figma user flow (Behance frame 6.2). Fleet is offered on the Account type screen but its set-up was not designed.",
     },
+    // Restored 2026-10-07 (approved in 08-design.md 2.6; sources in 04-research.md).
+    {
+      type: "standards",
+      title: ["Standards check", "applied after, not before"],
+      side: "Both standards were reviewed in Research. They **did not shape the screens**; the finished screens were checked against them afterwards, and the findings sit in Testing.",
+      items: [
+        { name: "ISO 15008", scope: "In-vehicle visual displays: legibility of text and symbols shown to the driver.", use: "A phone app is outside its scope; used as a reference for glanceable readings." },
+        { name: "ISO 26262", scope: "Road vehicles: functional safety of electrical and electronic systems.", use: "Drive Wise is not a safety system, so its predictions are presented as advice, never as a certified diagnosis." },
+      ],
+      foot: "Neither standard covers a phone app directly.",
+    },
+
     {
       type: "system",
       title: ["Design system", "small on purpose"],

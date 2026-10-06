@@ -691,58 +691,153 @@ function Tiles({ m }) {
   );
 }
 
-function Walkthrough({ m }) {
+// User flow + walkthrough in one module (Sukhman, 2026-10-07). Left: a
+// traditional flow chart drawn as SVG from m.nodes / m.edges (terminators,
+// screens, decision diamonds, hairline arrows). Right: the walkthrough video
+// in its framed accent panel, kept in view while the chart scrolls past.
+const FC = { W: 640, rowH: 74, y0: 34, h: 40, dh: 56, x: { l: 88, c: 320, r: 548 }, w: { l: 156, c: 250, r: 172 }, dw: 214 };
+
+function fcBox(n) {
+  const cx = FC.x[n.col];
+  const cy = FC.y0 + n.row * FC.rowH;
+  const dec = n.kind === "decision";
+  const w = dec ? FC.dw : FC.w[n.col];
+  const h = dec ? FC.dh : FC.h;
+  return { cx, cy, x1: cx - w / 2, x2: cx + w / 2, y1: cy - h / 2, y2: cy + h / 2, w, h };
+}
+
+function FlowChart({ nodes, edges }) {
+  const byId = Object.fromEntries(nodes.map((n) => [n.id, { ...n, b: fcBox(n) }]));
+  const H = FC.y0 + Math.max(...nodes.map((n) => n.row)) * FC.rowH + FC.h;
+  const paths = edges.map(([from, to, label, route], i) => {
+    const a = byId[from].b;
+    const b = byId[to].b;
+    let d;
+    let lx;
+    let ly;
+    let anchor = "start";
+    if (route === "loopLeft") {
+      const lane = Math.min(a.x1, b.x1) - 34;
+      d = `M${a.x1},${a.cy} H${lane} V${b.cy} H${b.x1 - 2}`;
+      lx = lane - 6;
+      ly = (a.cy + b.cy) / 2;
+      anchor = "end";
+    } else if (byId[from].row === byId[to].row) {
+      const right = b.cx > a.cx;
+      const sx = right ? a.x2 : a.x1;
+      const ex = right ? b.x1 - 2 : b.x2 + 2;
+      d = `M${sx},${a.cy} H${ex}`;
+      lx = (sx + ex) / 2;
+      ly = a.cy - 7;
+      anchor = "middle";
+    } else {
+      d = `M${a.cx},${a.y2} V${b.y1 - 2}`;
+      lx = a.cx + 7;
+      ly = (a.y2 + b.y1) / 2 + 4;
+    }
+    return (
+      <g key={i}>
+        <path d={d} className={s.fcLine} markerEnd="url(#fcArrow)" />
+        {label && (
+          <text x={lx} y={ly} textAnchor={anchor} className={s.fcLabel}>
+            {label}
+          </text>
+        )}
+      </g>
+    );
+  });
+  return (
+    <svg viewBox={`0 0 ${FC.W} ${H}`} className={s.fcSvg} role="img" aria-label="User flow chart">
+      <defs>
+        <marker id="fcArrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L8,4 L0,8 z" fill="#7a7a7a" />
+        </marker>
+      </defs>
+      {paths}
+      {nodes.map((n) => {
+        const b = byId[n.id].b;
+        const lines = n.text.split("\n");
+        const cls = n.accent ? s.fcAccent : n.kind === "start" || n.kind === "end" ? s.fcTerm : n.kind === "decision" ? s.fcDec : n.kind === "off" ? s.fcOff : s.fcStep;
+        const shape =
+          n.kind === "decision" ? (
+            <polygon points={`${b.cx},${b.y1} ${b.x2},${b.cy} ${b.cx},${b.y2} ${b.x1},${b.cy}`} />
+          ) : (
+            <rect x={b.x1} y={b.y1} width={b.w} height={b.h} rx={n.kind === "start" || n.kind === "end" ? b.h / 2 : 0} />
+          );
+        return (
+          <g key={n.id} className={cls}>
+            {shape}
+            <text x={b.cx} y={b.cy - ((lines.length - 1) * 15) / 2 + 4.5} textAnchor="middle">
+              {lines.map((t, k) => (
+                <tspan key={k} x={b.cx} dy={k ? 15 : 0}>
+                  {t}
+                </tspan>
+              ))}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+function UserFlow({ m }) {
   const { video, prototype } = m;
   const [showPrototype, setShowPrototype] = useState(false);
-
   return (
-    <div className={cx(s.g2, s.flushCols)}>
-      <div className={s.leftCol}>
-        <Title t={m.title} />
-        <div style={{ marginTop: 70 }}>
-          {m.screens.map(([n, t], i) => (
-            <div key={n} className={s.wRow}>
-              <span className={s.ghost}>{`//${pad2(i + 1)}`}</span>
-              <div>
-                <div className={s.wName}>{n}</div>
-                <div className={s.cap} style={{ marginTop: 3 }}>
-                  {t}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        {prototype && (
-          <div className={s.wActions}>
-            <button type="button" className={s.btn} onClick={() => setShowPrototype((x) => !x)}>
-              {showPrototype ? "Back to the walkthrough" : prototype.buttonLabel}
-            </button>
-            <a className={s.tlink} href={prototype.openHref} target="_blank" rel="noopener noreferrer">
-              Open in Figma ›
-            </a>
+    <>
+      <TitleRow m={m} />
+      <div className={cx(s.g2, s.ufGrid)}>
+        <div>
+          <div className={cx(s.scrollHint, s.fcHint)} aria-hidden="true">
+            Scroll sideways →
           </div>
-        )}
-        {video.credit && (
-          <p className={s.small} style={{ marginTop: 20 }}>
-            {video.credit}
-          </p>
-        )}
-      </div>
-      <div className={cx(s.panel, s.wPanel)}>
-        <Tag dark corner>
-          {showPrototype ? "Prototype" : "Walkthrough video"}
-        </Tag>
-        {/* A #F6F6F6 mat (the video's own background) inset evenly in the
-            blue panel, so the video reads as a framed picture, not a patch */}
-        <div className={s.mat}>
-          {showPrototype && prototype ? (
-            <iframe src={prototype.embedSrc} title="Drive Wise prototype (Figma)" className={s.proto} allowFullScreen />
-          ) : (
-            <AutoVideo video={video} className={s.video} />
+          <div className={s.fcScroll}>
+            <FlowChart nodes={m.nodes} edges={m.edges} />
+          </div>
+          {/* the same journey as text, for screen readers */}
+          <ol className="sr-only">
+            {m.nodes.map((n) => (
+              <li key={n.id}>{n.text.replace("\n", " ")}</li>
+            ))}
+          </ol>
+        </div>
+        <div className={s.ufSide}>
+          <div className={cx(s.panel, s.wPanel)}>
+            <Tag dark corner>
+              {showPrototype ? "Prototype" : "Walkthrough video"}
+            </Tag>
+            <div className={s.mat}>
+              {showPrototype && prototype ? (
+                <iframe src={prototype.embedSrc} title="Drive Wise prototype (Figma)" className={s.proto} allowFullScreen />
+              ) : (
+                <AutoVideo video={video} className={s.video} />
+              )}
+            </div>
+          </div>
+          {prototype && (
+            <div className={s.wActions}>
+              <button type="button" className={s.btn} onClick={() => setShowPrototype((x) => !x)}>
+                {showPrototype ? "Back to the walkthrough" : prototype.buttonLabel}
+              </button>
+              <a className={s.tlink} href={prototype.openHref} target="_blank" rel="noopener noreferrer">
+                Open in Figma ›
+              </a>
+            </div>
+          )}
+          {video.credit && (
+            <p className={s.small} style={{ marginTop: 20 }}>
+              {video.credit}
+            </p>
           )}
         </div>
       </div>
-    </div>
+      {m.foot && (
+        <p className={s.small} style={{ marginTop: 40 }}>
+          {rich(m.foot)}
+        </p>
+      )}
+    </>
   );
 }
 
@@ -955,6 +1050,147 @@ function Learnings({ m }) {
   );
 }
 
+// ---------------------------------------------------------- restored (2026-10-07)
+// Signal-to-feature trace, Information architecture, User flow and
+// Standards check were approved stage content left out of the first Deep
+// Dive build; restored in the Deep Dive style.
+
+// Information architecture as a classic sitemap tree (Sukhman, 2026-10-07:
+// "like the traditional UI/UX case studies, like a flow chart", then
+// "detailed to the very step"): the app at the top, a bus line to its
+// sections, each section's screens hanging from a spine, and a screen's own
+// steps listed inside its tile. Tiles are fills (no outlines); connectors are
+// hairlines. Phones: the branches stack.
+function Sitemap({ m }) {
+  const n = m.sections.length;
+  return (
+    <>
+      <TitleRow m={m} />
+      <div className={s.iaTree} style={{ "--n": n }}>
+        <div className={s.iaRoot}>{m.root}</div>
+        <div className={s.iaStem} aria-hidden="true" />
+        <ol className={s.iaCols} aria-label={`${m.root}: ${n} sections`}>
+          {m.sections.map((sec, i) => (
+            <li key={sec.name} className={s.iaCol}>
+              <div className={cx(s.iaSec, sec.accent && s.iaSecAccent)}>
+                <span className={s.iaNum}>{pad2(i + 1)}</span>
+                {sec.name}
+              </div>
+              <ul className={s.iaKids}>
+                {sec.screens.map((x, k) => (
+                  <li key={k}>
+                    <div className={s.iaScr}>
+                      <span className={s.iaCode}>{x.code}</span>
+                      {x.name}
+                    </div>
+                    {x.detail && <div className={s.iaDetail}>{x.detail}</div>}
+                    {x.steps && (
+                      <ol className={s.iaSteps}>
+                        {x.steps.map((st) => (
+                          <li key={st}>{st}</li>
+                        ))}
+                      </ol>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ol>
+      </div>
+      {m.foot && (
+        <p className={s.small} style={{ marginTop: 40 }}>
+          {rich(m.foot)}
+        </p>
+      )}
+    </>
+  );
+}
+
+// Signal → need → opportunity → feature: one wide table that scrolls
+// sideways (Sukhman, 2026-10-07). The statement column stays pinned while
+// the steps scroll past it.
+function Trace({ m }) {
+  const heads = ["Empathy statement", "Signal", "Need", "Opportunity", "Feature idea", "Drive Wise feature"];
+  return (
+    <>
+      <TitleRow m={m} />
+      <div className={s.scrollHint} aria-hidden="true">
+        Scroll sideways →
+      </div>
+      <div className={s.trScroll} tabIndex={0} role="region" aria-label="Signal to feature table, scrolls sideways">
+        <table className={s.trTable}>
+          <thead>
+            <tr>
+              <th className={s.trPin}>#</th>
+              {heads.map((h, i) => (
+                <th key={h} className={cx(i === 0 && s.trPin2, i === heads.length - 1 && s.accent)}>
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {m.rows.map((r, i) => (
+              <tr key={i}>
+                <td className={cx(s.trPin, s.trN)}>{pad2(i + 1)}</td>
+                <td className={s.trPin2}>
+                  <div className={s.trStmt}>{r.statement}</div>
+                  <div className={s.small}>{r.pos}</div>
+                </td>
+                <td>{r.signal}</td>
+                <td>{r.need}</td>
+                <td>{r.opportunity}</td>
+                <td>{r.idea}</td>
+                <td>
+                  {r.features.map(([name, designed]) => (
+                    <div key={name} className={s.trFeat}>
+                      <i className={cx(s.dot, designed ? s.dot_y : s.dot_n)} aria-hidden="true" />
+                      {name}
+                      {!designed && <span className="sr-only"> (not designed yet)</span>}
+                    </div>
+                  ))}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {m.foot && (
+        <p className={s.small} style={{ marginTop: 26 }}>
+          {rich(m.foot)}
+        </p>
+      )}
+    </>
+  );
+}
+
+function Standards({ m }) {
+  return (
+    <>
+      <TitleRow m={m} />
+      <div className={cx(s.g2, s.stdGrid)}>
+        {m.items.map((x) => (
+          <div key={x.name} className={s.step}>
+            <div className={s.stdName}>{x.name}</div>
+            <p className={s.stepTx} style={{ marginTop: 30, maxWidth: 360 }}>
+              <b>Covers:</b> {x.scope}
+            </p>
+            <p className={s.stepTx} style={{ maxWidth: 360 }}>
+              <b>How it was used:</b> {x.use}
+            </p>
+          </div>
+        ))}
+      </div>
+      {m.foot && (
+        <p className={s.small} style={{ marginTop: 60 }}>
+          {rich(m.foot)}
+        </p>
+      )}
+    </>
+  );
+}
+
 const RENDER = {
   headline: Headline,
   steps: Steps,
@@ -969,13 +1205,16 @@ const RENDER = {
   logic: Logic,
   feature: Feature,
   tiles: Tiles,
-  walkthrough: Walkthrough,
+  userFlow: UserFlow,
   system: System,
   fixes: Fixes,
   scenario: Scenario,
   outcome: Outcome,
   arcs: Arcs,
   learnings: Learnings,
+  sitemap: Sitemap,
+  standards: Standards,
+  trace: Trace,
 };
 
 // Modules that open a chapter keep the full 120px bottom; follow-on
