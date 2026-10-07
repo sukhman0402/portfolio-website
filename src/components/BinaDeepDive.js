@@ -385,9 +385,12 @@ function Audit({ m }) {
   return (
     <Mod tone={m.tone}>
       <div className={c("panel")}>
-        <h3 className={c("stmt")}>
-          <Head parts={m.statement} />
-        </h3>
+        <div className={c("ctx-head")}>
+          <h3 className={c("stmt")}>
+            <Head parts={m.statement} />
+          </h3>
+          {m.side && <p className={c("side")}>{rich(m.side)}</p>}
+        </div>
         <p className={c("mono")} style={{ marginTop: 64 }}>
           {m.label}
         </p>
@@ -464,7 +467,7 @@ function Context({ m }) {
 function Literature({ m }) {
   return (
     <Mod tone={m.tone}>
-      <p className={c("mono")}>● {m.eyebrow}</p>
+      {m.head ? <HeadRow head={m.head} side={m.side} /> : <p className={c("mono")}>● {m.eyebrow}</p>}
       <div className={c("lit")}>
         {m.cards.map((cd, i) => (
           <div key={cd.q} className={c("dc", `dc${i}`)}>
@@ -584,9 +587,7 @@ function Lanes({ m }) {
 function Insights({ m }) {
   return (
     <Mod tone={m.tone}>
-      <h3 className={c("h2")}>
-        <Head parts={m.head} />
-      </h3>
+      <HeadRow head={m.head} side={m.side} />
       <div className={c("ins3")}>
         {m.cards.map((cd, i) => (
           <div key={cd.ins} className={c("ins", cd.on && "on")} style={{ background: "var(--card)" }}>
@@ -654,8 +655,11 @@ function Criteria({ m }) {
 function GradStatement({ m }) {
   return (
     <Mod tone={m.tone}>
-      <p className={c("mono")}>● {m.eyebrow}</p>
-      <p className={c("gradw")} style={{ marginTop: 40 }}>
+      {m.head && <HeadRow head={m.head} side={m.side} />}
+      <p className={c("mono")} style={m.head ? { marginTop: 50 } : undefined}>
+        ● {m.eyebrow}
+      </p>
+      <p className={c("gradw")} style={{ marginTop: 28 }}>
         {m.word}
       </p>
       <div className={c("tags")}>
@@ -666,9 +670,11 @@ function GradStatement({ m }) {
       <h3 className={c("h2")} style={{ marginTop: 60, maxWidth: 1000 }}>
         <Head parts={m.statement} />
       </h3>
-      <p className={c("side")} style={{ marginTop: 22, maxWidth: 520 }}>
-        {rich(m.side)}
-      </p>
+      {!m.head && (
+        <p className={c("side")} style={{ marginTop: 22, maxWidth: 520 }}>
+          {rich(m.side)}
+        </p>
+      )}
     </Mod>
   );
 }
@@ -964,6 +970,7 @@ function Zones({ m }) {
     <Mod tone={m.tone}>
       <HeadRow head={m.head} side={m.side} />
       <div className={c("zones")}>
+        <div className={c("views")}>
         <svg viewBox="0 0 640 400" fill="none" role="img" aria-label="Top view of the bin: a green person zone in front, two grey floor zones to the sides, nothing behind.">
           <rect x="0" y="0" width="640" height="400" rx="16" fill="#fff" />
           <path d="M320 300 L250 70 L390 70 Z" fill="rgba(63,174,90,.22)" stroke="#3fae5a" />
@@ -983,6 +990,24 @@ function Zones({ m }) {
           <text x="150" y="206" fill="#999" fontSize="10" textAnchor="end">SIDE SENSOR, 30° LEFT</text>
           <text x="320" y="392" fill="#999" fontSize="10" textAnchor="middle">BEHIND THE BIN: NOT COVERED</text>
         </svg>
+        {m.front && (
+          <svg className={c("front")} viewBox="0 0 640 300" fill="none" role="img" aria-label={`Front view of the bin: ${m.front.height} tall, three sensors ${m.front.sensors}.`}>
+            <rect x="0" y="0" width="640" height="300" rx="16" fill="#fff" />
+            <text x="24" y="34" fill="#74786f" fontSize="10">FRONT VIEW</text>
+            <path d="M40 262H600" stroke="#9a9d95" />
+            <path d="M260 52h120l-4 14H264z" stroke="#3fae5a" strokeWidth="1.4" />
+            <path d="M256 66h128l-14 196H270z" stroke="#3fae5a" strokeWidth="1.4" />
+            <circle cx="290" cy="244" r="5" fill="#111" />
+            <circle cx="320" cy="244" r="5" fill="#111" />
+            <circle cx="350" cy="244" r="5" fill="#111" />
+            <path d="M430 52V262M424 52h12M424 262h12" stroke="#111" />
+            <text x="446" y="160" fill="#111" fontSize="11">{m.front.height.toUpperCase()}</text>
+            <path d="M210 244V262M204 244h12M204 262h12" stroke="#026d00" />
+            <text x="196" y="257" fill="#026d00" fontSize="11" textAnchor="end">{m.front.sensors.toUpperCase()}</text>
+            <text x="320" y="290" fill="#74786f" fontSize="10" textAnchor="middle">THREE SENSORS ON THE FRONT FACE · SCHEMATIC, NOT TO SCALE</text>
+          </svg>
+        )}
+        </div>
         <div className={c("zkey")}>
           {m.key.map(([b, t]) => (
             <p key={b}>
@@ -1025,13 +1050,21 @@ function Spec({ m }) {
   return (
     <Mod tone={m.tone}>
       <HeadRow head={m.head} side={m.side} />
-      <div className={c("spec2")}>
-        {m.items.map((it) => (
-          <div key={it.title}>
-            <h4 className={c("h6")}>{it.title}</h4>
-            <p style={it.big ? { color: "var(--ink)", fontSize: 24, fontWeight: 300, letterSpacing: "-.5px" } : undefined}>{it.text}</p>
-          </div>
-        ))}
+      <div className={c(m.img && "specph")}>
+        <div className={c("spec2")}>
+          {m.items.map((it) => (
+            <div key={it.title}>
+              <h4 className={c("h6")}>{it.title}</h4>
+              <p style={it.big ? { color: "var(--ink)", fontSize: 24, fontWeight: 300, letterSpacing: "-.5px" } : undefined}>{it.text}</p>
+            </div>
+          ))}
+        </div>
+        {m.img && (
+          <figure className={c("inside")}>
+            <Image src={m.img.src} alt={m.img.alt} width={m.img.width} height={m.img.height} sizes="(min-width: 768px) 380px, 100vw" />
+            <figcaption className={c("mono")}>{m.caption}</figcaption>
+          </figure>
+        )}
       </div>
     </Mod>
   );
@@ -1111,6 +1144,37 @@ function Tests({ m }) {
       </div>
       <div className={c("btnrow")}>
         <Btn href={m.link.href} label={m.link.label} ghost />
+      </div>
+    </Mod>
+  );
+}
+
+function Assembly({ m }) {
+  return (
+    <Mod tone={m.tone}>
+      <HeadRow head={m.head} side={m.side} />
+      <div className={c("asm")}>
+        <ol className={c("asmflow")} aria-label="Assembly stages">
+          {m.flow.map((f, i) => (
+            <li key={f}>
+              <div className={c("pill", i === m.flow.length - 1 && "pillOn")}>{f}</div>
+              {i < m.flow.length - 1 && <div className={c("vconn")} aria-hidden="true" />}
+            </li>
+          ))}
+        </ol>
+        <ol className={c("asmsteps")}>
+          {m.steps.map((st, i) => (
+            <li key={st.title} className={c("asmstep", st.on && "on")}>
+              <span className={c("mono")}>Step {pad2(i + 1)}</span>
+              <h4 className={c("h6")}>{st.title}</h4>
+              <ul>
+                {st.items.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ol>
       </div>
     </Mod>
   );
@@ -1354,6 +1418,7 @@ function Achieved({ m }) {
           <p className={c("b")}>
             <Head parts={m.line} />
           </p>
+          {m.note && <p className={c("achn")}>{m.note}</p>}
         </div>
         <div className={c("critg")}>
           {m.crit.map((cr, i) => (
@@ -1458,7 +1523,7 @@ function SDG({ m }) {
       <HeadRow head={m.head} side={m.side} />
       <div className={c("sdg")}>
         {m.goals.map((g) => (
-          <div key={g.title} className={c("sg", g.weak ? "weak" : "soft")}>
+          <div key={g.title} className={c("sg")}>
             <Image src={g.img.src} alt={g.img.alt} width={g.img.width} height={g.img.height} sizes="88px" />
             <h4 className={c("h5")}>{g.title}</h4>
             <span className={c("mono")}>{g.target}</span>
@@ -1557,6 +1622,7 @@ const MODULES = {
   brand: Brand,
   tests: Tests,
   code: Code,
+  assembly: Assembly,
   pairs: Pairs,
   incident: Incident,
   checks: Checks,
@@ -1582,3 +1648,4 @@ export default function BinaDeepDive({ data }) {
     </div>
   );
 }
+

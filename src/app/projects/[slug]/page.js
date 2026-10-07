@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import ProjectHeroTop from "@/components/ProjectHeroTop";
 import ProjectTopics from "@/components/ProjectTopics";
+import ProjectPager from "@/components/ProjectPager";
 import Footer from "@/components/Footer";
 import { projects, getProjectBySlug } from "@/lib/data";
 
@@ -41,8 +42,14 @@ export default async function ProjectPage({ params }) {
       <main className="flex-1">
         <ProjectHeroTop project={project} />
         {/* endLinks: short case studies end with "View the full case study"
-            (/projects/<slug>/full) and similar links (2026-10-05). */}
-        <ProjectTopics sections={project.sections} endLinks={project.endLinks} />
+            (/projects/<slug>/full) and similar links (2026-10-05).
+            after: previous / next project rows (ProjectPager), only on
+            pages with a written case study (those with a Deep Dive). */}
+        <ProjectTopics
+          sections={project.sections}
+          endLinks={project.endLinks}
+          after={project.long ? <ProjectPager slug={project.slug} className="mt-[60px] mb-[90px]" /> : null}
+        />
       </main>
       <Footer />
     </>

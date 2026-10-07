@@ -69,7 +69,7 @@ import ImageZoom from "./ImageZoom";
 //   - active:   font-semibold, text-black
 //   - inactive: font-normal,   text-[#bbb]
 //   both at tracking-[-1px]; number uppercase, label capitalize.
-export default function ProjectTopics({ sections, endLinks }) {
+export default function ProjectTopics({ sections, endLinks, after }) {
   const [activeId, setActiveId] = useState(sections?.[0]?.id ?? null);
  
   useEffect(() => {
@@ -226,6 +226,7 @@ export default function ProjectTopics({ sections, endLinks }) {
               })}
             </ul>
           )}
+          {after}
         </div>
       </div>
     </div>

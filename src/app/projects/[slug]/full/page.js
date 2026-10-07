@@ -5,6 +5,7 @@ import ProjectHeroTop from "@/components/ProjectHeroTop";
 import ProjectTopics from "@/components/ProjectTopics";
 import LongCaseStudy from "@/components/LongCaseStudy";
 import BinaDeepDive from "@/components/BinaDeepDive";
+import ProjectPager from "@/components/ProjectPager";
 import Footer from "@/components/Footer";
 import { projects, getProjectBySlug } from "@/lib/data";
 
@@ -116,6 +117,8 @@ export default async function FullCaseStudyPage({ params }) {
               </li>
             ))}
           </ul>
+          {/* Previous / next project (2026-10-07). */}
+          <ProjectPager slug={slug} className="mt-[60px] mb-[90px]" />
         </div>
       </main>
       <Footer />

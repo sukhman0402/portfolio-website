@@ -44,6 +44,9 @@ import { binaCaseStudy } from "./binaCaseStudy";
 import { binaLongCaseStudy } from "./binaLongCaseStudy";
 import { binaShortCaseStudy } from "./binaShortCaseStudy";
  
+// `industry` (Sukhman, 2026-10-07): shown in grey after the project name in
+// the previous/next rows at the end of case study pages (ProjectPager.js).
+// Matches each case study's Discipline where one exists.
 export const projects = [
   {
     slug: "drive-wise",
@@ -54,6 +57,7 @@ export const projects = [
     descriptionMore:
       ", so they only pay for necessary maintenance. Backed by a 72-respondent survey and a predictive model of component wear.",
     tag: "Automotive · Predictive Data Product",
+    industry: "Automotive",
     ctaLabel: "View Project",
     // externalUrl removed 2026-10-04 (Sukhman): the case study is live, so
     // "View Project" now opens /projects/drive-wise instead of Behance.
@@ -85,6 +89,7 @@ export const projects = [
     descriptionMore:
       ", with corrective, non-aggressive Hindi voice responses. Built and tested as a working prototype in a real classroom.",
     tag: "Physical Computing · Embedded AI",
+    industry: "Waste Management",
     ctaLabel: "View Project",
     // externalUrl removed 2026-10-05 (Sukhman): the case study is live, so
     // "View Project" now opens /projects/intelligent-waste-disposal-system.
@@ -111,6 +116,7 @@ export const projects = [
     descriptionMore:
       ": a taxonomy of real Hindi/Hinglish customer phrases by issue, action and emotion, paired with a live emotion slider in the chat.",
     tag: "Conversational AI",
+    industry: "Customer Service",
     ctaLabel: "View Project",
     externalUrl:
       "https://www.behance.net/gallery/249662667/MyJio-Customer-Assistance",
@@ -159,6 +165,7 @@ export const projects = [
     descriptionMore:
       ", designed in Figma with a \"See where your country stands\" drill-down explorer.",
     tag: "Data Visualization · Civic",
+    industry: "Sustainability",
     ctaLabel: "View Project",
     externalUrl:
       "https://www.figma.com/proto/EMzU51XyZk78B0dwyoTE0z/M.DES--Semester-02---Intelligent-Design-Decisions?node-id=1-28352&viewport=494%2C11%2C0.03&t=X4ZtPedOC7ffy0FY-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=49%3A8231&page-id=0%3A1",

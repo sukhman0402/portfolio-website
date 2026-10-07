@@ -130,7 +130,8 @@ export const binaLongCaseStudy = {
     {
       type: "audit",
       tone: "warm",
-      statement: ["The bin was there. ", "Nothing about it responded."],
+      statement: ["Campus Bin Audit"],
+      side: "**The bin was there. Nothing about it responded.** An informal audit of the bins the team used every day, recalled from memory.",
       label: "What the team noticed at campus bins",
       cards: [
         { icon: "mute", title: "No response", text: "A throw that misses goes unnoticed; nothing signals it." },
@@ -151,8 +152,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "context",
-      statement: "How people throw waste depends on the place, not just the person.",
-      side: "A context model built by the team from **observation, reasoning and reading**. Each point is marked by where its support comes from.",
+      statement: "Context of Waste Behaviour",
+      side: "**How people throw waste depends on the place, not just the person.** A context model built by the team from observation, reasoning and reading. Each point is marked by where its support comes from.",
       cols: [
         {
           title: "Environmental conditions",
@@ -189,7 +190,8 @@ export const binaLongCaseStudy = {
     {
       type: "literature",
       tone: "warm",
-      eyebrow: "Literature review",
+      head: ["Literature Review"],
+      side: "**Four questions behind the design.** Peer-reviewed sources, checked at abstract level; one is a counterpoint.",
       cards: [
         { q: "What do smart bins do today?", big: "79", small: "studies", cap: "reviewed define smart bins by fill-level monitoring and connectivity. The person using the bin is not part of the loop.", src: "Zoumpoulis et al. 2024; Neema & Gor 2022" },
         { q: "Does a bin that prompts people change behaviour?", big: "About half", cap: "less litter with a bin that prompted people, by words or by design, in a field study.", src: "de Kort et al. 2008" },
@@ -223,8 +225,8 @@ export const binaLongCaseStudy = {
     {
       type: "blocks",
       tone: "warm",
-      head: ["Most misses aren't careless. ", "They're unnoticed."],
-      side: "**Empathy map** of a person disposing waste on campus, from phrases the team heard informally and paraphrased; not recorded interviews.",
+      head: ["Empathy Map"],
+      side: "**Most misses aren't careless. They're unnoticed.** Empathy map of a person disposing waste on campus, from phrases the team heard informally and paraphrased; not recorded interviews.",
       items: [
         { label: "Thinks", list: ["“Someone will clean it.”", "“It doesn’t matter if it’s slightly outside.”", "“I’m in a hurry.”"] },
         { label: "Feels", list: ["Indifferent", "Not accountable", "Rushed or distracted"] },
@@ -236,8 +238,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "affinity",
-      head: ["Four themes behind one uncorrected miss."],
-      side: "**Affinity diagram, synthesised for this case study** from the audit, the empathy map and the context model. Each note names its source.",
+      head: ["Affinity Diagram"],
+      side: "**Four themes behind one uncorrected miss.** Affinity diagram, synthesised for this case study from the audit, the empathy map and the context model. Each note names its source.",
       clusters: [
         { k: "A", title: "The miss goes unseen", notes: [["Bin gives no response", "Audit"], ["Does not check if it went in", "Empathy map"], ["No monitoring", "Empathy map"], ["No feedback at the moment", "Empathy map"]] },
         { k: "B", title: "Hurry wins", notes: [["Throwing while walking", "Audit"], ["“I’m in a hurry.”", "Empathy map"], ["Hurry makes careless throws likely", "Context · observed"], ["Crowding reduces attention", "Context · observed"]] },
@@ -249,8 +251,8 @@ export const binaLongCaseStudy = {
       type: "lanes",
       tone: "warm",
       panel: true,
-      head: ["In the person's mind, the job ends ", "the moment the waste leaves their hand."],
-      side: "**Mental model, synthesised for this case study** from the empathy map and the audit. The green row is an opportunity, not yet BINA.",
+      head: ["Mental Model"],
+      side: "**In the person's mind, the job ends the moment the waste leaves their hand.** Mental model, synthesised for this case study from the empathy map and the audit. The green row is an opportunity, not yet BINA.",
       cols: ["Approach", "Throw", "Miss", "Walk away"],
       rows: [
         { label: "What the person thinks", cells: ["“It’s just a bin.”", "“Close enough.”", "Does not notice", "“Someone will clean it.” “Done.”"] },
@@ -261,7 +263,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "insights",
-      head: ["Three insights that shaped what BINA does."],
+      head: ["Key Insights"],
+      side: "**Three insights that shaped what BINA does.** Each one traces from an observation (audit, empathy map or study) to the team's conclusion for design.",
       cards: [
         { obs: "Waste lands outside and nothing happens; people do not check.", ins: "People cannot correct what they do not notice. Feedback has to come at the moment of the throw, from the bin itself.", on: true },
         { obs: "Litter builds from afternoon to night; existing litter invites more (Cialdini 1990; Keizer 2008).", ins: "The first miss matters most. Getting it picked up keeps the area, and the norm, clean." },
@@ -280,8 +283,8 @@ export const binaLongCaseStudy = {
     {
       type: "personas",
       tone: "warm",
-      head: ["One bin, ", "three people with a stake in it."],
-      side: "**Assumed archetypes** built from the audit, the field phrases and the studies; not people who were studied. Names are fictional. **AI-generated portraits, not real people.**",
+      head: ["Personas"],
+      side: "**One bin, three people with a stake in it.** Assumed archetypes built from the audit, the field phrases and the studies; not people who were studied. Names are fictional. **AI-generated portraits, not real people.**",
       people: [
         {
           img: pic("kabir.png", 480, 480, "Kabir, AI-generated portrait"),
@@ -308,8 +311,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "criteria",
-      head: ["Four things BINA had to get right."],
-      side: "Set by the team before building, for an assumed setting: an indoor classroom or corridor, **one person at a time**, battery powered, no network. Testing and Outcome report against each one.",
+      head: ["Success Criteria"],
+      side: "**Four things BINA had to get right.** Set by the team before building, for an assumed setting: an indoor classroom or corridor, one person at a time, battery powered, no network. Testing and Outcome report against each one.",
       items: [
         { title: CRITERIA[0], text: "Fewer throws miss the bin." },
         { title: CRITERIA[1], text: "The prompt leads the person to correct it. Green: the criterion the design is built around.", on: true },
@@ -320,7 +323,8 @@ export const binaLongCaseStudy = {
     {
       type: "gradStatement",
       tone: "warm",
-      eyebrow: "Problem statement · gradient title after the team's slide 11",
+      head: ["Problem Statement"],
+      eyebrow: "Gradient title after the team's slide 11",
       word: "Behavioral Negligence",
       tags: ["Passive infrastructure", "Interactive intervention", "Environmental responsibility", "Autonomous monitoring"],
       statement: ["Improper waste disposal persists because traditional bins lack ", "real-time detection and corrective feedback", ", resulting in unmonitored and irresponsible environmental behaviour."],
@@ -329,8 +333,8 @@ export const binaLongCaseStudy = {
     {
       type: "opportunity",
       eyebrow: "Design opportunity",
-      head: ["The gap between intention and action pointed to one place: ", "the bin itself."],
-      side: "Turn it from a **static container** into a system that **perceives, decides and gives feedback**, at the moment of disposal.",
+      head: ["Design Opportunity"],
+      side: "**The gap between intention and action pointed to one place: the bin itself.** Turn it from a static container into a system that perceives, decides and gives feedback, at the moment of disposal.",
     },
 
     // ------------------------------------------------------------ 07 IDEATION
@@ -344,8 +348,8 @@ export const binaLongCaseStudy = {
     {
       type: "drops",
       tone: "warm",
-      head: ["Three ideas were dropped. ", "Each lost for a reason."],
-      side: "Discussed informally within the team; **not scored on a matrix**. Sorting returns in Future Scope as a later upgrade.",
+      head: ["Alternatives Considered"],
+      side: "**Three ideas were dropped. Each lost for a reason.** Discussed informally within the team; not scored on a matrix. Sorting returns in Future Scope as a later upgrade.",
       items: [
         { label: "Dropped", title: "Lights or a buzzer only", text: "Easy to ignore: a beep does not say what to do." },
         { label: "Dropped", title: "An English voice", text: "Hindi felt more relatable for the people using these bins." },
@@ -355,8 +359,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "ptab",
-      head: ["Firm in correction, ", "soft in appreciation."],
-      side: "**Personality framework**, set before the build (the team's slide 45). It guided the voice lines and eye states.",
+      head: ["Personality Framework"],
+      side: "**Firm in correction, soft in appreciation.** Personality framework, set before the build (the team's slide 45). It guided the voice lines and eye states.",
       items: [
         { title: "Brand archetype", text: "Caregiver + Guide: supports people while gently correcting their actions." },
         { title: "Behavioural role", text: "A silent supervisor that steps in only when needed." },
@@ -371,8 +375,8 @@ export const binaLongCaseStudy = {
     {
       type: "rules",
       tone: "warm",
-      head: ["Speak once, at the right moment, ", "then stay quiet."],
-      side: "Six interaction rules from the team's strategy (slide 21). **Once per event** is confirmed in the code: each line plays once per state change, never on a loop.",
+      head: ["Interaction Strategy"],
+      side: "**Speak once, at the right moment, then stay quiet.** Six interaction rules from the team's strategy (slide 21). Once per event is confirmed in the code: each line plays once per state change, never on a loop.",
       items: [
         { title: "Notice first", text: "The lid opens when a person comes close; no button." },
         { title: "Respond immediately", text: "Feedback plays right after the check, while the person is still there." },
@@ -384,8 +388,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "layers",
-      head: ["Six layers, one loop from notice to response."],
-      side: "The team's **system concept** (slide 17), in its pill-and-connector structure. Hardware details follow in Design.",
+      head: ["System Concept"],
+      side: "**Six layers, one loop from notice to response.** The team's system concept (slide 17), in its pill-and-connector structure. Hardware details follow in Design.",
       items: [
         { name: "Detection", desc: "Sensors notice the person and where the waste lands" },
         { name: "Decision logic", desc: "The microcontroller checks distances against set ranges" },
@@ -398,8 +402,8 @@ export const binaLongCaseStudy = {
     {
       type: "scenarios",
       tone: "warm",
-      head: ["Every throw ends in ", "a thank-you, or a second chance."],
-      side: "Two scenarios from the team's slides 18 and 19, mapped step by step and **acted out informally** before the logic was built. The code that ran adds a third ending.",
+      head: ["Scenarios & User Flow"],
+      side: "**Every throw ends in a thank-you, or a second chance.** Two scenarios from the team's slides 18 and 19, mapped step by step and acted out informally before the logic was built. The code that ran adds a third ending.",
       items: [
         { label: "Scenario 01", title: "Successful Disposal", steps: ["A person comes within 20 to 40 cm", "The lid opens; the eyes wake", "Waste goes inside", "5-second check: nothing outside"], end: "Happy eyes + “Dhanyavaad.”" },
         { label: "Scenario 02", title: "Incorrect Disposal", steps: ["A person comes within 20 to 40 cm", "Waste lands outside", "The request to pick it up (7 s)", "5-second re-check: picked up"], end: "Happy eyes + the habit line" },
@@ -419,8 +423,8 @@ export const binaLongCaseStudy = {
     {
       type: "arch",
       tone: "warm",
-      head: ["Six blocks, ", "one microcontroller in the middle."],
-      side: "Redrawn from the team's block diagram (slide 24). Code: Arduino C++, five files on GitHub.",
+      head: ["System Block Diagram"],
+      side: "**Six blocks, one microcontroller in the middle.** Redrawn from the team's block diagram (slide 24). Code: Arduino C++, five files on GitHub.",
       core: { label: "Processing", title: "Arduino Uno R3", text: "Distance ranges, timers and states" },
       sats: [
         { pos: "tl", label: "Input", title: "3 ultrasonic sensors", text: "Centre: the person. Two sides, angled 30°: the floor." },
@@ -432,8 +436,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "ia",
-      head: ["From the person entering range ", "to the reset."],
-      side: "**Information architecture** in the team's structure (slide 23): states on a spine, what each state touches beside it. Values from the code.",
+      head: ["Information Architecture"],
+      side: "**From the person entering range to the reset.** Information architecture in the team's structure (slide 23): states on a spine, what each state touches beside it. Values from the code.",
       spine: [
         { node: "Waiting", at: ["Eyes blink at random", "Lid closed"] },
         { edge: "Centre sensor reads 20 to 40 cm" },
@@ -455,8 +459,8 @@ export const binaLongCaseStudy = {
     {
       type: "parts",
       tone: "warm",
-      head: ["Built from eleven off-the-shelf parts."],
-      side: "Wired on a breadboard, so each part could be **tested alone** before integration. The circuit is the team's diagram.",
+      head: ["Components & Circuit"],
+      side: "**Built from eleven off-the-shelf parts.** Wired on a breadboard, so each part could be tested alone before integration. The circuit is the team's diagram.",
       parts: [
         ["Ultrasonic sensor HC-SR04", "× 3"],
         ["Arduino Uno R3", "× 1"],
@@ -475,8 +479,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "power",
-      head: ["The servo needs the most power, ", "so the supply was built around it."],
-      side: "From the team's power plan (slide 28). **Currents are typical ratings, not measured.**",
+      head: ["Power Management"],
+      side: "**The servo needs the most power, so the supply was built around it.** From the team's power plan (slide 28). **Currents are typical ratings, not measured.**",
       blocks: [
         { label: "Source", title: "2 × 18650 Li-ion", items: ["3.7 V each, 7.4 V nominal", "8.4 V fully charged", "2200 mAh per cell"] },
         { label: "Regulation", title: "LM2596 step-down", items: ["Up to 40 V in", "A steady 5 V out", "Up to 3 A"] },
@@ -496,20 +500,22 @@ export const binaLongCaseStudy = {
     {
       type: "zones",
       tone: "warm",
-      head: ["One sensor watches the person. ", "Two watch the floor."],
-      side: "The team's **triangular coverage** idea (slide 29), with the ranges from the code that ran. Placement: 2 inches above the floor, on the front of a bin about 45 cm tall.",
+      head: ["Sensor Placement"],
+      side: "**One sensor watches the person. Two watch the floor.** The team's triangular coverage idea (slide 29), with the ranges from the code that ran. Placement: 2 inches above the floor, on the front of a bin about 45 cm tall.",
       key: [
         ["Green: person zone.", "The centre sensor sees someone 20 to 40 cm away; closer than 20 cm, it reads waste in front (dashed)."],
         ["Grey: floor zones.", "The side sensors, angled 30° out, see waste on the floor under 30 cm."],
         ["Not covered.", "Drops behind the bin, or far to its sides (Limitations)."],
         ["Zone shapes are schematic,", "not measured beam widths."],
       ],
+      // Front view (5.4): sensor height on the bin, from the team's plan (slide 29, 39).
+      front: { height: "About 45 cm", sensors: "2 in above the floor" },
     },
     {
       type: "eyes",
       tone: "dk",
-      head: ["The eyes show the state. ", "The voice says what to do."],
-      side: "States as built (main.ino). **Voice lines generated with ElevenLabs** text to speech, played once per event. Eyes drawn in code from simple shapes.",
+      head: ["Eyes & Voice"],
+      side: "**The eyes show the state. The voice says what to do.** States as built (main.ino). Voice lines generated with ElevenLabs text to speech, played once per event. Eyes drawn in code from simple shapes.",
       states: [
         { shape: "rest", title: "Waiting", meta: "Random blinks, every 3 to 6 s", line: "No voice" },
         { shape: "open", title: "Person near", meta: "20 to 40 cm · lid opens", line: "No voice" },
@@ -522,8 +528,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "lanes",
-      head: ["Behind a few seconds at the bin, ", "a whole service."],
-      side: "**Service blueprint, synthesised for this case study** from the code's states and the specification. A miss takes about 17 seconds in the code.",
+      head: ["Service Blueprint"],
+      side: "**Behind a few seconds at the bin, a whole service.** Service blueprint, synthesised for this case study from the code's states and the specification. A miss takes about 17 seconds in the code.",
       cols: ["Approach", "Throw", "Correct, if missed", "Leave"],
       rows: [
         { label: "Person", cells: ["Walks up", "Throws", "Picks the waste up and puts it in", "Walks away"] },
@@ -536,8 +542,8 @@ export const binaLongCaseStudy = {
     {
       type: "spec",
       tone: "warm",
-      head: ["A plastic bin, a cardboard head, ", "and everything inside it."],
-      side: "Product specification in the team's structure (slide 46), with the code's ranges.",
+      head: ["Product Specification"],
+      side: "**A plastic bin, a cardboard head, and everything inside it.** Product specification in the team's structure (slide 46), with the code's ranges.",
       items: [
         { title: "Dimensions", text: "About 45 cm tall; sensors 2 inches above the floor, on the front." },
         { title: "Materials", text: "A standard plastic dustbin with a cardboard head for the eyes and speaker." },
@@ -546,11 +552,13 @@ export const binaLongCaseStudy = {
         { title: "Network", text: "Standalone, none." },
         { title: "Prototype cost", text: "₹2,898", big: true },
       ],
+      img: pic("bts-6-inside.jpg", 634, 792, "Looking down inside the bin: the Arduino, breadboard, voltage regulator and wiring"),
+      caption: "Inside the bin: the Arduino, breadboard, voltage regulator and wiring",
     },
     {
       type: "brand",
-      head: ["BIN + A. ", "The bin is in the name."],
-      side: "Brand identity by the team (slides 43 and 44).",
+      head: ["Brand Identity"],
+      side: "**BIN + A. The bin is in the name.** Brand identity by the team (slides 43 and 44).",
       logo: pic("slide-43.png", 1270, 400, "BINA logo"),
       colors: [
         ["#026D00", "#fff"],
@@ -574,8 +582,8 @@ export const binaLongCaseStudy = {
     {
       type: "tests",
       tone: "warm",
-      head: ["Four parts tested alone, ", "then joined into one program."],
-      side: "**Component tests to integration.** Each part had its own small test program before the parts were combined. Test sketches and final code are public on GitHub (5 files).",
+      head: ["Component Tests"],
+      side: "**Four parts tested alone, then joined into one program.** Component tests to integration. Each part had its own small test program before the parts were combined. Test sketches and final code are public on GitHub (5 files).",
       tests: [
         { title: "Ultrasonic sensors × 3", text: "Read all three in turn and print the distances, spaced apart so they do not pick up each other's echo.", file: "ultra-sonic.ino" },
         { title: "Servo motor", text: "Sweep between 0° and 180° to check the lid's full range.", file: "Servo-Motor.ino" },
@@ -588,8 +596,8 @@ export const binaLongCaseStudy = {
     {
       type: "code",
       tone: "dk",
-      head: ["What the sensors see, ", "the eyes show."],
-      side: "**main.ino, lines 12 to 19,** as written in the public repo. The code is the version that ran in the classroom.",
+      head: ["Final Integrated Code"],
+      side: "**What the sensors see, the eyes show.** main.ino, lines 12 to 19, as written in the public repo. The code is the version that ran in the classroom.",
       bar: ["Intelligent-Waste-Disposal-Systems / main.ino", "Sensor-to-eye mapping"],
       // [line number, code, highlighted call or result]
       lines: [
@@ -604,9 +612,28 @@ export const binaLongCaseStudy = {
       ],
     },
     {
+      type: "assembly",
+      tone: "warm",
+      head: ["Building It"],
+      side: "**Ten steps, from the bin body to final testing.** The team's assembly sequence (slide 39), with its stage flow on the left. Green marks the final checks, shown in Simulated Drops.",
+      flow: ["Body prep", "Motor mount", "Sensor install", "Display + audio", "Controller wiring", "Power regulation", "Code upload", "Testing"],
+      steps: [
+        { title: "Dustbin body preparation", items: ["Select a dustbin body about 45 cm tall", "Mark the front sensor positions, 2 inches above the ground", "Mark the central and ±30° angled positions", "Cut openings for the ultrasonic sensors", "Create a top slot for the servo shaft"] },
+        { title: "Servo motor installation", items: ["Fix the SG90 servo near the lid hinge", "Attach the servo horn to the lid mechanism", "Test the lid's rotation by hand", "Secure the motor against vibration"] },
+        { title: "Ultrasonic sensor mounting", items: ["Mount the central HC-SR04 at the front centre", "Mount the left and right sensors at 30° outward", "Keep each detection cone unobstructed", "Secure with screws or hot glue"] },
+        { title: "OLED display installation", items: ["Cut a front-facing slot in the upper section", "Fix the 0.96\" OLED screens securely", "Keep a visible viewing angle", "Route the I2C wires inside"] },
+        { title: "Audio system integration", items: ["Mount the DY-SV MP3 module inside the enclosure", "Connect it to the mini amplifier", "Install the speaker near the upper cavity", "Keep a clear sound outlet"] },
+        { title: "Microcontroller setup", items: ["Mount the Arduino Uno R3 inside", "Connect the sensor pins (Trig, Echo)", "Connect the servo PWM pin", "Connect the OLEDs over I2C (SDA, SCL)", "Connect the MP3 module over serial"] },
+        { title: "Power system installation", items: ["Fit 2 × 18650 cells in the holder", "Connect them to the LM2596 regulator", "Adjust the output to a stable 5 V", "Distribute the 5 V to every module", "Share one common ground"] },
+        { title: "Breadboard and wiring", items: ["Organise the jumper wires (M–M, M–F, F–F)", "Separate signal and power lines", "Secure wiring against loose connections", "Run a continuity check"] },
+        { title: "Software upload and calibration", items: ["Upload the integrated Arduino code", "Calibrate the detection thresholds (30 cm, 20 cm)", "Test the servo angles", "Test the audio trigger timing", "Validate every state transition"] },
+        { title: "Final system testing", on: true, items: ["Simulate a correct disposal", "Simulate an incorrect disposal", "Verify the corrective loop", "Confirm the lid resets"] },
+      ],
+    },
+    {
       type: "pairs",
-      head: ["Five problems surfaced. ", "Each one changed the build."],
-      side: "**Problems as the team met them;** fixes as found in the code and the team's plans. Tuning values were not recorded.",
+      head: ["Problems & Fixes"],
+      side: "**Five problems surfaced. Each one changed the build.** Problems as the team met them; fixes as found in the code and the team's plans. Tuning values were not recorded.",
       cols: ["Problem", "Fix"],
       rows: [
         { title: "Power drops and resets", text: "Two 18650 cells through a step-down regulator to a steady **5 V**, sized for the servo's peaks." },
@@ -620,8 +647,8 @@ export const binaLongCaseStudy = {
     {
       type: "incident",
       tone: "warm",
-      head: ["The lid nearly got cut. ", "The right angle saved it."],
-      side: "**Critical incident,** told from the team's build. No measurements were taken.",
+      head: ["Critical Incident: The Lid"],
+      side: "**The lid nearly got cut. The right angle saved it.** Critical incident, told from the team's build. No measurements were taken.",
       steps: [
         { label: "01 · What happened", title: "The servo would not line up", text: "The SG90 servo was hard to calibrate against the lid." },
         { label: "02 · On the table", title: "Drop automatic opening", text: "Keep a plain lid and lose the moving part.", cut: true },
@@ -632,8 +659,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "checks",
-      head: ["Every branch of the loop, ", "tested by hand."],
-      side: "**Final checks from the team's assembly plan** (step 10). Many drops, not counted; no hit rate is claimed. Classmates used it during testing; their reactions were not noted.",
+      head: ["Simulated Drops"],
+      side: "**Every branch of the loop, tested by hand.** Final checks from the team's assembly plan (step 10). Many drops, not counted; no hit rate is claimed. Classmates used it during testing; their reactions were not noted.",
       items: [
         { title: "Clean throw", text: "Happy eyes + “Dhanyavaad.”" },
         { title: "Miss", text: "The request to pick it up." },
@@ -651,8 +678,8 @@ export const binaLongCaseStudy = {
     {
       type: "photos",
       tone: "dk",
-      head: ["Wiring trials, calibration ", "and a lot of debugging."],
-      side: "**Behind the scenes,** the team's photos from the build.",
+      head: ["Behind the Scenes"],
+      side: "**Wiring trials, calibration and a lot of debugging.** Behind the scenes, the team's photos from the build.",
       imgs: [
         pic("bts-1-eyes.jpg", 338, 422, "The two OLED eyes being tested"),
         pic("bts-2-wiring.jpg", 413, 516, "Breadboard wiring with the ultrasonic sensors"),
@@ -672,8 +699,8 @@ export const binaLongCaseStudy = {
     {
       type: "proto",
       tone: "warm",
-      head: ["Both paths, ", "working on a real bin."],
-      side: "**Demo videos** recorded by the team during the project. They open on Google Drive.",
+      head: ["Working Prototype"],
+      side: "**Both paths, working on a real bin.** Demo videos recorded by the team during the project. They open on Google Drive.",
       img: pic("slide-41.png", 1294, 998, "BINA, the finished prototype, standing in a corridor with its eyes lit"),
       scenarios: [
         { label: "Scenario 01", title: "Clean throw", flow: ["Waste goes in"], end: "Happy eyes + “Dhanyavaad.”", cta: "Watch Scenario 01", href: VIDEO_1 },
@@ -683,8 +710,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "classroom",
-      head: ["About ten days ", "in a real classroom."],
-      side: "**After the build,** BINA stood in a classroom. What is described was observed by the team, not counted.",
+      head: ["In the Classroom"],
+      side: "**About ten days in a real classroom.** After the build, BINA stood in a classroom. What is described was observed by the team, not counted.",
       dur: { label: "In daily use", n: "~10", unit: "days", text: "In a classroom, after the build." },
       obs: ["Misses picked up after the prompt.", "People responded well to the eyes and voice."],
       chip: "Observed, not counted",
@@ -692,7 +719,7 @@ export const binaLongCaseStudy = {
     {
       type: "seminar",
       tone: "warm",
-      head: ["Presented at a seminar on ", "emerging technologies."],
+      head: ["Seminar Presentation"],
       facts: [
         ["Event", "One-Day Seminar on Emerging Technologies for a Sustainable and Intelligent Future"],
         ["Sub-theme", "Climate Change Technologies"],
@@ -703,10 +730,11 @@ export const binaLongCaseStudy = {
     },
     {
       type: "achieved",
-      head: ["What BINA ", "achieved."],
+      head: ["What BINA Achieved"],
       side: "**Rewritten from the team's conclusion** (slide 49). Classroom effects observed, not counted.",
       label: "In one line",
       line: ["From passive infrastructure to ", "a bin that notices, asks and thanks,", " built from off-the-shelf parts for ₹2,898."],
+      note: "In the classroom, people picked up their misses when asked; how much this changes behaviour over time is for a proper study to show.",
       crit: [
         { title: CRITERIA[0], status: "Not measured", kind: "no" },
         { title: CRITERIA[1], status: "Observed in class", kind: "ob" },
@@ -726,8 +754,8 @@ export const binaLongCaseStudy = {
     {
       type: "study",
       tone: "warm",
-      head: ["Seen working. ", "Next, count it."],
-      side: "**Proposed study, not carried out.** One measure for each success criterion.",
+      head: ["Measure the Effect"],
+      side: "**Seen working. Next, count it.** Proposed study, not carried out. One measure for each success criterion.",
       weeks: [
         { label: "Baseline", title: "Plain bin", text: "1 week", span: 1 },
         { label: "Intervention", title: "BINA in place", text: "2 weeks", span: 2, on: true },
@@ -743,8 +771,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "pairs",
-      head: ["Every gap in the prototype ", "is the next feature."],
-      side: "**Limitations from the team's evaluation** (slide 48); upgrades proposed.",
+      head: ["The Next Version"],
+      side: "**Every gap in the prototype is the next feature.** Limitations from the team's evaluation (slide 48); upgrades proposed.",
       cols: ["Limitation", "Upgrade"],
       rows: [
         { title: "Front-only coverage", text: "Sensors or a floor mat that cover every side, including drops behind the bin." },
@@ -758,8 +786,8 @@ export const binaLongCaseStudy = {
     {
       type: "road",
       tone: "warm",
-      head: ["Built for one person at a time, ", "so it goes where people come one by one."],
-      side: "**Places named by the team** (slides 46, 48; poster). Order by readiness set for this case study.",
+      head: ["Where BINA Could Go"],
+      side: "**Built for one person at a time, so it goes where people come one by one.** Places named by the team (slides 46, 48; poster). Order by readiness set for this case study.",
       stages: [
         { kind: "now", label: "Now", title: "Classrooms and offices", text: "Matches the prototype: indoors, one person at a time.", items: [] },
         { kind: "nxt", label: "Next", title: "Airports", text: "Travellers tend to reach a bin one by one, so the single-user logic still holds.", items: ["Louder audio", "Voice lines beyond Hindi"] },
@@ -772,8 +800,8 @@ export const binaLongCaseStudy = {
     },
     {
       type: "sdg",
-      head: ["Three goals it ", "points toward."],
-      side: "**Added for this case study;** not part of the original project. Target wording from the UN 2030 Agenda. No impact on these goals was measured.",
+      head: ["SDG Alignment"],
+      side: "**Three goals it points toward.** Added for this case study; not part of the original project. Target wording from the UN 2030 Agenda. No impact on these goals was measured.",
       goals: [
         { img: pic("sdg-11.png", 250, 250, "SDG 11 icon"), title: "Sustainable Cities and Communities", target: "Target 11.6 · municipal waste management", text: "Cleaner shared spaces through better disposal at the bin." },
         { img: pic("sdg-12.png", 250, 250, "SDG 12 icon"), title: "Responsible Consumption and Production", target: "Targets 12.8 · 12.5 with sorting", text: "A habit built at the moment of disposal." },
