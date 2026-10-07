@@ -75,14 +75,16 @@ function Side({ project, dir }) {
   );
 }
 
-export default function ProjectPager({ slug, className = "" }) {
+// joined: sits directly under the end links, sharing their bottom line
+// (no gap, no second top line). Sukhman, 2026-10-07.
+export default function ProjectPager({ slug, joined = false, className = "" }) {
   const i = projects.findIndex((p) => p.slug === slug);
   if (i < 0 || projects.length < 2) return null;
   const n = projects.length;
   const prev = projects[(i - 1 + n) % n];
   const next = projects[(i + 1) % n];
   return (
-    <nav aria-label="More projects" className={`grid grid-cols-1 border-y-2 border-black sm:grid-cols-2 ${className}`}>
+    <nav aria-label="More projects" className={`grid grid-cols-1 border-black sm:grid-cols-2 ${joined ? "border-b-2" : "border-y-2"} ${className}`}>
       <Side project={prev} dir="prev" />
       <Side project={next} dir="next" />
     </nav>

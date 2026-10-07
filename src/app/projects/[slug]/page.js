@@ -48,7 +48,7 @@ export default async function ProjectPage({ params }) {
         <ProjectTopics
           sections={project.sections}
           endLinks={project.endLinks}
-          after={project.long ? <ProjectPager slug={project.slug} className="mt-[60px] mb-[90px]" /> : null}
+          after={project.long ? <ProjectPager slug={project.slug} joined className="mb-[90px]" /> : null}
         />
       </main>
       <Footer />

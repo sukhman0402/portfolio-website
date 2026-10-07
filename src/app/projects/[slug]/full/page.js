@@ -118,7 +118,7 @@ export default async function FullCaseStudyPage({ params }) {
             ))}
           </ul>
           {/* Previous / next project (2026-10-07). */}
-          <ProjectPager slug={slug} className="mt-[60px] mb-[90px]" />
+          <ProjectPager slug={slug} joined className="mb-[90px]" />
         </div>
       </main>
       <Footer />
