@@ -21,10 +21,15 @@ import s from "./ShortStep.module.css";
 
 const pad2 = (n) => String(n).padStart(2, "0");
 
-function Statement({ statement, style }) {
+// Optional small grey note under a visual (MyJio, 2026-10-08).
+function Note({ text }) {
+  return text ? <p className={`${s.small} ${s.noteGap}`}>{text}</p> : null;
+}
+
+function Statement({ statement, style, grad }) {
   if (!statement) return null;
   return (
-    <p className={s.stmt} style={style}>
+    <p className={`${s.stmt} ${grad}`} style={style}>
       {statement.text} <em>{statement.accent}</em>
     </p>
   );
@@ -41,18 +46,21 @@ function Paras({ list }) {
 // Per-project accent (2026-10-06, BINA): a step may carry `accent` (e.g.
 // "#026D00"); it overrides the default Drive Wise blue for every block of
 // that step. Highlights stay the same for every project otherwise.
+// MyJio (2026-10-08): `gradient` (e.g. "linear-gradient(90deg,#e30513,#0a2885)")
+// paints every accent phrase as gradient text instead of a flat colour.
 export function ShortStep({ section, index }) {
-  const style = section.accent ? { "--accent": section.accent } : undefined;
+  const style = section.accent || section.gradient ? { "--accent": section.accent, "--grad": section.gradient } : undefined;
+  const grad = section.gradient ? s.grad : "";
   return (
     <>
-      <div className={`${s.blk} ${index === 0 ? s.first : ""}`} style={style}>
+      <div className={`${s.blk} ${grad} ${index === 0 ? s.first : ""}`} style={style}>
         <h2 className={s.h}>{section.heading}</h2>
         <Paras list={section.intro} />
       </div>
-      <Statement statement={section.open} style={style} />
+      <Statement statement={section.open} style={style} grad={grad} />
       {section.parts.map((part) => (
         // The walkthrough video ends flush on the line below (Sukhman, 2026-10-06)
-        <div key={part.heading} className={`${s.blk} ${part.visual?.kind === "walkthrough" ? s.flush : ""}`} style={style}>
+        <div key={part.heading} className={`${s.blk} ${grad} ${part.visual?.kind === "walkthrough" ? s.flush : ""}`} style={style}>
           <h3 className={s.h}>{part.heading}</h3>
           <Paras list={part.text} />
           {part.visual && (
@@ -60,9 +68,15 @@ export function ShortStep({ section, index }) {
               <Visual v={part.visual} />
             </div>
           )}
+          {/* MyJio (2026-10-08): one short paragraph 50px below the visual */}
+          {part.after?.map((p, i) => (
+            <p key={i} className={`${s.t} ${s.after}`}>
+              {p}
+            </p>
+          ))}
         </div>
       ))}
-      <Statement statement={section.close} style={style} />
+      <Statement statement={section.close} style={style} grad={grad} />
     </>
   );
 }
@@ -105,6 +119,17 @@ function Visual({ v }) {
       return <Kpis v={v} />;
     case "status":
       return <Status v={v} />;
+    // MyJio (2026-10-08)
+    case "compare":
+      return <Compare v={v} />;
+    case "hmw":
+      return <Hmw v={v} />;
+    case "invert":
+      return <Invert v={v} />;
+    case "sheet":
+      return <Sheet v={v} />;
+    case "learn":
+      return <Learn v={v} />;
     default:
       return null;
   }
@@ -127,6 +152,7 @@ function Stats({ v }) {
 
 function Numbers({ v }) {
   return (
+    <>
     <div className={`${s.g3} ${s.stack}`}>
       {v.items.map((it, i) => (
         <div key={i}>
@@ -147,6 +173,8 @@ function Numbers({ v }) {
         </div>
       ))}
     </div>
+    <Note text={v.note} />
+    </>
   );
 }
 
@@ -185,6 +213,7 @@ function Quotes({ v }) {
           </div>
         ))}
       </div>
+      <Note text={v.note} />
     </>
   );
 }
@@ -307,7 +336,7 @@ function Meters({ v }) {
 
 function Insights({ v }) {
   return (
-    <div className={`${s.rowlist} ${s.keyins}`}>
+    <div className={`${s.rowlist} ${s.keyins} ${v.center ? s.keyinsC : ""}`}>
       {v.rows.map((r) => (
         <div key={r.no} className={s.g3}>
           <div>
@@ -327,9 +356,14 @@ function Insights({ v }) {
   );
 }
 
+// `align` (MyJio, 2026-10-08): the columns share rows (CSS subgrid), so names,
+// lines and every hairline sit at the same height across columns.
+// `shared` adds a last column for what the people have in common.
 function Personas({ v }) {
+  const pts = [...v.people.map((p) => p.points.length), v.shared ? v.shared.points.length : 0];
+  const style = v.align ? { "--rows": 4 + Math.max(...pts) } : undefined;
   return (
-    <div className={`${s.g3} ${s.stack}`}>
+    <div className={`${s.g3} ${s.stack} ${v.align ? s.aligned : ""}`} style={style}>
       {v.people.map((p) => (
         <div key={p.name} className={s.persona}>
           {/* BINA (2026-10-06): optional portrait, labelled in the note */}
@@ -344,10 +378,29 @@ function Personas({ v }) {
           </ul>
         </div>
       ))}
+      {v.shared && (
+        <div className={`${s.persona} ${s.pshared}`}>
+          <div className={s.ppair} aria-hidden="true">
+            {v.people.filter((p) => p.photo).map((p) => (
+              <Image key={p.name} src={p.photo} alt="" width={112} height={112} className={s.pphoto} />
+            ))}
+          </div>
+          <div className={`${s.pnm} ${s.accentText}`}>{v.shared.name}</div>
+          <div className={s.pty}>{v.shared.type}</div>
+          <p className={s.phl}>{v.shared.line}</p>
+          <ul>
+            {v.shared.points.map((pt) => (
+              <li key={pt}>{pt}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       {/* With three people the note takes its own row (BINA, 2026-10-07) */}
-      <p className={`${s.cp} ${v.people.length > 2 ? s.noteRow : s.selfEnd}`}>
-        {v.note.lead} <b>{v.note.bold}</b> {v.note.rest}
-      </p>
+      {v.note && (
+        <p className={`${s.cp} ${v.people.length > 2 ? s.noteRow : s.selfEnd}`}>
+          {v.note.lead} <b>{v.note.bold}</b> {v.note.rest}
+        </p>
+      )}
     </div>
   );
 }
@@ -397,11 +450,17 @@ function Matrix({ v }) {
   );
 }
 
+// MyJio (2026-10-08): `align` shares rows across columns (subgrid); a step
+// may lead with a UI image (`img` { src, width, height, alt }).
 function Flow({ v }) {
+  const hasImg = v.steps.some((st) => st.img);
+  const style = v.align ? { "--rows": 2 + Math.max(...v.steps.map((st) => st.items.length)) + (hasImg ? 1 : 0) } : undefined;
   return (
-    <div className={`${s.g3} ${s.stack}`}>
+    <>
+    <div className={`${s.g3} ${s.stack} ${v.align ? s.aligned : ""}`} style={style}>
       {v.steps.map((st) => (
         <div key={st.title} className={s.flow}>
+          {st.img && <Image src={st.img.src} alt={st.img.alt} width={st.img.width} height={st.img.height} sizes="330px" className={s.featImg} />}
           <span className={`${s.rlab} ${st.accent ? s.accentText : ""}`}>{st.tag}</span>
           <div className={`${s.flowh} ${st.accent ? s.accentText : ""}`}>{st.title}</div>
           <ul>
@@ -412,6 +471,8 @@ function Flow({ v }) {
         </div>
       ))}
     </div>
+    <Note text={v.note} />
+    </>
   );
 }
 
@@ -459,7 +520,7 @@ function Walkthrough({ v }) {
         {v.image ? (
           <Image src={v.image.src} alt={v.image.alt} width={v.image.width} height={v.image.height} sizes="330px" className={s.video} />
         ) : showPrototype && prototype ? (
-          <iframe src={prototype.embedSrc} title="Drive Wise prototype (Figma)" className={s.proto} allowFullScreen />
+          <iframe src={prototype.embedSrc} title={prototype.title || "Drive Wise prototype (Figma)"} className={s.proto} allowFullScreen />
         ) : (
           <video
             ref={videoRef}
@@ -518,6 +579,7 @@ function Walkthrough({ v }) {
 
 function Screens({ v }) {
   return (
+    <>
     <div className={`${s.g3} ${s.shots}`}>
       {v.screens.map((sc) => (
         <div key={sc.src}>
@@ -527,13 +589,16 @@ function Screens({ v }) {
             width={sc.width}
             height={sc.height}
             sizes={v.wide ? "330px" : "240px"}
-            className={v.wide ? s.wideShot : s.phone}
+            className={v.wide ? s.wideShot : `${s.phone} ${v.framed ? s.phoneFramed : ""}`}
           />
-          <div className={s.ttl}>{sc.title}</div>
+          {sc.tag && <span className={`${s.rlab} ${s.shotTag} ${sc.accent ? s.accentText : ""}`}>{sc.tag}</span>}
+          <div className={`${s.ttl} ${sc.tag ? s.ttlTight : ""}`}>{sc.title}</div>
           <p className={s.dsc}>{sc.text}</p>
         </div>
       ))}
     </div>
+    <Note text={v.note} />
+    </>
   );
 }
 
@@ -604,6 +669,7 @@ function Kpis({ v }) {
           <div className={s.kpiTo}>{to}</div>
         </div>
       ))}
+      {v.note && <p className={`${s.small} ${s.kpiNote}`}>{v.note}</p>}
     </div>
   );
 }
@@ -623,5 +689,197 @@ function Status({ v }) {
       ))}
       <p className={`${s.cp} ${s.selfEnd}`}>{v.note}</p>
     </div>
+  );
+}
+
+// --------------------------------------------------------------------------
+// MyJio (2026-10-08) kinds.
+
+// Column header: a logo, a colour dot (`swatch`) or the name alone.
+function CmpHead({ c }) {
+  return (
+    <div className={s.cmpBrand}>
+      {c.logo && <Image src={c.logo} alt={`${c.name} logo`} width={64} height={64} className={s.cmpLogo} />}
+      {c.swatch && <span className={s.swatch} style={{ background: c.swatch }} aria-hidden="true" />}
+      <div>
+        <div className={s.ft}>{c.name}</div>
+        <div className={s.small}>{c.sub}</div>
+      </div>
+    </div>
+  );
+}
+
+// Side-by-side comparison. Default: three columns, each row's label above
+// its three verdicts. `labelCol`: four columns, labels in the first.
+// A row with `big` shows large numbers (totals); the accent goes on its
+// first cell only.
+function Compare({ v }) {
+  const g = v.labelCol ? s.g4 : `${s.g3} ${s.keep3}`;
+  return (
+    <>
+      <div className={`${g} ${s.cmpHead}`}>
+        {v.labelCol && <div />}
+        {v.columns.map((c) => (
+          <CmpHead key={c.name} c={c} />
+        ))}
+      </div>
+      <div>
+        {v.rows.map((r) => (
+          <div key={r.label} className={`${g} ${s.cmprow}`}>
+            <div className={`${s.rlab} ${v.labelCol ? s.cmpL4 : s.cmpLabel} ${r.accent ? s.accentText : ""}`}>{r.label}</div>
+            {r.cells.map((c, i) =>
+              r.big ? (
+                <div key={i} className={`${s.num} ${s.num0} ${i === 0 && r.accent ? s.accentText : ""}`}>{c}</div>
+              ) : (
+                <p key={i} className={s.cv}>{c}</p>
+              ),
+            )}
+          </div>
+        ))}
+      </div>
+      <Note text={v.note} />
+    </>
+  );
+}
+
+// Stakeholder needs, each turned into numbered "How might we" questions.
+function Hmw({ v }) {
+  return (
+    <div className={`${s.g3} ${s.stack}`}>
+      {v.cols.map((c) => (
+        <div key={c.tag}>
+          <span className={`${s.rlab} ${c.accent ? s.accentText : ""}`}>{c.tag}</span>
+          <p className={`${s.phl} ${s.hmwNeed}`}>{c.need}</p>
+          {c.qs.map((q) => (
+            <div key={q.no} className={s.hmwQ}>
+              <span className={s.rlab}>How might we · {q.no}</span>
+              <p className={s.hq}>
+                {q.pre}
+                <b>{q.key}</b>
+                {q.post}
+              </p>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Three columns with a header row: what failed (grey), what it became, what it led to.
+function Invert({ v }) {
+  return (
+    <>
+      <div className={`${s.g3} ${s.keep3} ${s.mxHead}`}>
+        {v.head.map((h) => (
+          <div key={h} className={s.rlab}>
+            {h}
+          </div>
+        ))}
+      </div>
+      <div className={`${s.rowlist} ${s.inv}`}>
+        {v.rows.map((r) => (
+          <div key={r.lead} className={`${s.g3} ${s.keep3}`}>
+            <p className={s.invFail}>{r.fails}</p>
+            <div className={s.ft}>{r.flip}</div>
+            <div className={`${s.ft} ${r.accent ? s.accentText : ""}`}>{r.lead}</div>
+          </div>
+        ))}
+      </div>
+      <Note text={v.note} />
+    </>
+  );
+}
+
+// A dense spreadsheet: one column per category under band headers, one
+// keyword per cell, row numbers, a totals row. Scrolls sideways inside its
+// own box when wider than the column (row numbers stay pinned).
+function Sheet({ v }) {
+  const rows = Math.max(...v.cols.map((c) => c.words.length));
+  return (
+    <>
+      <div className={s.sheetWrap} tabIndex={0} role="region" aria-label={v.label}>
+        <table className={s.sheet}>
+          <thead>
+            <tr>
+              <th className={s.rn} rowSpan={2} />
+              {v.bands.map((b) => (
+                <th key={b.name} className={s.band} colSpan={b.span}>
+                  <b>{b.name}</b>
+                  <span>{b.does}</span>
+                </th>
+              ))}
+            </tr>
+            <tr>
+              {v.cols.map((c) => (
+                <th key={c.name} className={s.cat}>
+                  <span className={c.accent ? s.accentText : ""}>{c.name}</span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: rows }).map((_, r) => (
+              <tr key={r}>
+                <td className={s.rn}>{r + 1}</td>
+                {v.cols.map((c) => {
+                  const w = c.words[r];
+                  if (!w) return <td key={c.name} />;
+                  return (
+                    <td key={c.name} className={w.new ? s.kwNew : s.kw}>
+                      {w.w}
+                      {w.hi && <i className={s.hi}>HI</i>}
+                      {w.n && <span className={s.cnt}> ({w.n})</span>}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+            <tr className={s.tot}>
+              <td className={s.rn}>Σ</td>
+              {v.cols.map((c) => (
+                <td key={c.name}>{c.words.length} words</td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className={`${s.legend} ${s.sheetKey}`}>
+        {v.legend.map(([k, t]) => (
+          <span key={k}>
+            <b className={s.legKey}>{k}</b>
+            {t}
+          </span>
+        ))}
+      </div>
+      <Note text={v.note} />
+    </>
+  );
+}
+
+// Learnings: the lesson, what happened, what to do next time.
+function Learn({ v }) {
+  return (
+    <>
+      <div className={`${s.g3} ${s.keep3} ${s.mxHead}`}>
+        {v.head.map((h) => (
+          <div key={h} className={s.rlab}>
+            {h}
+          </div>
+        ))}
+      </div>
+      <div className={`${s.rowlist} ${s.inv}`}>
+        {v.rows.map((r) => (
+          <div key={r.no} className={`${s.g3} ${s.keep3}`}>
+            <div>
+              <span className={`${s.rlab} ${s.block}`}>{r.no}</span>
+              <div className={`${s.ft} ${s.gap6} ${r.accent ? s.accentText : ""}`}>{r.title}</div>
+            </div>
+            <p className={s.t3b}>{r.happened}</p>
+            <p className={s.t3c}>{r.next}</p>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

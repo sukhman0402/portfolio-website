@@ -43,6 +43,8 @@ import { driveWiseLongCaseStudy } from "./driveWiseLongCaseStudy";
 import { binaCaseStudy } from "./binaCaseStudy";
 import { binaLongCaseStudy } from "./binaLongCaseStudy";
 import { binaShortCaseStudy } from "./binaShortCaseStudy";
+import { myjioCaseStudy } from "./myjioCaseStudy";
+import { myjioShortCaseStudy } from "./myjioShortCaseStudy";
  
 // `industry` (Sukhman, 2026-10-07): shown in grey after the project name in
 // the previous/next rows at the end of case study pages (ProjectPager.js).
@@ -114,15 +116,21 @@ export const projects = [
     description:
       "An AI customer-assistance chatbot concept for Jio's app, built on a \"Keyword Rulebook\"",
     descriptionMore:
-      ": a taxonomy of real Hindi/Hinglish customer phrases by issue, action and emotion, paired with a live emotion slider in the chat.",
+      ": a taxonomy of customer phrases by issue, action and emotion, paired with a live emotion slider in the chat.",
     tag: "Conversational AI",
-    industry: "Customer Service",
+    // Telecom (Sukhman, 2026-10-07): matches the case study's Discipline.
+    industry: "Telecom",
     ctaLabel: "View Project",
-    externalUrl:
-      "https://www.behance.net/gallery/249662667/MyJio-Customer-Assistance",
+    // externalUrl removed 2026-10-08 (Sukhman): the Highlights are live, so
+    // "View Project" now opens /projects/myjio-customer-assistance.
+    // Behance: https://www.behance.net/gallery/249662667/MyJio-Customer-Assistance
     ...coverSet("myjio-customer-assistance"),
     featured: true,
-    ...buildDetailFields(4),
+    // Top block: src > lib > myjioCaseStudy.js. Highlights (5 steps):
+    // src > lib > myjioShortCaseStudy.js. The Deep Dive (`long`) is added next.
+    ...myjioCaseStudy,
+    sections: myjioShortCaseStudy.sections,
+    endLinks: myjioShortCaseStudy.endLinks,
   },
   {
     slug: "interactive-playkit-for-kids",
@@ -477,8 +485,8 @@ export const timelinePoints = [
   // 2026
   { id: 26, x: 923, cluster: 6,
     title: "MyJio Customer Assistance",
-    description: "A chatbot concept for Jio's app, built on a Keyword Rulebook of real Hindi and Hinglish customer phrases. Pairs every chat with a live emotion slider.",
-    tag: "Conversational AI", software: "Figma", link: "https://www.behance.net/gallery/249662667/MyJio-Customer-Assistance" },
+    description: "A chatbot concept for Jio's app, built on a Keyword Rulebook of customer phrases. Pairs every chat with a live emotion slider.",
+    tag: "Conversational AI", software: "Figma", link: "/projects/myjio-customer-assistance" },
   { id: 27, x: 948, cluster: 6,
     title: "Interactive Billboards",
     description: "A smart billboard system turning passive urban advertising into two-way public communication, built on surveys and field interviews in Ahmedabad and Gandhinagar.",
