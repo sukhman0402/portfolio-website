@@ -175,8 +175,8 @@ export const projects = [
     tag: "Data Visualization · Civic",
     industry: "Sustainability",
     ctaLabel: "View Project",
-    externalUrl:
-      "https://www.figma.com/proto/EMzU51XyZk78B0dwyoTE0z/M.DES--Semester-02---Intelligent-Design-Decisions?node-id=1-28352&viewport=494%2C11%2C0.03&t=X4ZtPedOC7ffy0FY-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=49%3A8231&page-id=0%3A1",
+    // Live coded site, own repo sukhman0402/un-sdgs on Vercel (2026-10-09); was the Figma prototype link.
+    externalUrl: "https://un-sdgs.vercel.app",
     ...coverSet("un-sdgs"),
     featured: false,
     ...buildDetailFields(3),
