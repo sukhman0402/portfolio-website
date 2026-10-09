@@ -45,6 +45,7 @@ import { binaLongCaseStudy } from "./binaLongCaseStudy";
 import { binaShortCaseStudy } from "./binaShortCaseStudy";
 import { myjioCaseStudy } from "./myjioCaseStudy";
 import { myjioShortCaseStudy } from "./myjioShortCaseStudy";
+import { myjioLongCaseStudy } from "./myjioLongCaseStudy";
  
 // `industry` (Sukhman, 2026-10-07): shown in grey after the project name in
 // the previous/next rows at the end of case study pages (ProjectPager.js).
@@ -127,10 +128,12 @@ export const projects = [
     ...coverSet("myjio-customer-assistance"),
     featured: true,
     // Top block: src > lib > myjioCaseStudy.js. Highlights (5 steps):
-    // src > lib > myjioShortCaseStudy.js. The Deep Dive (`long`) is added next.
+    // src > lib > myjioShortCaseStudy.js. Deep Dive (13 chapters, 2026-10-09):
+    // src > lib > myjioLongCaseStudy.js on /projects/myjio-customer-assistance/full.
     ...myjioCaseStudy,
     sections: myjioShortCaseStudy.sections,
     endLinks: myjioShortCaseStudy.endLinks,
+    long: myjioLongCaseStudy,
   },
   {
     slug: "interactive-playkit-for-kids",

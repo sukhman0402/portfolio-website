@@ -10,7 +10,7 @@
 // Highlights preview (claude/myjio/highlights-data.json). No em dashes.
 // Images: public > images > projects > myjio-customer-assistance > highlights.
 // Video: public > videos > myjio-walkthrough.*
-// endLinks: "View the Deep Dive" is added when the Deep Dive goes live.
+// endLinks: "View the Deep Dive" (/full, 2026-10-09) and the Figma prototype.
 
 const GRADIENT = "linear-gradient(90deg, #e30513 0%, #0a2885 100%)";
 
@@ -1827,5 +1827,15 @@ export const myjioShortCaseStudy = {
       }
     }
   ],
-  endLinks: []
+  endLinks: [
+    {
+      label: "View the Deep Dive",
+      href: "/projects/myjio-customer-assistance/full"
+    },
+    {
+      label: "Open the Figma prototype",
+      href: "https://www.figma.com/proto/cnMnyMGdbUHpn9XdAsD0SI/MyJio-Customer-Assistance?node-id=3-11419&starting-point-node-id=3%3A11419&scaling=scale-down&content-scaling=fixed&hotspot-hints=1",
+      external: true
+    }
+  ]
 };

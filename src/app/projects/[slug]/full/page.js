@@ -5,6 +5,7 @@ import ProjectHeroTop from "@/components/ProjectHeroTop";
 import ProjectTopics from "@/components/ProjectTopics";
 import LongCaseStudy from "@/components/LongCaseStudy";
 import BinaDeepDive from "@/components/BinaDeepDive";
+import MyjioDeepDive from "@/components/MyjioDeepDive";
 import ProjectPager from "@/components/ProjectPager";
 import Footer from "@/components/Footer";
 import { projects, getProjectBySlug } from "@/lib/data";
@@ -21,7 +22,8 @@ import { projects, getProjectBySlug } from "@/lib/data";
 // back to the project list.
 // Each project's Deep Dive has its own reference, so `long.renderer` picks
 // the renderer: "aethera" is BINA's (src > components > BinaDeepDive.js,
-// 2026-10-07); no value means Drive Wise's GeoTab modules.
+// 2026-10-07); "myjio" is MyJio's (src > components > MyjioDeepDive.js,
+// Fintech CRM reference, 2026-10-09); no value means Drive Wise's GeoTab modules.
 // A project with only `fullSections` keeps the older layout
 // (ProjectHeroTop + ProjectTopics).
 
@@ -83,7 +85,7 @@ export default async function FullCaseStudyPage({ params }) {
   }
 
   const { long } = project;
-  const Body = long.renderer === "aethera" ? BinaDeepDive : LongCaseStudy;
+  const Body = long.renderer === "aethera" ? BinaDeepDive : long.renderer === "myjio" ? MyjioDeepDive : LongCaseStudy;
   return (
     <>
       <Header base="/" />
