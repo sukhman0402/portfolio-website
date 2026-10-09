@@ -43,6 +43,8 @@ import { driveWiseLongCaseStudy } from "./driveWiseLongCaseStudy";
 import { binaCaseStudy } from "./binaCaseStudy";
 import { binaLongCaseStudy } from "./binaLongCaseStudy";
 import { binaShortCaseStudy } from "./binaShortCaseStudy";
+import { unSdgsCaseStudy } from "./unSdgsCaseStudy";
+import { unSdgsShortCaseStudy } from "./unSdgsShortCaseStudy";
 import { myjioCaseStudy } from "./myjioCaseStudy";
 import { myjioShortCaseStudy } from "./myjioShortCaseStudy";
 import { myjioLongCaseStudy } from "./myjioLongCaseStudy";
@@ -178,11 +180,17 @@ export const projects = [
     tag: "Data Visualization · Civic",
     industry: "Sustainability",
     ctaLabel: "View Project",
-    // Live coded site, own repo sukhman0402/un-sdgs on Vercel (2026-10-09); was the Figma prototype link.
-    externalUrl: "https://un-sdgs.vercel.app",
+    // externalUrl removed 2026-10-09 (Sukhman): the Highlights are live, so
+    // "View Project" opens /projects/un-sdgs. The live site
+    // (https://un-sdgs.vercel.app, repo sukhman0402/un-sdgs) is linked from
+    // step 4 and the end links.
     ...coverSet("un-sdgs"),
     featured: false,
-    ...buildDetailFields(3),
+    // Top block: src > lib > unSdgsCaseStudy.js. Highlights (5 steps):
+    // src > lib > unSdgsShortCaseStudy.js. Deep Dive: to come (/full).
+    ...unSdgsCaseStudy,
+    sections: unSdgsShortCaseStudy.sections,
+    endLinks: unSdgsShortCaseStudy.endLinks,
   },
 ];
  
@@ -501,7 +509,7 @@ export const timelinePoints = [
   { id: 29, x: 998, cluster: 6,
     title: "UN Sustainable Development Goals",
     description: "An interactive infographic series on progress across the UN Sustainable Development Goals, with a drill-down explorer showing where any country stands.",
-    tag: "Data Visualization", software: "Figma", link: "https://www.figma.com/proto/EMzU51XyZk78B0dwyoTE0z/M.DES--Semester-02---Intelligent-Design-Decisions?node-id=1-28352&viewport=494%2C11%2C0.03&t=X4ZtPedOC7ffy0FY-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=49%3A8231&page-id=0%3A1" },
+    tag: "Data Visualization", software: "Figma, NotebookLM, Claude Code, GitHub, Vercel", link: "/projects/un-sdgs" },
   { id: 30, x: 1023, cluster: 6,
     title: "Interactive Playkit for Kids",
     description: "A play kit for children that joins tactile pieces with story-driven digital interaction, co-designed as a team of two and published on Behance as Play Trail.",
