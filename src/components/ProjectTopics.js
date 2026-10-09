@@ -196,6 +196,10 @@ export default function ProjectTopics({ sections, endLinks, after }) {
               (ProjectRow.js): semibold + chevron. Text ending, so 10px above
               the footer's line; the last board above ends flush on the 2px
               divider. */}
+          {/* A Highlights page without end links yet (MyJio, until its Deep
+              Dive is live) still closes its last statement with the 2px
+              line the end-link rows would have drawn (Sukhman, 2026-10-09). */}
+          {!endLinks?.length && sections[sections.length - 1]?.short && <div className="border-t-2 border-black" />}
           {endLinks?.length > 0 && (
             // One row per link between black lines, bold label + diagonal
             // arrow (Sukhman's reference, 2026-10-06). The first row's top
