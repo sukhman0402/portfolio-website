@@ -40,7 +40,6 @@ export const unSdgsShortCaseStudy = {
               { value: "2 to 3", small: " days", cap: "to collect them and read what each one held" },
               { value: "7", cap: "sources: 6 UN and UNDP, 1 SDSN", accent: true },
             ],
-            note: "Size and days are Sukhman's own estimate; nothing was logged at the time.",
           },
         },
         {
@@ -62,7 +61,7 @@ export const unSdgsShortCaseStudy = {
               { label: "Part 3", cells: ["% progress per goal, 2016 to 2025", "UN yearly reports, compiled with NotebookLM", "Derived, an approximation"], accent: true },
               { label: "Part 4", cells: ["Progress by region over time", "UN SDG website", "Official"] },
               { label: "Part 5", cells: ["Goal status by country, on a map", "UN SDG website", "Official"] },
-              { label: "Part 6", cells: ["Country score, rank and 17 goal values", "NotebookLM; matches SDR 2025", "Derived"] },
+              { label: "Part 6", cells: ["Country score, rank and 17 goal values", "NotebookLM, matches SDR 2025", "Derived"] },
             ],
           },
         },
@@ -123,8 +122,8 @@ export const unSdgsShortCaseStudy = {
               { tag: "Overview", title: "The whole agenda", items: ["1 The UN at a glance", "2 17 goals", "3 The global agenda, 2015 to 2030"] },
               { tag: "Zoom", title: "Regions and nations", items: ["4 Progress by region over time", "5 The world map by goal"] },
               { tag: "Detail", title: "One country", items: ["6 See where your country stands"], accent: true },
+              { tag: "Close", title: "Beyond the question", items: ["7 What's shifting across the world", "Methodology and Sources"] },
             ],
-            note: "Then 7, What's shifting across the world, an informal close; Methodology and Sources end the page.",
           },
         },
         {
@@ -145,7 +144,7 @@ export const unSdgsShortCaseStudy = {
       accent: ACCENT,
       heading: "Chart Choices",
       intro: [
-        "With the content sorted, each part needed a form. Forms were explored on Pinterest and in D3.js examples, then chosen by one rule: the kind of information in a section decides its simplest form.",
+        "With the content sorted, each part needed a form. Forms were explored in D3.js examples, then chosen by one rule: the kind of information in a section decides its simplest form.",
       ],
       open: { text: "The data decides the form,", accent: "not the other way round." },
       parts: [
@@ -158,11 +157,10 @@ export const unSdgsShortCaseStudy = {
             kind: "screens",
             wide: true,
             screens: [
-              { ...shot("form-dial.jpg", 660, 495, "Part 3: a dial with a year wheel and 17 goal tiles showing percentage progress"), tag: "Part 3 · Dial", title: "How far has each goal come?", text: "15 years to show, so a timeline wheel; the centre holds every goal's number." },
+              { ...shot("form-dial.jpg", 660, 495, "Part 3: a dial with a year wheel and 17 goal tiles showing percentage progress"), tag: "Part 3 · Dial", title: "How far has each goal come?", text: "15 years to show, so a timeline wheel, the centre holds every goal's number." },
               { ...shot("form-chart.jpg", 660, 495, "Part 4: a line chart of progress by region, 2016 to 2025"), tag: "Part 4 · Line chart", title: "How has each region moved?", text: "Two measures, time and progress: two axes and one line per region." },
               { ...shot("form-map.jpg", 660, 495, "Part 5: a world map coloured by status for one goal, with the 17 goal tiles and a 5-colour legend"), tag: "Part 5 · Map", title: "Where does each country stand?", text: "A global question gets a global map, recoloured by the goal chosen.", accent: true },
             ],
-            note: "Part 6 has its own card (below). Part 7 uses notes, letters, postcards and photos: informal objects for informal news.",
           },
         },
         {
@@ -270,9 +268,9 @@ export const unSdgsShortCaseStudy = {
               label: "Walkthrough of the live UN SDGs website: the progress dial, the regional chart, the world map, the country explorer and the news glimpses",
             },
             screens: [
-              { name: "Progress dial", text: "Pick a year; 17 goals show their progress." },
+              { name: "Progress dial", text: "Pick a year, 17 goals show their progress." },
               { name: "Regional chart", text: "Hover a line for the region, year and percentage." },
-              { name: "World map", text: "Pick a goal; hover a country for its status." },
+              { name: "World map", text: "Pick a goal, hover a country for its status." },
               { name: "Country explorer", text: "A to Z, all 193 countries." },
               { name: "Glimpses", text: "Recent UN stories, linked to the source." },
             ],
@@ -291,41 +289,75 @@ export const unSdgsShortCaseStudy = {
       accent: ACCENT,
       heading: "Feedback & Outcome",
       intro: [
-        "The prototype was shown at a campus exhibition and to a jury. Nothing was recorded, so the counts are approximate and the comments are paraphrased. It was not a task-based usability test.",
+        "The Figma prototype was reviewed in two settings: an open campus exhibition, where people used it on a desktop without a task, and a jury of two professors.",
       ],
       open: { text: "Readers understood it without instructions, and", accent: "one flaw is still open." },
       parts: [
         {
-          heading: "Exhibition and jury",
+          heading: "Who reviewed it",
           text: [
-            "About 25 to 30 people used it on a desktop: design classmates, students from technical backgrounds, working professionals and the jury. No one was given a task, and no one had to ask what the site was for.",
+            "The visitors came from different backgrounds, so the site had to explain itself to designers and non-designers alike.",
+          ],
+          visual: {
+            kind: "numbers",
+            size: "mid",
+            items: [
+              { value: "25 to 30", cap: "people used it at the campus exhibition" },
+              { value: "4", cap: "groups: design classmates, technical students, working professionals and the jury" },
+              { value: "0", cap: "had to ask what the site was for", accent: true },
+            ],
+          },
+        },
+        {
+          heading: "What they said",
+          text: [
+            "The comments fell into six themes: four confirmed choices the site was built on, one asked for more, and one found a problem.",
           ],
           visual: {
             kind: "lines",
             rows: [
-              { label: "Visitors", lines: [{ t: "Clean, with soft interactions; a lot of colour, kept in balance; self-explanatory." }] },
-              { label: "Jury", lines: [{ t: "Clean and systematic; sections divided so the scroll is easy." }, { t: "Asked for a clear account of how the data was derived." }] },
-              { label: "Open flaw", lines: [{ t: "On the map, some status colours match goal colours, so the coloured world can read as the 17 goals.", accent: true }] },
+              { label: "Clarity", lines: [{ t: "Clean and systematic, sections divided so the scroll is easy." }] },
+              { label: "Colour", lines: [{ t: "A lot of colour, kept in balance, no colour pulls focus from the content." }] },
+              { label: "Interaction", lines: [{ t: "Soft and smooth, with no visual disturbance." }] },
+              { label: "The close", lines: [{ t: "The glimpses in part 7 give the page an informal, welcome end." }] },
+              { label: "Trust", lines: [{ t: "The jury asked for a clear account of how the data was derived." }] },
+              { label: "The map", lines: [{ t: "Some status colours match goal colours, so the coloured world can read as the 17 goals.", accent: true }] },
             ],
-            note: "Paraphrased from memory; no notes or recordings were taken.",
           },
         },
         {
-          heading: "What changed, what is open",
+          heading: "What it led to",
           text: [
-            "The feedback led to changes on the live site. The map colour issue is the next fix, together with layouts for phones and tablets.",
+            "Each comment that pointed at a gap became a change on the live site, except the map, which is the next fix.",
+          ],
+          visual: {
+            kind: "invert",
+            head: ["Feedback", "Change", "Result"],
+            rows: [
+              { fails: "Only India worked in the country explorer", flip: "Every country coded on the live site", lead: "193 countries" },
+              { fails: "Regional chart: lines without exact values", flip: "Hover shows the year and % at each point", lead: "Exact values on demand" },
+              { fails: "Jury: show how the data was derived", flip: "Methodology rewritten, derived figures labelled, SDR 2025 credited", lead: "Sources on the page" },
+              { fails: "Why scroll through all 17 goals?", flip: "Kept as a deliberate choice, the scroll stays quick", lead: "Every goal met first" },
+              { fails: "Map colours read as goal colours", flip: "Separate status colours from goal colours", lead: "Next fix", accent: true },
+            ],
+          },
+        },
+        {
+          heading: "What is next",
+          text: [
+            "The live site is desktop first. The next round fixes the map and adds smaller screens, later rounds add live data and new ways to compare.",
           ],
           visual: {
             kind: "status",
             lists: [
-              { label: "Done", items: ["Every country works in the explorer", "Year and % on the regional chart", "Methodology says how figures were derived", "SDR 2025 credited; not-affiliated line"] },
-              { label: "Not yet", muted: true, items: ["Separate status colours from goal colours", "Phone and tablet layouts", "Live data through the UN SDG API", "Compare two countries; trend per goal"] },
+              { label: "Next", items: ["Separate status colours from goal colours", "Phone and tablet layouts"] },
+              { label: "Later", muted: true, items: ["Live data through the UN SDG API", "Compare two countries", "Trend arrows per goal", "Language change"] },
             ],
-            note: "Desktop first. The live site is an independent student project, not affiliated with the United Nations.",
+            note: "An independent student project, not affiliated with the United Nations.",
           },
         },
       ],
-      close: { text: "Clean is where it starts;", accent: "showing the sources is what earns trust." },
+      close: { text: "Clean is where it starts,", accent: "showing the sources is what earns trust." },
     },
   ],
   // The Deep Dive link is added when /projects/un-sdgs/full is built.
