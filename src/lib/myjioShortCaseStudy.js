@@ -23,6 +23,12 @@ export const myjioShortCaseStudy = {
       accent: "#0a2885",
       gradient: GRADIENT,
       heading: "Research",
+      phase: [
+        {
+          name: "Empathy",
+          mode: "diverge"
+        }
+      ],
       intro: [
         "Research started with the bot itself: two real support conversations in JioCare, taken as a customer. Public complaints about the MyJio app were then coded to see which problems, and which feelings, customers bring to support. Two other telecom apps and a large consumer survey filled in the wider picture."
       ],
@@ -317,6 +323,16 @@ export const myjioShortCaseStudy = {
       accent: "#0a2885",
       gradient: GRADIENT,
       heading: "Insight & Define",
+      phase: [
+        {
+          name: "Empathy",
+          mode: "diverge"
+        },
+        {
+          name: "Re-frame",
+          mode: "converge"
+        }
+      ],
       intro: [
         "Every finding from the walkthrough, the 502 complaints, the competitor scan and the survey was grouped by what the customer experiences. Four themes held across all sources.",
         "The themes were then turned around: who the bot has to serve, what each of them needs from it, and which customers feel the failures most."
@@ -576,6 +592,12 @@ export const myjioShortCaseStudy = {
       accent: "#0a2885",
       gradient: GRADIENT,
       heading: "Ideation",
+      phase: [
+        {
+          name: "Ideation",
+          mode: "diverge"
+        }
+      ],
       intro: [
         "Ideas came from three exercises: listing every way to make support worse, borrowing from brands people already trust, and swapping in new forms of interaction. Then one approach was chosen for reading the customer, and one problem was followed end to end."
       ],
@@ -917,6 +939,12 @@ export const myjioShortCaseStudy = {
       accent: "#0a2885",
       gradient: GRADIENT,
       heading: "Design",
+      phase: [
+        {
+          name: "Prototype",
+          mode: "converge"
+        }
+      ],
       intro: [
         "The design has two halves: a rulebook and a slider that decide how the bot reads the customer, and a chat that shows the customer what the bot already knows."
       ],

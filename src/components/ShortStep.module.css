@@ -311,3 +311,6 @@
   .invFail, .t3b, .t3c { font-size: 12px; }
   .inv .ft { font-size: 13px; }
 }
+
+/* MyJio (2026-10-09): step heading + Double Diamond phase tag on one line */
+.hrow { display: flex; justify-content: space-between; align-items: center; gap: 6px 20px; flex-wrap: wrap; }

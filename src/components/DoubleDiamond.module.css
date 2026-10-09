@@ -1,0 +1,41 @@
+/* Double Diamond strip (MyJio, 2026-10-09). The site's 4 columns
+   (330 / 20, 1380 wide); 2 columns on phones. */
+.dd { --ink: #000; --grey: #6b6b6b; --hair: #dedede; --grad: linear-gradient(90deg, #e30513 0%, #0a2885 100%); padding: 10px 0 30px; }
+.head { max-width: 1030px; }
+.h { font-weight: 700; text-transform: uppercase; letter-spacing: -1px; }
+.intro { letter-spacing: -0.5px; color: rgb(0 0 0 / .8); }
+.row { list-style: none; margin: 40px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 20px; row-gap: 40px; }
+.phase { min-width: 0; }
+.fig { position: relative; padding-top: 18px; }
+.tri { display: block; width: 100%; height: auto; aspect-ratio: 300 / 184; }
+.mode { position: absolute; top: 0; font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; color: #a8a8a8; }
+.modeUp { left: 0; }
+.modeDown { left: 50%; transform: translateX(-50%); }
+.name {
+  position: absolute; left: 50%; transform: translate(-50%, -50%);
+  font-weight: 700; text-transform: uppercase; letter-spacing: -.5px; font-size: 17px; white-space: nowrap;
+  background-image: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.nameUp { top: 72%; }
+.nameDown { top: 42%; }
+.ttl { margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--hair); font-weight: 600; letter-spacing: -.3px; }
+.alt { color: var(--grey); font-weight: 500; }
+.text { margin-top: 4px; font-size: 14px; line-height: 1.35; color: var(--grey); letter-spacing: -.2px; }
+.list { margin-top: 14px; }
+.lab { font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; color: var(--grey); }
+.list ul { list-style: none; margin: 6px 0 0; padding: 0; }
+.list li { font-size: 14px; line-height: 1.35; padding: 5px 0; border-top: 1px solid var(--hair); letter-spacing: -.2px; }
+.links { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; }
+.links a { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #b5b5b5; }
+
+/* phase tag on a Highlights step heading */
+.tag { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase; color: #000; }
+.tagItem { display: inline-flex; align-items: center; gap: 6px; }
+.mini { width: 14px; height: 9px; flex: none; }
+.arrow { color: #6b6b6b; margin-right: 2px; }
+
+@media (max-width: 767px) {
+  .row { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 14px; margin-top: 28px; row-gap: 30px; }
+  .name { font-size: 13px; }
+  .text, .list li { font-size: 13px; }
+}

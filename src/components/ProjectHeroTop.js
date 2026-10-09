@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Header from "./Header";
+import { DoubleDiamond } from "./DoubleDiamond";
  
 // Individual Project page — top-of-page furniture, Figma node 179:3614
 // "Project 01 (D)- Section 1.0" (2026-09-01 redesign). Renders the real
@@ -131,6 +132,17 @@ export default function ProjectHeroTop({ project }) {
           </p>
         </div>
  
+        {/* Process (MyJio, 2026-10-09): the Double Diamond strip between
+            the Brief and The Problem, the same place the project's own deck
+            puts its Methodology slide (right after the aim). Only shows for
+            a project with `process`. src > components > DoubleDiamond.js */}
+        {project.process && (
+          <>
+            <div className="mt-[10px] border-t-2 border-black md:mt-[10px]" />
+            <DoubleDiamond process={project.process} />
+          </>
+        )}
+
         {/* The Problem (restored 2026-10-02, Sukhman). Case-study stage 3:
             the general, pre-research problem (the evidence-backed problem
             statement comes later, in the Define section). Same band rhythm

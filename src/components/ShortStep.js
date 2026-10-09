@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { PhaseTag } from "./DoubleDiamond";
 import Image from "next/image";
 import Chevron from "./Chevron";
 import s from "./ShortStep.module.css";
@@ -54,7 +55,15 @@ export function ShortStep({ section, index }) {
   return (
     <>
       <div className={`${s.blk} ${grad} ${index === 0 ? s.first : ""}`} style={style}>
-        <h2 className={s.h}>{section.heading}</h2>
+        {section.phase ? (
+          // MyJio (2026-10-09): the Double Diamond phase this step belongs to
+          <div className={s.hrow}>
+            <h2 className={s.h}>{section.heading}</h2>
+            <PhaseTag phases={section.phase} uid={section.id} />
+          </div>
+        ) : (
+          <h2 className={s.h}>{section.heading}</h2>
+        )}
         <Paras list={section.intro} />
       </div>
       <Statement statement={section.open} style={style} grad={grad} />
