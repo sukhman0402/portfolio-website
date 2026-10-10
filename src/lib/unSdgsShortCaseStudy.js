@@ -1,6 +1,5 @@
 // UN SDGs HIGHLIGHTS (5 steps): the sections on /projects/un-sdgs (what
-// "View Project" opens). The 13-chapter Deep Dive comes later on
-// /projects/un-sdgs/full.
+// "View Project" opens). The 13-chapter Deep Dive is on /projects/un-sdgs/full.
 //
 // FORMAT: the same Highlights rules as every project
 // (claude/case-study-short-format-rules.md, Placement Drive project), rendered
@@ -360,6 +359,9 @@ export const unSdgsShortCaseStudy = {
       close: { text: "Clean is where it starts,", accent: "showing the sources is what earns trust." },
     },
   ],
-  // The Deep Dive link is added when /projects/un-sdgs/full is built.
-  endLinks: [{ label: "View live website", href: LIVE, external: true }],
+  // End links: the Deep Dive (/projects/un-sdgs/full, 2026-10-10), then the live website.
+  endLinks: [
+    { label: "View the Deep Dive", href: "/projects/un-sdgs/full" },
+    { label: "View live website", href: LIVE, external: true },
+  ],
 };

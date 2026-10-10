@@ -45,6 +45,7 @@ import { binaLongCaseStudy } from "./binaLongCaseStudy";
 import { binaShortCaseStudy } from "./binaShortCaseStudy";
 import { unSdgsCaseStudy } from "./unSdgsCaseStudy";
 import { unSdgsShortCaseStudy } from "./unSdgsShortCaseStudy";
+import { unSdgsLongCaseStudy } from "./unSdgsLongCaseStudy";
 import { myjioCaseStudy } from "./myjioCaseStudy";
 import { myjioShortCaseStudy } from "./myjioShortCaseStudy";
 import { myjioLongCaseStudy } from "./myjioLongCaseStudy";
@@ -187,10 +188,12 @@ export const projects = [
     ...coverSet("un-sdgs"),
     featured: false,
     // Top block: src > lib > unSdgsCaseStudy.js. Highlights (5 steps):
-    // src > lib > unSdgsShortCaseStudy.js. Deep Dive: to come (/full).
+    // src > lib > unSdgsShortCaseStudy.js. Deep Dive (13 chapters, 2026-10-10):
+    // src > lib > unSdgsLongCaseStudy.js on /projects/un-sdgs/full.
     ...unSdgsCaseStudy,
     sections: unSdgsShortCaseStudy.sections,
     endLinks: unSdgsShortCaseStudy.endLinks,
+    long: unSdgsLongCaseStudy,
   },
 ];
  
