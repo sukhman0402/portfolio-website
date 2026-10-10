@@ -35,8 +35,9 @@
 //
 // featured: true marks the 4 projects shown on the homepage's "Projects"
 // section (ProjectsSection.js does `projects.filter(p => p.featured).slice(0,4)`).
-// Bike Dashboard and UN SDGs are part of the 6 reviewed projects but sit on
-// the /projects listing page only, not the homepage.
+// Interactive Playkit, Bike Dashboard and UN SDGs sit on the /projects
+// listing page only, not the homepage (My Alumnus replaced the Playkit on
+// the homepage on 2026-10-10).
 import { driveWiseCaseStudy } from "./driveWiseCaseStudy";
 import { driveWiseShortCaseStudy } from "./driveWiseShortCaseStudy";
 import { driveWiseLongCaseStudy } from "./driveWiseLongCaseStudy";
@@ -139,8 +140,31 @@ export const projects = [
     long: myjioLongCaseStudy,
   },
   {
-    slug: "interactive-playkit-for-kids",
+    // My Alumnus (added 2026-10-10, Sukhman): homepage row 04, in place of
+    // Interactive Playkit for Kids (decision D14, case-study/phase1-data-audit.md).
+    // Covers: Figma section "for Claude" (node 519:992), frames 575:635 (Home),
+    // 575:638 (Projects) and 575:632 (Individual), exported at 2x as JPEG.
+    // The Highlights page is not written yet, so "View Project" opens the live
+    // demo for now (same pattern as the other unlinked items above). When the
+    // Highlights go live, delete externalUrl and add the case-study fields.
+    slug: "my-alumnus",
     index: "04",
+    title: "My Alumnus",
+    description:
+      "A campus-gate verification product that lets a university guard confirm a returning alumnus by name",
+    descriptionMore:
+      " against the university's own record, with a timed path to a decision for every unclear case. Designed, built and running as a working app.",
+    tag: "Campus Access · SaaS",
+    industry: "SaaS",
+    ctaLabel: "View Project",
+    externalUrl: "https://myalumnus.vercel.app",
+    ...coverSet("my-alumnus"),
+    featured: true,
+    ...buildDetailFields(5),
+  },
+  {
+    slug: "interactive-playkit-for-kids",
+    index: "05",
     title: "Interactive Playkit for Kids",
     description:
       "A physical + digital play kit for children that combines tactile pieces with story-driven digital interaction",
@@ -151,12 +175,14 @@ export const projects = [
     externalUrl:
       "https://www.behance.net/gallery/255115915/Play-Trail-Interactive-Game-Design",
     ...coverSet("interactive-playkit-for-kids"),
-    featured: true,
+    // featured: false since 2026-10-10: My Alumnus took its homepage place
+    // (D14). It stays on the /projects listing page.
+    featured: false,
     ...buildDetailFields(6),
   },
   {
     slug: "bike-dashboard-design",
-    index: "05",
+    index: "06",
     title: "Bike Dashboard Design",
     description:
       "A redesigned motorcycle instrument-cluster UI focused on rider readability and cognitive load in motion",
@@ -172,7 +198,7 @@ export const projects = [
   },
   {
     slug: "un-sdgs",
-    index: "06",
+    index: "07",
     title: "UN Sustainable Development Goals",
     description:
       "An interactive infographic series visualizing progress across the UN Sustainable Development Goals",
