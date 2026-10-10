@@ -7,6 +7,7 @@ import LongCaseStudy from "@/components/LongCaseStudy";
 import BinaDeepDive from "@/components/BinaDeepDive";
 import MyjioDeepDive from "@/components/MyjioDeepDive";
 import UnSdgsDeepDive from "@/components/UnSdgsDeepDive";
+import MyAlumnusDeepDive from "@/components/MyAlumnusDeepDive";
 import ProjectPager from "@/components/ProjectPager";
 import Footer from "@/components/Footer";
 import { projects, getProjectBySlug } from "@/lib/data";
@@ -25,7 +26,9 @@ import { projects, getProjectBySlug } from "@/lib/data";
 // the renderer: "aethera" is BINA's (src > components > BinaDeepDive.js,
 // 2026-10-07); "myjio" is MyJio's (src > components > MyjioDeepDive.js,
 // Fintech CRM reference, 2026-10-09); "unsdgs" is UN SDGs' (src > components >
-// UnSdgsDeepDive.js, AI Workflow Automation reference, 2026-10-10); no value
+// UnSdgsDeepDive.js, AI Workflow Automation reference, 2026-10-10); "myalumnus"
+// is My Alumnus' (src > components > MyAlumnusDeepDive.js, Nexa reference,
+// 2026-10-10); no value
 // means Drive Wise's GeoTab modules.
 // A project with only `fullSections` keeps the older layout
 // (ProjectHeroTop + ProjectTopics).
@@ -92,6 +95,7 @@ export default async function FullCaseStudyPage({ params }) {
     long.renderer === "aethera" ? BinaDeepDive
     : long.renderer === "myjio" ? MyjioDeepDive
     : long.renderer === "unsdgs" ? UnSdgsDeepDive
+    : long.renderer === "myalumnus" ? MyAlumnusDeepDive
     : LongCaseStudy;
   return (
     <>

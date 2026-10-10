@@ -314,3 +314,12 @@
 
 /* MyJio (2026-10-09): step heading + Double Diamond phase tag on one line */
 .hrow { display: flex; justify-content: space-between; align-items: center; gap: 6px 20px; flex-wrap: wrap; }
+
+/* My Alumnus (2026-10-10) */
+.pill { border-radius: 999px; padding: 4px 12px; }
+.vidWide > div:first-child { grid-column: span 2; }
+.vidWide .video { max-width: none; }
+@media (max-width: 767px) {
+  .vidWide > div:first-child { grid-column: 1 / -1; }
+  .g4.st4 { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 28px; column-gap: 16px; }
+}

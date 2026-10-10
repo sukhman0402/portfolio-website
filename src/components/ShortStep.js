@@ -32,6 +32,7 @@ function Statement({ statement, style, grad }) {
   return (
     <p className={`${s.stmt} ${grad}`} style={style}>
       {statement.text} <em>{statement.accent}</em>
+      {statement.rest}
     </p>
   );
 }
@@ -139,15 +140,20 @@ function Visual({ v }) {
       return <Sheet v={v} />;
     case "learn":
       return <Learn v={v} />;
+    // My Alumnus (2026-10-10)
+    case "sides":
+      return <Sides v={v} />;
     default:
       return null;
   }
 }
 
 // Five equal columns, so the gaps between all numbers match (Sukhman, 2026-10-06).
+// My Alumnus (2026-10-10): `cols: 4` for four items, and an optional note.
 function Stats({ v }) {
   return (
-    <div className={s.g5} role="img" aria-label={v.label}>
+    <>
+    <div className={v.cols === 4 ? `${s.g4} ${s.st4}` : s.g5} role="img" aria-label={v.label}>
       {v.items.map((it) => (
         <div key={it.l}>
           <div className={`${s.vlabel} ${it.accent ? s.accentText : ""}`}>{it.tag}</div>
@@ -156,6 +162,8 @@ function Stats({ v }) {
         </div>
       ))}
     </div>
+    <Note text={v.note} />
+    </>
   );
 }
 
@@ -212,6 +220,7 @@ function Quotes({ v }) {
           </p>
         </div>
       ))}
+      {v.counts?.length > 0 && (
       <div className={`${s.g3} ${s.counts}`}>
         {v.counts.map((c, i) => (
           <div key={i}>
@@ -222,6 +231,7 @@ function Quotes({ v }) {
           </div>
         ))}
       </div>
+      )}
       <Note text={v.note} />
     </>
   );
@@ -523,7 +533,8 @@ function Walkthrough({ v }) {
   }, [showPrototype]);
 
   return (
-    <div className={`${s.g3} ${s.vid}`}>
+    // My Alumnus (2026-10-10): `wide` spans the video over columns 1 and 2 (desktop recording).
+    <div className={`${s.g3} ${s.vid} ${v.wide ? s.vidWide : ""}`}>
       <div>
         {/* BINA (2026-10-06): a photo of the built prototype instead of a video */}
         {v.image ? (
@@ -550,7 +561,7 @@ function Walkthrough({ v }) {
           </video>
         )}
       </div>
-      <div className={`${s.span2} ${s.vside}`}>
+      <div className={`${v.wide ? "" : s.span2} ${s.vside}`}>
         <div className={s.vlist}>
           {screens.map((sc, i) => (
             <div key={sc.name} className={s.vrow}>
@@ -666,14 +677,17 @@ function Kpis({ v }) {
     <div className={`${s.rowlist} ${s.kpis}`}>
       <div className={`${s.g3} ${s.kpiHead}`}>
         <div>
-          <span className={s.tag}>{v.tag}</span>
+          <span className={`${s.tag} ${v.pill ? s.pill : ""}`}>{v.tag}</span>
         </div>
         <div className={s.rlab}>{v.heads[0]}</div>
         <div className={s.rlab}>{v.heads[1]}</div>
       </div>
-      {v.rows.map(([nm, from, to]) => (
+      {v.rows.map(([nm, from, to, sofar]) => (
         <div key={nm} className={s.g3}>
-          <div className={s.kpiName}>{nm}</div>
+          <div className={s.kpiName}>
+            {nm}
+            {sofar && <p className={s.small}>{sofar}</p>}
+          </div>
           <div className={s.kpiFrom}>{from}</div>
           <div className={s.kpiTo}>{to}</div>
         </div>
@@ -690,13 +704,13 @@ function Status({ v }) {
         <div key={l.label} className={`${s.stand} ${l.muted ? s.standNo : ""}`}>
           <span className={s.rlab}>{l.label}</span>
           <ul>
-            {l.items.map((it) => (
-              <li key={it}>{it}</li>
+            {l.items.map((it, i) => (
+              <li key={it} className={i === l.accent ? s.accentText : undefined}>{it}</li>
             ))}
           </ul>
         </div>
       ))}
-      <p className={`${s.cp} ${s.selfEnd}`}>{v.note}</p>
+      {v.note && <p className={`${s.cp} ${s.selfEnd}`}>{v.note}</p>}
     </div>
   );
 }
@@ -889,6 +903,36 @@ function Learn({ v }) {
           </div>
         ))}
       </div>
+    </>
+  );
+}
+
+// My Alumnus (2026-10-10): two people side by side, one row per aspect.
+// Column 1 holds the row label; one row may carry the accent.
+function Sides({ v }) {
+  return (
+    <>
+      <div className={s.rowlist}>
+        <div className={s.g3}>
+          <div />
+          {v.people.map((p) => (
+            <p key={p} className={s.line}>
+              <b>{p}</b>
+            </p>
+          ))}
+        </div>
+        {v.rows.map((r) => (
+          <div key={r.label} className={s.g3}>
+            <div className={s.rlab}>{r.label}</div>
+            {r.cells.map((c, i) => (
+              <p key={i} className={`${s.line} ${r.accent ? s.accentText : ""}`}>
+                {c}
+              </p>
+            ))}
+          </div>
+        ))}
+      </div>
+      <Note text={v.note} />
     </>
   );
 }

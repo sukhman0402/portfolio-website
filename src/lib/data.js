@@ -50,6 +50,9 @@ import { unSdgsLongCaseStudy } from "./unSdgsLongCaseStudy";
 import { myjioCaseStudy } from "./myjioCaseStudy";
 import { myjioShortCaseStudy } from "./myjioShortCaseStudy";
 import { myjioLongCaseStudy } from "./myjioLongCaseStudy";
+import { myAlumnusCaseStudy } from "./myAlumnusCaseStudy";
+import { myAlumnusShortCaseStudy } from "./myAlumnusShortCaseStudy";
+import { myAlumnusLongCaseStudy } from "./myAlumnusLongCaseStudy";
  
 // `industry` (Sukhman, 2026-10-07): shown in grey after the project name in
 // the previous/next rows at the end of case study pages (ProjectPager.js).
@@ -157,10 +160,18 @@ export const projects = [
     tag: "Campus Access · SaaS",
     industry: "SaaS",
     ctaLabel: "View Project",
-    externalUrl: "https://myalumnus.vercel.app",
+    // externalUrl removed 2026-10-10 (Sukhman): the Highlights are live, so
+    // "View Project" opens /projects/my-alumnus. The live demo
+    // (https://myalumnus.vercel.app) is linked from step 4 and the end links.
     ...coverSet("my-alumnus"),
     featured: true,
-    ...buildDetailFields(5),
+    // Top block: src > lib > myAlumnusCaseStudy.js. Highlights (5 steps):
+    // src > lib > myAlumnusShortCaseStudy.js. Deep Dive (13 chapters, 2026-10-10):
+    // src > lib > myAlumnusLongCaseStudy.js on /projects/my-alumnus/full.
+    ...myAlumnusCaseStudy,
+    sections: myAlumnusShortCaseStudy.sections,
+    endLinks: myAlumnusShortCaseStudy.endLinks,
+    long: myAlumnusLongCaseStudy,
   },
   {
     slug: "interactive-playkit-for-kids",

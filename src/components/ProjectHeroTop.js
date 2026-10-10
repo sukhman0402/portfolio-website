@@ -114,6 +114,10 @@ export default function ProjectHeroTop({ project }) {
               </div>
             ))}
           </div>
+          {/* My Alumnus (2026-10-10): optional who-did-what line under the info row. */}
+          {project.credit && (
+            <p className="mt-[18px] font-normal tracking-[-0.5px] text-black/60">{project.credit}</p>
+          )}
         </div>
  
         {/* mt-[10px] (was mt-8/32px, mobile only) — flagged 2026-09-02:
