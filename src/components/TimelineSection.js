@@ -273,7 +273,7 @@ export default function TimelineSection() {
             <div className="mt-[157px] border-t-2 border-black" />
  
             <div className="mt-[10px] grid grid-cols-[50px_260px_680px_1fr] items-start gap-x-5">
-              <div className="h-[50px] w-[50px] bg-tile" />
+              <TimelineLogo point={selectedPoint} size={50} />
               {/* FIXED-SHAPE PANEL (direct instruction, 2026-10-02: "the
                   layout should not waver in different topics"). Every slot
                   has a fixed size, so switching between any of the 44 points
@@ -499,6 +499,33 @@ function TimelineLink({ link }) {
   return <p className="font-normal tracking-[-0.5px] text-muted">{link}</p>;
 }
  
+// Logo tile shown left of the info panel. One PNG per point (exported from the
+// Figma section "Logos for Claude" at 4x, so 200px files), drawn exactly as
+// designed: only scaled, never recoloured or cropped. 50px on desktop (the
+// Figma placeholder size); the mobile panel passes 48 to keep its existing
+// 48px (h-12 w-12) slot. A point with no `logo` in data.js keeps the old
+// grey --tile box, so the layout never shifts.
+function TimelineLogo({ point, size, className = "" }) {
+  const box = { width: size, height: size };
+  if (!point.logo) {
+    return <div className={`bg-tile ${className}`} style={box} />;
+  }
+  return (
+    // Plain <img>: a 200px file shown at 50px, nothing for next/image to resize.
+    // key remounts the tag per point so the previous logo never lingers.
+    <img
+      key={point.id}
+      src={point.logo}
+      alt={`${point.title} logo`}
+      width={size}
+      height={size}
+      decoding="async"
+      className={`block ${className}`}
+      style={box}
+    />
+  );
+}
+
 // Mobile info panel — rebuilt per your reference screenshot: thumbnail +
 // title share a row, description runs full-width beneath, then tag,
 // then a stacked meta pair set off with a 15px gap above it. Still the
@@ -509,7 +536,7 @@ function TimelineInfoPanelMobile({ point }) {
   return (
     <>
       <div className="mt-[10px] flex gap-4">
-        <div className="h-12 w-12 shrink-0 bg-tile" />
+        <TimelineLogo point={point} size={48} className="shrink-0" />
         <div className="flex flex-1 flex-col">
           {/* Same fixed-shape rule as desktop (2026-10-02). The
               description box is sized to the longest any entry reaches at
