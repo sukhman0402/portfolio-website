@@ -65,7 +65,11 @@ export default function ScrollIndicator({ className = "" }) {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      <g className="animate-[scrollDownBounce_1.6s_ease-in-out_infinite]">
+      {/* 0.8s (was 1.6s): 2x faster, direct instruction 2026-10-22 ("the
+          mouse interaction in the first section is slow, make it 2x
+          faster"). Same keyframe and easing, only the cycle is halved.
+          Mobile's "Scroll Down" text cue in Hero.js keeps 1.6s. */}
+      <g className="animate-[scrollDownBounce_0.8s_ease-in-out_infinite]">
         <rect
           x="1"
           y="1"

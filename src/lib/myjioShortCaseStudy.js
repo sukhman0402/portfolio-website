@@ -1829,7 +1829,7 @@ export const myjioShortCaseStudy = {
   ],
   endLinks: [
     {
-      label: "View the Deep Dive",
+      label: "View Full Case-study",
       href: "/projects/myjio-customer-assistance/full"
     },
     {

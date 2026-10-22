@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Chevron from "./Chevron";
 import OpeningLine from "./OpeningLine";
  
@@ -45,8 +46,43 @@ import OpeningLine from "./OpeningLine";
 //   - neither set -> unchanged original behavior, links to ${basePath}/${slug}.
 // Description text: see OpeningLine.js (2-line cap when collapsed, no
 // movement on expand, locked line breaks).
+//
+// Row behaviour (2026-10-22, Sukhman):
+//   - Homepage (expandable): a mouse HOVER opens the row and it stays open;
+//     only the arrow (now pointing up) closes it again. pointerType is
+//     checked so a finger tap on a phone does not count as hover: there, a
+//     tap on a closed row opens it, exactly as before.
+//   - Open row (homepage) and every row on /projects and /research: the
+//     whole section, text and image, opens the project. The arrow is the
+//     one exception. The real <Link>/<a> CTA ("View Project") stays as the
+//     keyboard and screen-reader route; the section click is a mouse/touch
+//     shortcut on top of it, so no link is nested inside another.
+//   - Arrow: vertically centred on the closed row, at the title line when
+//     open. Its click area is a 60px circle, 5x the 12px arrow.
 export default function ProjectRow({ project, expandable = true, basePath = "/projects" }) {
   const [open, setOpen] = useState(!expandable);
+  const router = useRouter();
+  const href = project.externalUrl || `${basePath}/${project.slug}`;
+  const navigable = !project.comingSoon;
+  const clickable = !open || navigable;
+
+  function openProject() {
+    if (project.externalUrl) {
+      window.open(project.externalUrl, "_blank", "noopener,noreferrer");
+    } else {
+      router.push(href);
+    }
+  }
+
+  function handleSectionClick(e) {
+    // Real links and the arrow button handle their own clicks.
+    if (e.target.closest("a, button")) return;
+    if (expandable && !open) {
+      setOpen(true);
+      return;
+    }
+    if (navigable) openProject();
+  }
  
   return (
     // pb-0 when open (2026-09-03, flagged directly: "remove the grey text
@@ -71,15 +107,16 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
     // every other divider on the site, matching ResearchRow.js (used by
     // the homepage's Research teaser), which never had this first-row
     // border to begin with — that section never showed the doubling.
-    <div className={`border-b-2 border-black pt-[10px] ${open ? "pb-0" : "pb-[10px]"}`}>
-      <button
-        type="button"
-        onClick={() => expandable && setOpen((v) => !v)}
-        className={`grid w-full grid-cols-[56px_minmax(0,1fr)_auto] items-start text-left md:grid-cols-[350px_minmax(0,1fr)_auto] ${
-          expandable ? "cursor-pointer" : "cursor-default"
-        }`}
-        aria-expanded={open}
-      >
+    <div
+      className={`relative border-b-2 border-black pt-[10px] ${open ? "pb-0" : "pb-[10px]"} ${
+        clickable ? "cursor-pointer" : ""
+      }`}
+      onPointerEnter={(e) => {
+        if (expandable && e.pointerType === "mouse") setOpen(true);
+      }}
+      onClick={handleSectionClick}
+    >
+      <div className="grid w-full grid-cols-[56px_minmax(0,1fr)_auto] items-start text-left md:grid-cols-[350px_minmax(0,1fr)_auto]">
         <span className="font-medium uppercase leading-[18px] tracking-normal">
           {project.index}
         </span>
@@ -111,14 +148,11 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
           />
         </span>
  
-        {expandable && (
-          <Chevron
-            className={`ml-4 mt-1 h-3 w-3 shrink-0 transition-transform md:ml-6 ${
-              open ? "-rotate-90" : "rotate-90"
-            }`}
-          />
-        )}
-      </button>
+        {/* Same footprint the arrow had in this grid (16/24px gap + 12px),
+            so the description wraps exactly as before. The visible arrow
+            is the absolutely placed button at the end of this row. */}
+        {expandable && <span aria-hidden="true" className="ml-4 w-3 shrink-0 md:ml-6" />}
+      </div>
  
       {/* Tag row + (when open) CTA + image — mirrors the label column /
           content column split used throughout the Figma layout. Same
@@ -138,19 +172,19 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
                   href={project.externalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1 font-semibold tracking-[-0.5px] hover:opacity-60 transition-opacity"
+                  className="flex items-center gap-[15px] font-semibold tracking-[-0.5px] hover:opacity-60 transition-opacity"
                 >
                   {project.ctaLabel}
                   <Chevron className="h-2.5 w-2.5" />
                 </a>
               ) : project.comingSoon ? (
-                <span className="flex items-center gap-1 font-semibold tracking-[-0.5px] text-black/40">
+                <span className="flex items-center gap-[15px] font-semibold tracking-[-0.5px] text-black/40">
                   Coming Soon
                 </span>
               ) : (
                 <Link
                   href={`${basePath}/${project.slug}`}
-                  className="flex items-center gap-1 font-semibold tracking-[-0.5px] hover:opacity-60 transition-opacity"
+                  className="flex items-center gap-[15px] font-semibold tracking-[-0.5px] hover:opacity-60 transition-opacity"
                 >
                   {project.ctaLabel}
                   <Chevron className="h-2.5 w-2.5" />
@@ -177,7 +211,10 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
           Homepage dropdown (expandable) uses coverHome, the /projects and
           /research listings use coverList. */}
       {open && (project.coverHome || project.coverList) && (
-        <div className="relative aspect-[1380/700] w-full overflow-hidden md:mb-[2px]">
+        // 10px below the tag row and flush on the closing line (2026-10-22,
+        // Sukhman: was 0px above / 2px below, which left the tag touching
+        // the image and a sliver of white above the line).
+        <div className="relative mt-[10px] aspect-[1380/700] w-full overflow-hidden">
           <Image
             src={expandable ? project.coverHome : project.coverList}
             alt={`${project.title} cover`}
@@ -186,6 +223,22 @@ export default function ProjectRow({ project, expandable = true, basePath = "/pr
             className="object-cover"
           />
         </div>
+      )}
+
+      {expandable && (
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-label={open ? `Collapse ${project.title}` : `Expand ${project.title}`}
+          onClick={() => setOpen((v) => !v)}
+          className={`absolute right-[-24px] flex h-[60px] w-[60px] items-center justify-center rounded-full ${
+            open ? "top-[-10px]" : "top-1/2 -translate-y-1/2"
+          }`}
+        >
+          <Chevron
+            className={`h-3 w-3 transition-transform ${open ? "-rotate-90" : "rotate-90"}`}
+          />
+        </button>
       )}
     </div>
   );

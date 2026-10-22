@@ -12,7 +12,10 @@ export default function Chevron({ className = "" }) {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >
-      <path d="M2 1L8 5L2 9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+      {/* 2px line at every size (2026-10-22, Sukhman: arrows match the site's
+          2px rules). non-scaling-stroke keeps the width in screen pixels,
+          so a 10px and a 12px chevron both draw a true 2px line. */}
+      <path d="M2 1L8 5L2 9" stroke="currentColor" strokeWidth="2" vectorEffect="non-scaling-stroke" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

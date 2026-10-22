@@ -1,6 +1,7 @@
 "use client";
  
 import Link from "next/link";
+import Chevron from "./Chevron";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { timelineClusters, timelinePoints } from "@/lib/data";
  
@@ -138,18 +139,23 @@ const CLUSTER_GROUPS = timelineClusters.map((cluster, i) => {
   const points = timelinePoints.filter((p) => p.cluster === i);
   const minX = Math.min(...points.map((p) => p.x));
   const maxX = Math.max(...points.map((p) => p.x));
+  // Right edge capped at the 1380px content box (2026-10-22): the last
+  // cluster's padding used to reach x=1388, making the desktop timeline 8px
+  // wider than its window, so a sideways trackpad swipe shifted it left
+  // and cut off the logo (Sukhman's Cardyz screenshot).
+  const left = minX - CLUSTER_HOVER_PADDING;
+  const right = Math.min(maxX + CLUSTER_HOVER_PADDING, 1380);
   return {
     ...cluster,
     index: i,
     points,
-    left: minX - CLUSTER_HOVER_PADDING,
-    width: maxX - minX + CLUSTER_HOVER_PADDING * 2,
+    left,
+    width: right - left,
   };
 });
  
 export default function TimelineSection() {
   const [selectedId, setSelectedId] = useState(DEFAULT_POINT.id);
-  const [hoveredId, setHoveredId] = useState(null);
   const [hoveredCluster, setHoveredCluster] = useState(null);
  
   const selectedPoint =
@@ -200,8 +206,13 @@ export default function TimelineSection() {
                   }
                 >
                   {group.points.map((point) => {
+                    // Hover selects (2026-10-22, Sukhman: "make the primary
+                    // interaction of each point on hover, not on clicking").
+                    // Leaving the timeline keeps the last hovered point, so
+                    // the panel can be read and its link clicked. Click and
+                    // keyboard focus select too (touch, keyboard).
                     const isSelected = point.id === selectedId;
-                    const tall = isSelected || point.id === hoveredId;
+                    const tall = isSelected;
                     const visualWidth = tall ? 2 : 1;
                     const hitWidth = visualWidth + TICK_CLICK_PADDING * 2;
                     return (
@@ -210,20 +221,16 @@ export default function TimelineSection() {
                         type="button"
                         aria-pressed={isSelected}
                         aria-label={`${group.year}: ${point.title}`}
-                        onMouseEnter={() => setHoveredId(point.id)}
-                        onMouseLeave={() =>
-                          setHoveredId((v) => (v === point.id ? null : v))
-                        }
+                        onMouseEnter={() => setSelectedId(point.id)}
                         onFocus={() => {
-                          setHoveredId(point.id);
+                          setSelectedId(point.id);
                           setHoveredCluster(group.index);
                         }}
-                        onBlur={() => {
-                          setHoveredId((v) => (v === point.id ? null : v));
+                        onBlur={() =>
                           setHoveredCluster((v) =>
                             v === group.index ? null : v,
-                          );
-                        }}
+                          )
+                        }
                         onClick={() => setSelectedId(point.id)}
                         className="absolute top-1/2 flex -translate-y-1/2 items-center justify-center"
                         style={{
@@ -252,10 +259,20 @@ export default function TimelineSection() {
               {timelineClusters.map((cluster, i) => {
                 const isSelected = selectedPoint.cluster === i;
                 const isHovered = !isSelected && hoveredCluster === i;
+                // Year labels are clickable (2026-10-22, Sukhman): a click
+                // selects the first point of that year's group.
+                const firstPoint = CLUSTER_GROUPS[i].points[0];
                 return (
-                  <span
+                  <button
                     key={i}
-                    className={`absolute top-0 whitespace-nowrap tracking-[-0.5px] ${
+                    type="button"
+                    aria-label={`${cluster.year}: show ${firstPoint.title}`}
+                    onClick={() => setSelectedId(firstPoint.id)}
+                    onMouseEnter={() => setHoveredCluster(i)}
+                    onMouseLeave={() =>
+                      setHoveredCluster((v) => (v === i ? null : v))
+                    }
+                    className={`absolute top-0 cursor-pointer whitespace-nowrap leading-[18px] tracking-[-0.5px] ${
                       isSelected
                         ? "font-semibold text-black"
                         : isHovered
@@ -265,14 +282,25 @@ export default function TimelineSection() {
                     style={{ left: cluster.x }}
                   >
                     {cluster.year}
-                  </span>
+                  </button>
                 );
               })}
             </div>
- 
+          </div>
+        </div>
+
+        {/* Info panel, desktop. Moved OUT of the sideways-scroll wrapper
+            above (2026-10-22): when that wrapper scrolled (any window
+            under ~1440px, or the old 8px overflow), it dragged the logo
+            and text with it and cut the logo off. Out here the panel is
+            always in place. Columns are the same 50/260/680/rest at
+            1440px; below that the description and link columns shrink
+            instead of overflowing. */}
+        <div className="hidden md:block">
+          <div>
             <div className="mt-[157px] border-t-2 border-black" />
  
-            <div className="mt-[10px] grid grid-cols-[50px_260px_680px_1fr] items-start gap-x-5">
+            <div className="mt-[10px] grid grid-cols-[50px_260px_minmax(0,680px)_minmax(0,1fr)] items-start gap-x-5">
               <TimelineLogo point={selectedPoint} size={50} />
               {/* FIXED-SHAPE PANEL (direct instruction, 2026-10-02: "the
                   layout should not waver in different topics"). Every slot
@@ -295,7 +323,7 @@ export default function TimelineSection() {
                 {selectedPoint.software}
               </p>
             </div>
-            <div className="grid grid-cols-[50px_260px_680px_1fr] items-start gap-x-5">
+            <div className="grid grid-cols-[50px_260px_minmax(0,680px)_minmax(0,1fr)] items-start gap-x-5">
               <span aria-hidden="true" />
               <span aria-hidden="true" />
               <p className="min-h-[18px] truncate font-normal tracking-[-0.5px] text-muted">
@@ -478,9 +506,10 @@ function TimelineLink({ link }) {
     return (
       <Link
         href={link}
-        className="font-normal tracking-[-0.5px] text-muted transition-opacity hover:opacity-60"
+        className="inline-flex items-center gap-[15px] font-normal tracking-[-0.5px] text-muted transition-opacity hover:opacity-60"
       >
-        Case study →
+        Case study
+        <Chevron className="h-2.5 w-2.5" />
       </Link>
     );
   }
@@ -490,9 +519,11 @@ function TimelineLink({ link }) {
         href={link}
         target="_blank"
         rel="noopener noreferrer"
-        className="font-normal tracking-[-0.5px] text-muted transition-opacity hover:opacity-60"
+        className="inline-flex items-center gap-[15px] font-normal tracking-[-0.5px] text-muted transition-opacity hover:opacity-60"
       >
-        {linkLabel(link)} ↗
+        {/* Site chevron instead of the old "↗"/"→" glyphs (2026-10-22). */}
+        {linkLabel(link)}
+        <Chevron className="h-2.5 w-2.5" />
       </a>
     );
   }

@@ -40,7 +40,7 @@ import { workflowIcons } from "@/lib/workflowIcons";
 //     lining up exactly, not an assumption).
 export default function AboutSection() {
   return (
-    <section id="about" className="w-full scroll-mt-24">
+    <section className="w-full">
       <div className="mx-auto max-w-[1440px] px-5 sm:px-[30px]">
         {/* About Me */}
         {/* pt-[180px] (mobile only) — same site-wide inter-section rule as
@@ -69,7 +69,14 @@ export default function AboutSection() {
             breakpoints since this row-gap is otherwise unused on desktop
             (label|content sit side by side there, single row). */}
         <div className="grid grid-cols-1 gap-[10px] pt-[180px] md:grid-cols-[350px_1fr] md:gap-x-0 md:pt-[300px]">
-          <h2 className="font-bold uppercase tracking-normal md:pt-[10px]">
+          {/* id="about" lives on this heading (2026-10-22, Sukhman): the
+              header's ABOUT link used to land on the section's top, i.e.
+              the empty 300px gap above, leaving About Me mid-screen. The
+              scroll margin puts the "About Me" text exactly where the
+              Projects/Research page titles sit under the header: 154px
+              from the top on desktop (144 + this h2's own 10px top
+              padding), 122px on mobile (measured 2026-10-22). */}
+          <h2 id="about" className="scroll-mt-[122px] font-bold uppercase tracking-normal md:scroll-mt-[144px] md:pt-[10px]">
             About Me
           </h2>
           {/* Divider ADDED 2026-09-02, direct instruction: "About Me" had no

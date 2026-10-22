@@ -58,7 +58,7 @@ export default function ResearchSection() {
             above it, not the "01"-"04" index column). */}
         <Link
           href="/research"
-          className="ml-[56px] mt-[60px] inline-flex items-center gap-1 font-bold uppercase tracking-normal hover:opacity-60 transition-opacity md:ml-[350px]"
+          className="ml-[56px] mt-[60px] inline-flex items-center gap-[15px] font-bold uppercase tracking-normal hover:opacity-60 transition-opacity md:ml-[350px]"
         >
           More Research
           <Chevron className="h-2.5 w-2.5" />

@@ -472,7 +472,7 @@ export const driveWiseShortCaseStudy = {
 
   // Links at the end of the page: the first is the main one.
   endLinks: [
-    { label: "View the Deep Dive", href: "/projects/drive-wise/full" },
+    { label: "View Full Case-study", href: "/projects/drive-wise/full" },
     { label: "View research website", href: RESEARCH_SITE, external: true },
   ],
 };

@@ -8,7 +8,7 @@
 // src > components > MyjioDeepDive.js. No em dashes.
 // Images: public > images > projects > myjio-customer-assistance > deepdive.
 
-const PROTOTYPE = "https://www.figma.com/proto/cnMnyMGdbUHpn9XdAsD0SI/MyJio-Customer-Assistance?node-id=3-11419&starting-point-node-id=3%3A11419&scaling=scale-down&content-scaling=fixed&hotspot-hints=1";
+export const PROTOTYPE = "https://www.figma.com/proto/cnMnyMGdbUHpn9XdAsD0SI/MyJio-Customer-Assistance?node-id=3-11419&starting-point-node-id=3%3A11419&scaling=scale-down&content-scaling=fixed&hotspot-hints=1";
 
 export const myjioLongCaseStudy = {
   renderer: "myjio",

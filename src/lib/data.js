@@ -38,7 +38,7 @@
 // Interactive Playkit, Bike Dashboard and UN SDGs sit on the /projects
 // listing page only, not the homepage (My Alumnus replaced the Playkit on
 // the homepage on 2026-10-10).
-import { driveWiseCaseStudy } from "./driveWiseCaseStudy";
+import { driveWiseCaseStudy, PROTOTYPE as DRIVE_WISE_PROTOTYPE, RESEARCH_SITE as DRIVE_WISE_RESEARCH_SITE } from "./driveWiseCaseStudy";
 import { driveWiseShortCaseStudy } from "./driveWiseShortCaseStudy";
 import { driveWiseLongCaseStudy } from "./driveWiseLongCaseStudy";
 import { binaCaseStudy } from "./binaCaseStudy";
@@ -49,7 +49,7 @@ import { unSdgsShortCaseStudy } from "./unSdgsShortCaseStudy";
 import { unSdgsLongCaseStudy } from "./unSdgsLongCaseStudy";
 import { myjioCaseStudy } from "./myjioCaseStudy";
 import { myjioShortCaseStudy } from "./myjioShortCaseStudy";
-import { myjioLongCaseStudy } from "./myjioLongCaseStudy";
+import { myjioLongCaseStudy, PROTOTYPE as MYJIO_PROTOTYPE } from "./myjioLongCaseStudy";
 import { myAlumnusCaseStudy } from "./myAlumnusCaseStudy";
 import { myAlumnusShortCaseStudy } from "./myAlumnusShortCaseStudy";
 import { myAlumnusLongCaseStudy } from "./myAlumnusLongCaseStudy";
@@ -61,6 +61,11 @@ export const projects = [
   {
     slug: "drive-wise",
     index: "01",
+    // Left-panel links on the project page (2026-10-22, Sukhman): shown
+    // under the Contents list as "View Prototype" / "View Research
+    // Website" whenever a project has them (src > app > projects > [slug]).
+    prototypeLink: DRIVE_WISE_PROTOTYPE.openHref,
+    researchLink: DRIVE_WISE_RESEARCH_SITE,
     title: "Drive Wise",
     description:
       "A predictive vehicle-health platform that shows owners their vehicle's real-time condition and forecasts issues before they happen",
@@ -120,6 +125,7 @@ export const projects = [
   {
     slug: "myjio-customer-assistance",
     index: "03",
+    prototypeLink: MYJIO_PROTOTYPE,
     title: "MyJio Customer Assistance",
     description:
       "An AI customer-assistance chatbot concept for Jio's app, built on a \"Keyword Rulebook\"",
@@ -176,42 +182,8 @@ export const projects = [
     long: myAlumnusLongCaseStudy,
   },
   {
-    slug: "interactive-playkit-for-kids",
-    index: "05",
-    title: "Interactive Playkit for Kids",
-    description:
-      "A physical + digital play kit for children that combines tactile pieces with story-driven digital interaction",
-    descriptionMore:
-      ", bridging physical and digital play. Co-designed for the \"Human Factors in Interaction Design\" module.",
-    tag: "Children's Phygital Play",
-    ctaLabel: "View Project",
-    externalUrl:
-      "https://www.behance.net/gallery/255115915/Play-Trail-Interactive-Game-Design",
-    ...coverSet("interactive-playkit-for-kids"),
-    // featured: false since 2026-10-10: My Alumnus took its homepage place
-    // (D14). It stays on the /projects listing page.
-    featured: false,
-    ...buildDetailFields(6),
-  },
-  {
-    slug: "bike-dashboard-design",
-    index: "06",
-    title: "Bike Dashboard Design",
-    description:
-      "A redesigned motorcycle instrument-cluster UI focused on rider readability and cognitive load in motion",
-    descriptionMore:
-      ", backed by a 194-respondent survey, the ISO 15008 and ISO 6727 standards, and a Ducati brand style guide benchmark.",
-    tag: "Automotive HMI",
-    ctaLabel: "View Project",
-    externalUrl:
-      "https://www.behance.net/gallery/249666485/Bike-Dashboard-Design",
-    ...coverSet("bike-dashboard-design"),
-    featured: false,
-    ...buildDetailFields(4),
-  },
-  {
     slug: "un-sdgs",
-    index: "07",
+    index: "05",
     title: "UN Sustainable Development Goals",
     description:
       "An interactive infographic series visualizing progress across the UN Sustainable Development Goals",
@@ -234,6 +206,40 @@ export const projects = [
     endLinks: unSdgsShortCaseStudy.endLinks,
     long: unSdgsLongCaseStudy,
   },
+  {
+    slug: "interactive-playkit-for-kids",
+    index: "06",
+    title: "Interactive Playkit for Kids",
+    description:
+      "A physical + digital play kit for children that combines tactile pieces with story-driven digital interaction",
+    descriptionMore:
+      ", bridging physical and digital play. Co-designed for the \"Human Factors in Interaction Design\" module.",
+    tag: "Children's Phygital Play",
+    ctaLabel: "View Project",
+    externalUrl:
+      "https://www.behance.net/gallery/255115915/Play-Trail-Interactive-Game-Design",
+    ...coverSet("interactive-playkit-for-kids"),
+    // featured: false since 2026-10-10: My Alumnus took its homepage place
+    // (D14). It stays on the /projects listing page.
+    featured: false,
+    ...buildDetailFields(6),
+  },
+  {
+    slug: "bike-dashboard-design",
+    index: "07",
+    title: "Bike Dashboard Design",
+    description:
+      "A redesigned motorcycle instrument-cluster UI focused on rider readability and cognitive load in motion",
+    descriptionMore:
+      ", backed by a 194-respondent survey, the ISO 15008 and ISO 6727 standards, and a Ducati brand style guide benchmark.",
+    tag: "Automotive HMI",
+    ctaLabel: "View Project",
+    externalUrl:
+      "https://www.behance.net/gallery/249666485/Bike-Dashboard-Design",
+    ...coverSet("bike-dashboard-design"),
+    featured: false,
+    ...buildDetailFields(4),
+  },
 ];
  
 // research items — see ProjectRow.js for how comingSoon items render (no
@@ -242,28 +248,8 @@ export const projects = [
 // 2026-09-16 — see the comingSoon items below.
 export const research = [
   {
-    slug: "billboards-interactive-communication-systems",
-    index: "01",
-    title: "Billboards as Interactive Communication Systems",
-    // summary = the homepage Research list's one-liner (complete, no ".." on
-    // desktop, so it must fit one line at 1280px+). See ResearchRow.js.
-    summary:
-      "A smart, interactive billboard system that turns passive urban advertising into two-way public communication.",
-    description:
-      "A smart, interactive billboard system reimagining passive urban advertising as two-way public communication",
-    descriptionMore:
-      ", grounded in public surveys and Hindi/Hinglish field interviews across Ahmedabad and Gandhinagar.",
-    tag: "Service · Urban Design",
-    ctaLabel: "View Project",
-    externalUrl:
-      "https://www.behance.net/gallery/249665017/Billboards-as-Interactive-Communication-Systems",
-    ...coverSet("billboards-interactive-communication-systems"),
-    comingSoon: false,
-    ...buildDetailFields(4, { closingBodyIndex: 1 }),
-  },
-  {
     slug: "canteen-queue-management",
-    index: "02",
+    index: "01",
     title: "Canteen Queue Management",
     // summary = the homepage Research list's one-liner (complete, no ".." on
     // desktop, so it must fit one line at 1280px+). See ResearchRow.js.
@@ -282,7 +268,7 @@ export const research = [
   },
   {
     slug: "drive-wise-research",
-    index: "03",
+    index: "02",
     title: "Drive Wise: Research Analysis",
     // summary = the homepage Research list's one-liner (complete, no ".." on
     // desktop, so it must fit one line at 1280px+). See ResearchRow.js.
@@ -304,7 +290,7 @@ export const research = [
   },
   {
     slug: "physiotherapy-research-website",
-    index: "04",
+    index: "03",
     title: "Physiotherapy Research Website",
     // summary = the homepage Research list's one-liner (complete, no ".." on
     // desktop, so it must fit one line at 1280px+). See ResearchRow.js.
@@ -323,6 +309,26 @@ export const research = [
     ...coverSet("physiotherapy-research-website"),
     comingSoon: false,
     ...buildDetailFields(3),
+  },
+  {
+    slug: "billboards-interactive-communication-systems",
+    index: "04",
+    title: "Billboards as Interactive Communication Systems",
+    // summary = the homepage Research list's one-liner (complete, no ".." on
+    // desktop, so it must fit one line at 1280px+). See ResearchRow.js.
+    summary:
+      "A smart, interactive billboard system that turns passive urban advertising into two-way public communication.",
+    description:
+      "A smart, interactive billboard system reimagining passive urban advertising as two-way public communication",
+    descriptionMore:
+      ", grounded in public surveys and Hindi/Hinglish field interviews across Ahmedabad and Gandhinagar.",
+    tag: "Service · Urban Design",
+    ctaLabel: "View Project",
+    externalUrl:
+      "https://www.behance.net/gallery/249665017/Billboards-as-Interactive-Communication-Systems",
+    ...coverSet("billboards-interactive-communication-systems"),
+    comingSoon: false,
+    ...buildDetailFields(4, { closingBodyIndex: 1 }),
   },
 ];
  
@@ -528,7 +534,7 @@ export const timelinePoints = [
   { id: 19, x: 708, cluster: 5,
     logo: "/images/timeline/19-bharat-nogyo.png",
     title: "Bharat Nōgyō",
-    description: "A blockchain-enabled B2B platform linking Indian farmers to Japanese buyers, with 5 role-based dashboards. Finalist at the India Japan STI Forum, IISc Bangalore.",
+    description: "A blockchain-enabled B2B platform linking Indian farmers to Japanese buyers, with 5 role-based dashboards. Finalist with Priyal, at the India Japan STI Forum, IISc Bangalore.",
     tag: "AgriTech", software: "Figma, Figma Make", link: "Completed" },
   { id: 20, x: 733, cluster: 5,
     logo: "/images/timeline/20-prestige-university.png",
@@ -649,7 +655,9 @@ export const timelinePoints = [
     logo: "/images/timeline/43-myalumnus.png",
     title: "MyAlumnus",
     description: "A gate-security app that manages visitor entry, designed end to end in a quick AI-enabled sprint, with the research, flows and interface all built using AI tools.",
-    tag: "Security", software: "", link: "In Progress.." },
+    // Live (2026-10-22, Sukhman): its case study is published, so the link
+    // opens it, the same as the other live projects.
+    tag: "Security", software: "", link: "/projects/my-alumnus" },
   { id: 44, x: 1373, cluster: 6,
     logo: "/images/timeline/44-digital-cheque-system.png",
     title: "Digital Cheque System",

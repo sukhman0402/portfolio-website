@@ -69,7 +69,7 @@ import ImageZoom from "./ImageZoom";
 //   - active:   font-semibold, text-black
 //   - inactive: font-normal,   text-[#bbb]
 //   both at tracking-[-1px]; number uppercase, label capitalize.
-export default function ProjectTopics({ sections, endLinks, after }) {
+export default function ProjectTopics({ sections, endLinks, after, panelLinks = [] }) {
   const [activeId, setActiveId] = useState(sections?.[0]?.id ?? null);
  
   useEffect(() => {
@@ -146,6 +146,28 @@ export default function ProjectTopics({ sections, endLinks, after }) {
               );
             })}
           </ol>
+          {/* Quick links under the Contents list (2026-10-22, Sukhman):
+              whichever of Full Case-study / Prototype / Research Website the
+              project has, laid out line, CTA, line, CTA, line. 30px below
+              the list; 10px line-to-text and text-to-line, the site's rule. The
+              lines stop 30px short of the content column so they never run
+              into its section lines. */}
+          {panelLinks.length > 0 && (
+            <ul className="mr-[30px] mt-[30px] border-t-2 border-black">
+              {panelLinks.map((l) => (
+                <li key={l.href} className="border-b-2 border-black py-[10px]">
+                  <a
+                    href={l.href}
+                    {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    className="flex w-fit items-center gap-[15px] font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
+                  >
+                    {l.label}
+                    <Chevron className="h-2.5 w-2.5" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </nav>
  
         {/* Content sections */}
@@ -356,7 +378,7 @@ function BlockBody({ item }) {
           href={item.link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-[5px] flex w-fit items-center gap-1 font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
+          className="mt-[5px] flex w-fit items-center gap-[15px] font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
         >
           {item.link.label}
           <Chevron className="h-2.5 w-2.5" />
@@ -453,7 +475,7 @@ function WalkthroughPanel({ video, prototype }) {
           <button
             type="button"
             onClick={() => setShowPrototype((v) => !v)}
-            className="flex items-center gap-1 font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
+            className="flex items-center gap-[15px] font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
           >
             {showPrototype ? "Back to the walkthrough" : prototype.buttonLabel}
             <Chevron className="h-2.5 w-2.5" />
@@ -462,7 +484,7 @@ function WalkthroughPanel({ video, prototype }) {
             href={prototype.openHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
+            className="flex items-center gap-[15px] font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
           >
             {prototype.openLabel}
             <Chevron className="h-2.5 w-2.5" />

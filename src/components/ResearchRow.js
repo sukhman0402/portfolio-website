@@ -59,7 +59,9 @@ export default function ResearchRow({ item }) {
           {item.comingSoon ? "Coming Soon" : item.tag}
         </span>
       </span>
-      <Chevron className="ml-4 mt-1 h-3 w-3 shrink-0 md:ml-6" />
+      {/* self-center (2026-10-22, Sukhman): the arrow sits at the row's
+          vertical centre, matching the closed Projects rows. */}
+      <Chevron className="ml-4 h-3 w-3 shrink-0 self-center md:ml-6" />
     </>
   );
  

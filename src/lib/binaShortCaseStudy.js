@@ -439,7 +439,7 @@ export const binaShortCaseStudy = {
 
   ],
   endLinks: [
-    { label: "View the Deep Dive", href: "/projects/intelligent-waste-disposal-system/full" },
+    { label: "View Full Case-study", href: "/projects/intelligent-waste-disposal-system/full" },
     { label: "View the code", href: CODE, external: true },
   ],
 };

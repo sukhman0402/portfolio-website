@@ -123,7 +123,7 @@ const CONTACT_ROWS = [
 // label-column pattern as every other subsection on the site.
 export default function Footer() {
   return (
-    <footer id="contact" className="w-full">
+    <footer className="w-full">
       {/* pt-[300px] (mobile only, md:pt-[429px] unchanged) — gap from
           AboutSection's "Along the Journey" closing border line to this
           quote block's heading. Originally set from the site-wide
@@ -202,7 +202,13 @@ export default function Footer() {
             "Contact" title -> line rule, same family as the About Me/How I
             Function/etc. title->line fixes. Desktop unaffected (row-gap
             unused there, label sits beside content). */}
-        <div className="mt-[300px] grid grid-cols-1 gap-[10px] md:mt-[496px] md:grid-cols-[350px_1fr] md:gap-x-0">
+        {/* id="contact" moved here from <footer> (2026-10-22, Sukhman): the
+            header's CONTACT link landed on the closing quote above. Same
+            scroll margin as About Me (Header.js links), so "Contact" sits
+            where the Projects page title sits under the header. Near the
+            page end the browser can only scroll so far; the block is
+            then simply in view. */}
+        <div id="contact" className="mt-[300px] grid scroll-mt-[122px] grid-cols-1 gap-[10px] md:mt-[496px] md:scroll-mt-[154px] md:grid-cols-[350px_1fr] md:gap-x-0">
           <h2 className="font-bold uppercase tracking-normal text-black">
             Contact
           </h2>
@@ -215,7 +221,11 @@ export default function Footer() {
               row 1's own pt-[10px] below already supplies the 10px from
               this new line down to "E-mail" (adding one here too would
               double it to 20px). */}
-          <dl className="border-t-2 border-black divide-y-2 divide-black md:border-t-0">
+          {/* Each whole row is the link (2026-10-22, Sukhman: "make the whole
+              section, from 'E-mail' to the address, clickable"), so the list
+              is a div of <a> rows now; a <dl> may not wrap its dt/dd pairs
+              in links. Same classes and spacing as before. */}
+          <div className="border-t-2 border-black divide-y-2 divide-black md:border-t-0">
             {CONTACT_ROWS.map((row, i) => (
               // Row layout: flex-row/items-baseline/justify-between/gap-6
               // unconditional (was gated behind sm:, so it only kicked in
@@ -227,31 +237,27 @@ export default function Footer() {
               // own, container's own bottom padding handles the gap to
               // the footer band" logic desktop already used, see the
               // file-top note).
-              <div
+              <a
                 key={row.label}
-                className={`flex flex-row items-baseline justify-between gap-6 pt-[10px] ${
+                href={row.href}
+                {...(row.href.startsWith("http")
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+                className={`flex flex-row items-baseline justify-between gap-6 pt-[10px] transition-opacity hover:opacity-60 ${
                   i !== CONTACT_ROWS.length - 1 ? "pb-[10px]" : ""
                 } md:py-0 ${i !== 0 ? "md:pt-[10px]" : ""} ${
                   i !== CONTACT_ROWS.length - 1 ? "md:pb-[12px]" : ""
                 }`}
               >
-                <dt className="font-semibold uppercase tracking-[-0.5px]">
+                <span className="font-semibold uppercase tracking-[-0.5px]">
                   {row.label}
-                </dt>
-                <dd className="font-semibold uppercase tracking-[-0.5px] text-right">
-                  <a
-                    href={row.href}
-                    {...(row.href.startsWith("http")
-                      ? { target: "_blank", rel: "noopener noreferrer" }
-                      : {})}
-                    className="hover:opacity-60 transition-opacity break-all"
-                  >
-                    {row.value}
-                  </a>
-                </dd>
-              </div>
+                </span>
+                <span className="break-all text-right font-semibold uppercase tracking-[-0.5px]">
+                  {row.value}
+                </span>
+              </a>
             ))}
-          </dl>
+          </div>
         </div>
       </div>
  
@@ -264,9 +270,13 @@ export default function Footer() {
           read from the clock when the page is built, so it rolls over on
           the first deploy of a new year instead of going stale. */}
       <div className="w-full bg-footer-band">
-        <div className="mx-auto flex max-w-[1440px] items-center justify-center px-5 py-4 sm:px-[30px]">
-          <span className="text-center text-muted font-normal tracking-[-0.5px]">
-            © {new Date().getFullYear()} Sukhmanpreet Singh Saini
+        {/* 2026-10-22 (Sukhman): credit line replaces the copyright,
+            left-aligned on the site's second column (350px into the
+            content box on desktop, like every section's content column).
+            Phones have a single column, so it starts at the content edge. */}
+        <div className="mx-auto flex max-w-[1440px] items-center px-5 py-4 sm:px-[30px] md:pl-[380px]">
+          <span className="font-normal tracking-[-0.5px] text-muted">
+            Designed by me, Coded with Claude
           </span>
         </div>
       </div>

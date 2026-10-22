@@ -361,7 +361,7 @@ export const unSdgsShortCaseStudy = {
   ],
   // End links: the Deep Dive (/projects/un-sdgs/full, 2026-10-10), then the live website.
   endLinks: [
-    { label: "View the Deep Dive", href: "/projects/un-sdgs/full" },
+    { label: "View Full Case-study", href: "/projects/un-sdgs/full" },
     { label: "View live website", href: LIVE, external: true },
   ],
 };

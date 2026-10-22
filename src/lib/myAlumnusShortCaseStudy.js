@@ -487,7 +487,7 @@ export const myAlumnusShortCaseStudy = {
     },
   ],
   endLinks: [
-    { label: "View the Deep Dive", href: "/projects/my-alumnus/full" },
+    { label: "View Full Case-study", href: "/projects/my-alumnus/full" },
     { label: "Try the live demo", href: LIVE, external: true },
   ],
 };

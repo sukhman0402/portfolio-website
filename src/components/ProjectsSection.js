@@ -8,7 +8,7 @@ export default function ProjectsSection() {
   const featured = projects.filter((p) => p.featured).slice(0, 4);
  
   return (
-    <section id="projects" className="-mt-[100px] w-full scroll-mt-24 md:mt-0">
+    <section id="projects" className="-mt-[100px] w-full scroll-mt-24 overflow-x-clip md:mt-0">
       {/* -mt-[100px] (mobile only, reset at md) — flagged 2026-09-02: pulls
           this whole section up 100px to close the gap the Hero's own
           100px upward shift (previous round) opened up beneath it.
@@ -32,7 +32,7 @@ export default function ProjectsSection() {
             from the above section"). */}
         <Link
           href="/projects"
-          className="ml-[56px] mt-[60px] inline-flex items-center gap-1 font-bold uppercase tracking-normal hover:opacity-60 transition-opacity md:ml-[350px]"
+          className="ml-[56px] mt-[60px] inline-flex items-center gap-[15px] font-bold uppercase tracking-normal hover:opacity-60 transition-opacity md:ml-[350px]"
         >
           More Projects
           <Chevron className="h-2.5 w-2.5" />

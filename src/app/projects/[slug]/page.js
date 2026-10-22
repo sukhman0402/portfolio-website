@@ -48,6 +48,11 @@ export default async function ProjectPage({ params }) {
         <ProjectTopics
           sections={project.sections}
           endLinks={project.endLinks}
+          panelLinks={[
+            project.long && { label: "View Full Case-study", href: `/projects/${project.slug}/full` },
+            project.prototypeLink && { label: "View Prototype", href: project.prototypeLink, external: true },
+            project.researchLink && { label: "View Research Website", href: project.researchLink, external: true },
+          ].filter(Boolean)}
           after={project.long ? <ProjectPager slug={project.slug} joined className="mb-[90px]" /> : null}
         />
       </main>
