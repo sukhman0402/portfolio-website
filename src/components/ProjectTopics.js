@@ -226,8 +226,15 @@ export default function ProjectTopics({ sections, endLinks, after, panelLinks = 
             // One row per link between black lines, bold label + diagonal
             // arrow (Sukhman's reference, 2026-10-06). The first row's top
             // line is the last statement's closing line.
+            // Links that also sit in the left panel (Full Case-study,
+            // Prototype, Research Website) are hidden here on desktop
+            // (2026-10-22, Sukhman: "remove these 2 CTAs as we have moved
+            // them to the left panel"). Phones have no left panel, so they
+            // keep them here. The list's top line stays: it is the last
+            // statement's closing line.
             <ul className="border-t-2 border-black">
               {endLinks.map((link) => {
+                const inPanel = panelLinks.some((p) => p.href === link.href);
                 const inner = (
                   <>
                     <span>{link.label}</span>
@@ -237,7 +244,7 @@ export default function ProjectTopics({ sections, endLinks, after, panelLinks = 
                 const cls =
                   "flex w-fit items-center gap-[22px] py-[28px] font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60";
                 return (
-                  <li key={link.href} className="border-b-2 border-black">
+                  <li key={link.href} className={`border-b-2 border-black ${inPanel ? "md:hidden" : ""}`}>
                     {link.external ? (
                       <a href={link.href} target="_blank" rel="noopener noreferrer" className={cls}>
                         {inner}
