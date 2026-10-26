@@ -156,6 +156,8 @@ header.topnav {
 .topnav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
 .wordmark { font-family: var(--font-serif); font-size: 20px; font-weight: 600; color: var(--color-ink-black); text-decoration: none; }
 .wordmark .dot { color: var(--color-accent); }
+.wordmark { display: inline-flex; align-items: center; }
+.wordmark svg { display: block; height: 22px; width: auto; }
 nav.crumbs { display: none; }
 @media (min-width: 900px) {
   nav.crumbs { display: flex; gap: var(--sp-16); font-size: 14px; color: var(--color-slate-gray); }
@@ -185,9 +187,9 @@ nav.crumbs { display: none; }
 .hero-actions { display: flex; gap: var(--sp-12); margin-top: var(--sp-32); flex-wrap: wrap; }
 
 .hero-grid-wrap { margin-top: var(--sp-64); }
-.hero-grid-caption { font-size: 14px; color: var(--color-ash-gray); margin-bottom: var(--sp-12); }
+.hero-grid-caption { font-size: 14px; color: var(--color-ash-gray); margin-bottom: var(--sp-12); max-width: 760px; }
 #respondent-grid { display: block; }
-#respondent-grid rect { cursor: pointer; }
+#respondent-grid { margin-top: var(--sp-16); }
 
 .kpi-strip { display: grid; grid-template-columns: repeat(2,1fr); gap: var(--sp-16); margin-top: var(--sp-32); }
 @media (min-width: 700px) { .kpi-strip { grid-template-columns: repeat(5,1fr); } }
@@ -334,7 +336,18 @@ footer a.back-top { color: var(--color-ink-black); text-decoration: none; font-s
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 <header class="topnav">
   <div class="wrap">
-    <a href="#top" class="wordmark">Drive Wise<span class="dot">.</span></a>
+    <a href="#top" class="wordmark" aria-label="Drive Wise, back to top"><svg viewBox="0 0 246 30" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" focusable="false">
+<path d="M0 0H7.84378C10.2613 0 12.416 0.367882 14.308 1.10365C16.2 1.83941 17.7897 2.85109 19.0773 4.13868C20.3912 5.42626 21.3766 6.95035 22.0335 8.71093C22.7167 10.4452 23.0583 12.3372 23.0583 14.3868C23.0583 16.4365 22.6905 18.3416 21.9547 20.1021C21.2189 21.8627 20.181 23.3868 18.8408 24.6744C17.527 25.9357 15.9503 26.9342 14.1109 27.67C12.2715 28.4058 10.2613 28.7737 8.08027 28.7737H0V0ZM5.36057 4.96641V23.8072H7.44962C9.02625 23.8072 10.4452 23.5707 11.7065 23.0978C12.9679 22.6248 14.0321 21.9678 14.8992 21.127C15.7927 20.2598 16.4759 19.2613 16.9489 18.1313C17.4481 16.9751 17.6978 15.727 17.6978 14.3868C17.6978 13.0204 17.4744 11.7591 17.0277 10.6029C16.6073 9.44669 15.9635 8.44816 15.0963 7.60728C14.2292 6.76641 13.1387 6.12261 11.8248 5.6759C10.5109 5.20291 8.9737 4.96641 7.21312 4.96641H5.36057Z" fill="black"/>
+<path d="M24.6196 0.576286H31.0548V4.75438C32.3354 1.96898 34.7366 0.576286 38.2584 0.576286C39.2829 0.576286 40.1954 0.688343 40.9958 0.912456C41.8282 1.13657 42.5646 1.42471 43.2049 1.77689L40.7557 7.92397C40.2754 7.60381 39.7311 7.34768 39.1228 7.15558C38.5466 6.93147 37.7942 6.81941 36.8657 6.81941C34.9768 6.81941 33.536 7.36369 32.5435 8.45223C31.5831 9.50876 31.1028 11.2536 31.1028 13.6869V28.6704H24.6196V0.576286Z" fill="black"/>
+<path d="M43.8611 0.576286H50.3924V28.6704H43.8611V0.576286Z" fill="black"/>
+<path d="M51.2504 0.576286H58.0218L65.2734 20.3622L72.381 0.576286H79.0563L68.491 28.6704H61.9598L51.2504 0.576286Z" fill="black"/>
+<path d="M91.7688 29.2466C89.5597 29.2466 87.5427 28.8785 85.7178 28.1421C83.8929 27.3737 82.3241 26.3332 81.0114 25.0205C79.7308 23.7079 78.7223 22.1711 77.9859 20.4102C77.2816 18.6173 76.9294 16.7124 76.9294 14.6954C76.9294 12.6463 77.2976 10.7254 78.0339 8.93247C78.8023 7.13957 79.8428 5.5868 81.1555 4.27414C82.4682 2.96148 84.0049 1.92096 85.7658 1.15258C87.5587 0.384192 89.4797 0 91.5287 0C93.6097 0 95.5307 0.368184 97.2916 1.10455C99.0845 1.8089 100.621 2.81741 101.902 4.13007C103.183 5.41071 104.175 6.93147 104.879 8.69235C105.616 10.4532 105.984 12.3742 105.984 14.4552V16.9045H83.1245C83.5727 18.8895 84.5492 20.4903 86.054 21.7069C87.5587 22.9235 89.4637 23.5318 91.7688 23.5318C93.5937 23.5318 95.1785 23.0836 96.5232 22.1871C97.8679 21.2907 98.8764 20.0901 99.5487 18.5853L104.879 21.6588C103.663 23.932 101.95 25.7729 99.7408 27.1816C97.5637 28.5583 94.9064 29.2466 91.7688 29.2466ZM91.5287 5.71486C89.5757 5.71486 87.8789 6.24312 86.4381 7.29965C85.0294 8.35618 84.0369 9.74888 83.4607 11.4777H99.4046C98.9244 9.5888 97.9959 8.16409 96.6192 7.20361C95.2426 6.21111 93.5457 5.71486 91.5287 5.71486Z" fill="black"/>
+<path d="M145 0H150.597L156.036 20.1416L162.067 0H167.349L173.34 20.0627L178.74 0H184.14L176.02 28.7737H170.699L164.669 8.47443L158.638 28.7737H153.199L145 0Z" fill="black"/>
+<path d="M185.078 0.62329H191.599V28.6713H185.078V0.62329Z" fill="black"/>
+<path d="M204.442 29.2466C201.341 29.2466 198.768 28.6713 196.722 27.5206C194.677 26.338 193.095 24.6439 191.976 22.4384L197.969 19.5617C198.64 20.8722 199.551 21.879 200.702 22.5822C201.853 23.2854 203.195 23.637 204.729 23.637C206.327 23.637 207.526 23.3014 208.325 22.6302C209.124 21.959 209.524 21.1599 209.524 20.2329C209.524 19.7215 209.332 19.306 208.948 18.9863C208.597 18.6667 208.117 18.395 207.51 18.1713C206.935 17.9156 206.248 17.7078 205.448 17.548C204.649 17.3882 203.818 17.2124 202.955 17.0206C201.741 16.7968 200.542 16.5092 199.359 16.1576C198.209 15.774 197.17 15.2786 196.243 14.6713C195.316 14.032 194.565 13.2329 193.989 12.274C193.414 11.2831 193.126 10.0525 193.126 8.58221C193.126 7.46349 193.382 6.39271 193.894 5.36988C194.405 4.31508 195.14 3.38814 196.099 2.58905C197.058 1.78996 198.209 1.16667 199.551 0.719182C200.926 0.239728 202.46 0 204.154 0C206.967 0 209.3 0.5274 211.154 1.5822C213.04 2.60503 214.526 4.01142 215.613 5.80138L210.099 8.58221C209.524 7.59134 208.725 6.80824 207.702 6.23289C206.679 5.65755 205.496 5.36988 204.154 5.36988C202.62 5.36988 201.485 5.67353 200.75 6.28084C200.015 6.88815 199.647 7.59134 199.647 8.39043C199.647 9.31737 200.19 9.98861 201.277 10.4041C202.364 10.7877 203.962 11.2032 206.072 11.6507C207.222 11.9064 208.373 12.2101 209.524 12.5617C210.706 12.9133 211.777 13.4087 212.736 14.048C213.695 14.6553 214.462 15.4544 215.037 16.4452C215.645 17.4042 215.948 18.6188 215.948 20.0891C215.948 21.08 215.725 22.1188 215.277 23.2055C214.83 24.2603 214.127 25.2512 213.168 26.1781C212.241 27.0731 211.058 27.8083 209.62 28.3836C208.181 28.959 206.455 29.2466 204.442 29.2466Z" fill="black"/>
+<path d="M231.175 29.2466C228.969 29.2466 226.956 28.8791 225.134 28.1439C223.312 27.3768 221.746 26.338 220.435 25.0275C219.157 23.717 218.15 22.1827 217.415 20.4247C216.711 18.6347 216.36 16.7329 216.36 14.7192C216.36 12.6735 216.727 10.7557 217.462 8.96578C218.23 7.17582 219.268 5.62559 220.579 4.31508C221.889 3.00458 223.424 1.96576 225.182 1.19863C226.972 0.43151 228.889 0.0479487 230.935 0.0479487C233.013 0.0479487 234.931 0.415529 236.689 1.15069C238.478 1.85389 240.013 2.86074 241.291 4.17124C242.57 5.44979 243.561 6.96806 244.264 8.72605C244.999 10.484 245.367 12.4019 245.367 14.4795V16.9247H222.545C222.992 18.9064 223.967 20.5046 225.469 21.7192C226.972 22.9338 228.873 23.5411 231.175 23.5411C232.997 23.5411 234.579 23.0937 235.921 22.1987C237.264 21.3037 238.271 20.1051 238.942 18.6028L244.264 21.6713C243.049 23.9407 241.339 25.7786 239.134 27.185C236.96 28.5594 234.307 29.2466 231.175 29.2466ZM230.935 5.75344C228.985 5.75344 227.291 6.28084 225.853 7.33563C224.446 8.39043 223.456 9.78085 222.88 11.5069H238.798C238.319 9.62103 237.392 8.19865 236.017 7.23974C234.643 6.24887 232.949 5.75344 230.935 5.75344Z" fill="black"/>
+<circle cx="125.589" cy="15.5112" r="4.58928" fill="#0A56C3"/>
+</svg></a>
     <nav class="crumbs">
       <a href="#methodology">Methodology</a>
       <a href="#hypotheses">Hypotheses</a>
@@ -366,7 +379,7 @@ footer a.back-top { color: var(--color-ink-black); text-decoration: none; font-s
     </div>
 
     <div class="hero-grid-wrap">
-      <div class="hero-grid-caption">72 respondents, arranged like a dashboard gauge cluster: each dot is one person, positioned by their confidence in explaining why a part needs replacing. Hover any dot to inspect it.</div>
+      <div class="hero-grid-caption">The 72 respondents, one wedge each. Every ring is one answer, and darker means more: higher confidence, more checks, longer diagnosis, more often overcharged, a delayed service, willing to pay. Owners are sorted by willingness to pay. Hover a wedge to read one owner.</div>
       <div id="respondent-grid"></div>
     </div>
   </div>
@@ -457,7 +470,7 @@ footer a.back-top { color: var(--color-ink-black); text-decoration: none; font-s
       <div class="card white">
         <h3 class="card-title">How often key components get checked</h3>
         <div id="chart-check-freq"></div>
-        <p class="chart-caption">Tire pressure is the one habit that sticks (78% check regularly); engine oil is the most neglected (60% only check at service time, or never).</p>
+        <p class="chart-caption">Tire pressure is the one habit that sticks (78% check regularly); engine oil is the most neglected (69% check it only at service time, or never).</p>
       </div>
       <div class="card white">
         <h3 class="card-title">Record-keeping</h3>
@@ -502,17 +515,6 @@ footer a.back-top { color: var(--color-ink-black); text-decoration: none; font-s
       </div>
     </div>
 
-    <div class="grid-2" style="margin-top: var(--sp-24);">
-      <div class="card white">
-        <h3 class="card-title">Feeling overcharged</h3>
-        <div id="chart-overcharged"></div>
-      </div>
-      <div class="card white">
-        <h3 class="card-title">Time spent self-diagnosing before a mechanic visit</h3>
-        <div id="chart-diagnosis-time"></div>
-      </div>
-    </div>
-
     <div class="finding" style="margin-top: var(--sp-40);">
       <span class="tag">H8: suggestive (p_raw=0.022, not sig. after correction)</span>
       <p>Owners who "know what the light means, then take it to the mechanic" also check their components most often (mean composite 6.7 of 8); the savviest reaction correlates with the most diligent baseline habit. Owners who ignore warning lights check components least (5.2 of 8).</p>
@@ -526,15 +528,10 @@ footer a.back-top { color: var(--color-ink-black); text-decoration: none; font-s
       <span class="tag">H2 &amp; H3: suggestive, non-monotonic (not sig. after correction)</span>
       <p>Both willingness-to-pay and feeling overcharged peak in the <i>middle</i> diagnosis-effort bracket (1–2 hours), not at the extremes. That's why a straight-line correlation test (Kendall) found nothing here, while a group-difference test (Kruskal-Wallis) did; the relationship isn't linear, it's a hump.</p>
     </div>
-    <div class="grid-2" style="margin-top: var(--sp-24);">
-      <div class="card white">
-        <h3 class="card-title">Diagnosis time → willingness to pay</h3>
-        <div id="chart-heat-diag-wtp"></div>
-      </div>
-      <div class="card white">
-        <h3 class="card-title">Feeling overcharged → willingness to pay</h3>
-        <div id="chart-heat-overcharged-wtp"></div>
-      </div>
+    <div class="card white" style="margin-top: var(--sp-24);">
+      <h3 class="card-title">Feeling overcharged → time to diagnose → willingness to pay</h3>
+      <div id="chart-alluvial"></div>
+      <p class="chart-caption">Each ribbon is a group of owners who gave the same three answers, coloured by their final answer (darker = would pay). The node lengths are the answer counts: 8 rarely, 44 sometimes and 20 frequently feel overcharged; 15 diagnose in under 30 minutes, 20 in 1 to 2 hours, 37 over a few days.</p>
     </div>
   </div>
 </section>
@@ -548,17 +545,10 @@ footer a.back-top { color: var(--color-ink-black); text-decoration: none; font-s
       <p class="lede">Five candidate pain points, and whether they travel together.</p>
     </div>
 
-    <div class="grid-2">
-      <div class="card white">
-        <h3 class="card-title">Frustration factors</h3>
-        <div id="chart-frustrations"></div>
-        <p class="chart-caption">Not knowing if replaced parts were actually faulty is the single most common frustration (57%): a verification problem, not a convenience problem.</p>
-      </div>
-      <div class="card white">
-        <h3 class="card-title">Which frustrations co-occur</h3>
-        <div id="chart-frus-cooccur"></div>
-        <p class="chart-caption">Darker cells = more respondents selected both. Faulty-parts doubt and hidden costs are the most tightly paired frustration.</p>
-      </div>
+    <div class="card white">
+      <h3 class="card-title">Frustration factors, and which ones are chosen together</h3>
+      <div id="chart-frus-cooccur"></div>
+      <p class="chart-caption">Not knowing if replaced parts were actually faulty ties with waiting at the workshop as the most common frustration (50% each): a verification problem as much as a convenience problem. Ribbon width is the number of owners who chose both; wait time and faulty-parts doubt are the pair chosen together most (14 owners), just ahead of faulty-parts doubt and hidden costs (13).</p>
     </div>
 
     <div class="finding" style="margin-top: var(--sp-40);">
@@ -582,7 +572,13 @@ footer a.back-top { color: var(--color-ink-black); text-decoration: none; font-s
       <p>Testing 9 things at once means some will look "significant" by chance alone. The Bonferroni correction raises the bar to compensate. Only one hypothesis survives it here; that's a real, modest-sample finding, not a failure of the analysis.</p>
     </div>
 
-    <div class="card white" style="overflow-x:auto;">
+    <div class="card white">
+      <h3 class="card-title">Nine hypotheses, one evidence fan</h3>
+      <div id="chart-hyp-fan"></div>
+      <p class="chart-caption">Spoke length is the strength of evidence (−log₁₀ p). Only a spoke that crosses the dark ring survives the correction for running nine tests; H1 is the only one.</p>
+    </div>
+
+    <div class="card white" style="overflow-x:auto; margin-top: var(--sp-24);">
       <table class="hyp-table" id="hyp-table-target"></table>
     </div>
 
@@ -611,7 +607,7 @@ footer a.back-top { color: var(--color-ink-black); text-decoration: none; font-s
       <div class="card white">
         <h3 class="card-title">Model 1: Who delays a service?<span class="subtitle">Logistic regression</span></h3>
         <div id="chart-model1"></div>
-        <p class="chart-caption">Pseudo-R² = 0.062 · none of the four predictors reach conventional significance. Component check-diligence trends toward reducing delay (p=0.094) but the model is honestly weak; delay isn't well explained by attitude or age alone.</p>
+        <p class="chart-caption">Pseudo-R² (Nagelkerke) = 0.062 · none of the four predictors reach conventional significance. Component check-diligence trends toward reducing delay (p=0.094) but the model is honestly weak; delay isn't well explained by attitude or age alone.</p>
       </div>
       <div class="card white">
         <h3 class="card-title">Model 2: Who's willing to pay?<span class="subtitle">Ordinal logistic regression</span></h3>
@@ -732,506 +728,678 @@ footer a.back-top { color: var(--color-ink-black); text-decoration: none; font-s
 </main>
 
 <script>
-const DATA = {"N": 72, "vehicle_type": [{"label": "Two-wheeler only", "value": 28, "pct": 38.9}, {"label": "Four-wheeler only", "value": 9, "pct": 12.5}, {"label": "Both", "value": 35, "pct": 48.6}], "vehicle_age": [{"label": "Less than 2 years", "value": 9, "pct": 12.5}, {"label": "2-5 years", "value": 25, "pct": 34.7}, {"label": "5-10 years", "value": 21, "pct": 29.2}, {"label": "10+ years", "value": 17, "pct": 23.6}], "weekly_usage": [{"label": "Less than 50 km", "value": 30, "pct": 41.7}, {"label": "50-150 km", "value": 26, "pct": 36.1}, {"label": "150-300 km", "value": 13, "pct": 18.1}, {"label": "300+ km", "value": 3, "pct": 4.2}], "record_keeping": [{"label": "Yes, I keep all bills/logs.", "value": 32, "pct": 44.4}, {"label": "No, I rely on the service center's records.", "value": 24, "pct": 33.3}, {"label": "No, I don't keep track.", "value": 16, "pct": 22.2}], "warning_reaction": [{"label": "Search on YouTube or Google.", "value": 19, "pct": 26.4}, {"label": "Take it to a mechanic immediately.", "value": 18, "pct": 25.0}, {"label": "I know what the light means, then take it to the mechanic.", "value": 18, "pct": 25.0}, {"label": "Ignore it if the vehicle feels fine to drive.", "value": 10, "pct": 13.9}, {"label": "Call a friend or family member for advice.", "value": 7, "pct": 9.7}], "trusted_source": [{"label": "A specific 'local' mechanic I've known for years", "value": 29, "pct": 40.3}, {"label": "Authorized Brand Service Centre (OEM)", "value": 26, "pct": 36.1}, {"label": "Online forums / YouTube / Google", "value": 12, "pct": 16.7}, {"label": "Knowledgeable friends or colleagues", "value": 5, "pct": 6.9}], "delayed_service": [{"label": "Yes", "value": 52, "pct": 72.2}, {"label": "No", "value": 20, "pct": 27.8}], "overcharged": [{"label": "Rarely / Never.", "value": 8, "pct": 11.1}, {"label": "Sometimes.", "value": 44, "pct": 61.1}, {"label": "Yes, frequently.", "value": 20, "pct": 27.8}], "diagnosis_time": [{"label": "Less than 30 minutes", "value": 15, "pct": 20.8}, {"label": "1-2 hours", "value": 20, "pct": 27.8}, {"label": "A few days of observation", "value": 37, "pct": 51.4}], "worry": [{"label": "Sudden breakdown in the middle of a trip.", "value": 30, "pct": 41.7}, {"label": "Safety risks (brake failure, tire bursts).", "value": 19, "pct": 26.4}, {"label": "The drop in fuel mileage/economy.", "value": 18, "pct": 25.0}, {"label": "The long-term decrease in resale value.", "value": 5, "pct": 6.9}], "willingness_to_pay": [{"label": "No", "value": 3, "pct": 4.2}, {"label": "Depends on the cost difference", "value": 22, "pct": 30.6}, {"label": "Yes", "value": 47, "pct": 65.3}], "confidence": [{"label": 1, "value": 17, "pct": 23.6}, {"label": 2, "value": 13, "pct": 18.1}, {"label": 3, "value": 24, "pct": 33.3}, {"label": 4, "value": 10, "pct": 13.9}, {"label": 5, "value": 8, "pct": 11.1}], "check_frequency": [{"component": "Engine oil", "Never": 7, "Only during service": 43, "Regularly": 22}, {"component": "Tire pressure", "Never": 1, "Only during service": 15, "Regularly": 56}, {"component": "Brake response", "Never": 3, "Only during service": 27, "Regularly": 42}, {"component": "PUC & Insurance", "Never": 6, "Only during service": 35, "Regularly": 31}], "frustrations": [{"label": "Wait time at workshop", "value": 36, "pct": 50.0}, {"label": "Faulty-parts doubt", "value": 36, "pct": 50.0}, {"label": "Technical jargon", "value": 19, "pct": 26.4}, {"label": "Hidden costs", "value": 28, "pct": 38.9}, {"label": "Aftermarket-parts doubt", "value": 14, "pct": 19.4}], "frustration_cooccurrence": {"labels": ["Wait time at workshop", "Faulty-parts doubt", "Technical jargon", "Hidden costs", "Aftermarket-parts doubt"], "matrix": [[36, 14, 5, 11, 3], [14, 36, 11, 13, 9], [5, 11, 19, 10, 6], [11, 13, 10, 28, 7], [3, 9, 6, 7, 14]]}, "diag_wtp_heatmap": {"diag_order": ["Less than 30 minutes", "1-2 hours", "A few days of observation"], "wtp_order": ["No", "Depends on the cost difference", "Yes"], "cells": [{"diag": "Less than 30 minutes", "wtp": "No", "pct": 13.3, "n": 2}, {"diag": "Less than 30 minutes", "wtp": "Depends on the cost difference", "pct": 33.3, "n": 5}, {"diag": "Less than 30 minutes", "wtp": "Yes", "pct": 53.3, "n": 8}, {"diag": "1-2 hours", "wtp": "No", "pct": 0.0, "n": 0}, {"diag": "1-2 hours", "wtp": "Depends on the cost difference", "pct": 10.0, "n": 2}, {"diag": "1-2 hours", "wtp": "Yes", "pct": 90.0, "n": 18}, {"diag": "A few days of observation", "wtp": "No", "pct": 2.7, "n": 1}, {"diag": "A few days of observation", "wtp": "Depends on the cost difference", "pct": 40.5, "n": 15}, {"diag": "A few days of observation", "wtp": "Yes", "pct": 56.8, "n": 21}]}, "overcharged_wtp_heatmap": {"ov_order": ["Rarely / Never.", "Sometimes.", "Yes, frequently."], "wtp_order": ["No", "Depends on the cost difference", "Yes"], "cells": [{"ov": "Rarely / Never.", "wtp": "No", "pct": 0.0, "n": 0}, {"ov": "Rarely / Never.", "wtp": "Depends on the cost difference", "pct": 37.5, "n": 3}, {"ov": "Rarely / Never.", "wtp": "Yes", "pct": 62.5, "n": 5}, {"ov": "Sometimes.", "wtp": "No", "pct": 6.8, "n": 3}, {"ov": "Sometimes.", "wtp": "Depends on the cost difference", "pct": 36.4, "n": 16}, {"ov": "Sometimes.", "wtp": "Yes", "pct": 56.8, "n": 25}, {"ov": "Yes, frequently.", "wtp": "No", "pct": 0.0, "n": 0}, {"ov": "Yes, frequently.", "wtp": "Depends on the cost difference", "pct": 15.0, "n": 3}, {"ov": "Yes, frequently.", "wtp": "Yes", "pct": 85.0, "n": 17}]}, "age_oil_trend": [{"age": "Less than 2 years", "mean_score": 1.22}, {"age": "2-5 years", "mean_score": 0.88}, {"age": "5-10 years", "mean_score": 1.33}, {"age": "10+ years", "mean_score": 1.53}], "warning_check": [{"label": "Ignore it if the vehicle feels fine to drive.", "value": 5.2}, {"label": "Search on YouTube or Google.", "value": 5.42}, {"label": "Call a friend or family member for advice.", "value": 5.71}, {"label": "Take it to a mechanic immediately.", "value": 5.94}, {"label": "I know what the light means, then take it to the mechanic.", "value": 6.67}], "trusted_wtp": [{"label": "Knowledgeable friends or colleagues", "value": 1.2, "n": 5}, {"label": "A specific 'local' mechanic I've known for years", "value": 1.45, "n": 29}, {"label": "Online forums / YouTube / Google", "value": 1.75, "n": 12}, {"label": "Authorized Brand Service Centre (OEM)", "value": 1.81, "n": 26}], "vehicle_usage_mean": [{"label": "Two-wheeler only", "value": 0.54}, {"label": "Four-wheeler only", "value": 0.78}, {"label": "Both", "value": 1.11}], "hypotheses": [{"id": "H1", "hypothesis": "Older vehicles are checked more often (oil specifically)", "test": "Spearman \u03c1", "stat": "\u03c1=0.337", "p_raw": 0.0037412208961235182, "p_corr": 0.033670988065111665, "verdict": "Significant"}, {"id": "H2", "hypothesis": "Willingness to pay peaks at moderate (1\u20132hr) self-diagnosis effort", "test": "Kruskal-Wallis", "stat": "H=7.69", "p_raw": 0.021390820254348065, "p_corr": 0.1925173822891326, "verdict": "Not sig."}, {"id": "H3", "hypothesis": "Feeling overcharged also peaks at moderate diagnosis effort", "test": "Kruskal-Wallis", "stat": "H=6.66", "p_raw": 0.03586579438026128, "p_corr": 0.3227921494223515, "verdict": "Not sig."}, {"id": "H4", "hypothesis": "Feeling overcharged correlates with willingness to pay", "test": "Spearman \u03c1", "stat": "\u03c1=0.213", "p_raw": 0.07211546615457058, "p_corr": 0.6490391953911352, "verdict": "Not sig."}, {"id": "H5", "hypothesis": "Trusted-source type predicts willingness to pay", "test": "Kruskal-Wallis", "stat": "H=10.39", "p_raw": 0.015522748285424518, "p_corr": 0.13970473456882065, "verdict": "Not sig."}, {"id": "H6", "hypothesis": "Delaying a service is associated with a higher frustration count", "test": "Mann-Whitney U", "stat": "U=672", "p_raw": 0.04082251984011593, "p_corr": 0.36740267856104336, "verdict": "Not sig."}, {"id": "H7.1\u20135", "hypothesis": "Each individual frustration factor predicts willingness to pay", "test": "Chi-square \u00d75", "stat": "\u03c7\u00b2=0.0\u20132.0", "p_raw": 0.1583931830165083, "p_corr": 0.7919659150825414, "verdict": "All not sig."}, {"id": "H8", "hypothesis": "Warning-light savviness predicts component check-diligence", "test": "Kruskal-Wallis", "stat": "H=11.39", "p_raw": 0.02248482654968379, "p_corr": 0.2023634389471541, "verdict": "Not sig."}, {"id": "H9", "hypothesis": "Vehicle type predicts weekly usage intensity", "test": "Kruskal-Wallis", "stat": "H=8.50", "p_raw": 0.014257927838911359, "p_corr": 0.12832135055020222, "verdict": "Not sig."}], "model1": {"const": 2.544472147936734, "confidence": 0.09512680426296176, "age_c": 0.17483818825524655, "usage_c": 0.10193274464389505, "check_composite": -0.37020014569889087}, "model1_pvalues": {"const": 0.06482992683097623, "confidence": 0.6613862499958956, "age_c": 0.5379880925645435, "usage_c": 0.7589199599357377, "check_composite": 0.09381081478393713}, "model1_or": {"const": 12.736503321824104, "confidence": 1.0997983053979943, "age_c": 1.1910534745780001, "usage_c": 1.1073089967626457, "check_composite": 0.6905960969659002}, "model1_pseudo_r2": 0.03707401522332687, "model1_llr_p": 0.532342962464092, "model2": {"diag_c": -0.0021423975420639943, "overcharged_c": 0.942983252495862, "frustration_count": -0.5762545320043502, "confidence": -0.1098444308369278, "0/1": -3.654245221715404, "1/2": 0.9770125193140532}, "model2_pvalues": {"diag_c": 0.9948334905347073, "overcharged_c": 0.0400289664989623, "frustration_count": 0.03315907634763442, "confidence": 0.5832810241398296, "0/1": 0.0008464747101841313, "1/2": 1.1043537840885007e-05}, "archetypes": {"0": {"name": "Local-Mechanic Loyalists", "n": 34, "traits": ["Trust a specific local mechanic (62%)", "Keep their own bills/logs (56%) \u2014 yet still delay service most (82%)", "Lowest pay-intent of the three (38% Yes)"]}, "1": {"name": "Self-Directed Researchers", "n": 23, "traits": ["Own both a 2W and 4W (83%)", "Outsource record-keeping to the service centre (70%)", "Research warning lights online before acting (48%)", "High pay-intent (83% Yes)"]}, "2": {"name": "Overcharged Pragmatists", "n": 15, "traits": ["Feel overcharged frequently (67% \u2014 highest of any segment)", "Act fastest \u2014 least likely to delay service (67% No)", "Unanimous: 100% willing to pay"]}}};
+const DATA = {"N": 72, "vehicle_type": [{"label": "Two-wheeler only", "value": 28, "pct": 38.9}, {"label": "Four-wheeler only", "value": 9, "pct": 12.5}, {"label": "Both", "value": 35, "pct": 48.6}], "vehicle_age": [{"label": "Less than 2 years", "value": 9, "pct": 12.5}, {"label": "2-5 years", "value": 25, "pct": 34.7}, {"label": "5-10 years", "value": 21, "pct": 29.2}, {"label": "10+ years", "value": 17, "pct": 23.6}], "weekly_usage": [{"label": "Less than 50 km", "value": 30, "pct": 41.7}, {"label": "50-150 km", "value": 26, "pct": 36.1}, {"label": "150-300 km", "value": 13, "pct": 18.1}, {"label": "300+ km", "value": 3, "pct": 4.2}], "record_keeping": [{"label": "Yes, I keep all bills/logs.", "value": 32, "pct": 44.4}, {"label": "No, I rely on the service center's records.", "value": 24, "pct": 33.3}, {"label": "No, I don't keep track.", "value": 16, "pct": 22.2}], "warning_reaction": [{"label": "Search on YouTube or Google.", "value": 19, "pct": 26.4}, {"label": "Take it to a mechanic immediately.", "value": 18, "pct": 25.0}, {"label": "I know what the light means, then take it to the mechanic.", "value": 18, "pct": 25.0}, {"label": "Ignore it if the vehicle feels fine to drive.", "value": 10, "pct": 13.9}, {"label": "Call a friend or family member for advice.", "value": 7, "pct": 9.7}], "trusted_source": [{"label": "A specific 'local' mechanic I've known for years", "value": 29, "pct": 40.3}, {"label": "Authorized Brand Service Centre (OEM)", "value": 26, "pct": 36.1}, {"label": "Online forums / YouTube / Google", "value": 12, "pct": 16.7}, {"label": "Knowledgeable friends or colleagues", "value": 5, "pct": 6.9}], "delayed_service": [{"label": "Yes", "value": 52, "pct": 72.2}, {"label": "No", "value": 20, "pct": 27.8}], "overcharged": [{"label": "Rarely / Never.", "value": 8, "pct": 11.1}, {"label": "Sometimes.", "value": 44, "pct": 61.1}, {"label": "Yes, frequently.", "value": 20, "pct": 27.8}], "diagnosis_time": [{"label": "Less than 30 minutes", "value": 15, "pct": 20.8}, {"label": "1-2 hours", "value": 20, "pct": 27.8}, {"label": "A few days of observation", "value": 37, "pct": 51.4}], "worry": [{"label": "Sudden breakdown in the middle of a trip.", "value": 30, "pct": 41.7}, {"label": "Safety risks (brake failure, tire bursts).", "value": 19, "pct": 26.4}, {"label": "The drop in fuel mileage/economy.", "value": 18, "pct": 25.0}, {"label": "The long-term decrease in resale value.", "value": 5, "pct": 6.9}], "willingness_to_pay": [{"label": "No", "value": 3, "pct": 4.2}, {"label": "Depends on the cost difference", "value": 22, "pct": 30.6}, {"label": "Yes", "value": 47, "pct": 65.3}], "confidence": [{"label": 1, "value": 17, "pct": 23.6}, {"label": 2, "value": 13, "pct": 18.1}, {"label": 3, "value": 24, "pct": 33.3}, {"label": 4, "value": 10, "pct": 13.9}, {"label": 5, "value": 8, "pct": 11.1}], "check_frequency": [{"component": "Engine oil", "Never": 7, "Only during service": 43, "Regularly": 22}, {"component": "Tire pressure", "Never": 1, "Only during service": 15, "Regularly": 56}, {"component": "Brake response", "Never": 3, "Only during service": 27, "Regularly": 42}, {"component": "PUC & Insurance", "Never": 6, "Only during service": 35, "Regularly": 31}], "frustrations": [{"label": "Wait time at workshop", "value": 36, "pct": 50.0}, {"label": "Faulty-parts doubt", "value": 36, "pct": 50.0}, {"label": "Technical jargon", "value": 19, "pct": 26.4}, {"label": "Hidden costs", "value": 28, "pct": 38.9}, {"label": "Aftermarket-parts doubt", "value": 14, "pct": 19.4}], "frustration_cooccurrence": {"labels": ["Wait time at workshop", "Faulty-parts doubt", "Technical jargon", "Hidden costs", "Aftermarket-parts doubt"], "matrix": [[36, 14, 5, 11, 3], [14, 36, 11, 13, 9], [5, 11, 19, 10, 6], [11, 13, 10, 28, 7], [3, 9, 6, 7, 14]]}, "diag_wtp_heatmap": {"diag_order": ["Less than 30 minutes", "1-2 hours", "A few days of observation"], "wtp_order": ["No", "Depends on the cost difference", "Yes"], "cells": [{"diag": "Less than 30 minutes", "wtp": "No", "pct": 13.3, "n": 2}, {"diag": "Less than 30 minutes", "wtp": "Depends on the cost difference", "pct": 33.3, "n": 5}, {"diag": "Less than 30 minutes", "wtp": "Yes", "pct": 53.3, "n": 8}, {"diag": "1-2 hours", "wtp": "No", "pct": 0.0, "n": 0}, {"diag": "1-2 hours", "wtp": "Depends on the cost difference", "pct": 10.0, "n": 2}, {"diag": "1-2 hours", "wtp": "Yes", "pct": 90.0, "n": 18}, {"diag": "A few days of observation", "wtp": "No", "pct": 2.7, "n": 1}, {"diag": "A few days of observation", "wtp": "Depends on the cost difference", "pct": 40.5, "n": 15}, {"diag": "A few days of observation", "wtp": "Yes", "pct": 56.8, "n": 21}]}, "overcharged_wtp_heatmap": {"ov_order": ["Rarely / Never.", "Sometimes.", "Yes, frequently."], "wtp_order": ["No", "Depends on the cost difference", "Yes"], "cells": [{"ov": "Rarely / Never.", "wtp": "No", "pct": 0.0, "n": 0}, {"ov": "Rarely / Never.", "wtp": "Depends on the cost difference", "pct": 37.5, "n": 3}, {"ov": "Rarely / Never.", "wtp": "Yes", "pct": 62.5, "n": 5}, {"ov": "Sometimes.", "wtp": "No", "pct": 6.8, "n": 3}, {"ov": "Sometimes.", "wtp": "Depends on the cost difference", "pct": 36.4, "n": 16}, {"ov": "Sometimes.", "wtp": "Yes", "pct": 56.8, "n": 25}, {"ov": "Yes, frequently.", "wtp": "No", "pct": 0.0, "n": 0}, {"ov": "Yes, frequently.", "wtp": "Depends on the cost difference", "pct": 15.0, "n": 3}, {"ov": "Yes, frequently.", "wtp": "Yes", "pct": 85.0, "n": 17}]}, "age_oil_trend": [{"age": "Less than 2 years", "mean_score": 1.22}, {"age": "2-5 years", "mean_score": 0.88}, {"age": "5-10 years", "mean_score": 1.33}, {"age": "10+ years", "mean_score": 1.53}], "warning_check": [{"label": "Ignore it if the vehicle feels fine to drive.", "value": 5.2}, {"label": "Search on YouTube or Google.", "value": 5.42}, {"label": "Call a friend or family member for advice.", "value": 5.71}, {"label": "Take it to a mechanic immediately.", "value": 5.94}, {"label": "I know what the light means, then take it to the mechanic.", "value": 6.67}], "trusted_wtp": [{"label": "Knowledgeable friends or colleagues", "value": 1.2, "n": 5}, {"label": "A specific 'local' mechanic I've known for years", "value": 1.45, "n": 29}, {"label": "Online forums / YouTube / Google", "value": 1.75, "n": 12}, {"label": "Authorized Brand Service Centre (OEM)", "value": 1.81, "n": 26}], "vehicle_usage_mean": [{"label": "Two-wheeler only", "value": 0.54}, {"label": "Four-wheeler only", "value": 0.78}, {"label": "Both", "value": 1.11}], "hypotheses": [{"id": "H1", "hypothesis": "Older vehicles are checked more often (oil specifically)", "test": "Spearman \u03c1", "stat": "\u03c1=0.337", "p_raw": 0.0037412208961235182, "p_corr": 0.033670988065111665, "verdict": "Significant"}, {"id": "H2", "hypothesis": "Willingness to pay peaks at moderate (1\u20132hr) self-diagnosis effort", "test": "Kruskal-Wallis", "stat": "H=7.69", "p_raw": 0.021390820254348065, "p_corr": 0.1925173822891326, "verdict": "Not sig."}, {"id": "H3", "hypothesis": "Feeling overcharged also peaks at moderate diagnosis effort", "test": "Kruskal-Wallis", "stat": "H=6.66", "p_raw": 0.03586579438026128, "p_corr": 0.3227921494223515, "verdict": "Not sig."}, {"id": "H4", "hypothesis": "Feeling overcharged correlates with willingness to pay", "test": "Spearman \u03c1", "stat": "\u03c1=0.213", "p_raw": 0.07211546615457058, "p_corr": 0.6490391953911352, "verdict": "Not sig."}, {"id": "H5", "hypothesis": "Trusted-source type predicts willingness to pay", "test": "Kruskal-Wallis", "stat": "H=10.39", "p_raw": 0.015522748285424518, "p_corr": 0.13970473456882065, "verdict": "Not sig."}, {"id": "H6", "hypothesis": "Delaying a service is associated with a higher frustration count", "test": "Mann-Whitney U", "stat": "U=672", "p_raw": 0.04082251984011593, "p_corr": 0.36740267856104336, "verdict": "Not sig."}, {"id": "H7.1\u20135", "hypothesis": "Each individual frustration factor predicts willingness to pay", "test": "Chi-square \u00d75", "stat": "\u03c7\u00b2=0.0\u20132.0", "p_raw": 0.1583931830165083, "p_corr": 0.7919659150825414, "verdict": "All not sig."}, {"id": "H8", "hypothesis": "Warning-light savviness predicts component check-diligence", "test": "Kruskal-Wallis", "stat": "H=11.39", "p_raw": 0.02248482654968379, "p_corr": 0.2023634389471541, "verdict": "Not sig."}, {"id": "H9", "hypothesis": "Vehicle type predicts weekly usage intensity", "test": "Kruskal-Wallis", "stat": "H=8.50", "p_raw": 0.014257927838911359, "p_corr": 0.12832135055020222, "verdict": "Not sig."}], "model1": {"const": 2.544472147936734, "confidence": 0.09512680426296176, "age_c": 0.17483818825524655, "usage_c": 0.10193274464389505, "check_composite": -0.37020014569889087}, "model1_pvalues": {"const": 0.06482992683097623, "confidence": 0.6613862499958956, "age_c": 0.5379880925645435, "usage_c": 0.7589199599357377, "check_composite": 0.09381081478393713}, "model1_or": {"const": 12.736503321824104, "confidence": 1.0997983053979943, "age_c": 1.1910534745780001, "usage_c": 1.1073089967626457, "check_composite": 0.6905960969659002}, "model1_pseudo_r2": 0.03707401522332687, "model1_llr_p": 0.532342962464092, "model2": {"diag_c": -0.0021423975420639943, "overcharged_c": 0.942983252495862, "frustration_count": -0.5762545320043502, "confidence": -0.1098444308369278, "0/1": -3.654245221715404, "1/2": 0.9770125193140532}, "model2_pvalues": {"diag_c": 0.9948334905347073, "overcharged_c": 0.0400289664989623, "frustration_count": 0.03315907634763442, "confidence": 0.5832810241398296, "0/1": 0.0008464747101841313, "1/2": 1.1043537840885007e-05}, "archetypes": {"0": {"name": "Local-Mechanic Loyalists", "n": 34, "traits": ["Trust a specific local mechanic (62%)", "Keep their own bills/logs (56%), yet still delay service most (82%)", "Lowest pay-intent of the three (38% Yes)"]}, "1": {"name": "Self-Directed Researchers", "n": 23, "traits": ["Own both a 2W and 4W (83%)", "Outsource record-keeping to the service centre (70%)", "Research warning lights online before acting (48%)", "High pay-intent (83% Yes)"]}, "2": {"name": "Overcharged Pragmatists", "n": 15, "traits": ["Feel overcharged frequently (67%, highest of any segment)", "Act fastest: least likely to delay service (67% No)", "Unanimous: 100% willing to pay"]}}};
 const MCA = {"inertia": [11.7, 10.8], "points": [{"label": "Owns both", "x": -0.254, "y": 0.157, "varr": "vehicle"}, {"label": "4W only", "x": -0.019, "y": 0.663, "varr": "vehicle"}, {"label": "2W only", "x": 0.324, "y": -0.41, "varr": "vehicle"}, {"label": "No tracking", "x": 0.409, "y": -0.615, "varr": "record"}, {"label": "Relies on centre records", "x": 0.264, "y": 0.583, "varr": "record"}, {"label": "Keeps own logs", "x": -0.402, "y": -0.129, "varr": "record"}, {"label": "Calls a friend", "x": -0.407, "y": 0.169, "varr": "warning"}, {"label": "Knows the light, then acts", "x": -0.123, "y": 0.023, "varr": "warning"}, {"label": "Ignores if it feels fine", "x": 1.571, "y": -0.385, "varr": "warning"}, {"label": "Searches online", "x": -0.173, "y": 0.985, "varr": "warning"}, {"label": "Immediate mechanic visit", "x": -0.409, "y": -0.915, "varr": "warning"}, {"label": "Rarely feels overcharged", "x": 1.351, "y": -1.158, "varr": "overcharged"}, {"label": "Sometimes overcharged", "x": 0.08, "y": 0.402, "varr": "overcharged"}, {"label": "Frequently overcharged", "x": -0.716, "y": -0.421, "varr": "overcharged"}, {"label": "Pay: depends on cost", "x": 0.742, "y": 0.514, "varr": "willingness"}, {"label": "Pay: No", "x": 1.792, "y": 0.171, "varr": "willingness"}, {"label": "Pay: Yes", "x": -0.462, "y": -0.251, "varr": "willingness"}, {"label": "Never delayed", "x": -0.309, "y": -0.752, "varr": "delayed"}, {"label": "Has delayed service", "x": 0.119, "y": 0.289, "varr": "delayed"}, {"label": "Trusts local mechanic", "x": 0.555, "y": -0.512, "varr": "trusted"}, {"label": "Trusts OEM centre", "x": -0.507, "y": 0.054, "varr": "trusted"}, {"label": "Trusts friends", "x": 0.399, "y": 1.276, "varr": "trusted"}, {"label": "Trusts online forums", "x": -0.409, "y": 0.589, "varr": "trusted"}, {"label": "Diagnoses in 1-2hrs", "x": -0.925, "y": -0.318, "varr": "diagnosis"}, {"label": "Diagnoses over days", "x": 0.148, "y": 0.422, "varr": "diagnosis"}, {"label": "Diagnoses in <30min", "x": 0.869, "y": -0.618, "varr": "diagnosis"}]};
+/* One row per respondent, coded only (no timestamps or free text):
+   conf 1-5, check 0-8 (four parts: never 0, at service 1, regularly 2), over 0-2, diag 0-2, delay 0/1, pay 0-2 */
+const RESP = [{"conf":3,"check":4,"over":0,"diag":2,"delay":0,"pay":2},{"conf":2,"check":8,"over":1,"diag":1,"delay":0,"pay":2},{"conf":4,"check":3,"over":1,"diag":2,"delay":1,"pay":0},{"conf":3,"check":7,"over":1,"diag":0,"delay":1,"pay":1},{"conf":5,"check":7,"over":2,"diag":2,"delay":1,"pay":2},{"conf":4,"check":6,"over":1,"diag":2,"delay":1,"pay":1},{"conf":5,"check":5,"over":2,"diag":2,"delay":1,"pay":1},{"conf":4,"check":3,"over":1,"diag":1,"delay":0,"pay":2},{"conf":4,"check":7,"over":2,"diag":2,"delay":1,"pay":2},{"conf":2,"check":5,"over":1,"diag":0,"delay":1,"pay":0},{"conf":5,"check":6,"over":0,"diag":0,"delay":1,"pay":1},{"conf":3,"check":7,"over":0,"diag":2,"delay":0,"pay":2},{"conf":2,"check":5,"over":1,"diag":2,"delay":1,"pay":1},{"conf":1,"check":6,"over":1,"diag":2,"delay":1,"pay":1},{"conf":3,"check":7,"over":1,"diag":0,"delay":1,"pay":2},{"conf":3,"check":5,"over":2,"diag":2,"delay":1,"pay":2},{"conf":4,"check":7,"over":1,"diag":2,"delay":0,"pay":2},{"conf":1,"check":5,"over":2,"diag":1,"delay":0,"pay":2},{"conf":5,"check":8,"over":1,"diag":1,"delay":1,"pay":2},{"conf":1,"check":8,"over":2,"diag":1,"delay":1,"pay":2},{"conf":1,"check":4,"over":2,"diag":0,"delay":0,"pay":2},{"conf":3,"check":5,"over":1,"diag":0,"delay":1,"pay":2},{"conf":3,"check":5,"over":1,"diag":2,"delay":1,"pay":2},{"conf":3,"check":6,"over":1,"diag":2,"delay":1,"pay":2},{"conf":1,"check":6,"over":0,"diag":0,"delay":1,"pay":2},{"conf":1,"check":4,"over":1,"diag":1,"delay":1,"pay":2},{"conf":5,"check":7,"over":1,"diag":1,"delay":1,"pay":2},{"conf":5,"check":8,"over":2,"diag":0,"delay":0,"pay":2},{"conf":2,"check":4,"over":1,"diag":2,"delay":1,"pay":2},{"conf":4,"check":7,"over":1,"diag":2,"delay":1,"pay":2},{"conf":1,"check":6,"over":1,"diag":2,"delay":1,"pay":2},{"conf":3,"check":6,"over":1,"diag":2,"delay":0,"pay":2},{"conf":3,"check":7,"over":1,"diag":0,"delay":1,"pay":2},{"conf":2,"check":6,"over":2,"diag":1,"delay":1,"pay":1},{"conf":2,"check":7,"over":2,"diag":2,"delay":1,"pay":2},{"conf":1,"check":7,"over":1,"diag":2,"delay":1,"pay":1},{"conf":4,"check":8,"over":1,"diag":1,"delay":0,"pay":1},{"conf":5,"check":7,"over":1,"diag":2,"delay":1,"pay":1},{"conf":1,"check":6,"over":2,"diag":1,"delay":1,"pay":2},{"conf":1,"check":6,"over":1,"diag":2,"delay":1,"pay":1},{"conf":1,"check":7,"over":0,"diag":0,"delay":0,"pay":1},{"conf":4,"check":6,"over":1,"diag":0,"delay":0,"pay":0},{"conf":3,"check":6,"over":1,"diag":2,"delay":1,"pay":1},{"conf":3,"check":6,"over":1,"diag":2,"delay":1,"pay":1},{"conf":4,"check":6,"over":2,"diag":2,"delay":1,"pay":1},{"conf":3,"check":8,"over":2,"diag":1,"delay":0,"pay":2},{"conf":4,"check":7,"over":1,"diag":0,"delay":0,"pay":1},{"conf":2,"check":3,"over":0,"diag":2,"delay":1,"pay":1},{"conf":3,"check":5,"over":1,"diag":2,"delay":1,"pay":2},{"conf":2,"check":8,"over":1,"diag":2,"delay":0,"pay":1},{"conf":1,"check":4,"over":1,"diag":1,"delay":1,"pay":2},{"conf":3,"check":4,"over":1,"diag":1,"delay":1,"pay":2},{"conf":3,"check":6,"over":2,"diag":1,"delay":1,"pay":2},{"conf":3,"check":5,"over":1,"diag":1,"delay":0,"pay":2},{"conf":1,"check":4,"over":1,"diag":1,"delay":1,"pay":2},{"conf":2,"check":4,"over":2,"diag":2,"delay":1,"pay":2},{"conf":3,"check":4,"over":2,"diag":2,"delay":0,"pay":2},{"conf":1,"check":6,"over":1,"diag":2,"delay":0,"pay":1},{"conf":2,"check":7,"over":1,"diag":2,"delay":1,"pay":1},{"conf":3,"check":5,"over":2,"diag":1,"delay":1,"pay":2},{"conf":3,"check":5,"over":2,"diag":0,"delay":1,"pay":2},{"conf":5,"check":6,"over":0,"diag":0,"delay":1,"pay":2},{"conf":1,"check":5,"over":0,"diag":2,"delay":1,"pay":2},{"conf":1,"check":6,"over":2,"diag":1,"delay":0,"pay":2},{"conf":3,"check":7,"over":1,"diag":1,"delay":1,"pay":2},{"conf":3,"check":5,"over":1,"diag":2,"delay":1,"pay":2},{"conf":1,"check":8,"over":1,"diag":2,"delay":0,"pay":2},{"conf":2,"check":5,"over":1,"diag":0,"delay":1,"pay":1},{"conf":3,"check":6,"over":1,"diag":2,"delay":1,"pay":2},{"conf":2,"check":5,"over":1,"diag":2,"delay":1,"pay":1},{"conf":2,"check":7,"over":2,"diag":1,"delay":1,"pay":2},{"conf":3,"check":5,"over":1,"diag":2,"delay":1,"pay":2}];
 const SEGMENTS = [{"name": "Local-Mechanic Loyalists", "confidence": 2.88, "frustration_count": 1.97, "check_composite": 5.94, "wtp_yes_pct": 38}, {"name": "Self-Directed Researchers", "confidence": 2.43, "frustration_count": 1.87, "check_composite": 5.83, "wtp_yes_pct": 83}, {"name": "Overcharged Pragmatists", "confidence": 2.73, "frustration_count": 1.53, "check_composite": 5.73, "wtp_yes_pct": 100}];
 </script>
 <script>
 /* ============================================================
-   Drive Wise: chart library (D3 v7)
-   Standard D3.js.org gallery patterns: horizontal bar, grouped
-   bar, heatmap, line, scatter, dot/coefficient plot.
-   All charts share one accent color (Drive Wise blue) as the
-   data-ink, per the site's design brief.
+   Drive Wise research site: infographics (D3 v7)
+   Visual direction: editorial radial forms, from the Pinterest
+   board "Research- Visualisation". Drive Wise blue is the data ink.
+   Palette, validated with the dataviz palette validator:
+   - ordinal 5: #94b6eb #6496e2 #3577d6 #0a56c3 #063a85
+   - ordinal 4: #94b6eb #6496e2 #0a56c3 #063a85
+   - ordinal 3: #94b6eb #3577d6 #063a85   (darker = more)
+   - categorical 3 (all pairs): #0a56c3 #eb6834 #1baf7a
+   Every chart has two layouts: wide (desktop) and compact
+   (container under 560px), so labels stay readable on phones.
    ============================================================ */
 
-const ACCENT = '#0a56c3';
-const ACCENT_DEEP = '#073a87';
-const INK = '#0d0d0d';
-const SLATE = '#6b7280';
-const MIST = '#f2f2f3';
-const BORDER = '#cdcdcd';
-const BLUES = ['#dbe8fb', '#a9c8f2', '#5f96e3', '#2670d1', ACCENT, ACCENT_DEEP];
+const RV = (() => {
+  const INK = '#0d0d0d', SLATE = '#6b7280', MUTED = '#8b8d93', HAIR = '#e4e5e8', NONE = '#e9eaee';
+  const ORD5 = ['#94b6eb', '#6496e2', '#3577d6', '#0a56c3', '#063a85'];
+  const ORD4 = ['#94b6eb', '#6496e2', '#0a56c3', '#063a85'];
+  const ORD3 = ['#94b6eb', '#3577d6', '#063a85'];
+  const CAT = ['#0a56c3', '#eb6834', '#1baf7a'];
+  const FONT = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Inter, system-ui, sans-serif';
+  const TAU = Math.PI * 2;
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const dur = ms => (reduce ? 0 : ms);
+  const isCompact = (sel, t = 560) => { const n = document.querySelector(sel); return !!n && n.clientWidth > 0 && n.clientWidth < t; };
 
-function tooltip() {
-  let el = document.querySelector('.viz-tooltip');
-  if (!el) {
-    el = document.createElement('div');
-    el.className = 'viz-tooltip';
-    document.body.appendChild(el);
-  }
-  return {
-    show(html, event) {
-      el.innerHTML = html;
-      el.style.opacity = 1;
-      this.move(event);
+  /* ---------- tooltip ---------- */
+  let tipEl;
+  const tip = {
+    show(html, e) {
+      if (!tipEl) { tipEl = document.createElement('div'); tipEl.className = 'viz-tooltip'; document.body.appendChild(tipEl); }
+      tipEl.innerHTML = html; tipEl.style.opacity = 1; this.move(e);
     },
-    move(event) {
-      const pad = 14;
-      let x = event.clientX + pad, y = event.clientY + pad;
-      const rect = el.getBoundingClientRect();
-      if (x + rect.width > window.innerWidth) x = event.clientX - rect.width - pad;
-      if (y + rect.height > window.innerHeight) y = event.clientY - rect.height - pad;
-      el.style.left = x + 'px';
-      el.style.top = y + 'px';
+    move(e) {
+      if (!tipEl) return;
+      const pad = 14, r = tipEl.getBoundingClientRect();
+      let x = e.clientX + pad, y = e.clientY + pad;
+      if (x + r.width > innerWidth) x = e.clientX - r.width - pad;
+      if (y + r.height > innerHeight) y = e.clientY - r.height - pad;
+      tipEl.style.left = Math.max(4, x) + 'px'; tipEl.style.top = Math.max(4, y) + 'px';
     },
-    hide() { el.style.opacity = 0; }
+    hide() { if (tipEl) tipEl.style.opacity = 0; }
   };
-}
-const tip = tooltip();
+  const hover = (s, html) => s.on('mouseenter', (e, d) => tip.show(typeof html === 'function' ? html(d) : html, e))
+    .on('mousemove', e => tip.move(e)).on('mouseleave', () => tip.hide());
 
-/* ---------- shared: text measurement + single-line truncation ---------- */
-let _measureSvg = null;
-const FONT_STACK = '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Inter, system-ui, sans-serif';
-
-function measureText(text, fontSize = 14, fontFamily = FONT_STACK) {
-  if (!_measureSvg) {
-    _measureSvg = d3.select(document.body).append('svg')
-      .attr('width', 0).attr('height', 0)
-      .style('position', 'absolute').style('visibility', 'hidden').style('pointer-events', 'none');
+  function svgIn(sel, w, h, maxW = w) {
+    const el = d3.select(sel); el.selectAll('*').remove();
+    return el.append('svg').attr('viewBox', `0 0 ${w} ${h}`).attr('width', '100%')
+      .style('height', 'auto').style('max-width', maxW + 'px').style('display', 'block')
+      .style('margin', '0 auto').style('overflow', 'visible').style('font-family', FONT);
   }
-  const t = _measureSvg.append('text').attr('font-size', fontSize).attr('font-family', fontFamily).text(text);
-  const w = t.node().getComputedTextLength();
-  t.remove();
-  return w;
-}
+  const txt = (g, x, y, s, o = {}) => g.append('text').attr('x', x).attr('y', y)
+    .attr('font-size', o.size || 12).attr('fill', o.fill || SLATE).attr('font-weight', o.weight || 400)
+    .attr('text-anchor', o.anchor || 'start').attr('dy', o.dy || '0.35em').text(s);
+  const halo = t => t.attr('stroke', '#fff').attr('stroke-width', 4).attr('stroke-linejoin', 'round').attr('paint-order', 'stroke');
 
-// Truncates `label` with an ellipsis so it fits within `maxWidth` px at the
-// given font size, prevents axis labels from ever overflowing their column,
-// regardless of how long the source string is. Full text still reaches the
-// tooltip on hover, so nothing is actually lost, just not force-fit on-screen.
-function truncateToWidth(label, maxWidth, fontSize = 14, fontFamily = FONT_STACK) {
-  if (measureText(label, fontSize, fontFamily) <= maxWidth) return label;
-  let lo = 0, hi = label.length;
-  while (lo < hi) {
-    const mid = Math.ceil((lo + hi) / 2);
-    const candidate = label.slice(0, mid) + '…';
-    if (measureText(candidate, fontSize, fontFamily) <= maxWidth) lo = mid; else hi = mid - 1;
+  let _m;
+  function measure(s, size = 12, weight = 400) {
+    if (!_m) _m = d3.select('body').append('svg').attr('width', 0).attr('height', 0).style('position', 'absolute').style('visibility', 'hidden');
+    const t = _m.append('text').attr('font-size', size).attr('font-weight', weight).attr('font-family', FONT).text(s);
+    const w = t.node().getComputedTextLength(); t.remove(); return w;
   }
-  return label.slice(0, lo) + '…';
-}
-
-// Computes a left margin sized to the longest label in `labels`, clamped to
-// [minPx, maxPx], labels longer than the clamp are truncated (see above)
-// rather than allowed to overflow the chart's own box.
-function leftMarginFor(labels, opts = {}) {
-  const { minPx = 110, maxPx = 250, fontSize = 14, pad = 24 } = opts;
-  const widest = d3.max(labels, l => measureText(String(l), fontSize)) || 0;
-  return { margin: Math.min(maxPx, Math.max(minPx, widest + pad)), maxLabelWidth: maxPx - pad, fontSize };
-}
-
-function svgIn(sel, width, height, opts = {}) {
-  const { maxWidthPx = width } = opts;
-  const el = d3.select(sel);
-  el.selectAll('*').remove();
-  return el.append('svg')
-    .attr('viewBox', `0 0 ${width} ${height}`)
-    .attr('width', '100%')
-    .style('height', 'auto')
-    .style('max-width', maxWidthPx + 'px')
-    .style('display', 'block')
-    .style('margin', '0 auto')
-    .style('overflow', 'visible')
-    .style('font-family', FONT_STACK);
-}
-
-/* ---------- 1. Respondent gauge (hero) ----------
-   A dashboard-gauge arrangement: concentric arcs sweeping like a
-   speedometer cluster, rather than a plain grid, since Drive Wise is
-   literally a vehicle-dashboard product. One dot per respondent,
-   colored by their confidence rating. */
-function drawRespondentGrid(sel, confidenceDist, N) {
-  const values = [];
-  confidenceDist.forEach(d => { for (let i = 0; i < d.value; i++) values.push(+d.label); });
-  while (values.length < N) values.push(3);
-  values.sort((a,b) => a-b); // low confidence at the outer-left sweep, high at outer-right
-
-  const perRing = 12;
-  const rings = Math.ceil(values.length / perRing);
-  const angleStart = 185, angleEnd = -5; // degrees, a near-semicircle speedometer sweep
-  const width = 740, height = 320;
-  const cx = 370, cy = 254;
-  const rOuter = 230, rInner = 90, ringGap = (rOuter - rInner) / (rings - 1 || 1);
-
-  const svg = svgIn(sel, width, height, { maxWidthPx: width * 2 });
-  const color = d3.scaleOrdinal().domain([1,2,3,4,5]).range(['#dbe8fb','#a9c8f2','#5f96e3','#2670d1',ACCENT_DEEP]);
-  const toRad = deg => deg * Math.PI / 180;
-
-  // faint track arcs, evoking gauge rings
-  for (let ring = 0; ring < rings; ring++) {
-    const r = rInner + ring * ringGap;
-    const arc = d3.arc()({ innerRadius: r, outerRadius: r, startAngle: toRad(90 - angleStart), endAngle: toRad(90 - angleEnd) });
-    svg.append('path').attr('d', arc).attr('transform', `translate(${cx},${cy})`)
-      .attr('stroke', MIST).attr('stroke-width', 1).attr('fill', 'none');
+  // greedy word wrap into lines no wider than maxW
+  function wrap(s, maxW, size) {
+    const words = s.split(' '), lines = []; let cur = '';
+    words.forEach(w => { const t = cur ? cur + ' ' + w : w; if (measure(t, size) > maxW && cur) { lines.push(cur); cur = w; } else cur = t; });
+    if (cur) lines.push(cur); return lines;
   }
+  // legend row(s) that wrap inside maxW; items: [{label, mark: g => draw at (0,0) 12x12}]
+  function legend(g, items, maxW, size) {
+    let x = 0, y = 0;
+    items.forEach(it => {
+      const w = 18 + measure(it.label, size) + 22;
+      if (x > 0 && x + w > maxW) { x = 0; y += size + 12; }
+      const gi = g.append('g').attr('transform', `translate(${x},${y})`);
+      it.mark(gi); txt(gi, 18, 0, it.label, { size });
+      x += w;
+    });
+    return y + size;
+  }
+  const swatch = (c, stroke) => gi => gi.append('rect').attr('x', 0).attr('y', -6).attr('width', 12).attr('height', 12).attr('rx', 3).attr('fill', c).attr('stroke', stroke || 'none');
 
-  let i = 0;
-  for (let ring = 0; ring < rings; ring++) {
-    const r = rInner + ring * ringGap;
-    const countThisRing = Math.min(perRing, values.length - ring * perRing);
-    for (let j = 0; j < countThisRing; j++) {
-      const t = countThisRing === 1 ? 0.5 : j / (countThisRing - 1);
-      const angle = angleStart + t * (angleEnd - angleStart);
-      const rad = toRad(angle);
-      const x = cx + r * Math.cos(rad);
-      const y = cy - r * Math.sin(rad);
-      const d = values[i]; i++;
-      svg.append('circle')
-        .attr('cx', x).attr('cy', y).attr('r', 8)
-        .attr('fill', color(d))
-        .style('cursor', 'pointer')
-        .on('mouseenter', function(event) {
-          d3.select(this).attr('stroke', INK).attr('stroke-width', 1.5).attr('r', 10);
-          tip.show(`Confidence rating: <b>${d}</b> / 5`, event);
-        })
-        .on('mousemove', event => tip.move(event))
-        .on('mouseleave', function() { d3.select(this).attr('stroke', 'none').attr('r', 8); tip.hide(); });
+  /* ============================================================
+     1. Respondent wheel: radial heat matrix, one wedge per owner,
+        one ring per question. Darker = more / higher.
+     ============================================================ */
+  function respondentWheel(sel, resp) {
+    const C = isCompact(sel);
+    const rings = [
+      { key: 'conf', name: 'Confidence', color: v => ORD5[v - 1], text: v => v + ' / 5' },
+      { key: 'check', name: 'Checks parts', color: v => ORD5[Math.min(4, Math.floor(v / 1.8))], text: v => v + ' / 8' },
+      { key: 'diag', name: 'Time to diagnose', color: v => ORD3[v], text: v => ['Under 30 min', '1 to 2 hours', 'A few days'][v] },
+      { key: 'over', name: 'Feels overcharged', color: v => ORD3[v], text: v => ['Rarely', 'Sometimes', 'Frequently'][v] },
+      { key: 'delay', name: 'Delayed a service', color: v => (v ? ORD3[2] : ORD3[0]), text: v => (v ? 'Yes' : 'No') },
+      { key: 'pay', name: 'Would pay', color: v => ORD3[v], text: v => ['No', 'Depends on cost', 'Yes'][v] }
+    ];
+    const data = resp.map((d, i) => ({ ...d, id: i + 1 }))
+      .sort((a, b) => b.pay - a.pay || b.over - a.over || b.delay - a.delay || b.conf - a.conf);
+
+    const L = C ? { W: 380, H: 575, cy: 196, r0: 50, ringW: 19, gap: 62, fs: 14 }
+                : { W: 760, H: 690, cy: 330, r0: 92, ringW: 32, gap: 52, fs: 12.5 };
+    const { W, H, cy, r0, ringW } = L, cx = W / 2;
+    const svg = svgIn(sel, W, H, C ? W : 820);
+    const g = svg.append('g').attr('transform', `translate(${cx},${cy})`);
+    const gap = L.gap * Math.PI / 180;
+    const a = d3.scaleBand().domain(data.map(d => d.id)).range([gap / 2, TAU - gap / 2]).paddingInner(0.12);
+    const arc = d3.arc();
+
+    const cols = g.selectAll('g.col').data(data).join('g').attr('class', 'col').style('cursor', 'pointer');
+    rings.forEach((rg, ri) => {
+      cols.append('path')
+        .attr('d', d => arc({ innerRadius: r0 + ri * ringW + 1, outerRadius: r0 + (ri + 1) * ringW - 1, startAngle: a(d.id), endAngle: a(d.id) + a.bandwidth() }))
+        .attr('fill', d => rg.color(d[rg.key]))
+        .attr('opacity', 0)
+        .transition().delay((d, i) => dur(i * 8 + ri * 60)).duration(dur(400)).attr('opacity', 1);
+    });
+    cols.append('path')
+      .attr('d', d => arc({ innerRadius: r0, outerRadius: r0 + rings.length * ringW + 14, startAngle: a(d.id), endAngle: a(d.id) + a.bandwidth() }))
+      .attr('fill', 'transparent');
+    cols.on('mouseenter', function (e, d) {
+      cols.attr('opacity', c => (c === d ? 1 : 0.35));
+      tip.show(`<b>Owner ${d.id}</b><br>` + rings.slice().reverse().map(r => `${r.name}: <b>${r.text(d[r.key])}</b>`).join('<br>'), e);
+    }).on('mousemove', e => tip.move(e))
+      .on('mouseleave', () => { cols.attr('opacity', 1); tip.hide(); });
+
+    // ring names (wide) or ring numbers + key (compact) in the 12 o'clock gap
+    rings.forEach((rg, ri) => {
+      const y = -(r0 + ri * ringW + ringW / 2);
+      txt(g, 0, y, C ? String(ri + 1) : rg.name, { anchor: 'middle', size: C ? 12 : 11, fill: SLATE, weight: C ? 600 : 400 });
+    });
+    // pay groups on the outer edge
+    const rOut = r0 + rings.length * ringW + 10;
+    [2, 1, 0].forEach((p, k) => {
+      const grp = data.filter(d => d.pay === p); if (!grp.length) return;
+      const s = a(grp[0].id), e = a(grp[grp.length - 1].id) + a.bandwidth();
+      g.append('path').attr('d', arc({ innerRadius: rOut, outerRadius: rOut + 1.5, startAngle: s, endAngle: e })).attr('fill', INK);
+      const mid = (s + e) / 2, rl = rOut + (C ? 14 : 22), sx = Math.sin(mid);
+      const lbl = C ? String(grp.length) : ['Would pay', 'Depends on cost', 'Would not'][k] + ` · ${grp.length}`;
+      txt(g, sx * rl, -Math.cos(mid) * rl, lbl, { anchor: sx > 0.15 ? 'start' : sx < -0.15 ? 'end' : 'middle', size: C ? 13 : 12.5, fill: INK, weight: 600 });
+    });
+    txt(g, 0, -8, '72', { anchor: 'middle', size: C ? 28 : 34, fill: INK, weight: 600 });
+    txt(g, 0, C ? 16 : 20, 'owners', { anchor: 'middle', size: C ? 13 : 13 });
+
+    // ramp legend
+    const rampW = C ? 46 : 58, ly = cy + rOut + (C ? 44 : 46); // clear gap below the wheel
+    const lg = svg.append('g').attr('transform', `translate(${cx - (rampW + 2) * 2.5},${ly})`);
+    ORD5.forEach((c, i) => lg.append('rect').attr('x', i * (rampW + 2)).attr('y', 0).attr('width', rampW).attr('height', 10).attr('rx', 2).attr('fill', c));
+    if (C) {
+      txt(lg, 0, 24, 'Lower / less', { size: 12 }); txt(lg, (rampW + 2) * 5 - 2, 24, 'Higher / more', { size: 12, anchor: 'end' });
+      // ring key + outer-ring totals
+      const kg = svg.append('g').attr('transform', `translate(18,${ly + 52})`);
+      rings.forEach((rg, i) => {
+        const col = i < 3 ? 0 : 1, row = i % 3;
+        const t = txt(kg, col * 178, row * 22, '', { size: 13, fill: INK });
+        t.append('tspan').attr('font-weight', 600).text((i + 1) + '  ');
+        t.append('tspan').attr('fill', SLATE).text(rg.name);
+      });
+      txt(kg, 0, 3 * 22 + 8, 'Outer numbers: would pay 47 · depends 22 · no 3', { size: 12.5, fill: SLATE });
+    } else {
+      txt(lg, -8, 5, 'Lower / less', { anchor: 'end', size: 12 });
+      txt(lg, (rampW + 2) * 5 + 6, 5, 'Higher / more', { size: 12 });
     }
   }
 
-  // gauge needle-style ticks at the extremes, labeled like a real dial
-  [['Low confidence', angleStart], ['High confidence', angleEnd]].forEach(([label, deg]) => {
-    const rad = toRad(deg);
-    const x = cx + (rOuter + 26) * Math.cos(rad);
-    const y = cy - (rOuter + 26) * Math.sin(rad);
-    svg.append('text').attr('x', x).attr('y', y).attr('dy', '0.35em')
-      .attr('text-anchor', deg > 90 ? 'start' : 'end')
-      .attr('font-size', 13).attr('fill', SLATE).text(label);
-  });
-}
-
-/* ---------- 2. Horizontal bar chart ---------- */
-function drawHBar(sel, data, opts = {}) {
-  const { valueFmt = d => d + '%', height = data.length * 48 + 20, color = () => ACCENT } = opts;
-  const labels = data.map(d => d.label);
-  const { margin: leftM, maxLabelWidth } = leftMarginFor(labels, { minPx: 120, maxPx: 240 });
-  const margin = { top: 8, right: 64, bottom: 8, left: leftM };
-  const width = 600;
-  const innerW = width - margin.left - margin.right;
-  const innerH = height - margin.top - margin.bottom;
-
-  const svg = svgIn(sel, width, height);
-  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
-
-  const x = d3.scaleLinear().domain([0, d3.max(data, d => d.value) * 1.18]).range([0, innerW]);
-  const y = d3.scaleBand().domain(data.map(d => d.label)).range([0, innerH]).padding(0.32);
-
-  g.selectAll('.bar-label').data(data).join('text')
-    .attr('class', 'bar-label')
-    .attr('x', -12).attr('y', d => y(d.label) + y.bandwidth()/2)
-    .attr('dy', '0.35em').attr('text-anchor', 'end')
-    .attr('font-size', 14).attr('fill', SLATE)
-    .text(d => truncateToWidth(d.label, maxLabelWidth, 14))
-    .append('title').text(d => d.label);
-
-  const bars = g.selectAll('.bar').data(data).join('rect')
-    .attr('class', 'bar')
-    .attr('x', 0).attr('y', d => y(d.label))
-    .attr('height', y.bandwidth()).attr('rx', 5)
-    .attr('fill', d => color(d))
-    .attr('width', 0);
-
-  bars.transition().duration(700).ease(d3.easeCubicOut)
-    .attr('width', d => x(d.value));
-
-  bars.on('mouseenter', function(event, d) {
-      d3.select(this).attr('fill', ACCENT_DEEP);
-      tip.show(`<b>${d.label}</b><br>${d.value} respondents (${d.pct ?? d.value}%)`, event);
-    })
-    .on('mousemove', event => tip.move(event))
-    .on('mouseleave', function(event, d) { d3.select(this).attr('fill', color(d)); tip.hide(); });
-
-  // Value labels: placed outside the bar when there's room in the right
-  // margin; placed inside (in white) when the bar runs close to the max,
-  // so the label is never clipped and never floats off unattached.
-  g.selectAll('.val-label').data(data).join('text')
-    .attr('class', 'val-label')
-    .attr('y', d => y(d.label) + y.bandwidth()/2)
-    .attr('dy', '0.35em').attr('font-size', 13)
-    .each(function(d) {
-      const barEnd = x(d.value);
-      const txt = valueFmt(d.pct ?? d.value);
-      const labelW = measureText(txt, 13);
-      const fitsOutside = barEnd + 8 + labelW <= innerW + margin.right - 6;
-      const el = d3.select(this).text(txt);
-      if (fitsOutside) {
-        el.attr('x', barEnd + 8).attr('text-anchor', 'start').attr('fill', SLATE);
+  /* ============================================================
+     2. Concentric gauge: one 270° arc per row, split into ordered
+        parts. Used for part checks (and record-keeping, single ring).
+     ============================================================ */
+  function checkGauge(sel, rows, N) {
+    const C = isCompact(sel);
+    const keys = ['Regularly', 'Only during service', 'Never'];
+    const fill = { 'Regularly': ORD3[2], 'Only during service': ORD3[0], 'Never': NONE };
+    const L = C ? { W: 380, H: 430, cx: 200, cy: 200, rIn: 44, band: 25, gp: 8, fs: 14 }
+                : { W: 620, H: 470, cx: 330, cy: 236, rIn: 62, band: 30, gp: 10, fs: 13 };
+    const svg = svgIn(sel, L.W, L.H, C ? L.W : 680);
+    const g = svg.append('g').attr('transform', `translate(${L.cx},${L.cy})`);
+    const start = -Math.PI / 2, sweep = 1.5 * Math.PI; // 12 o'clock, clockwise to 9 o'clock
+    const ordered = rows.slice().sort((x, y) => y.Regularly - x.Regularly);
+    ordered.forEach((row, i) => {
+      const ri = L.rIn + (ordered.length - 1 - i) * (L.band + L.gp);
+      let a0 = start;
+      keys.forEach(k => {
+        const a1 = a0 + sweep * row[k] / N, A0 = a0;
+        const mk = end => d3.arc()({ innerRadius: ri, outerRadius: ri + L.band, startAngle: A0 + Math.PI / 2, endAngle: end + Math.PI / 2, cornerRadius: 3 });
+        const p = g.append('path').attr('fill', fill[k]).attr('d', mk(A0));
+        p.transition().duration(dur(800)).delay(dur(i * 90)).attrTween('d', () => { const it = d3.interpolate(A0, a1); return t => mk(it(t)); });
+        hover(p, `<b>${row.component}</b><br>${k}: ${row[k]} of ${N} (${Math.round(row[k] / N * 100)}%)`);
+        a0 = a1 + 0.012;
+      });
+      const pct = Math.round(row.Regularly / N * 100), ly = -(ri + L.band / 2);
+      if (C) {
+        const t = txt(g, -10, ly, '', { anchor: 'end', size: L.fs, fill: INK });
+        t.append('tspan').attr('font-weight', 500).text(row.component + '  '); t.append('tspan').attr('fill', SLATE).text(pct + '%');
       } else {
-        el.attr('x', Math.max(barEnd - 8, 8)).attr('text-anchor', 'end').attr('fill', '#ffffff');
+        txt(g, -12, ly - 8, row.component, { anchor: 'end', size: L.fs, fill: INK, weight: 500 });
+        txt(g, -12, ly + 9, `${pct}% regularly`, { anchor: 'end', size: L.fs - 1, fill: SLATE });
       }
     });
-}
+    const lg = svg.append('g').attr('transform', `translate(${C ? 20 : L.cx - 260},${L.H - (C ? 34 : 14)})`);
+    legend(lg, keys.map(k => ({ label: k, mark: swatch(fill[k], k === 'Never' ? HAIR : null) })), L.W - 40, C ? 13 : 12.5);
+  }
 
-/* ---------- 3. Grouped bar chart ---------- */
-function drawGroupedBar(sel, data, groupKeys, groupField) {
-  const labels = data.map(d => d[groupField]);
-  const { margin: leftM, maxLabelWidth } = leftMarginFor(labels, { minPx: 100, maxPx: 200 });
-  const legendH = 40;
-  const chartH = data.length * 76 + 40;
-  const width = 640, height = chartH + legendH;
-  const margin = { top: 10, right: 20, bottom: 10, left: leftM };
-  const innerW = width - margin.left - margin.right;
-  const innerH = chartH - margin.top - margin.bottom;
+  /* ============================================================
+     3. Hypothesis fan: one spoke per hypothesis, length = evidence
+        strength (-log10 p). Rings at p = .05 and the Bonferroni bar.
+     ============================================================ */
+  function hypothesisFan(sel, hyps) {
+    const C = isCompact(sel);
+    const short = { 'H1': 'Vehicle age → oil checks', 'H2': 'Diagnosis effort → would pay', 'H3': 'Diagnosis effort → overcharged', 'H4': 'Overcharged → would pay', 'H5': 'Trusted source → would pay', 'H6': 'Delay → frustration count', 'H7.1–5': 'Each frustration → would pay', 'H8': 'Warning savvy → checks', 'H9': 'Vehicle type → usage' };
+    const L = C ? { W: 380, H: 560, cx: 190, cy: 220, r0: 22, rMax: 150 }
+                : { W: 760, H: 470, cx: 380, cy: 400, r0: 34, rMax: 205 };
+    const svg = svgIn(sel, L.W, L.H, C ? L.W : 820);
+    const g = svg.append('g').attr('transform', `translate(${L.cx},${L.cy})`);
+    const ev = p => -Math.log10(p);
+    const r = d3.scaleLinear().domain([0, 2.6]).range([L.r0, L.rMax]);
+    const ang = d3.scalePoint().domain(hyps.map(h => h.id)).range([-Math.PI / 2 + 0.3, Math.PI / 2 - 0.3]);
+    const half = d3.arc().startAngle(-Math.PI / 2).endAngle(Math.PI / 2);
+    const thr = [[0.05, C ? 'p = 0.05' : 'p = 0.05 (one test alone)'], [0.05 / 9, C ? 'corrected bar' : 'p = 0.0056 (corrected for 9 tests)']];
+    thr.forEach(([p, lbl], k) => {
+      const rr = r(ev(p));
+      g.append('path').attr('d', half({ innerRadius: rr, outerRadius: rr + (k ? 1.2 : 1) })).attr('fill', k ? INK : '#c9ccd1');
+      txt(g, k ? rr + 4 : -rr - 4, 14, lbl, { anchor: k ? 'start' : 'end', size: C ? 12 : 11.5, fill: k ? INK : SLATE });
+    });
+    g.append('line').attr('x1', -L.rMax - 20).attr('x2', L.rMax + 20).attr('y1', 0).attr('y2', 0).attr('stroke', HAIR);
+    const pos = (h, rad) => [Math.sin(ang(h.id)) * rad, -Math.cos(ang(h.id)) * rad];
+    const cls = h => (h.p_corr < 0.05 ? 'sig' : h.p_raw < 0.05 ? 'raw' : 'ns');
+    const col = { sig: '#0a56c3', raw: '#94b6eb', ns: '#c9ccd1' };
+    const sp = g.selectAll('g.sp').data(hyps).join('g').attr('class', 'sp').style('cursor', 'pointer');
+    sp.append('line').attr('x1', h => pos(h, L.r0)[0]).attr('y1', h => pos(h, L.r0)[1])
+      .attr('x2', h => pos(h, L.r0)[0]).attr('y2', h => pos(h, L.r0)[1])
+      .attr('stroke', h => col[cls(h)]).attr('stroke-width', 2).attr('stroke-linecap', 'round')
+      .transition().duration(dur(800)).delay((h, i) => dur(i * 60))
+      .attr('x2', h => pos(h, r(ev(h.p_raw)))[0]).attr('y2', h => pos(h, r(ev(h.p_raw)))[1]);
+    sp.append('circle').attr('r', C ? 5 : 6).attr('fill', h => col[cls(h)]).attr('stroke', '#fff').attr('stroke-width', 2)
+      .attr('cx', h => pos(h, L.r0)[0]).attr('cy', h => pos(h, L.r0)[1])
+      .transition().duration(dur(800)).delay((h, i) => dur(i * 60))
+      .attr('cx', h => pos(h, r(ev(h.p_raw)))[0]).attr('cy', h => pos(h, r(ev(h.p_raw)))[1]);
+    sp.each(function (h) {
+      const a = ang(h.id), [x, y] = pos(h, L.rMax + 12), deg = a * 180 / Math.PI;
+      const [dx, dy] = pos(h, r(ev(h.p_raw)) + 8);
+      d3.select(this).append('line').attr('x1', dx).attr('y1', dy).attr('x2', pos(h, L.rMax + 6)[0]).attr('y2', pos(h, L.rMax + 6)[1]).attr('stroke', HAIR);
+      const right = a >= 0, rot = right ? deg - 90 : deg + 90;
+      const t = d3.select(this).append('text').attr('transform', `translate(${x},${y}) rotate(${rot})`).attr('dy', '0.35em')
+        .attr('text-anchor', right ? 'start' : 'end')
+        .attr('font-size', C ? 13 : 12.5).attr('fill', INK).attr('font-weight', cls(h) === 'sig' ? 700 : 500);
+      t.append('tspan').text(h.id.replace('.1–5', '') + (C ? '' : '  '));
+      if (!C) t.append('tspan').attr('fill', SLATE).attr('font-weight', 400).attr('font-size', 11.5).text(short[h.id]);
+    });
+    sp.append('path').attr('d', h => { const [x, y] = pos(h, L.rMax + 30); return `M0,0L${x},${y}`; })
+      .attr('stroke', 'transparent').attr('stroke-width', C ? 18 : 26);
+    hover(sp, h => `<b>${h.id}</b> ${h.hypothesis}<br>${h.test} · ${h.stat}<br>p = ${h.p_raw.toFixed(4)} · corrected p = ${h.p_corr.toFixed(3)}<br><b>${h.verdict}</b>`);
+    const items = [['sig', 'Survives correction'], ['raw', C ? 'Significant alone only' : 'Significant alone, not after correction'], ['ns', 'Not significant']]
+      .map(([k, l]) => ({ label: l, mark: gi => gi.append('circle').attr('cx', 6).attr('cy', 0).attr('r', 6).attr('fill', col[k]) }));
+    if (C) {
+      const kg = svg.append('g').attr('transform', `translate(16,${L.cy + 40})`);
+      hyps.forEach((h, i) => {
+        const t = txt(kg, 0, i * 21, '', { size: 13, fill: INK });
+        t.append('tspan').attr('font-weight', cls(h) === 'sig' ? 700 : 600).text(h.id.replace('.1–5', '') + '  ');
+        t.append('tspan').attr('fill', SLATE).text(short[h.id]);
+      });
+      legend(svg.append('g').attr('transform', `translate(16,${L.cy + 40 + 9 * 21 + 14})`), items, L.W - 30, 12.5);
+    } else {
+      legend(svg.append('g').attr('transform', `translate(24,${L.H - 14})`), items, L.W - 40, 12.5);
+    }
+  }
 
-  const svg = svgIn(sel, width, height);
-  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+  /* ============================================================
+     4. Alluvial: overcharged → time to diagnose → would pay.
+        Each ribbon = owners with the same three answers, coloured by
+        their final answer. Wide: left to right. Compact: top to bottom.
+     ============================================================ */
+  function alluvial(sel, resp) {
+    const C = isCompact(sel);
+    const cols = [
+      { key: 'over', title: 'Feels overcharged', names: ['Rarely', 'Sometimes', 'Frequently'] },
+      { key: 'diag', title: 'Time to diagnose', names: ['Under 30 min', '1 to 2 hours', 'A few days'] },
+      { key: 'pay', title: 'Would pay', names: ['No', 'Depends on cost', 'Yes'] }
+    ];
+    const W = C ? 380 : 760, H = C ? 620 : 460, nodeT = C ? 10 : 12, gap = 14;
+    const svg = svgIn(sel, W, H, C ? W : 820);
+    const N = resp.length;
+    // wide: columns at x, nodes stacked in y. compact: rows at y, nodes along x.
+    const lane = C ? [70, 300, 530] : [150, 380, 610];
+    const span0 = C ? 16 : 44, span1 = C ? W - 16 : H - 20;
+    const k = (span1 - span0 - gap * 2) / N;
+    const nodes = cols.map(c => {
+      let p = span0; const out = {};
+      [2, 1, 0].forEach(v => { const n = resp.filter(d => d[c.key] === v).length; out[v] = { p, len: n * k, n, off: 0, offR: 0 }; p += n * k + gap; });
+      return out;
+    });
+    const groups = d3.rollups(resp, v => v.length, d => d.over, d => d.diag, d => d.pay)
+      .flatMap(([o, a]) => a.flatMap(([dg, b]) => b.map(([p, n]) => ({ o, dg, p, n }))));
+    groups.slice().sort((a, b) => b.o - a.o || b.dg - a.dg || b.p - a.p).forEach(gp => {
+      const A = nodes[0][gp.o], B = nodes[1][gp.dg]; gp.s0 = A.p + A.offR; A.offR += gp.n * k; gp.s1 = B.p + B.off; B.off += gp.n * k;
+    });
+    groups.slice().sort((a, b) => b.dg - a.dg || b.p - a.p || b.o - a.o).forEach(gp => {
+      const B = nodes[1][gp.dg], R = nodes[2][gp.p]; gp.s2 = B.p + B.offR; B.offR += gp.n * k; gp.s3 = R.p + R.off; R.off += gp.n * k;
+    });
+    // ribbon between lane l0 (at offset a) and lane l1 (at offset b), thickness h
+    const ribbon = (l0, a, l1, b, h) => {
+      const m = (l0 + l1) / 2;
+      if (!C) return `M${l0},${a}C${m},${a} ${m},${b} ${l1},${b}L${l1},${b + h}C${m},${b + h} ${m},${a + h} ${l0},${a + h}Z`;
+      return `M${a},${l0}C${a},${m} ${b},${m} ${b},${l1}L${b + h},${l1}C${b + h},${m} ${a + h},${m} ${a + h},${l0}Z`;
+    };
+    groups.sort((a, b) => a.p - b.p);
+    const rib = svg.append('g').selectAll('g').data(groups).join('g').style('cursor', 'pointer');
+    rib.append('path').attr('d', d => ribbon(lane[0] + nodeT, d.s0, lane[1], d.s1, d.n * k));
+    rib.append('path').attr('d', d => ribbon(lane[1] + nodeT, d.s2, lane[2], d.s3, d.n * k));
+    rib.selectAll('path').attr('fill', function () { return ORD3[d3.select(this.parentNode).datum().p]; })
+      .attr('opacity', 0.82).attr('stroke', '#fff').attr('stroke-width', 0.6);
+    rib.attr('opacity', 0).transition().duration(dur(700)).delay((d, i) => dur(i * 15)).attr('opacity', 1);
+    rib.on('mouseenter', function (e, d) {
+      rib.attr('opacity', x => (x === d ? 1 : 0.25));
+      tip.show(`<b>${d.n} owner${d.n > 1 ? 's' : ''}</b><br>${cols[0].names[d.o]} overcharged → ${cols[1].names[d.dg]} → ${cols[2].names[d.p]}`, e);
+    }).on('mousemove', e => tip.move(e)).on('mouseleave', () => { rib.attr('opacity', 1); tip.hide(); });
+    cols.forEach((c, ci) => {
+      let lastEnd = -1e9, lastY = 0;
+      if (C) halo(txt(svg, 16, lane[ci] - 22, c.title, { size: 14, fill: INK, weight: 600 }));
+      else txt(svg, lane[ci] + nodeT / 2, 16, c.title, { anchor: 'middle', size: 13, fill: INK, weight: 600 });
+      [2, 1, 0].forEach(v => {
+        const n = nodes[ci][v];
+        if (C) svg.append('rect').attr('x', n.p).attr('y', lane[ci]).attr('width', Math.max(1, n.len)).attr('height', nodeT).attr('rx', 2).attr('fill', INK);
+        else svg.append('rect').attr('x', lane[ci]).attr('y', n.p).attr('width', nodeT).attr('height', Math.max(1, n.len)).attr('rx', 2).attr('fill', INK);
+        if (C) {
+          // label under the node (last row) or above it; the tiny last node is right-aligned at the edge
+          const lw = measure(c.names[v] + ' ' + n.n, 13, 600), tiny = n.len < 40;
+          const endAnchor = n.p + lw > W - 8;
+          const x = endAnchor ? Math.min(W - 8, n.p + n.len) : n.p;
+          let y = lane[ci] + nodeT + 14;
+          const bx0 = endAnchor ? x - lw : x;
+          if (bx0 < lastEnd + 6 && lastY === y) y += 18;
+          lastEnd = bx0 + lw; lastY = lane[ci] + nodeT + 14;
+          const t = halo(txt(svg, x, y, '', { size: 13, fill: INK, anchor: endAnchor ? 'end' : 'start' }));
+          t.append('tspan').attr('font-weight', 600).text(c.names[v] + ' ');
+          t.append('tspan').attr('fill', SLATE).text(n.n);
+        } else {
+          const left = ci === 0, ax = left ? lane[ci] - 8 : lane[ci] + nodeT + 8;
+          halo(txt(svg, ax, n.p + n.len / 2, `${c.names[v]}  ${n.n}`, { anchor: left ? 'end' : 'start', size: 12.5, fill: INK, weight: 500 }));
+        }
+      });
+    });
+    const yes12 = resp.filter(d => d.diag === 1 && d.pay === 2).length, n12 = resp.filter(d => d.diag === 1).length;
+    const m = nodes[1][1], note = `${Math.round(yes12 / n12 * 100)}% of these would pay`;
+    if (C) halo(txt(svg, m.p, lane[1] + nodeT + 50, note, { size: 12.5, fill: INK }));
+    else halo(txt(svg, lane[1] + nodeT + 8, m.p + m.len / 2 + 17, note, { size: 11.5, fill: INK }));
+  }
 
-  const y0 = d3.scaleBand().domain(data.map(d => d[groupField])).range([0, innerH]).paddingInner(0.35);
-  const y1 = d3.scaleBand().domain(groupKeys).range([0, y0.bandwidth()]).padding(0.12);
-  const x = d3.scaleLinear().domain([0, d3.max(data, d => Math.max(...groupKeys.map(k => d[k])))]).range([0, innerW]);
-  const color = d3.scaleOrdinal().domain(groupKeys).range(['#cfd8e3', '#5f96e3', ACCENT_DEEP]);
+  /* ============================================================
+     5. Chord: which frustrations are chosen together.
+     ============================================================ */
+  function frustrationChord(sel, co, totals) {
+    const C = isCompact(sel);
+    const labels = co.labels, m = co.matrix.map((row, i) => row.map((v, j) => (i === j ? 0 : v)));
+    const L = C ? { W: 380, H: 500, R: 96, fs: 13, wrapW: 92 } : { W: 640, H: 560, R: 190, fs: 13, wrapW: 999 };
+    const rIn = L.R - (C ? 10 : 14);
+    const svg = svgIn(sel, L.W, L.H, C ? L.W : 700);
+    const g = svg.append('g').attr('transform', `translate(${L.W / 2},${L.H / 2 + (C ? 22 : 6)})`);
+    const chords = d3.chord().padAngle(0.06).sortSubgroups(d3.descending)(m);
+    let maxV = 0, maxPair; chords.forEach(c => { if (c.source.value > maxV) { maxV = c.source.value; maxPair = c; } });
+    const op = d3.scaleLinear().domain([0, maxV]).range([0.12, 0.55]);
+    const rest = () => rb.attr('opacity', c => (c === maxPair ? 0.85 : op(c.source.value)));
+    const rb = g.append('g').selectAll('path').data(chords).join('path')
+      .attr('d', d3.ribbon().radius(rIn - 2)).attr('fill', c => (c === maxPair ? '#0a56c3' : '#3577d6')).style('cursor', 'pointer')
+      .on('mouseenter', function (e, c) {
+        rb.attr('opacity', x => (x === c ? 0.9 : 0.06));
+        tip.show(`<b>${labels[c.source.index]}</b> + <b>${labels[c.target.index]}</b><br>${c.source.value} owners chose both`, e);
+      }).on('mousemove', e => tip.move(e)).on('mouseleave', () => { rest(); tip.hide(); });
+    rest();
+    const grp = g.append('g').selectAll('g').data(chords.groups).join('g');
+    grp.append('path').attr('d', d3.arc().innerRadius(rIn).outerRadius(L.R)).attr('fill', INK).style('cursor', 'pointer')
+      .on('mouseenter', (e, d) => { rb.attr('opacity', c => (c.source.index === d.index || c.target.index === d.index ? 0.8 : 0.05)); tip.show(`<b>${labels[d.index]}</b><br>chosen by ${totals[d.index]} of 72 owners`, e); })
+      .on('mousemove', e => tip.move(e)).on('mouseleave', () => { rest(); tip.hide(); });
+    grp.each(function (d) {
+      const a = (d.startAngle + d.endAngle) / 2, rr = L.R + 14, s = Math.sin(a);
+      const x = s * rr, y = -Math.cos(a) * rr, anchor = s > 0.1 ? 'start' : s < -0.1 ? 'end' : 'middle';
+      const lines = wrap(labels[d.index], L.wrapW, L.fs);
+      const n = lines.length + 1, lh = L.fs + 3, top = Math.cos(a) > 0.3 ? -n * lh + lh / 2 : Math.cos(a) < -0.3 ? lh / 2 : -(n - 1) * lh / 2;
+      const t = d3.select(this);
+      lines.forEach((ln, i) => txt(t, x, y + top + i * lh, ln, { anchor, size: L.fs, fill: INK, weight: 500 }));
+      txt(t, x, y + top + lines.length * lh, `${totals[d.index]} owners · ${Math.round(totals[d.index] / 72 * 100)}%`, { anchor, size: L.fs - 1, fill: SLATE });
+    });
+    const head = `Strongest pair: ${labels[maxPair.source.index]} + ${labels[maxPair.target.index]} (${maxV} owners)`;
+    wrap(head, L.W - 20, 13).forEach((ln, i) => txt(svg, L.W / 2, 14 + i * 18, ln, { anchor: 'middle', size: 13, fill: INK, weight: 500 }));
+  }
 
-  const rowG = g.selectAll('.row').data(data).join('g')
-    .attr('transform', d => `translate(0,${y0(d[groupField])})`);
+  /* ============================================================
+     6. MCA attitude map: named neighbourhoods (hulls) + Voronoi hover.
+     ============================================================ */
+  function mcaMap(sel, mca) {
+    const C = isCompact(sel);
+    const W = C ? 380 : 700, H = C ? 470 : 520, m = { t: 20, r: C ? 12 : 24, b: C ? 30 : 40, l: C ? 12 : 24 }, fs = C ? 12.5 : 12;
+    const svg = svgIn(sel, W, H, C ? W : 760);
+    const x = d3.scaleLinear().domain([-1.2, 1.95]).range([m.l, W - m.r]);
+    const y = d3.scaleLinear().domain([-1.35, 1.45]).range([H - m.b, m.t]);
+    svg.append('line').attr('x1', x(-1.2)).attr('x2', x(1.95)).attr('y1', y(0)).attr('y2', y(0)).attr('stroke', HAIR);
+    svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', y(-1.35)).attr('y2', y(1.45)).attr('stroke', HAIR);
+    txt(svg, x(-1.2), y(0) - 12, `Dim 1 · ${mca.inertia[0]}%`, { size: 11.5, fill: MUTED });
+    txt(svg, x(0) + 6, y(1.45) + 4, `Dim 2 · ${mca.inertia[1]}%`, { size: 11.5, fill: MUTED });
+    const clusters = [
+      { name: 'Engaged and distrustful', color: CAT[0], members: ['Frequently overcharged', 'Trusts OEM centre', 'Trusts online forums'] },
+      { name: 'Disengaged', color: CAT[1], members: ['Ignores if it feels fine', 'Pay: No', 'Rarely feels overcharged'] }
+    ];
+    const byLabel = Object.fromEntries(mca.points.map(p => [p.label, p]));
+    clusters.forEach(c => {
+      const pts = c.members.map(l => [x(byLabel[l].x), y(byLabel[l].y)]);
+      const hull = d3.polygonHull(pts) || pts;
+      svg.append('path').attr('d', 'M' + hull.join('L') + 'Z').attr('fill', c.color).attr('opacity', 0.1)
+        .attr('stroke', c.color).attr('stroke-width', C ? 34 : 46).attr('stroke-linejoin', 'round');
+      const cxm = d3.mean(pts, p => p[0]), top = d3.min(pts, p => p[1]);
+      txt(svg, Math.min(W - m.r - measure(c.name, fs + 0.5, 600) / 2, cxm), top - (C ? 28 : 34), c.name, { anchor: 'middle', size: fs + 0.5, fill: INK, weight: 600 });
+    });
+    const member = l => clusters.find(c => c.members.includes(l));
+    const local = byLabel['Trusts local mechanic'];
+    const big = d => member(d.label) || d === local;
+    const dots = svg.append('g').selectAll('circle').data(mca.points).join('circle')
+      .attr('cx', d => x(d.x)).attr('cy', d => y(d.y)).attr('r', d => (big(d) ? 6 : 4.5))
+      .attr('fill', d => (member(d.label) ? member(d.label).color : d === local ? CAT[2] : '#b4b7be'))
+      .attr('stroke', '#fff').attr('stroke-width', 2);
+    mca.points.filter(big).forEach(d => {
+      const right = d.x < 1.3;
+      if (C && d.label === 'Ignores if it feels fine') { halo(txt(svg, x(d.x) + 6, y(d.y) - 15, d.label, { anchor: 'end', size: fs, fill: INK })); return; }
+      halo(txt(svg, x(d.x) + (right ? 10 : -10), y(d.y), d.label, { anchor: right ? 'start' : 'end', size: fs, fill: INK }));
+    });
+    svg.append('defs').append('marker').attr('id', 'rv-arrow' + sel.replace(/\W/g, '')).attr('viewBox', '0 0 10 10').attr('refX', 8).attr('refY', 5)
+      .attr('markerWidth', 7).attr('markerHeight', 7).attr('orient', 'auto-start-reverse')
+      .append('path').attr('d', 'M0,0L10,5L0,10z').attr('fill', CAT[2]);
+    const lx = x(local.x), ly = y(local.y);
+    svg.append('path').attr('d', `M${lx + 8},${ly + 10} Q${lx + (C ? 30 : 70)},${ly + (C ? 40 : 60)} ${x(1.25)},${y(-1.05)}`)
+      .attr('fill', 'none').attr('stroke', CAT[2]).attr('stroke-width', 1.5).attr('marker-end', `url(#rv-arrow${sel.replace(/\W/g, '')})`);
+    if (!C) txt(svg, lx - 6, ly + 30, 'leans toward the disengaged side', { anchor: 'end', size: 11.5, fill: SLATE });
+    const vor = d3.Delaunay.from(mca.points, d => x(d.x), d => y(d.y)).voronoi([m.l, m.t, W - m.r, H - m.b]);
+    svg.append('g').selectAll('path').data(mca.points).join('path')
+      .attr('d', (d, i) => vor.renderCell(i)).attr('fill', 'transparent')
+      .on('mouseenter', function (e, d) { dots.filter(p => p === d).attr('r', 9); tip.show(`<b>${d.label}</b><br>question: ${d.varr}`, e); })
+      .on('mousemove', e => tip.move(e))
+      .on('mouseleave', () => { dots.attr('r', p => (big(p) ? 6 : 4.5)); tip.hide(); });
+  }
 
-  rowG.append('text').attr('x', -12).attr('y', y0.bandwidth()/2).attr('dy', '0.3em')
-    .attr('text-anchor', 'end').attr('font-size', 14).attr('fill', SLATE)
-    .text(d => truncateToWidth(d[groupField], maxLabelWidth, 14))
-    .append('title').text(d => d[groupField]);
+  /* ============================================================
+     7. Archetype radar: four measures, each on its own scale max.
+     ============================================================ */
+  function segmentRadar(sel, segs) {
+    const C = isCompact(sel);
+    const axes = [
+      { key: 'wtp_yes_pct', name: 'Would pay', max: 100, fmt: v => v + '%' },
+      { key: 'confidence', name: 'Confidence', max: 5, fmt: v => v + ' / 5' },
+      { key: 'check_composite', name: 'Checks parts', max: 8, fmt: v => v + ' / 8' },
+      { key: 'frustration_count', name: 'Frustrations', max: 5, fmt: v => v + ' / 5' }
+    ];
+    const L = C ? { W: 380, H: 450, R: 92, cx: 190, cy: 180, fs: 13.5 } : { W: 640, H: 520, R: 170, cx: 320, cy: 260, fs: 13 };
+    const svg = svgIn(sel, L.W, L.H, C ? L.W : 700);
+    const g = svg.append('g').attr('transform', `translate(${L.cx},${L.cy})`);
+    const ang = i => (i / axes.length) * TAU;
+    const pt = (i, f) => [Math.sin(ang(i)) * L.R * f, -Math.cos(ang(i)) * L.R * f];
+    [0.25, 0.5, 0.75, 1].forEach(f => g.append('path').attr('d', 'M' + axes.map((a, i) => pt(i, f)).join('L') + 'Z').attr('fill', 'none').attr('stroke', HAIR));
+    axes.forEach((a, i) => {
+      const [x2, y2] = pt(i, 1); const s = Math.sin(ang(i));
+      g.append('line').attr('x1', 0).attr('y1', 0).attr('x2', x2).attr('y2', y2).attr('stroke', HAIR);
+      { const [lx, ly] = pt(i, C ? 1.1 : 1.16); txt(g, lx, ly, a.name, { anchor: s > 0.2 ? 'start' : s < -0.2 ? 'end' : 'middle', size: L.fs, fill: INK, weight: 500 }); }
+    });
+    const line = d3.line().curve(d3.curveLinearClosed);
+    segs.forEach((s, si) => {
+      const pts = axes.map((a, i) => pt(i, s[a.key] / a.max));
+      g.append('path').attr('fill', CAT[si]).attr('fill-opacity', 0.1).attr('stroke', CAT[si]).attr('stroke-width', 2).attr('stroke-linejoin', 'round')
+        .attr('d', line(axes.map(() => [0, 0]))).transition().duration(dur(800)).delay(dur(si * 120)).attr('d', line(pts));
+      pts.forEach((p, i) => hover(g.append('circle').attr('cx', p[0]).attr('cy', p[1]).attr('r', 5).attr('fill', CAT[si]).attr('stroke', '#fff').attr('stroke-width', 2).style('cursor', 'pointer'),
+        `<b>${s.name}</b><br>${axes[i].name}: ${axes[i].fmt(s[axes[i].key])}`));
+    });
+    segs.forEach(s => { const [px, py] = pt(0, s.wtp_yes_pct / 100); halo(txt(g, px + 10, py, s.wtp_yes_pct + '%', { size: 12.5, fill: INK, weight: 600 })); });
+    const items = segs.map((s, si) => ({ label: s.name, mark: gi => gi.append('rect').attr('x', 0).attr('y', -1.25).attr('width', 12).attr('height', 2.5).attr('fill', CAT[si]) }));
+    if (C) {
+      const lg = svg.append('g').attr('transform', `translate(24,${L.cy + L.R + 56})`);
+      items.forEach((it, i) => { const gi = lg.append('g').attr('transform', `translate(0,${i * 24})`); it.mark(gi); txt(gi, 20, 0, it.label, { size: 13.5 }); });
+    } else legend(svg.append('g').attr('transform', `translate(40,${L.H - 14})`), items, L.W - 60, 12.5);
+  }
 
-  groupKeys.forEach(k => {
-    rowG.append('rect')
-      .attr('y', d => y1(k)).attr('height', y1.bandwidth())
-      .attr('x', 0).attr('rx', 4)
-      .attr('fill', color(k))
-      .attr('width', 0)
-      .on('mouseenter', function(event, d) {
-        tip.show(`<b>${d[groupField]}</b><br>${k}: ${d[k]} respondents`, event);
-      })
-      .on('mousemove', event => tip.move(event))
-      .on('mouseleave', () => tip.hide())
-      .transition().duration(700).delay((d,i)=>i*30).ease(d3.easeCubicOut)
-      .attr('width', d => x(d[k]));
-  });
+  /* ============================================================
+     8. Hemicycle (parliament) unit chart: 72 seats, one per owner,
+        filled left to right by answer.
+     ============================================================ */
+  function hemicycle(sel, rows, colors, opts = {}) {
+    const N = d3.sum(rows, d => d.value), W = 360, rowsN = 5, R1 = 156, R0 = 82;
+    const radii = d3.range(rowsN).map(i => R0 + (R1 - R0) * i / (rowsN - 1));
+    const tot = d3.sum(radii);
+    let counts = radii.map(r => Math.round(N * r / tot));
+    counts[rowsN - 1] += N - d3.sum(counts);
+    const seats = [];
+    radii.forEach((r, i) => d3.range(counts[i]).forEach(j => { const t = counts[i] === 1 ? 0.5 : j / (counts[i] - 1); seats.push({ r, a: Math.PI * (1 - t) }); }));
+    seats.sort((p, q) => q.a - p.a || p.r - q.r);
+    let idx = 0; rows.forEach((d, ri) => { for (let j = 0; j < d.value; j++) seats[idx++].cat = ri; });
+    const cx = W / 2, cy = 172, seatR = 6.6;
+    const lgH = rows.length * 24 + 8, H = cy + 22 + lgH;
+    const svg = svgIn(sel, W, H, 420);
+    const g = svg.append('g').attr('transform', `translate(${cx},${cy})`);
+    const dots = g.selectAll('circle').data(seats).join('circle')
+      .attr('cx', d => Math.cos(d.a) * d.r).attr('cy', d => -Math.sin(d.a) * d.r).attr('r', 0)
+      .attr('fill', d => colors[d.cat]).style('cursor', 'pointer');
+    dots.transition().duration(dur(300)).delay((d, i) => dur(i * 9)).attr('r', seatR);
+    dots.on('mouseenter', (e, d) => { dots.attr('opacity', s => (s.cat === d.cat ? 1 : 0.3)); tip.show(`<b>${rows[d.cat].label}</b><br>${rows[d.cat].value} of ${N} owners (${rows[d.cat].pct}%)`, e); })
+      .on('mousemove', e => tip.move(e)).on('mouseleave', () => { dots.attr('opacity', 1); tip.hide(); });
+    const lead = rows.reduce((a, b) => (b.value > a.value ? b : a));
+    const lt = wrap(opts.leadText || lead.label, 124, 12.5);
+    const y0 = -8 - (lt.length - 1) * 15;
+    txt(g, 0, y0 - 24, Math.round(lead.pct) + '%', { anchor: 'middle', size: 25, fill: INK, weight: 600 });
+    lt.forEach((ln, i) => txt(g, 0, y0 + i * 15, ln, { anchor: 'middle', size: 12.5, fill: SLATE }));
+    const lg = svg.append('g').attr('transform', `translate(20,${cy + 30})`);
+    rows.forEach((d, i) => {
+      const gi = lg.append('g').attr('transform', `translate(0,${i * 24})`);
+      gi.append('circle').attr('cx', 6).attr('cy', 0).attr('r', 6).attr('fill', colors[i]);
+      txt(gi, 20, 0, d.label, { size: 14, fill: INK });
+      txt(gi, W - 40, 0, `${d.value} · ${Math.round(d.pct)}%`, { anchor: 'end', size: 14, fill: SLATE });
+    });
+  }
 
-  // legend: reserved band beneath the chart, never overlapping the last row
-  const legend = svg.append('g').attr('transform', `translate(${margin.left},${chartH + 22})`);
-  let lx = 0;
-  groupKeys.forEach(k => {
-    legend.append('rect').attr('x', lx).attr('y', -12).attr('width', 12).attr('height', 12).attr('rx', 3).attr('fill', color(k));
-    legend.append('text').attr('x', lx+18).attr('y', -2).attr('font-size', 13).attr('fill', SLATE).text(k);
-    lx += measureText(k, 13) + 34;
-  });
-}
+  /* ============================================================
+     9. Half-ring proportion gauge (record-keeping): one 180° arc.
+     ============================================================ */
+  function halfGauge(sel, rows, colors, opts = {}) {
+    const N = d3.sum(rows, d => d.value), W = 380, R = 140, band = 34, cx = W / 2, cy = 170;
+    const H = cy + 26 + rows.length * 24 + 8;
+    const svg = svgIn(sel, W, H, 460);
+    const g = svg.append('g').attr('transform', `translate(${cx},${cy})`);
+    let a0 = -Math.PI / 2;
+    rows.forEach((d, i) => {
+      const a1 = a0 + Math.PI * d.value / N, A0 = a0;
+      const mk = e => d3.arc()({ innerRadius: R - band, outerRadius: R, startAngle: A0, endAngle: e, cornerRadius: 3 });
+      const p = g.append('path').attr('d', mk(A0)).attr('fill', colors[i]).attr('stroke', colors[i] === NONE ? HAIR : 'none');
+      p.transition().duration(dur(700)).delay(dur(i * 120)).attrTween('d', () => { const it = d3.interpolate(A0, a1 - 0.012); return t => mk(it(t)); });
+      hover(p, `<b>${d.label}</b><br>${d.value} of ${N} owners (${d.pct}%)`);
+      a0 = a1;
+    });
+    txt(g, 0, -34, Math.round(rows[0].pct) + '%', { anchor: 'middle', size: 34, fill: INK, weight: 600 });
+    txt(g, 0, -6, opts.leadText || rows[0].label, { anchor: 'middle', size: 13, fill: SLATE });
+    const lg = svg.append('g').attr('transform', `translate(24,${cy + 30})`);
+    rows.forEach((d, i) => {
+      const gi = lg.append('g').attr('transform', `translate(0,${i * 24})`);
+      swatch(colors[i], colors[i] === NONE ? HAIR : null)(gi);
+      txt(gi, 20, 0, d.label, { size: 14, fill: INK });
+      txt(gi, W - 48, 0, `${d.value} · ${Math.round(d.pct)}%`, { anchor: 'end', size: 14, fill: SLATE });
+    });
+  }
 
-/* ---------- 4. Heatmap ---------- */
-function drawHeatmap(sel, cells, rowOrder, colOrder, rowKey, colKey, valKey, nKey, opts = {}) {
-  const { fmt = d => d + '%', maxVal = 100, labelThresholdFrac = 0.55 } = opts;
-  const { margin: leftM, maxLabelWidth } = leftMarginFor(rowOrder, { minPx: 110, maxPx: 210, fontSize: 13 });
-  const cellW = 150, cellH = 60;
-  const margin = { top: 10, right: 10, bottom: 10, left: leftM };
-  const width = margin.left + colOrder.length * cellW + margin.right;
-  const height = margin.top + rowOrder.length * cellH + 34;
+  /* ============================================================
+     10. Racetrack radial bar: one arc per answer; the full 270°
+         track = all 72 owners, so arcs compare as shares of everyone.
+     ============================================================ */
+  function racetrack(sel, rows) {
+    const C = isCompact(sel), fs = C ? 15 : 14;
+    const N = d3.sum(rows, d => d.value), sorted = rows.slice().sort((a, b) => b.value - a.value);
+    const W = C ? 380 : 420, band = 20, gp = 9, rIn = 40, cx = C ? 212 : 236, n = sorted.length;
+    const rOut = rIn + n * (band + gp), cy = rOut + 10, H = cy + rOut + 12;
+    const svg = svgIn(sel, W, H, 400);
+    const g = svg.append('g').attr('transform', `translate(${cx},${cy})`);
+    // arc length is proportional to share; the largest answer sweeps 240°
+    const maxA = (240 / 180) * Math.PI, a = d3.scaleLinear().domain([0, sorted[0].value]).range([0, maxA]);
+    sorted.forEach((d, i) => {
+      const ri = rIn + (n - 1 - i) * (band + gp), end = a(d.value);
+      const mk = e => d3.arc()({ innerRadius: ri, outerRadius: ri + band, startAngle: 0, endAngle: e, cornerRadius: 3 });
+      const p = g.append('path').attr('d', mk(0)).attr('fill', i === 0 ? ORD3[2] : ORD3[1]);
+      p.transition().duration(dur(800)).delay(dur(i * 90)).attrTween('d', () => { const it = d3.interpolate(0, end); return t => mk(it(t)); });
+      hover(p, `<b>${d.label}</b><br>${d.value} of ${N} owners (${d.pct}%)`);
+      const t = txt(g, -10, -(ri + band / 2), '', { anchor: 'end', size: fs, fill: INK });
+      t.append('tspan').attr('font-weight', i === 0 ? 600 : 400).text(d.label + '  ');
+      t.append('tspan').attr('fill', SLATE).attr('font-weight', 500).text(Math.round(d.pct) + '%');
+    });
+  }
 
-  const svg = svgIn(sel, width, height);
-  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top + 24})`);
+  /* ============================================================
+     11. Lollipop on a fixed track (H8 check-diligence, 0 to 8).
+     ============================================================ */
+  function trackDots(sel, rows, opts) {
+    const C = isCompact(sel);
+    const { max = 8, unit = ' / 8' } = opts || {};
+    const W = C ? 380 : 640, rowH = C ? 56 : 46, top = 14;
+    const lw = C ? 0 : 200, x0 = C ? 16 : lw + 16, x1 = W - 40;
+    const H = top + rows.length * rowH + 30;
+    const svg = svgIn(sel, W, H, C ? W : 700);
+    const x = d3.scaleLinear().domain([0, max]).range([x0, x1]);
+    const best = rows.reduce((a, b) => (b.value > a.value ? b : a));
+    d3.range(0, max + 1, 2).forEach(v => {
+      svg.append('line').attr('x1', x(v)).attr('x2', x(v)).attr('y1', top - 4).attr('y2', H - 26).attr('stroke', '#f2f3f5');
+      txt(svg, x(v), H - 12, String(v), { anchor: 'middle', size: 12, fill: MUTED });
+    });
+    rows.forEach((d, i) => {
+      const yc = top + i * rowH + (C ? rowH - 18 : rowH / 2), isB = d === best;
+      if (C) txt(svg, x0, yc - 20, d.label, { size: 13.5, fill: INK, weight: isB ? 600 : 400 });
+      else txt(svg, lw, yc, d.label, { anchor: 'end', size: 13.5, fill: INK, weight: isB ? 600 : 400 });
+      svg.append('line').attr('x1', x(0)).attr('x2', x(max)).attr('y1', yc).attr('y2', yc).attr('stroke', HAIR).attr('stroke-width', 2).attr('stroke-linecap', 'round');
+      const stem = svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', yc).attr('y2', yc).attr('stroke', isB ? ORD3[2] : ORD3[0]).attr('stroke-width', 2).attr('stroke-linecap', 'round');
+      stem.transition().duration(dur(700)).delay(dur(i * 70)).attr('x2', x(d.value));
+      const dot = svg.append('circle').attr('cx', x(0)).attr('cy', yc).attr('r', 7).attr('fill', isB ? ORD3[2] : ORD3[0]).attr('stroke', '#fff').attr('stroke-width', 2).style('cursor', 'pointer');
+      dot.transition().duration(dur(700)).delay(dur(i * 70)).attr('cx', x(d.value));
+      hover(dot, `<b>${d.label}</b><br>mean check-diligence ${d.value}${unit}`);
+      txt(svg, x(d.value) + 12, yc, d.value + unit, { size: 12.5, fill: isB ? INK : SLATE, weight: isB ? 600 : 400 });
+    });
+  }
 
-  const color = d3.scaleLinear().domain([0, maxVal*0.5, maxVal]).range(['#f2f6fc', '#7fa8e3', ACCENT_DEEP]);
-  const labelThreshold = maxVal * labelThresholdFrac;
+  /* ============================================================
+     12. Annotated trend (oil checks by vehicle age).
+     ============================================================ */
+  function annotatedTrend(sel, rows, ns) {
+    const C = isCompact(sel);
+    const W = C ? 380 : 640, H = C ? 330 : 300, m = { t: 36, r: C ? 20 : 30, b: C ? 58 : 50, l: C ? 34 : 46 };
+    const svg = svgIn(sel, W, H, C ? W : 700);
+    const x = d3.scalePoint().domain(rows.map(d => d.age)).range([m.l, W - m.r]).padding(0.45);
+    const y = d3.scaleLinear().domain([0, 2]).range([H - m.b, m.t]);
+    [0, 0.5, 1, 1.5, 2].forEach(v => {
+      svg.append('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y(v)).attr('y2', y(v)).attr('stroke', v === 0 ? '#cdcdcd' : '#f2f3f5');
+      txt(svg, m.l - 8, y(v), v.toFixed(1), { anchor: 'end', size: 12, fill: MUTED });
+    });
+    const dip = rows[1];
+    svg.append('rect').attr('x', x(dip.age) - (C ? 34 : 50)).attr('y', m.t - 8).attr('width', C ? 68 : 100).attr('height', H - m.b - m.t + 8).attr('rx', 8).attr('fill', '#eb6834').attr('opacity', 0.08);
+    txt(svg, x(dip.age), H - m.b - 14, C ? 'Dip' : 'Honeymoon dip', { anchor: 'middle', size: 12.5, fill: '#b5461d', weight: 600 });
+    const line = d3.line().x(d => x(d.age)).y(d => y(d.mean_score)).curve(d3.curveMonotoneX);
+    const p = svg.append('path').datum(rows).attr('fill', 'none').attr('stroke', ORD3[2]).attr('stroke-width', 2).attr('d', line);
+    const len = p.node().getTotalLength();
+    p.attr('stroke-dasharray', `${len} ${len}`).attr('stroke-dashoffset', len).transition().duration(dur(900)).attr('stroke-dashoffset', 0);
+    rows.forEach((d, i) => {
+      const c = svg.append('circle').attr('cx', x(d.age)).attr('cy', y(d.mean_score)).attr('r', 6).attr('fill', d === dip ? '#eb6834' : ORD3[2]).attr('stroke', '#fff').attr('stroke-width', 2).style('cursor', 'pointer');
+      hover(c, `<b>${d.age}</b><br>Mean oil-check score ${d.mean_score} of 2 (n=${ns[i]})`);
+      halo(txt(svg, x(d.age), y(d.mean_score) - 16, d.mean_score.toFixed(2), { anchor: 'middle', size: 12.5, fill: INK, weight: 600 }));
+      const lab = C ? d.age.replace('Less than 2 years', '< 2 yrs').replace(' years', ' yrs') : d.age;
+      txt(svg, x(d.age), H - m.b + 18, lab, { anchor: 'middle', size: 12.5, fill: INK });
+      txt(svg, x(d.age), H - m.b + 36, `n = ${ns[i]}`, { anchor: 'middle', size: 11.5, fill: MUTED });
+    });
+    txt(svg, m.l - 8, m.t - 20, C ? 'Score, 0 to 2' : 'Oil-check score (0 never, 1 at service, 2 regularly)', { size: 11.5, fill: MUTED });
+  }
 
-  // column headers
-  g.selectAll('.colhead').data(colOrder).join('text')
-    .attr('x', (d,i) => i*cellW + cellW/2).attr('y', -8)
-    .attr('text-anchor', 'middle').attr('font-size', 13).attr('fill', SLATE)
-    .text(d => d);
+  /* ============================================================
+     13. Coefficient plot, restyled: hairline zero, significant terms
+         in blue with their value; direction words on the axis.
+     ============================================================ */
+  function coefPlot(sel, rows, opts) {
+    const C = isCompact(sel, 480);
+    const { neg = 'less likely', pos = 'more likely' } = opts || {};
+    const W = C ? 380 : 600, rowH = C ? 58 : 46, lw = C ? 0 : 150, top = 26;
+    const H = top + rows.length * rowH + 40;
+    const svg = svgIn(sel, W, H, C ? W : 640);
+    const ext = Math.max(1, d3.max(rows, d => Math.abs(d.coef)) * 1.3);
+    const x = d3.scaleLinear().domain([-ext, ext]).range([C ? 20 : lw + 20, W - 24]);
+    svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', top - 10).attr('y2', H - 34).attr('stroke', '#cdcdcd');
+    txt(svg, x(0) - 8, top - 14, '← ' + neg, { anchor: 'end', size: 12, fill: MUTED });
+    txt(svg, x(0) + 8, top - 14, pos + ' →', { size: 12, fill: MUTED });
+    rows.forEach((d, i) => {
+      const yc = top + i * rowH + (C ? rowH - 16 : rowH / 2), sig = d.p < 0.05, c = sig ? ORD3[2] : '#c9ccd1';
+      if (C) txt(svg, 20, yc - 20, d.label, { size: 13.5, fill: INK, weight: sig ? 600 : 400 });
+      else txt(svg, lw, yc, d.label, { anchor: 'end', size: 13.5, fill: INK, weight: sig ? 600 : 400 });
+      svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', yc).attr('y2', yc).attr('stroke', c).attr('stroke-width', 2)
+        .transition().duration(dur(700)).attr('x2', x(d.coef));
+      const dot = svg.append('circle').attr('cx', x(0)).attr('cy', yc).attr('r', 7).attr('fill', c).attr('stroke', '#fff').attr('stroke-width', 2).style('cursor', 'pointer');
+      dot.transition().duration(dur(700)).attr('cx', x(d.coef));
+      hover(dot, `<b>${d.label}</b><br>coefficient ${d.coef.toFixed(3)}<br>p = ${d.p.toFixed(3)} ${sig ? '(significant)' : '(not significant)'}`);
+      const right = d.coef >= 0;
+      txt(svg, x(d.coef) + (right ? 12 : -12), yc, `${d.coef > 0 ? '+' : '−'}${Math.abs(d.coef).toFixed(2)}${sig ? '  p=' + d.p.toFixed(3) : ''}`, { anchor: right ? 'start' : 'end', size: 12.5, fill: sig ? INK : MUTED, weight: sig ? 600 : 400 });
+    });
+    svg.append('g').attr('transform', `translate(0,${H - 34})`).call(d3.axisBottom(x).ticks(5).tickSize(4))
+      .call(a => a.select('.domain').attr('stroke', HAIR)).call(a => a.selectAll('line').attr('stroke', HAIR))
+      .call(a => a.selectAll('text').attr('fill', MUTED).attr('font-size', 11.5).attr('font-family', FONT));
+  }
 
-  rowOrder.forEach((r,ri) => {
-    g.append('text').attr('x', -12).attr('y', ri*cellH + cellH/2).attr('dy', '0.35em')
-      .attr('text-anchor', 'end').attr('font-size', 13).attr('fill', SLATE)
-      .text(truncateToWidth(r, maxLabelWidth, 13))
-      .append('title').text(r);
-  });
-
-  const rects = g.selectAll('.cell').data(cells).join('rect')
-    .attr('x', d => colOrder.indexOf(d[colKey]) * cellW + 2)
-    .attr('y', d => rowOrder.indexOf(d[rowKey]) * cellH + 2)
-    .attr('width', cellW-4).attr('height', cellH-4).attr('rx', 8)
-    .attr('fill', d => color(d[valKey]))
-    .on('mouseenter', function(event, d) {
-      d3.select(this).attr('stroke', INK).attr('stroke-width', 1.5);
-      tip.show(`<b>${d[rowKey]}</b> × <b>${d[colKey]}</b><br>${fmt(d[valKey])} (n=${d[nKey]})`, event);
-    })
-    .on('mousemove', event => tip.move(event))
-    .on('mouseleave', function() { d3.select(this).attr('stroke', 'none'); tip.hide(); });
-
-  g.selectAll('.celltext').data(cells).join('text')
-    .attr('x', d => colOrder.indexOf(d[colKey]) * cellW + cellW/2)
-    .attr('y', d => rowOrder.indexOf(d[rowKey]) * cellH + cellH/2)
-    .attr('dy', '0.35em').attr('text-anchor', 'middle')
-    .attr('font-size', 15).attr('font-weight', 500)
-    .attr('fill', d => d[valKey] > labelThreshold ? '#fff' : INK)
-    .style('pointer-events', 'none')
-    .text(d => fmt(d[valKey]));
-}
-
-/* ---------- 5. Line chart ---------- */
-function drawLine(sel, data, xKey, yKey, yLabel) {
-  const width = 620, height = 280;
-  const margin = { top: 20, right: 30, bottom: 40, left: 46 };
-  const innerW = width - margin.left - margin.right;
-  const innerH = height - margin.top - margin.bottom;
-
-  const svg = svgIn(sel, width, height);
-  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
-
-  const x = d3.scalePoint().domain(data.map(d => d[xKey])).range([0, innerW]).padding(0.5);
-  const y = d3.scaleLinear().domain([0, d3.max(data, d => d[yKey]) * 1.25]).range([innerH, 0]);
-
-  g.append('g').attr('class', 'gridline')
-    .call(d3.axisLeft(y).ticks(4).tickSize(-innerW).tickFormat(''));
-  g.append('g').attr('class', 'axis').attr('transform', `translate(0,${innerH})`)
-    .call(d3.axisBottom(x).tickSize(0)).selectAll('text').attr('dy', '1.2em');
-  g.append('g').attr('class', 'axis').call(d3.axisLeft(y).ticks(4));
-  g.selectAll('.domain').attr('stroke', BORDER);
-
-  const line = d3.line().x(d => x(d[xKey])).y(d => y(d[yKey])).curve(d3.curveMonotoneX);
-  const path = g.append('path').datum(data).attr('fill', 'none').attr('stroke', ACCENT).attr('stroke-width', 3).attr('d', line);
-  const len = path.node().getTotalLength();
-  path.attr('stroke-dasharray', `${len} ${len}`).attr('stroke-dashoffset', len)
-    .transition().duration(900).ease(d3.easeCubicOut).attr('stroke-dashoffset', 0);
-
-  g.selectAll('.dot').data(data).join('circle')
-    .attr('cx', d => x(d[xKey])).attr('cy', d => y(d[yKey])).attr('r', 6)
-    .attr('fill', ACCENT_DEEP).attr('stroke', '#fff').attr('stroke-width', 2)
-    .on('mouseenter', function(event, d) {
-      tip.show(`<b>${d[xKey]}</b><br>${yLabel}: ${d[yKey]}`, event);
-    })
-    .on('mousemove', event => tip.move(event))
-    .on('mouseleave', () => tip.hide());
-}
-
-/* ---------- 6. Coefficient / dot plot ---------- */
-function drawCoefficientPlot(sel, rows) {
-  // rows: [{label, coef, p}]
-  const labels = rows.map(d => d.label);
-  const { margin: leftM, maxLabelWidth } = leftMarginFor(labels, { minPx: 120, maxPx: 220 });
-  const width = 600, height = rows.length * 46 + 40;
-  const margin = { top: 10, right: 40, bottom: 30, left: leftM };
-  const innerW = width - margin.left - margin.right;
-  const innerH = height - margin.top - margin.bottom;
-
-  const svg = svgIn(sel, width, height);
-  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
-
-  const extent = d3.max(rows, d => Math.abs(d.coef)) * 1.3 || 1;
-  const x = d3.scaleLinear().domain([-extent, extent]).range([0, innerW]);
-  const y = d3.scaleBand().domain(rows.map(d => d.label)).range([0, innerH]).padding(0.4);
-
-  g.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', 0).attr('y2', innerH)
-    .attr('stroke', BORDER).attr('stroke-dasharray', '3,3');
-
-  g.append('g').attr('class', 'axis').attr('transform', `translate(0,${innerH})`)
-    .call(d3.axisBottom(x).ticks(5));
-
-  g.selectAll('.lbl').data(rows).join('text')
-    .attr('x', -12).attr('y', d => y(d.label) + y.bandwidth()/2).attr('dy', '0.35em')
-    .attr('text-anchor', 'end').attr('font-size', 14).attr('fill', SLATE)
-    .text(d => truncateToWidth(d.label, maxLabelWidth, 14))
-    .append('title').text(d => d.label);
-
-  g.selectAll('.stem').data(rows).join('line')
-    .attr('x1', x(0)).attr('x2', x(0))
-    .attr('y1', d => y(d.label)+y.bandwidth()/2).attr('y2', d => y(d.label)+y.bandwidth()/2)
-    .attr('stroke', d => d.p < 0.05 ? ACCENT_DEEP : '#c9ccd1')
-    .attr('stroke-width', 3)
-    .transition().duration(700)
-    .attr('x2', d => x(d.coef));
-
-  g.selectAll('.pt').data(rows).join('circle')
-    .attr('cy', d => y(d.label)+y.bandwidth()/2).attr('r', 7)
-    .attr('fill', d => d.p < 0.05 ? ACCENT_DEEP : '#c9ccd1')
-    .attr('cx', x(0))
-    .on('mouseenter', function(event, d) {
-      tip.show(`<b>${d.label}</b><br>coef = ${d.coef.toFixed(3)}<br>p = ${d.p.toFixed(3)} ${d.p<0.05 ? '(significant)' : '(n.s.)'}`, event);
-    })
-    .on('mousemove', event => tip.move(event))
-    .on('mouseleave', () => tip.hide())
-    .transition().duration(700)
-    .attr('cx', d => x(d.coef));
-}
-
-/* ---------- 7. Scatter (MCA) ---------- */
-function drawScatter(sel, points) {
-  const width = 640, height = 480;
-  const margin = { top: 20, right: 20, bottom: 40, left: 46 };
-  const innerW = width - margin.left - margin.right;
-  const innerH = height - margin.top - margin.bottom;
-
-  const svg = svgIn(sel, width, height);
-  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
-
-  const ext = d3.max(points, d => Math.max(Math.abs(d.x), Math.abs(d.y))) * 1.15;
-  const x = d3.scaleLinear().domain([-ext, ext]).range([0, innerW]);
-  const y = d3.scaleLinear().domain([-ext, ext]).range([innerH, 0]);
-
-  g.append('line').attr('x1',0).attr('x2',innerW).attr('y1',y(0)).attr('y2',y(0)).attr('stroke', MIST).attr('stroke-width',2);
-  g.append('line').attr('x1',x(0)).attr('x2',x(0)).attr('y1',0).attr('y2',innerH).attr('stroke', MIST).attr('stroke-width',2);
-  g.append('g').attr('class','axis').attr('transform',`translate(0,${innerH})`).call(d3.axisBottom(x).ticks(5));
-  g.append('g').attr('class','axis').call(d3.axisLeft(y).ticks(5));
-  g.selectAll('.domain').attr('stroke', BORDER);
-
-  const varColor = d3.scaleOrdinal()
-    .domain(['vehicle','record','warning','overcharged','willingness','delayed','trusted','diagnosis'])
-    .range(['#8b8d93','#2670d1','#e07a3f','#c0392b','#0a56c3','#6b7280','#16a34a','#073a87']);
-
-  g.selectAll('.pt').data(points).join('circle')
-    .attr('cx', d => x(d.x)).attr('cy', d => y(d.y)).attr('r', 7)
-    .attr('fill', d => varColor(d.varr)).attr('opacity', 0.85)
-    .attr('stroke', '#fff').attr('stroke-width', 1)
-    .on('mouseenter', function(event, d) {
-      d3.select(this).attr('r', 10);
-      tip.show(`<b>${d.label}</b>`, event);
-    })
-    .on('mousemove', event => tip.move(event))
-    .on('mouseleave', function() { d3.select(this).attr('r', 7); tip.hide(); });
-}
-
-/* ---------- 8. Segment comparison grouped bar (normalized 0-1 scale) ---------- */
-function drawSegmentCompare(sel, segData, metricKeys, metricLabels) {
-  const { margin: leftM, maxLabelWidth } = leftMarginFor(metricLabels, { minPx: 120, maxPx: 220, fontSize: 13 });
-  const legendH = 40;
-  const chartH = metricKeys.length * 70 + 30;
-  const width = 640, height = chartH + legendH;
-  const margin = { top: 10, right: 20, bottom: 10, left: leftM };
-  const innerW = width - margin.left - margin.right;
-  const innerH = chartH - margin.top - margin.bottom;
-
-  const svg = svgIn(sel, width, height);
-  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
-
-  const y0 = d3.scaleBand().domain(metricLabels).range([0, innerH]).paddingInner(0.4);
-  const y1 = d3.scaleBand().domain(segData.map(d=>d.name)).range([0, y0.bandwidth()]).padding(0.15);
-  const color = d3.scaleOrdinal().domain(segData.map(d=>d.name)).range(['#5f96e3', ACCENT, ACCENT_DEEP]);
-
-  metricKeys.forEach((mk, mi) => {
-    const label = metricLabels[mi];
-    const maxV = d3.max(segData, d => d[mk]);
-    const x = d3.scaleLinear().domain([0, maxV*1.15]).range([0, innerW]);
-    const rowG = g.append('g').attr('transform', `translate(0,${y0(label)})`);
-    rowG.append('text').attr('x', -12).attr('y', y0.bandwidth()/2).attr('dy','0.3em')
-      .attr('text-anchor','end').attr('font-size', 13).attr('fill', SLATE)
-      .text(truncateToWidth(label, maxLabelWidth, 13))
-      .append('title').text(label);
-    rowG.selectAll('rect').data(segData).join('rect')
-      .attr('y', d => y1(d.name)).attr('height', y1.bandwidth())
-      .attr('x',0).attr('rx',4).attr('fill', d => color(d.name))
-      .attr('width', 0)
-      .on('mouseenter', function(event,d){ tip.show(`<b>${d.name}</b><br>${label}: ${d[mk]}`, event); })
-      .on('mousemove', event => tip.move(event))
-      .on('mouseleave', () => tip.hide())
-      .transition().duration(700).delay((d,i)=>i*60)
-      .attr('width', d => x(d[mk]));
-  });
-
-  const legend = svg.append('g').attr('transform', `translate(${margin.left},${chartH + 22})`);
-  let lx=0;
-  segData.forEach(d => {
-    legend.append('rect').attr('x',lx).attr('y',-12).attr('width',12).attr('height',12).attr('rx',3).attr('fill',color(d.name));
-    legend.append('text').attr('x',lx+18).attr('y',-2).attr('font-size',12.5).attr('fill',SLATE).text(d.name);
-    lx += measureText(d.name, 12.5) + 34;
-  });
-}
-
+  return { respondentWheel, checkGauge, hypothesisFan, alluvial, frustrationChord, mcaMap, segmentRadar,
+           hemicycle, halfGauge, racetrack, trackDots, annotatedTrend, coefPlot, tip,
+           ORD3, ORD4, ORD5, CAT, NONE };
+})();
 </script>
 <script>
 /* ============================================================
@@ -1262,52 +1430,63 @@ document.addEventListener('DOMContentLoaded', () => {
     fill.style.width = pct + '%';
   });
 
-  /* ---- Hero respondent grid ---- */
-  drawRespondentGrid('#respondent-grid', DATA.confidence, DATA.N);
+  /* ---- Charts: drawn once, and again when the viewport width
+     crosses a layout breakpoint (each chart has a compact layout). ---- */
+  const shortWarn = l => l.replace('Take it to a mechanic immediately.', 'Immediate mechanic visit')
+    .replace('I know what the light means, then take it to the mechanic.', 'Knows the light, then acts')
+    .replace('Search on YouTube or Google.', 'Searches online')
+    .replace('Ignore it if the vehicle feels fine to drive.', 'Ignores if it feels fine')
+    .replace('Call a friend or family member for advice.', 'Calls a friend');
+  const byLabel = (arr, order) => order.map(l => arr.find(d => d.label === l));
+  const co = DATA.frustration_cooccurrence;
 
-  /* ---- Respondents ---- */
-  drawHBar('#chart-vehicle-type', DATA.vehicle_type);
-  drawHBar('#chart-vehicle-age', DATA.vehicle_age);
-  drawHBar('#chart-weekly-usage', DATA.weekly_usage);
+  function drawCharts() {
+    RV.respondentWheel('#respondent-grid', RESP);
 
-  /* ---- Behavior ---- */
-  drawGroupedBar('#chart-check-freq', DATA.check_frequency, ['Never','Only during service','Regularly'], 'component');
-  drawHBar('#chart-record-keeping', DATA.record_keeping.map(d => ({...d, label: d.label.replace("Yes, I keep all bills/logs.","Keeps own logs").replace("No, I rely on the service center's records.","Relies on centre records").replace("No, I don't keep track.","No tracking")})));
-  drawLine('#chart-age-oil', DATA.age_oil_trend, 'age', 'mean_score', 'Oil-check score (0-2)');
+    RV.hemicycle('#chart-vehicle-type', byLabel(DATA.vehicle_type, ['Both', 'Two-wheeler only', 'Four-wheeler only']), RV.CAT, { leadText: 'own both a 2W and a 4W' });
+    RV.hemicycle('#chart-vehicle-age', DATA.vehicle_age, RV.ORD4, { leadText: 'drive a 2 to 5 year old vehicle' });
+    RV.hemicycle('#chart-weekly-usage', DATA.weekly_usage, RV.ORD4, { leadText: 'ride under 50 km a week' });
 
-  /* ---- Trust gap ---- */
-  drawHBar('#chart-warning-reaction', DATA.warning_reaction.map(d=>({...d, label: d.label.replace('Take it to a mechanic immediately.','Immediate mechanic visit').replace('I know what the light means, then take it to the mechanic.','Knows the light, then acts').replace('Search on YouTube or Google.','Searches online').replace('Ignore it if the vehicle feels fine to drive.','Ignores if fine').replace('Call a friend or family member for advice.','Calls a friend')})));
-  drawHBar('#chart-trusted-source', DATA.trusted_source.map(d=>({...d, label: d.label.replace("A specific 'local' mechanic I've known for years","Local mechanic").replace('Authorized Brand Service Centre (OEM)','OEM service centre').replace('Online forums / YouTube / Google','Online forums').replace('Knowledgeable friends or colleagues','Friends / colleagues')})));
-  drawHBar('#chart-overcharged', DATA.overcharged.map(d=>({...d, label:d.label.replace('.','')})));
-  drawHBar('#chart-diagnosis-time', DATA.diagnosis_time.map(d=>({...d, label:d.label.replace('A few days of observation','A few days').replace('Less than 30 minutes','<30 minutes')})));
-  drawHBar('#chart-warning-check', DATA.warning_check.map(d=>({...d, label: d.label.replace('Take it to a mechanic immediately.','Immediate mechanic visit').replace('I know what the light means, then take it to the mechanic.','Knows the light, then acts').replace('Search on YouTube or Google.','Searches online').replace('Ignore it if the vehicle feels fine to drive.','Ignores if fine').replace('Call a friend or family member for advice.','Calls a friend')})), {valueFmt: d => d + ' / 8'});
+    RV.checkGauge('#chart-check-freq', DATA.check_frequency, DATA.N);
+    RV.halfGauge('#chart-record-keeping', DATA.record_keeping.map((d, i) => ({ ...d, label: ['Keeps own bills and logs', 'Relies on service centre records', 'Keeps no record'][i] })),
+      [RV.ORD3[2], RV.ORD3[0], RV.NONE], { leadText: 'keep their own bills and logs' });
+    RV.annotatedTrend('#chart-age-oil', DATA.age_oil_trend, DATA.vehicle_age.map(d => d.value));
 
-  const diagWtp = DATA.diag_wtp_heatmap.cells.map(c => ({diag: c.diag.replace('A few days of observation','A few days').replace('Less than 30 minutes','<30 minutes'), wtp: c.wtp.replace('Depends on the cost difference','Depends'), pct: c.pct, n: c.n}));
-  drawHeatmap('#chart-heat-diag-wtp', diagWtp,
-    ['<30 minutes','1-2 hours','A few days'], ['No','Depends','Yes'],
-    'diag','wtp','pct','n', {fmt: d => d + '%', maxVal: 100});
+    RV.racetrack('#chart-warning-reaction', DATA.warning_reaction.map(d => ({ ...d, label: shortWarn(d.label) })));
+    RV.racetrack('#chart-trusted-source', DATA.trusted_source.map(d => ({ ...d, label: d.label
+      .replace("A specific 'local' mechanic I've known for years", 'Local mechanic')
+      .replace('Authorized Brand Service Centre (OEM)', 'OEM service centre')
+      .replace('Online forums / YouTube / Google', 'Online forums')
+      .replace('Knowledgeable friends or colleagues', 'Friends or colleagues') })));
+    RV.trackDots('#chart-warning-check', DATA.warning_check.map(d => ({ ...d, label: shortWarn(d.label) })));
+    RV.alluvial('#chart-alluvial', RESP);
 
-  const ovWtp = DATA.overcharged_wtp_heatmap.cells.map(c => ({ov: c.ov.replace('Rarely / Never.','Rarely').replace('Sometimes.','Sometimes').replace('Yes, frequently.','Frequently'), wtp: c.wtp.replace('Depends on the cost difference','Depends'), pct: c.pct, n: c.n}));
-  drawHeatmap('#chart-heat-overcharged-wtp', ovWtp,
-    ['Rarely','Sometimes','Frequently'], ['No','Depends','Yes'],
-    'ov','wtp','pct','n', {fmt: d => d + '%', maxVal: 100});
+    RV.frustrationChord('#chart-frus-cooccur', co, co.labels.map((l, i) => co.matrix[i][i]));
 
-  /* ---- Frustrations ---- */
-  drawHBar('#chart-frustrations', DATA.frustrations);
-  drawHeatmap('#chart-frus-cooccur',
-    (() => {
-      const labels = DATA.frustration_cooccurrence.labels;
-      const m = DATA.frustration_cooccurrence.matrix;
-      const cells = [];
-      labels.forEach((r,ri) => labels.forEach((c,ci) => {
-        cells.push({row: r, col: c, val: m[ri][ci], n: m[ri][ci]});
-      }));
-      return cells;
-    })(),
-    DATA.frustration_cooccurrence.labels, DATA.frustration_cooccurrence.labels,
-    'row','col','val','n',
-    {fmt: d => d, maxVal: 36, labelThresholdFrac: 0.6}
-  );
+    RV.hypothesisFan('#chart-hyp-fan', DATA.hypotheses);
+
+    RV.coefPlot('#chart-model1', [
+      { label: 'Confidence', coef: DATA.model1.confidence, p: DATA.model1_pvalues.confidence },
+      { label: 'Vehicle age', coef: DATA.model1.age_c, p: DATA.model1_pvalues.age_c },
+      { label: 'Weekly usage', coef: DATA.model1.usage_c, p: DATA.model1_pvalues.usage_c },
+      { label: 'Check-diligence', coef: DATA.model1.check_composite, p: DATA.model1_pvalues.check_composite }
+    ], { neg: 'less likely to delay', pos: 'more likely to delay' });
+    RV.coefPlot('#chart-model2', [
+      { label: 'Diagnosis time', coef: DATA.model2.diag_c, p: DATA.model2_pvalues.diag_c },
+      { label: 'Feels overcharged', coef: DATA.model2.overcharged_c, p: DATA.model2_pvalues.overcharged_c },
+      { label: 'Frustration count', coef: DATA.model2.frustration_count, p: DATA.model2_pvalues.frustration_count },
+      { label: 'Confidence', coef: DATA.model2.confidence, p: DATA.model2_pvalues.confidence }
+    ], { neg: 'less willing to pay', pos: 'more willing to pay' });
+
+    RV.mcaMap('#chart-mca', MCA);
+    RV.segmentRadar('#chart-segments', SEGMENTS);
+  }
+  drawCharts();
+  let lastW = window.innerWidth, rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => { if (Math.abs(window.innerWidth - lastW) > 40) { lastW = window.innerWidth; drawCharts(); } }, 250);
+  });
 
   /* ---- Hypothesis table ---- */
   const table = document.getElementById('hyp-table-target');
@@ -1323,23 +1502,6 @@ document.addEventListener('DOMContentLoaded', () => {
     </tr>`).join('');
   table.innerHTML = thead + '<tbody>' + rows + '</tbody>';
 
-  /* ---- Models ---- */
-  drawCoefficientPlot('#chart-model1', [
-    {label: 'Confidence', coef: DATA.model1['confidence'], p: DATA.model1_pvalues['confidence']},
-    {label: 'Vehicle age', coef: DATA.model1['age_c'], p: DATA.model1_pvalues['age_c']},
-    {label: 'Weekly usage', coef: DATA.model1['usage_c'], p: DATA.model1_pvalues['usage_c']},
-    {label: 'Check-diligence', coef: DATA.model1['check_composite'], p: DATA.model1_pvalues['check_composite']},
-  ]);
-  drawCoefficientPlot('#chart-model2', [
-    {label: 'Diagnosis time', coef: DATA.model2['diag_c'], p: DATA.model2_pvalues['diag_c']},
-    {label: 'Feels overcharged', coef: DATA.model2['overcharged_c'], p: DATA.model2_pvalues['overcharged_c']},
-    {label: 'Frustration count', coef: DATA.model2['frustration_count'], p: DATA.model2_pvalues['frustration_count']},
-    {label: 'Confidence', coef: DATA.model2['confidence'], p: DATA.model2_pvalues['confidence']},
-  ]);
-
-  /* ---- MCA ---- */
-  drawScatter('#chart-mca', MCA.points);
-
   /* ---- Archetypes ---- */
   const archCards = document.getElementById('archetype-cards');
   const archOrder = ['0','1','2'];
@@ -1353,11 +1515,6 @@ document.addEventListener('DOMContentLoaded', () => {
       <ul>${a.traits.map(t => `<li>${t}</li>`).join('')}</ul>
     </div>`;
   }).join('');
-
-  drawSegmentCompare('#chart-segments', SEGMENTS,
-    ['confidence','frustration_count','check_composite','wtp_yes_pct'],
-    ['Confidence (1-5)','Frustration count (0-5)','Check-diligence (0-8)','Willing to pay (%)']
-  );
 
   /* ---- Design Directions ---- */
   const dds = [
