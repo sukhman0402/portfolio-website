@@ -198,30 +198,22 @@ export default function AboutSection() {
                 <p className="font-semibold uppercase tracking-[-0.5px]">
                   {cat.label}
                 </p>
-                {/* Tool icons. Box updated 2026-10-02 to Figma node
-                    527:1011 "Frame: My Workflow" (direct instruction):
-                    each tool sits in a plain SQUARE 50px box (no rounded
-                    corners, no fill) with a 1.5px #d9d9d9 outline (the
-                    --tile token), and its line icon is centred at 24px.
-                    The outline is an inset box-shadow, not a CSS border:
-                    Chrome rounds borders down to whole pixels, so a 1.5px
-                    border would render as 1px there. The shadow is drawn
-                    inside the 50px box (like Figma's inside stroke) and
-                    keeps the exact 1.5px everywhere.
-                    The icons' own stroke is 1.5px too (workflowIcons.js),
-                    so the box and the icon share one line weight. This
-                    replaces the 2026-09-28 app-icon tile (40px rounded body
-                    inside the cell with a hairline ring).
+                {/* Tool logos (2026-10-25, Sukhman's tile format, Figma
+                    node 619:1637): each tool is a full-bleed 50px square
+                    tile, brand colour, black or #F5F5F5, with the official mark
+                    centred (see workflowIcons.js for the pattern). No
+                    outline: the tile's own colour is its edge. This
+                    replaces the 2026-10-02 line icon in a 1.5px #d9d9d9
+                    outlined box.
                     Reading order = array order in aboutData.js: row 1
                     left to right, then row 2, then row 3 (flex-wrap does
                     the wrapping). The tool name is the accessible label.
                     Hover label (2026-09-28): a small label (fill #EEEEEE,
-                    text #BBBBBB) with the tool name appears above the box
+                    text #BBBBBB) with the tool name appears above the tile
                     on hover, keyboard focus or a tap on phones. The first
-                    box in each row of 6 anchors its label to the left edge
+                    tile in each row of 6 anchors its label to the left edge
                     and the last to the right edge, so long names never run
-                    off the column or the phone screen. A tool without an
-                    icon yet (svg: null) shows its initials. */}
+                    off the column or the phone screen. */}
                 <div className="mt-4 flex flex-wrap gap-2 md:mt-[30px] md:gap-[6px]">
                   {cat.tools.map((id, i) => {
                     const tool = workflowIcons[id];
@@ -235,7 +227,7 @@ export default function AboutSection() {
                       <div
                         key={id}
                         tabIndex={0}
-                        className="group relative flex h-[50px] w-[50px] items-center justify-center shadow-[inset_0_0_0_1.5px_var(--tile)] outline-none focus-visible:ring-2 focus-visible:ring-black"
+                        className="group relative h-[50px] w-[50px] outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                       >
                         <span
                           aria-hidden="true"
@@ -243,30 +235,16 @@ export default function AboutSection() {
                         >
                           {tool.name}
                         </span>
-                        <span
-                          role="img"
-                          aria-label={tool.name}
-                          className="flex h-6 w-6 items-center justify-center"
-                        >
-                          {tool.svg ? (
-                            <span
-                              aria-hidden="true"
-                              className="block h-6 w-6 [&>svg]:h-full [&>svg]:w-full"
-                              dangerouslySetInnerHTML={{ __html: tool.svg }}
-                            />
-                          ) : (
-                            <span
-                              aria-hidden="true"
-                              className="text-[11px] font-semibold tracking-normal text-[#555555]"
-                            >
-                              {tool.name
-                                .split(" ")
-                                .map((w) => w[0])
-                                .join("")
-                                .slice(0, 2)}
-                            </span>
-                          )}
-                        </span>
+                        {/* 200px file shown at 50px (4x) for retina screens. */}
+                        <img
+                          src={tool.image}
+                          alt={tool.name}
+                          width={50}
+                          height={50}
+                          loading="lazy"
+                          decoding="async"
+                          className="block h-[50px] w-[50px]"
+                        />
                       </div>
                     );
                   })}
