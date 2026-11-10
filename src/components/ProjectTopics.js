@@ -69,7 +69,7 @@ import ImageZoom from "./ImageZoom";
 //   - active:   font-semibold, text-black
 //   - inactive: font-normal,   text-[#bbb]
 //   both at tracking-[-1px]; number uppercase, label capitalize.
-export default function ProjectTopics({ sections, endLinks, after, panelLinks = [] }) {
+export default function ProjectTopics({ sections, endLinks, after, panelLinks = [], chevronLinks = false }) {
   const [activeId, setActiveId] = useState(sections?.[0]?.id ?? null);
  
   useEffect(() => {
@@ -159,10 +159,12 @@ export default function ProjectTopics({ sections, endLinks, after, panelLinks = 
                   <a
                     href={l.href}
                     {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="flex w-fit items-center gap-[15px] font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60"
+                    className={`flex items-center font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60 ${
+                      chevronLinks ? "w-full justify-between pr-[10px]" : "w-fit gap-[15px]"
+                    }`}
                   >
                     {l.label}
-                    <Chevron className="h-2.5 w-2.5" />
+                    <Chevron className="h-2.5 w-2.5 shrink-0" />
                   </a>
                 </li>
               ))}
@@ -222,7 +224,44 @@ export default function ProjectTopics({ sections, endLinks, after, panelLinks = 
               Dive is live) still closes its last statement with the 2px
               line the end-link rows would have drawn (Sukhman, 2026-10-09). */}
           {!endLinks?.length && sections[sections.length - 1]?.short && <div className="border-t-2 border-black" />}
-          {endLinks?.length > 0 && (
+          {/* Swiggy Agent Desk (2026-11-10, approved PNGs): every arrow is the
+              site chevron, right-aligned 10px in from the line's end. The
+              closing line, 40px, then one 10px-padded row per link. */}
+          {chevronLinks && endLinks?.length > 0 && (
+            <>
+              <div className="border-t-2 border-black" />
+              <ul className={`mt-10 ${endLinks.every((l) => panelLinks.some((p) => p.href === l.href)) ? "md:hidden" : ""}`}>
+                {endLinks.map((link, i) => {
+                  const inPanel = panelLinks.some((p) => p.href === link.href);
+                  const cls =
+                    "flex w-full items-center justify-between py-[10px] pr-[10px] font-semibold tracking-[-0.5px] transition-opacity hover:opacity-60";
+                  const inner = (
+                    <>
+                      <span>{link.label}</span>
+                      <Chevron className="h-2.5 w-2.5 shrink-0" />
+                    </>
+                  );
+                  return (
+                    <li
+                      key={link.href}
+                      className={`border-t-2 border-black ${i === endLinks.length - 1 ? "border-b-2" : ""} ${inPanel ? "md:hidden" : ""}`}
+                    >
+                      {link.external ? (
+                        <a href={link.href} target="_blank" rel="noopener noreferrer" className={cls}>
+                          {inner}
+                        </a>
+                      ) : (
+                        <Link href={link.href} className={cls}>
+                          {inner}
+                        </Link>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </>
+          )}
+          {!chevronLinks && endLinks?.length > 0 && (
             // One row per link between black lines, bold label + diagonal
             // arrow (Sukhman's reference, 2026-10-06). The first row's top
             // line is the last statement's closing line.

@@ -38,6 +38,9 @@
 // Interactive Playkit, Bike Dashboard and UN SDGs sit on the /projects
 // listing page only, not the homepage (My Alumnus replaced the Playkit on
 // the homepage on 2026-10-10).
+// Homepage order since 2026-11-11 (Sukhman): Swiggy Agent Desk, Drive Wise,
+// BINA, My Alumnus. MyJio left the homepage and stays on /projects. The
+// array order is the order on both pages, and `index` follows it.
 import { driveWiseCaseStudy, PROTOTYPE as DRIVE_WISE_PROTOTYPE, RESEARCH_SITE as DRIVE_WISE_RESEARCH_SITE } from "./driveWiseCaseStudy";
 import { driveWiseShortCaseStudy } from "./driveWiseShortCaseStudy";
 import { driveWiseLongCaseStudy } from "./driveWiseLongCaseStudy";
@@ -53,14 +56,51 @@ import { myjioLongCaseStudy, PROTOTYPE as MYJIO_PROTOTYPE } from "./myjioLongCas
 import { myAlumnusCaseStudy } from "./myAlumnusCaseStudy";
 import { myAlumnusShortCaseStudy } from "./myAlumnusShortCaseStudy";
 import { myAlumnusLongCaseStudy } from "./myAlumnusLongCaseStudy";
+import { swiggyCaseStudy } from "./swiggyCaseStudy";
+import { swiggyShortCaseStudy, HANDBOOK as SWIGGY_HANDBOOK } from "./swiggyShortCaseStudy";
+import { swiggyLongCaseStudy } from "./swiggyLongCaseStudy";
  
 // `industry` (Sukhman, 2026-10-07): shown in grey after the project name in
 // the previous/next rows at the end of case study pages (ProjectPager.js).
 // Matches each case study's Discipline where one exists.
 export const projects = [
   {
-    slug: "drive-wise",
+    // Swiggy Agent Desk (added 2026-11-10, Sukhman). Self-initiated concept,
+    // not affiliated with Swiggy. Highlights and Deep Dive; the Deep Dive
+    // (13 chapters) went live with it on 2026-11-11.
+    slug: "swiggy-agent-desk",
     index: "01",
+    title: "Swiggy Agent Desk",
+    description:
+      "A decision-support screen for Swiggy's escalation agents, built around policy checks rather than verdicts",
+    descriptionMore:
+      ", with each party's history in one format and every rule tagged by where it came from. Coded as a working prototype.",
+    tag: "Enterprise SaaS · Decision Support",
+    industry: "Enterprise SaaS",
+    ctaLabel: "View Project",
+    ...coverSet("swiggy-agent-desk"),
+    // featured: true since 2026-11-11 (Sukhman): first on the homepage and
+    // the projects page.
+    featured: true,
+    // Top block: src > lib > swiggyCaseStudy.js. Highlights (5 steps):
+    // src > lib > swiggyShortCaseStudy.js, visuals in SwiggyVisuals.js.
+    ...swiggyCaseStudy,
+    sections: swiggyShortCaseStudy.sections,
+    endLinks: swiggyShortCaseStudy.endLinks,
+    // /full shows the 13-chapter Deep Dive (src > lib > swiggyLongCaseStudy.js).
+    long: swiggyLongCaseStudy,
+    // Left panel, in this order (Sukhman, 2026-11-10): Handbook first, then
+    // the prototype once hosted, then the Full Case-study once built.
+    panelLinks: [
+      { label: "Agent Desk Handbook", href: SWIGGY_HANDBOOK, external: true },
+      { label: "View Full Case-study", href: "/projects/swiggy-agent-desk/full" },
+    ],
+    // Every arrow is the site chevron, right-aligned (approved PNGs).
+    chevronLinks: true,
+  },
+  {
+    slug: "drive-wise",
+    index: "02",
     // Left-panel links on the project page (2026-10-22, Sukhman): shown
     // under the Contents list as "View Prototype" / "View Research
     // Website" whenever a project has them (src > app > projects > [slug]).
@@ -97,7 +137,7 @@ export const projects = [
   },
   {
     slug: "intelligent-waste-disposal-system",
-    index: "02",
+    index: "03",
     title: "Intelligent Waste Disposal System",
     description:
       "A sensor-based autonomous waste bin that combines perception, decision logic and interactive feedback to encourage responsible disposal",
@@ -121,32 +161,6 @@ export const projects = [
     sections: binaShortCaseStudy.sections,
     endLinks: binaShortCaseStudy.endLinks,
     long: binaLongCaseStudy,
-  },
-  {
-    slug: "myjio-customer-assistance",
-    index: "03",
-    prototypeLink: MYJIO_PROTOTYPE,
-    title: "MyJio Customer Assistance",
-    description:
-      "An AI customer-assistance chatbot concept for Jio's app, built on a \"Keyword Rulebook\"",
-    descriptionMore:
-      ": a taxonomy of customer phrases by issue, action and emotion, paired with a live emotion slider in the chat.",
-    tag: "Conversational AI",
-    // Telecom (Sukhman, 2026-10-07): matches the case study's Discipline.
-    industry: "Telecom",
-    ctaLabel: "View Project",
-    // externalUrl removed 2026-10-08 (Sukhman): the Highlights are live, so
-    // "View Project" now opens /projects/myjio-customer-assistance.
-    // Behance: https://www.behance.net/gallery/249662667/MyJio-Customer-Assistance
-    ...coverSet("myjio-customer-assistance"),
-    featured: true,
-    // Top block: src > lib > myjioCaseStudy.js. Highlights (5 steps):
-    // src > lib > myjioShortCaseStudy.js. Deep Dive (13 chapters, 2026-10-09):
-    // src > lib > myjioLongCaseStudy.js on /projects/myjio-customer-assistance/full.
-    ...myjioCaseStudy,
-    sections: myjioShortCaseStudy.sections,
-    endLinks: myjioShortCaseStudy.endLinks,
-    long: myjioLongCaseStudy,
   },
   {
     // My Alumnus (added 2026-10-10, Sukhman): homepage row 04, in place of
@@ -182,8 +196,36 @@ export const projects = [
     long: myAlumnusLongCaseStudy,
   },
   {
-    slug: "un-sdgs",
+    slug: "myjio-customer-assistance",
     index: "05",
+    prototypeLink: MYJIO_PROTOTYPE,
+    title: "MyJio Customer Assistance",
+    description:
+      "An AI customer-assistance chatbot concept for Jio's app, built on a \"Keyword Rulebook\"",
+    descriptionMore:
+      ": a taxonomy of customer phrases by issue, action and emotion, paired with a live emotion slider in the chat.",
+    tag: "Conversational AI",
+    // Telecom (Sukhman, 2026-10-07): matches the case study's Discipline.
+    industry: "Telecom",
+    ctaLabel: "View Project",
+    // externalUrl removed 2026-10-08 (Sukhman): the Highlights are live, so
+    // "View Project" now opens /projects/myjio-customer-assistance.
+    // Behance: https://www.behance.net/gallery/249662667/MyJio-Customer-Assistance
+    ...coverSet("myjio-customer-assistance"),
+    // featured: false since 2026-11-11 (Sukhman): Swiggy Agent Desk took a
+    // homepage place. It stays on the /projects listing page.
+    featured: false,
+    // Top block: src > lib > myjioCaseStudy.js. Highlights (5 steps):
+    // src > lib > myjioShortCaseStudy.js. Deep Dive (13 chapters, 2026-10-09):
+    // src > lib > myjioLongCaseStudy.js on /projects/myjio-customer-assistance/full.
+    ...myjioCaseStudy,
+    sections: myjioShortCaseStudy.sections,
+    endLinks: myjioShortCaseStudy.endLinks,
+    long: myjioLongCaseStudy,
+  },
+  {
+    slug: "un-sdgs",
+    index: "06",
     title: "UN Sustainable Development Goals",
     description:
       "An interactive infographic series visualizing progress across the UN Sustainable Development Goals",
@@ -208,7 +250,7 @@ export const projects = [
   },
   {
     slug: "interactive-playkit-for-kids",
-    index: "06",
+    index: "07",
     title: "Interactive Playkit for Kids",
     description:
       "A physical + digital play kit for children that combines tactile pieces with story-driven digital interaction",
@@ -226,7 +268,7 @@ export const projects = [
   },
   {
     slug: "bike-dashboard-design",
-    index: "07",
+    index: "08",
     title: "Bike Dashboard Design",
     description:
       "A redesigned motorcycle instrument-cluster UI focused on rider readability and cognitive load in motion",

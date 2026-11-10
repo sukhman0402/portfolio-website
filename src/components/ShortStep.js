@@ -5,6 +5,7 @@ import { PhaseTag } from "./DoubleDiamond";
 import Image from "next/image";
 import Chevron from "./Chevron";
 import s from "./ShortStep.module.css";
+import SwiggyVisual from "./SwiggyVisuals";
 
 // SHORT case-study step (Sukhman, FINAL 2026-10-06). Rules:
 // claude/case-study-short-format-rules.md in the Placement Drive project.
@@ -143,8 +144,9 @@ function Visual({ v }) {
     // My Alumnus (2026-10-10)
     case "sides":
       return <Sides v={v} />;
+    // Swiggy Agent Desk (2026-11-10): its own visuals, kinds starting "sw"
     default:
-      return null;
+      return v.kind?.startsWith("sw") ? <SwiggyVisual v={v} /> : null;
   }
 }
 
