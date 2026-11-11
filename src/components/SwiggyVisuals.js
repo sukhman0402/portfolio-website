@@ -148,16 +148,28 @@ function Rules({ v }) {
 
 function Hero({ v }) {
   return (
-    <div className={s.g3}>
-      {v.items.map((it) => (
-        <div key={it.value}>
-          <div className={s.num}>{it.value}</div>
-          <div className={s.cap}>
-            <Rich text={it.cap} />
-            {it.src && <span className={s.grey}> · {it.src}</span>}
+    <div>
+      <div className={s.g3}>
+        {v.items.map((it) => (
+          <div key={it.value}>
+            <div className={s.num}>{it.value}</div>
+            <div className={s.cap}>
+              <Rich text={it.cap} />
+              {it.src && <span className={s.grey}> · {it.src}</span>}
+            </div>
           </div>
+        ))}
+      </div>
+      {v.sources && (
+        <div className={s.sources}>
+          <span>Sources</span>
+          {v.sources.map((x) => (
+            <a key={x.href} href={x.href} target="_blank" rel="noopener noreferrer">
+              {x.label}
+            </a>
+          ))}
         </div>
-      ))}
+      )}
     </div>
   );
 }

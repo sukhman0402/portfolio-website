@@ -126,6 +126,18 @@
 .swdd .strip > div.hot{background:var(--o100);box-shadow:inset 0 0 0 2px var(--o500)}
 .swdd .strip > div.hot b{color:var(--o700)}
 .swdd .cap{font-size:13px;color:var(--grey);margin-top:12px}
+.swdd .arts{display:grid;grid-template-columns:505px 505px;column-gap:20px;align-items:stretch}
+.swdd .art{border-top:1px solid var(--ink);padding-top:14px;display:flex;flex-direction:column}
+.swdd .art .n{font-size:56px;line-height:60px;font-weight:400;letter-spacing:-2.4px}
+.swdd .art .h{font-size:17px;line-height:26px;margin-top:10px;max-width:460px}
+.swdd .art .m{font-size:13px;line-height:20px;color:var(--grey);margin-top:14px}
+.swdd .art .m .pill{margin-bottom:0}
+.swdd .art .dz{border-top:1px solid var(--hair);margin-top:22px;padding-top:12px;font-size:15px;line-height:22px}
+.swdd .art .dz .k{font-size:13px;color:var(--grey);margin-bottom:4px}
+.swdd .art a.src{color:inherit;text-decoration:none;margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:15px;padding:16px 10px 12px 0;border-bottom:2px solid var(--ink)}
+.swdd .art .gap{flex:1;min-height:22px}
+.swdd .art .also{font-size:15px;line-height:22px;color:#333;margin-top:14px;max-width:470px}
+.swdd .art a.src + a.src{margin-top:0}
 .swdd .layers{display:grid;grid-template-columns:repeat(3,330px);gap:20px}
 .swdd .layers > div{background:var(--card);border-radius:8px;padding:22px}
 .swdd .layers .k{font-weight:600;font-size:17px}
@@ -352,7 +364,7 @@
 .swdd .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
 .swdd .cards,.swdd .layers,.swdd .qs,.swdd .leg,.swdd .rules,.swdd .lcards,.swdd .cols3,.swdd .notes{grid-template-columns:repeat(3,minmax(0,1fr))}
 .swdd .bign,.swdd .sev{grid-template-columns:repeat(4,minmax(0,1fr))}
-.swdd .ref,.swdd .two,.swdd .lay2,.swdd .wires,.swdd .cmp{grid-template-columns:repeat(2,minmax(0,1fr))}
+.swdd .ref,.swdd .two,.swdd .arts,.swdd .lay2,.swdd .wires,.swdd .cmp{grid-template-columns:repeat(2,minmax(0,1fr))}
 .swdd .split{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}
 .swdd .split .rows .r{grid-template-columns:minmax(0,200fr) minmax(0,460fr)}
 .swdd .tile,.swdd .dsg{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}
@@ -381,6 +393,7 @@
 }
 /* ---- phones ---- */
 @media (max-width:767px){
+  .swdd .arts{row-gap:56px}
   .swdd .ch{padding-top:80px}
   .swdd .band,.swdd .band2{margin-top:80px;padding:70px 0}
   .swdd .g4{grid-template-columns:minmax(0,1fr);row-gap:14px}
@@ -391,7 +404,7 @@
   .swdd .mod{margin-top:36px}
   .swdd .sec,.swdd .dsx .blk{margin-top:52px}
   .swdd .cards,.swdd .bign,.swdd .sev,.swdd .thumbs,.swdd .rad,.swdd .fx,.swdd .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .swdd .layers,.swdd .qs,.swdd .leg,.swdd .rules,.swdd .lcards,.swdd .cols3,.swdd .notes,.swdd .ref,.swdd .two,.swdd .lay2,.swdd .wires,.swdd .cmp,.swdd .split,.swdd .tile,.swdd .dsg{grid-template-columns:minmax(0,1fr)}
+  .swdd .layers,.swdd .qs,.swdd .leg,.swdd .rules,.swdd .lcards,.swdd .cols3,.swdd .notes,.swdd .ref,.swdd .two,.swdd .arts,.swdd .lay2,.swdd .wires,.swdd .cmp,.swdd .split,.swdd .tile,.swdd .dsg{grid-template-columns:minmax(0,1fr)}
   .swdd .cmp > .cell.w{grid-column:auto}
   .swdd .strip{grid-template-columns:repeat(3,minmax(0,1fr))}
   .swdd .sw{grid-template-columns:repeat(4,minmax(0,1fr))}

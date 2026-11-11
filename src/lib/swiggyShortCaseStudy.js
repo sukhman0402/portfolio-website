@@ -87,15 +87,23 @@ export const swiggyShortCaseStudy = {
           },
         },
         {
-          heading: "Where refund errors come from",
+          heading: "Where refund errors come from, and who pays",
           text: [
-            "Public evidence points to proof, not history, as the weak spot. A Swiggy-group study traced most of its wrong refunds to poor or missing photos, and a reported Instamart case was refunded on an AI-edited photo.",
+            "Public evidence points to proof, not history, as the weak spot. A Swiggy-group service traced most of its wrong refunds to poor or missing photos, and a reported Instamart case was refunded on an AI-edited photo.",
+            "The cost does not stop with the customer. Restaurant owners report refunds taken from their payouts without proof and with no way to dispute, and a 2025 Zomato policy charged them half of every refund.",
           ],
           visual: {
             kind: "swHero",
             items: [
-              { value: "25%", cap: "of [[refunds issued wrongly]], mostly on weak photos", src: "Swiggy-group study" },
+              { value: "25%", cap: "of [[refunds issued wrongly]], mostly on weak photos", src: "Supr Daily, Swiggy group" },
+              { value: "50%", cap: "of each refund charged to restaurants, with no right to reject", src: "Zomato policy, 2025" },
               { value: "912", cap: "of 10,590 helpline complaints were about unprocessed refunds", src: "2024" },
+            ],
+            sources: [
+              { label: "AWS case study", href: "https://aws.amazon.com/solutions/case-studies/suprdaily-case-study/" },
+              { label: "Business Today", href: "https://www.businesstoday.in/latest/trends/story/apply-more-cracks-swiggy-instamart-customer-allegedly-uses-ai-to-secure-refund-for-broken-eggs-503803-2025-11-26" },
+              { label: "Inc42", href: "https://inc42.com/buzz/zomato-puts-5050-refund-sharing-with-restaurants-on-hold" },
+              { label: "MediaNama", href: "https://www.medianama.com/2025/05/223-ccpa-probes-zomato-swiggy-cancellation-refund-policies/" },
             ],
           },
         },

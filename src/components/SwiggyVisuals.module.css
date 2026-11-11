@@ -199,3 +199,8 @@
   .track { scroll-behavior: auto; }
   .vid::after { transition: none; }
 }
+
+/* Hero sources: one quiet line of outbound links under the numbers. */
+.sources { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: 28px; padding-top: 14px; border-top: 1px solid #e3e3e3; font-size: 13px; line-height: 20px; color: var(--grey); }
+.sources a { color: #111; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #c9c9c9; }
+.sources a:hover { text-decoration-color: currentColor; }
