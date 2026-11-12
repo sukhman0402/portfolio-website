@@ -170,6 +170,36 @@ export const swiggyShortCaseStudy = {
           },
         },
         {
+          heading: "User persona",
+          text: ["Riya is the user the screen was designed around, an escalation agent who takes over refund chats from the bot."],
+          visual: {
+            kind: "swPersona",
+            photo: "/images/projects/swiggy-agent-desk/full/persona-riya.jpg",
+            alt: "Riya S., escalation agent",
+            name: "Riya S.",
+            role: "Escalation agent, chat support",
+            meta: [
+              { label: "Age", value: "26" },
+              { label: "City", value: "Bengaluru" },
+              { label: "In role", value: "1.5 years" },
+              { label: "Shift", value: "4 pm to 1 am" },
+              { label: "Education", value: "B.Com" },
+              { label: "Languages", value: "Hindi, English, Kannada" },
+              { label: "Typing", value: "65 words a minute" },
+              { label: "Tech comfort", value: "High" },
+              { label: "Communication", value: "Clear, polite written English, calm on calls", wide: true },
+            ],
+            bio: "Riya takes over refund chats when the bot cannot settle them. During the dinner peak she runs three to four chats at once, and every decision she makes is logged and can be reviewed later.",
+            tools: ["Agent console", "Chat tool", "Order dashboard", "Policy handbook PDF"],
+            lists: [
+              { title: "Goals", items: ["Decide each refund right the first time", "Reply within the five-minute window", "Treat customer, restaurant and rider fairly", "Leave a clear record of why she decided"] },
+              { title: "Frustrations", items: ["Facts spread across screens and tabs", "No number for a partial refund in the policy", "Waiting on the restaurant with no visible status", "Rules and deadlines that differ by source"] },
+              { title: "Skills", items: ["Knows the refund policy closely", "Reads order timelines and rider logs fast", "Stays calm in tense chats", "Runs three to four chats at once"] },
+              { title: "Needs", items: ["Every policy condition next to its fact", "Evidence shown with its source and time", "All three parties' history in one format", "Restaurant permission shown with its status"] },
+            ],
+          },
+        },
+        {
           heading: "Three parties, one cost",
           text: [
             "A refund is paid by someone. Food issues fall on the restaurant, delivery issues on the rider or Swiggy, and the two parties who carry the cost have the weakest way to dispute it.",

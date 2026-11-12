@@ -78,6 +78,8 @@ function pick(v) {
       return <Stats v={v} />;
     case "swMeters":
       return <Meters v={v} />;
+    case "swPersona":
+      return <Persona v={v} />;
     case "swEffort":
       return <Effort v={v} />;
     default:
@@ -170,6 +172,50 @@ function Hero({ v }) {
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+// User persona: photo in column 1, profile across columns 2 and 3, then four lists.
+function Persona({ v }) {
+  return (
+    <div>
+      <div className={s.c12}>
+        <div className={s.pPhoto}>
+          <Image src={v.photo} alt={v.alt} width={800} height={1000} sizes="(min-width: 768px) 330px, 240px" />
+        </div>
+        <div>
+          <div className={s.n40}>{v.name}</div>
+          <div className={s.pRole}>{v.role}</div>
+          <div className={s.pMeta}>
+            {v.meta.map((m) => (
+              <div key={m.label} className={m.wide ? s.pWide : undefined}>
+                <span>{m.label}</span>
+                {m.value}
+              </div>
+            ))}
+          </div>
+          <div className={s.pBio}>{v.bio}</div>
+          <div className={s.pTools}>
+            <span>Uses today</span>
+            {v.tools.map((t) => (
+              <b key={t}>{t}</b>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className={s.pLists}>
+        {v.lists.map((l) => (
+          <div key={l.title}>
+            <div className={s.pTitle}>{l.title}</div>
+            <ul>
+              {l.items.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
